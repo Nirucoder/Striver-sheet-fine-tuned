@@ -117,6 +117,39 @@ week: step.week,
 }))
 );
 
+// ─── COA DATA (Nesa Academy – Computer Organization & Architecture) ──────────
+const COA_TABLE = [
+  { id:"coa_01", topic:"Introduction to Computer Organization", week:1, subtopics:"Overview, Von Neumann architecture, basic components", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_02", topic:"Number Systems & Data Representation", week:1, subtopics:"Binary, Octal, Hex, BCD, IEEE 754 floating point", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_03", topic:"Boolean Algebra & Logic Gates", week:1, subtopics:"AND, OR, NOT, NAND, NOR, XOR, truth tables, simplification", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_04", topic:"Combinational Circuits", week:2, subtopics:"Adders, subtractors, multiplexers, demultiplexers, encoders, decoders", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_05", topic:"Sequential Circuits", week:2, subtopics:"Flip-flops (SR, JK, D, T), registers, counters", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_06", topic:"CPU Organisation & Instruction Set", week:3, subtopics:"ALU, control unit, registers, instruction formats, addressing modes", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_07", topic:"Instruction Cycle & Microprogramming", week:3, subtopics:"Fetch-decode-execute, micro-operations, hardwired vs microprogrammed control", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_08", topic:"Pipelining", week:4, subtopics:"Pipeline stages, hazards (structural, data, control), solutions", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_09", topic:"Memory Organisation", week:4, subtopics:"Hierarchy, cache (direct, associative, set-associative), virtual memory, paging", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_10", topic:"Input / Output Organisation", week:5, subtopics:"I/O interfaces, programmed I/O, interrupt-driven I/O, DMA", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_11", topic:"Buses & Interconnects", week:5, subtopics:"Bus structure, synchronous vs asynchronous, arbitration, PCI/PCIe basics", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_12", topic:"Arithmetic Operations in Hardware", week:6, subtopics:"Integer addition/subtraction, multiplication (Booth's), division, floating-point ops", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_13", topic:"RISC vs CISC", week:6, subtopics:"Design philosophy, pipeline friendliness, examples (x86 vs ARM)", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_14", topic:"Parallel Processing", week:7, subtopics:"Flynn's taxonomy, SIMD/MIMD, multiprocessors, cache coherence", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_15", topic:"Performance Metrics & Optimisation", week:7, subtopics:"CPI, MIPS, Amdahl's law, branch prediction, out-of-order execution", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_16", topic:"Assembly Language Basics", week:8, subtopics:"Registers, MOV/ADD/SUB/JMP, stack operations, calling conventions", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
+  { id:"coa_17", topic:"Revision & Past Papers", week:8, subtopics:"Previous year questions, formula sheet, Nesa model papers", practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
+];
+
+// ─── WEEK PLAN (8-week roadmap mapping DSA steps to COA weeks) ───────────────
+const WEEK_PLAN = [
+  { week:1, title:"Basics, Sorting & Arrays (Easy)", dsaSteps:[1,2], coaWeek:1 },
+  { week:2, title:"Arrays (Medium/Hard) & Strings", dsaSteps:[3], coaWeek:2 },
+  { week:3, title:"Searching, Recursion & Backtracking", dsaSteps:[4,5], coaWeek:3 },
+  { week:4, title:"Binary Trees & BST", dsaSteps:[6,7], coaWeek:4 },
+  { week:5, title:"Linked Lists & Stacks/Queues", dsaSteps:[8,9], coaWeek:5 },
+  { week:6, title:"Greedy, Binary Search & Heaps", dsaSteps:[10,11], coaWeek:6 },
+  { week:7, title:"Graphs & Dynamic Programming", dsaSteps:[12,13,14], coaWeek:7 },
+  { week:8, title:"Advanced DP, Tries & Revision", dsaSteps:[15,16,17], coaWeek:8 },
+];
+
 const ALL_REV_TOPICS = [
 ...STRIVER_STEPS.map(s => ({ id:`rev_dsa_s${s.step}`, topic:`Step ${s.step}: ${s.title}`, type:"DSA", week:s.week,
 day:false, week1:false, month:false })),
