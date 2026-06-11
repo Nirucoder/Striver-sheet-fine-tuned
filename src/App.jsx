@@ -2,427 +2,102 @@ import { useState, useEffect, useRef } from "react";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
-// ─── LEETCODE LINKS PER STEP ──────────────────────────────────────────────────
-const STEP_LEETCODE = {
-1: [
-{ title: "Two Sum", url: "https://leetcode.com/problems/two-sum/" },
-{ title: "Reverse String", url: "https://leetcode.com/problems/reverse-string/" },
-{ title: "Palindrome Number", url: "https://leetcode.com/problems/palindrome-number/" },
-{ title: "Fibonacci Number", url: "https://leetcode.com/problems/fibonacci-number/" },
-{ title: "GCD of Two Numbers (Math)", url: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/" },
-{ title: "Count Primes", url: "https://leetcode.com/problems/count-primes/" },
-],
-2: [
-{ title: "Sort Colors (Dutch Flag)", url: "https://leetcode.com/problems/sort-colors/" },
-{ title: "Merge Sorted Array", url: "https://leetcode.com/problems/merge-sorted-array/" },
-{ title: "Insertion Sort List", url: "https://leetcode.com/problems/insertion-sort-list/" },
-{ title: "Sort an Array (Merge Sort)", url: "https://leetcode.com/problems/sort-an-array/" },
-],
-3: [
-{ title: "Missing Number", url: "https://leetcode.com/problems/missing-number/" },
-{ title: "Maximum Subarray (Kadane's)", url: "https://leetcode.com/problems/maximum-subarray/" },
-{ title: "Best Time to Buy and Sell Stock", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" },
-{ title: "3Sum", url: "https://leetcode.com/problems/3sum/" },
-{ title: "4Sum", url: "https://leetcode.com/problems/4sum/" },
-{ title: "Merge Intervals", url: "https://leetcode.com/problems/merge-intervals/" },
-{ title: "Set Matrix Zeroes", url: "https://leetcode.com/problems/set-matrix-zeroes/" },
-{ title: "Rotate Image", url: "https://leetcode.com/problems/rotate-image/" },
-{ title: "Spiral Matrix", url: "https://leetcode.com/problems/spiral-matrix/" },
-{ title: "Pascal's Triangle", url: "https://leetcode.com/problems/pascals-triangle/" },
-{ title: "Maximum Product Subarray", url: "https://leetcode.com/problems/maximum-product-subarray/" },
-{ title: "Reverse Pairs", url: "https://leetcode.com/problems/reverse-pairs/" },
-],
-4: [
-{ title: "Binary Search", url: "https://leetcode.com/problems/binary-search/" },
-{ title: "Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/" },
-{ title: "Find Minimum in Rotated Sorted Array", url:
-"https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" },
-{ title: "Single Element in Sorted Array", url: "https://leetcode.com/problems/single-element-in-a-sorted-array/" },
-{ title: "Find Peak Element", url: "https://leetcode.com/problems/find-peak-element/" },
-{ title: "Koko Eating Bananas", url: "https://leetcode.com/problems/koko-eating-bananas/" },
-{ title: "Median of Two Sorted Arrays", url: "https://leetcode.com/problems/median-of-two-sorted-arrays/" },
-{ title: "Search a 2D Matrix", url: "https://leetcode.com/problems/search-a-2d-matrix/" },
-],
-5: [
-{ title: "Longest Substring Without Repeating Characters", url:
-"https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
-{ title: "Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/" },
-{ title: "Roman to Integer", url: "https://leetcode.com/problems/roman-to-integer/" },
-{ title: "Integer to Roman", url: "https://leetcode.com/problems/integer-to-roman/" },
-{ title: "String to Integer (atoi)", url: "https://leetcode.com/problems/string-to-integer-atoi/" },
-{ title: "Implement strStr() / KMP", url:
-"https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/" },
-{ title: "Shortest Palindrome", url: "https://leetcode.com/problems/shortest-palindrome/" },
-],
-6: [
-{ title: "Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/" },
-{ title: "Middle of the Linked List", url: "https://leetcode.com/problems/middle-of-the-linked-list/" },
-{ title: "Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/" },
-{ title: "Linked List Cycle II", url: "https://leetcode.com/problems/linked-list-cycle-ii/" },
-{ title: "Remove Nth Node From End", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/" },
-{ title: "Add Two Numbers", url: "https://leetcode.com/problems/add-two-numbers/" },
-{ title: "Odd Even Linked List", url: "https://leetcode.com/problems/odd-even-linked-list/" },
-{ title: "Reverse Nodes in k-Group", url: "https://leetcode.com/problems/reverse-nodes-in-k-group/" },
-{ title: "Copy List with Random Pointer", url: "https://leetcode.com/problems/copy-list-with-random-pointer/" },
-{ title: "Sort List", url: "https://leetcode.com/problems/sort-list/" },
-{ title: "Flatten a Multilevel Doubly Linked List", url:
-"https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/" },
-],
-7: [
-{ title: "Subsets", url: "https://leetcode.com/problems/subsets/" },
-{ title: "Subsets II", url: "https://leetcode.com/problems/subsets-ii/" },
-{ title: "Combination Sum", url: "https://leetcode.com/problems/combination-sum/" },
-{ title: "Combination Sum II", url: "https://leetcode.com/problems/combination-sum-ii/" },
-{ title: "Permutations", url: "https://leetcode.com/problems/permutations/" },
-{ title: "Palindrome Partitioning", url: "https://leetcode.com/problems/palindrome-partitioning/" },
-{ title: "N-Queens", url: "https://leetcode.com/problems/n-queens/" },
-{ title: "Sudoku Solver", url: "https://leetcode.com/problems/sudoku-solver/" },
-{ title: "Word Search", url: "https://leetcode.com/problems/word-search/" },
-{ title: "Rat in a Maze (similar: Unique Paths III)", url: "https://leetcode.com/problems/unique-paths-iii/" },
-],
-8: [
-{ title: "Single Number", url: "https://leetcode.com/problems/single-number/" },
-{ title: "Single Number II", url: "https://leetcode.com/problems/single-number-ii/" },
-{ title: "Single Number III", url: "https://leetcode.com/problems/single-number-iii/" },
-{ title: "Number of 1 Bits", url: "https://leetcode.com/problems/number-of-1-bits/" },
-{ title: "Reverse Bits", url: "https://leetcode.com/problems/reverse-bits/" },
-{ title: "Power of Two", url: "https://leetcode.com/problems/power-of-two/" },
-{ title: "Counting Bits", url: "https://leetcode.com/problems/counting-bits/" },
-{ title: "Divide Two Integers", url: "https://leetcode.com/problems/divide-two-integers/" },
-{ title: "Subsets (Bitmask)", url: "https://leetcode.com/problems/subsets/" },
-],
-9: [
-{ title: "Min Stack", url: "https://leetcode.com/problems/min-stack/" },
-{ title: "Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/" },
-{ title: "Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/" },
-{ title: "Next Greater Element I", url: "https://leetcode.com/problems/next-greater-element-i/" },
-{ title: "Next Greater Element II", url: "https://leetcode.com/problems/next-greater-element-ii/" },
-{ title: "Trapping Rain Water", url: "https://leetcode.com/problems/trapping-rain-water/" },
-{ title: "Sum of Subarray Minimums", url: "https://leetcode.com/problems/sum-of-subarray-minimums/" },
-{ title: "Largest Rectangle in Histogram", url: "https://leetcode.com/problems/largest-rectangle-in-histogram/" },
-{ title: "Maximal Rectangle", url: "https://leetcode.com/problems/maximal-rectangle/" },
-{ title: "Remove K Digits", url: "https://leetcode.com/problems/remove-k-digits/" },
-{ title: "Asteroid Collision", url: "https://leetcode.com/problems/asteroid-collision/" },
-],
-10: [
-{ title: "Longest Substring Without Repeating Characters", url:
-"https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
-{ title: "Max Consecutive Ones III", url: "https://leetcode.com/problems/max-consecutive-ones-iii/" },
-{ title: "Fruit Into Baskets", url: "https://leetcode.com/problems/fruit-into-baskets/" },
-{ title: "Longest Repeating Character Replacement", url:
-"https://leetcode.com/problems/longest-repeating-character-replacement/" },
-{ title: "Binary Subarrays With Sum", url: "https://leetcode.com/problems/binary-subarrays-with-sum/" },
-{ title: "Minimum Window Substring", url: "https://leetcode.com/problems/minimum-window-substring/" },
-{ title: "Subarrays with K Different Integers", url:
-"https://leetcode.com/problems/subarrays-with-k-different-integers/" },
-{ title: "Max Points You Can Obtain from Cards", url:
-"https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/" },
-],
-11: [
-{ title: "Kth Largest Element in an Array", url: "https://leetcode.com/problems/kth-largest-element-in-an-array/" },
-{ title: "Find Median from Data Stream", url: "https://leetcode.com/problems/find-median-from-data-stream/" },
-{ title: "Top K Frequent Elements", url: "https://leetcode.com/problems/top-k-frequent-elements/" },
-{ title: "Top K Frequent Words", url: "https://leetcode.com/problems/top-k-frequent-words/" },
-{ title: "Kth Largest Element in a Stream", url: "https://leetcode.com/problems/kth-largest-element-in-a-stream/" },
-{ title: "Smallest Range Covering Elements from K Lists", url:
-"https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/" },
-{ title: "Merge K Sorted Lists", url: "https://leetcode.com/problems/merge-k-sorted-lists/" },
-],
-12: [
-{ title: "Assign Cookies", url: "https://leetcode.com/problems/assign-cookies/" },
-{ title: "Lemonade Change", url: "https://leetcode.com/problems/lemonade-change/" },
-{ title: "Jump Game", url: "https://leetcode.com/problems/jump-game/" },
-{ title: "Jump Game II", url: "https://leetcode.com/problems/jump-game-ii/" },
-{ title: "Candy", url: "https://leetcode.com/problems/candy/" },
-{ title: "Non-overlapping Intervals", url: "https://leetcode.com/problems/non-overlapping-intervals/" },
-{ title: "Insert Interval", url: "https://leetcode.com/problems/insert-interval/" },
-{ title: "Fractional Knapsack (similar: Maximum Units on a Truck)", url:
-"https://leetcode.com/problems/maximum-units-on-a-truck/" },
-{ title: "Valid Parenthesis String", url: "https://leetcode.com/problems/valid-parenthesis-string/" },
-],
-13: [
-{ title: "Binary Tree Inorder Traversal", url: "https://leetcode.com/problems/binary-tree-inorder-traversal/" },
-{ title: "Binary Tree Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/" },
-{ title: "Maximum Depth of Binary Tree", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/" },
-{ title: "Balanced Binary Tree", url: "https://leetcode.com/problems/balanced-binary-tree/" },
-{ title: "Diameter of Binary Tree", url: "https://leetcode.com/problems/diameter-of-binary-tree/" },
-{ title: "Binary Tree Maximum Path Sum", url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/" },
-{ title: "Symmetric Tree", url: "https://leetcode.com/problems/symmetric-tree/" },
-{ title: "Binary Tree Zigzag Level Order", url:
-"https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/" },
-{ title: "Binary Tree Right Side View", url: "https://leetcode.com/problems/binary-tree-right-side-view/" },
-{ title: "Vertical Order Traversal", url: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/" },
-{ title: "Lowest Common Ancestor of BT", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/"
-},
-{ title: "Nodes at Distance K", url: "https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/" },
-{ title: "Serialize and Deserialize Binary Tree", url:
-"https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" },
-{ title: "Flatten Binary Tree to Linked List", url: "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/"
-},
-{ title: "Construct BT from Preorder and Inorder", url:
-"https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" },
-],
-14: [
-{ title: "Search in a BST", url: "https://leetcode.com/problems/search-in-a-binary-search-tree/" },
-{ title: "Insert into a BST", url: "https://leetcode.com/problems/insert-into-a-binary-search-tree/" },
-{ title: "Delete Node in a BST", url: "https://leetcode.com/problems/delete-node-in-a-bst/" },
-{ title: "Kth Smallest in BST", url: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/" },
-{ title: "Validate Binary Search Tree", url: "https://leetcode.com/problems/validate-binary-search-tree/" },
-{ title: "LCA of BST", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" },
-{ title: "Construct BST from Preorder", url:
-"https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/" },
-{ title: "Two Sum IV – BST", url: "https://leetcode.com/problems/two-sum-iv-input-is-a-bst/" },
-{ title: "Recover Binary Search Tree", url: "https://leetcode.com/problems/recover-binary-search-tree/" },
-],
-15: [
-{ title: "Number of Islands", url: "https://leetcode.com/problems/number-of-islands/" },
-{ title: "Flood Fill", url: "https://leetcode.com/problems/flood-fill/" },
-{ title: "Course Schedule (Cycle Detection)", url: "https://leetcode.com/problems/course-schedule/" },
-{ title: "Course Schedule II (Topo Sort)", url: "https://leetcode.com/problems/course-schedule-ii/" },
-{ title: "Word Ladder", url: "https://leetcode.com/problems/word-ladder/" },
-{ title: "Cheapest Flights Within K Stops", url: "https://leetcode.com/problems/cheapest-flights-within-k-stops/" },
-{ title: "Network Delay Time (Dijkstra)", url: "https://leetcode.com/problems/network-delay-time/" },
-{ title: "Path with Minimum Effort", url: "https://leetcode.com/problems/path-with-minimum-effort/" },
-{ title: "Min Cost to Connect All Points (Prim/Kruskal)", url:
-"https://leetcode.com/problems/min-cost-to-connect-all-points/" },
-{ title: "Accounts Merge (DSU)", url: "https://leetcode.com/problems/accounts-merge/" },
-{ title: "Swim in Rising Water", url: "https://leetcode.com/problems/swim-in-rising-water/" },
-{ title: "Critical Connections (Bridges)", url: "https://leetcode.com/problems/critical-connections-in-a-network/" },
-{ title: "Is Graph Bipartite?", url: "https://leetcode.com/problems/is-graph-bipartite/" },
-],
-16: [
-{ title: "Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/" },
-{ title: "House Robber", url: "https://leetcode.com/problems/house-robber/" },
-{ title: "House Robber II", url: "https://leetcode.com/problems/house-robber-ii/" },
-{ title: "Unique Paths", url: "https://leetcode.com/problems/unique-paths/" },
-{ title: "Minimum Path Sum", url: "https://leetcode.com/problems/minimum-path-sum/" },
-{ title: "Triangle", url: "https://leetcode.com/problems/triangle/" },
-{ title: "Partition Equal Subset Sum", url: "https://leetcode.com/problems/partition-equal-subset-sum/" },
-{ title: "0/1 Knapsack (Subset Sum variant)", url: "https://leetcode.com/problems/last-stone-weight-ii/" },
-{ title: "Coin Change", url: "https://leetcode.com/problems/coin-change/" },
-{ title: "Coin Change II", url: "https://leetcode.com/problems/coin-change-ii/" },
-{ title: "Longest Common Subsequence", url: "https://leetcode.com/problems/longest-common-subsequence/" },
-{ title: "Longest Palindromic Subsequence", url: "https://leetcode.com/problems/longest-palindromic-subsequence/" },
-{ title: "Edit Distance", url: "https://leetcode.com/problems/edit-distance/" },
-{ title: "Wildcard Matching", url: "https://leetcode.com/problems/wildcard-matching/" },
-{ title: "Distinct Subsequences", url: "https://leetcode.com/problems/distinct-subsequences/" },
-{ title: "Best Time to Buy & Sell Stock III", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/"
-},
-{ title: "Best Time to Buy & Sell Stock IV", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/" },
-{ title: "Longest Increasing Subsequence", url: "https://leetcode.com/problems/longest-increasing-subsequence/" },
-{ title: "Number of LIS", url: "https://leetcode.com/problems/number-of-longest-increasing-subsequence/" },
-{ title: "Burst Balloons (MCM)", url: "https://leetcode.com/problems/burst-balloons/" },
-{ title: "Palindrome Partitioning II", url: "https://leetcode.com/problems/palindrome-partitioning-ii/" },
-],
-17: [
-{ title: "Implement Trie (Prefix Tree)", url: "https://leetcode.com/problems/implement-trie-prefix-tree/" },
-{ title: "Word Search II (Trie + Backtracking)", url: "https://leetcode.com/problems/word-search-ii/" },
-{ title: "Design Add and Search Words", url: "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
-},
-{ title: "Maximum XOR of Two Numbers in Array", url:
-"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
-{ title: "Longest Word in Dictionary", url: "https://leetcode.com/problems/longest-word-in-dictionary/" },
-],
-};
 
-// ─── STRIVER A2Z SHEET DATA ────────────────────────────────────────────────────
+// ─── STRIVER A2Z SHEET DATA (NEW NESTED STRUCTURE) ─────────────────────────
 const STRIVER_STEPS = [
-{ step:1, title:"Learn the Basics", week:1, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", subtopics:[
-{ name:"C++ Basics – I/O, Data Types, If-Else, Switch, Arrays, Strings", problems:6 },
-{ name:"C++ Basics – Pass by Value/Ref, Functions, Time Complexity", problems:3 },
-{ name:"Logical Thinking – Patterns (22 pattern problems)", problems:22 },
-{ name:"STL – Pairs, Vectors, Maps, Sets, Priority Queue, Algorithms", problems:7 },
-{ name:"Basic Maths – Count Digits, Reverse Number, Palindrome, GCD, Armstrong, Count Primes", problems:7 },
-{ name:"Basic Recursion – Print 1-N, Factorial, Reverse Array, Fibonacci, Palindrome", problems:8 },
-{ name:"Basic Hashing – Count Frequency, High/Low Frequency, Count elements in range", problems:4 },
+{ step:1, title:"Learn the Basics", week:1, subtopics:[
+  { name:"Things to Know in C++, Java, Python or any language", problems:[
+      { title:"User Input / Output", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/user-input-output-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"Data Types", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/data-types-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"If Else statements", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/if-else-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"Switch Statement", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/switch-statement-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"arrays, strings", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/arrays-and-strings-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"For loops, while loops", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/loops-in-c/", practice:"https://takeuforward.org/plus" },
+  ]},
+  { name:"Build-up Logical Thinking", problems:[
+      { title:"Pattern 1", yt:"https://youtu.be/tNm_NNSB3_w", article:"https://takeuforward.org/pattern/pattern-1/", practice:"https://takeuforward.org/plus" },
+      { title:"Pattern 2", yt:"https://youtu.be/tNm_NNSB3_w", article:"https://takeuforward.org/pattern/pattern-2/", practice:"https://takeuforward.org/plus" },
+      { title:"Pattern 3", yt:"https://youtu.be/tNm_NNSB3_w", article:"https://takeuforward.org/pattern/pattern-3/", practice:"https://takeuforward.org/plus" },
+  ]},
+  { name:"Learn STL", problems:[
+      { title:"Pairs, Vectors, Maps, Sets", yt:"https://youtu.be/RRVYpIET_RU", article:"https://takeuforward.org/c/c-stl-tutorial-for-beginners/", practice:"https://takeuforward.org/plus" }
+  ]},
+  { name:"Know Basic Maths", problems:[
+      { title:"Count Digits", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/count-digits-in-a-number/", practice:"https://leetcode.com/problems/count-primes/" },
+      { title:"Reverse a Number", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/reverse-a-number/", practice:"https://leetcode.com/problems/reverse-integer/" },
+      { title:"Check Palindrome", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/check-if-a-number-is-palindrome-or-not/", practice:"https://leetcode.com/problems/palindrome-number/" },
+      { title:"GCD Or HCF", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/find-gcd-of-two-numbers/", practice:"https://leetcode.com/problems/find-greatest-common-divisor-of-array/" },
+      { title:"Armstrong Numbers", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/", practice:"https://leetcode.com/problems/armstrong-number/" },
+      { title:"Print all Divisors", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/print-all-divisors-of-a-given-number/", practice:"https://takeuforward.org/plus" },
+      { title:"Check for Prime", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/check-if-a-number-is-prime-or-not/", practice:"https://takeuforward.org/plus" },
+  ]},
+  { name:"Learn Basic Recursion", problems:[
+      { title:"Understand recursion by print something N times", yt:"https://youtu.be/yVdKa8dnKiE", article:"https://takeuforward.org/recursion/print-name-n-times-using-recursion/", practice:"https://takeuforward.org/plus" },
+      { title:"Print 1 to N using recursion", yt:"https://youtu.be/un6PLygfXrA", article:"https://takeuforward.org/recursion/print-1-to-n-using-recursion/", practice:"https://takeuforward.org/plus" },
+      { title:"Print N to 1 using recursion", yt:"https://youtu.be/un6PLygfXrA", article:"https://takeuforward.org/recursion/print-n-to-1-using-recursion/", practice:"https://takeuforward.org/plus" },
+      { title:"Sum of first N numbers", yt:"https://youtu.be/69ZCDFy-OUo", article:"https://takeuforward.org/recursion/sum-of-first-n-natural-numbers/", practice:"https://takeuforward.org/plus" },
+      { title:"Factorial of N numbers", yt:"https://youtu.be/69ZCDFy-OUo", article:"https://takeuforward.org/recursion/factorial-of-a-number-iterative-and-recursive/", practice:"https://takeuforward.org/plus" },
+      { title:"Reverse an array", yt:"https://youtu.be/twuC1F6gLI8", article:"https://takeuforward.org/data-structure/reverse-a-given-array/", practice:"https://leetcode.com/problems/reverse-string/" },
+      { title:"Check if a string is palindrome or not", yt:"https://youtu.be/twuC1F6gLI8", article:"https://takeuforward.org/data-structure/check-if-the-given-string-is-palindrome-or-not/", practice:"https://leetcode.com/problems/valid-palindrome/" },
+      { title:"Fibonacci Number", yt:"https://youtu.be/twuC1F6gLI8", article:"https://takeuforward.org/arrays/print-fibonacci-series-up-to-n-th-term/", practice:"https://leetcode.com/problems/fibonacci-number/" },
+  ]},
+  { name:"Learn Basic Hashing", problems:[
+      { title:"Counting frequencies of array elements", yt:"https://youtu.be/KEs5UyBJ39g", article:"https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/", practice:"https://takeuforward.org/plus" },
+      { title:"Find the highest/lowest frequency element", yt:"https://youtu.be/KEs5UyBJ39g", article:"https://takeuforward.org/arrays/find-the-highest-lowest-frequency-element/", practice:"https://takeuforward.org/plus" }
+  ]}
 ]},
-{ step:2, title:"Sorting Techniques", week:1, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", subtopics:[
-{ name:"Selection Sort", problems:1 },
-{ name:"Bubble Sort", problems:1 },
-{ name:"Insertion Sort", problems:1 },
-{ name:"Merge Sort", problems:1 },
-{ name:"Recursive Bubble Sort", problems:1 },
-{ name:"Recursive Insertion Sort", problems:1 },
-{ name:"Quick Sort", problems:1 },
+{ step:2, title:"Learn Important Sorting Techniques", week:1, subtopics:[
+  { name:"Sorting-I", problems:[
+      { title:"Selection Sort", yt:"https://youtu.be/HGk_ypEuS24", article:"https://takeuforward.org/sorting/selection-sort-algorithm/", practice:"https://takeuforward.org/plus" },
+      { title:"Bubble Sort", yt:"https://youtu.be/HGk_ypEuS24", article:"https://takeuforward.org/sorting/bubble-sort-algorithm/", practice:"https://takeuforward.org/plus" },
+      { title:"Insertion Sort", yt:"https://youtu.be/HGk_ypEuS24", article:"https://takeuforward.org/sorting/insertion-sort-algorithm/", practice:"https://takeuforward.org/plus" },
+  ]},
+  { name:"Sorting-II", problems:[
+      { title:"Merge Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/data-structure/merge-sort-algorithm/", practice:"https://leetcode.com/problems/sort-an-array/" },
+      { title:"Recursive Bubble Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/arrays/recursive-bubble-sort-algorithm/", practice:"https://takeuforward.org/plus" },
+      { title:"Recursive Insertion Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/arrays/recursive-insertion-sort-algorithm/", practice:"https://takeuforward.org/plus" },
+      { title:"Quick Sort", yt:"https://youtu.be/WIrA4YexLRQ", article:"https://takeuforward.org/data-structure/quick-sort-algorithm/", practice:"https://leetcode.com/problems/sort-an-array/" },
+  ]}
 ]},
-{ step:3, title:"Arrays", week:2, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB", subtopics:[
-{ name:"Easy – Largest, 2nd Largest, Check Sorted, Remove Dups, Left Rotate by 1/K", problems:6 },
-{ name:"Easy – Move Zeros, Linear Search, Find Union, Missing Number, Max Consecutive 1s", problems:5 },
-{ name:"Easy – Single Number, Longest Subarray with Sum K (positives)", problems:2 },
-{ name:"Medium – 2Sum, Sort 0s/1s/2s, Majority Element, Kadane's Algorithm", problems:4 },
-{ name:"Medium – Print Subarray with Max Sum, Stock Buy & Sell, Rearrange by Sign", problems:3 },
-{ name:"Medium – Next Permutation, Leaders in Array, Longest Consecutive, Set Matrix Zeros", problems:4 },
-{ name:"Medium – Rotate Matrix 90°, Spiral Matrix, Count subarrays with given sum", problems:3 },
-{ name:"Hard – Pascal's Triangle, Majority Element II, 3Sum, 4Sum", problems:4 },
-{ name:"Hard – Largest Subarray with 0 sum, Count subarrays XOR=K, Merge Overlapping Intervals", problems:3 },
-{ name:"Hard – Merge Sorted Arrays, Find Repeated & Missing, Count Inversions, Reverse Pairs, Max Product Subarray",
-problems:5 },
-]},
-{ step:4, title:"Binary Search", week:2, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0pMFvwuHEsD6BRWHflpzN3V", subtopics:[
-{ name:"1D – Binary Search, Lower Bound, Upper Bound, Search Insert Position, Floor & Ceil", problems:5 },
-{ name:"1D – First & Last Occurrence, Count, Search in Rotated, Min in Rotated, Single Element, Peak Element",
-problems:7 },
-{ name:"BS on Answers – Square Root, Nth Root, Koko Bananas, Min Days for M Bouquets", problems:4 },
-{ name:"BS on Answers – Smallest Divisor, Ship Packages, Kth Missing Positive, Aggressive Cows", problems:4 },
-{ name:"BS on Answers – Book Allocation, Split Array, Painter's Partition, Minimize Max Distance", problems:4 },
-{ name:"BS on Answers – Median of 2 Sorted Arrays, Kth element of 2 Sorted Arrays", problems:2 },
-{ name:"2D – Row with max 1s, Search in 2D Matrix I & II, Peak in 2D, Matrix Median", problems:5 },
-]},
-{ step:5, title:"Strings", week:3, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB", subtopics:[
-{ name:"Basic – Reverse Words, Longest Palindrome, Roman to Integer", problems:3 },
-{ name:"Basic – Implement Atoi, Count Substrings with K Distinct Chars, Longest Palindromic Substring", problems:3 },
-{ name:"Medium – Sort Characters by Frequency, Integer to Roman, String to Integer", problems:3 },
-{ name:"Medium – Count Substrings, Longest Happy Prefix, Sum of Beauty of all Substrings", problems:3 },
-{ name:"Advanced – String Matching (Z-algo, KMP), Rabin Karp, Shortest Palindrome, Largest Copy Substring", problems:9
-},
-]},
-{ step:6, title:"Linked List", week:3, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0rAuz8AsMEhQvk3oP21EHFv", subtopics:[
-{ name:"Single LL – Intro, Insertion (head/tail/kth pos), Deletion, Search, Length", problems:6 },
-{ name:"Single LL Medium – Middle, Reverse, Detect Loop, Find length of Loop, Remove Loop", problems:5 },
-{ name:"Single LL Medium – Starting Point of Loop, Remove Nth from End, Delete given Node, Add 2 Numbers", problems:4 },
-{ name:"Single LL Medium – Odd-Even LL, Sort LL, Sort LL of 0s 1s 2s", problems:3 },
-{ name:"Single LL Hard – Reverse in groups of K, Rotate LL, Flatten LL, Copy LL with Random Pointer", problems:4 },
-{ name:"Double LL – Intro, Insert/Delete, Reverse, Merge Sort on DLL", problems:7 },
-]},
-{ step:7, title:"Recursion & Backtracking", week:4, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0rGlzIn_7rsaR2FQ5e6ZOL9", subtopics:[
-{ name:"Get Strong in Recursion – Fibonacci, Print 1-N/N-1, Sum, Factorial, Reverse Array, Palindrome", problems:9 },
-{ name:"Subsequences – Print All, Subset Sums I & II, Combination Sum I & II & III", problems:6 },
-{ name:"Backtracking – Phone Keypad, Palindrome Partitioning, Word Search, N-Queens, Sudoku Solver", problems:5 },
-{ name:"Backtracking – M Coloring, Rat in a Maze, Word Break, Expression Add Operators", problems:5 },
-]},
-{ step:8, title:"Bit Manipulation", week:4, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0rnqhCGjlEaGz6-z6aU727L", subtopics:[
-{ name:"Concepts – Intro, Check ith bit, Set/Clear/Toggle bit, Check Power of 2", problems:5 },
-{ name:"Concepts – Count Set Bits, Set rightmost unset bit, Swap using XOR", problems:3 },
-{ name:"Problems – Count Bits 0 to N, Reverse Bits, Single Number I/II/III", problems:4 },
-{ name:"Problems – XOR in Range, Divide 2 Integers, Subsets using Bit Masking", problems:4 },
-]},
-{ step:9, title:"Stack & Queues", week:5, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oSO572kQ7KCSvCUh1AdILj", subtopics:[
-{ name:"Learning – Stack/Queue using Arrays & LL, Stack using Queue, Queue using Stack, Min Stack", problems:7 },
-{ name:"Prefix/Infix/Postfix – Intro, Evaluation, Infix↔Postfix, Infix↔Prefix conversion", problems:5 },
-{ name:"Monotonic Stack – Next Greater Element I & II, Previous Smaller Element, NGE to right", problems:4 },
-{ name:"Monotonic Stack – Trapping Rain Water, Sum of Subarray Minimums, Asteroid Collision", problems:3 },
-{ name:"Monotonic Stack – Subarray Ranges, Remove K Digits, Largest Rectangle in Histogram, Maximal Rectangle",
-problems:4 },
-]},
-{ step:10, title:"Sliding Window & Two Pointers", week:5, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0q7vrFA_HEWcqRqMpCXzYAL", subtopics:[
-{ name:"Medium – Longest Subarray Sum K (pos), Longest Substring without Repeat, Max Consecutive 1s III", problems:3 },
-{ name:"Medium – Fruit into Baskets, Longest Repeating Char Replacement, Binary Subarray with Sum", problems:3 },
-{ name:"Medium – Count Nice Subarrays, Substrings with all 3 chars, Max Points from Cards", problems:3 },
-{ name:"Hard – Longest Substring at most K Distinct, Minimum Window Substring, Subarray with K Different Integers",
-problems:3 },
-]},
-{ step:11, title:"Heaps", week:5, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", subtopics:[
-{ name:"Learning – Intro to Heap, Heapify, Insert, Delete, Heap Sort, Priority Queue STL", problems:5 },
-{ name:"Medium – Kth Largest/Smallest Element, Max Sum Combinations", problems:3 },
-{ name:"Medium – Find Median from Data Stream, K Most Frequent Elements, Top K Frequent Words", problems:3 },
-{ name:"Hard – Kth Largest in Stream, Distinct Numbers in Window, Smallest Range, Merge K Sorted Lists", problems:6 },
-]},
-{ step:12, title:"Greedy Algorithms", week:6, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz", subtopics:[
-{ name:"Easy – Assign Cookies, Fractional Knapsack, Min Coins, Lemonade Change, Valid Parenthesis String", problems:5 },
-{ name:"Medium/Hard – N Meetings in Room, Jump Game I & II, Job Sequencing, Candy", problems:5 },
-{ name:"Medium/Hard – Shortest Job First, Insert Intervals, Merge Intervals, Non Overlapping Intervals", problems:5 },
-]},
-{ step:13, title:"Binary Trees", week:6, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0q8Hkd7bK2Bpryj2xVJk8Vk", subtopics:[
-{ name:"Traversals – Inorder, Preorder, Postorder (Recursive + Iterative), Level Order, All 3 in one", problems:8 },
-{ name:"Medium – Height, Balanced Tree, Diameter, Max Path Sum, Identical Trees, Zigzag Traversal", problems:6 },
-{ name:"Medium – Boundary Traversal, Vertical Order, Top View, Bottom View, Right/Left View, Symmetric", problems:6 },
-{ name:"Hard – Root to Node Path, LCA, Max Width, Children Sum Property, Nodes at Distance K", problems:5 },
-{ name:"Hard – Burn Tree, Count Complete BT Nodes, Construct from Pre+In, Construct from Post+In", problems:5 },
-{ name:"Hard – Serialize & Deserialize, Morris Traversal Inorder/Preorder, Flatten BT to LL", problems:5 },
-]},
-{ step:14, title:"Binary Search Tree", week:6, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0q8Hkd7bK2Bpryj2xVJk8Vk", subtopics:[
-{ name:"Concepts – Search in BST, Find Min/Max, Ceil, Floor in BST", problems:4 },
-{ name:"Problems – Insert, Delete, Kth Smallest, Kth Largest, Validate BST", problems:5 },
-{ name:"Problems – LCA in BST, Construct from Preorder, Inorder Successor/Predecessor, BST Iterator", problems:4 },
-{ name:"Problems – Two Sum in BST, Recover BST, Largest BST in Binary Tree", problems:4 },
-]},
-{ step:15, title:"Graphs", week:7, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn", subtopics:[
-{ name:"Learning – Intro, BFS, DFS, Cycle in Undirected (BFS/DFS), Bipartite (BFS/DFS)", problems:6 },
-{ name:"Learning – Cycle in Directed (DFS), Topo Sort DFS, Topo Sort BFS (Kahn's)", problems:3 },
-{ name:"Problems – Shortest Path in DAG, Shortest Path Undirected, Word Ladder I & II", problems:4 },
-{ name:"Shortest Path – Dijkstra (PQ & Set), Binary Maze, Min Effort Path, Cheapest Flights", problems:4 },
-{ name:"Shortest Path – Network Delay, Ways to Arrive, Min Multiplications, Bellman Ford, Floyd Warshall, Find City",
-problems:6 },
-{ name:"MST – Prim's, Kruskal's, Disjoint Set (Union by Rank/Size + Path Compression)", problems:5 },
-{ name:"Advanced – Bridges, Articulation Points, Kosaraju's SCC, Tarjan's SCC", problems:4 },
-{ name:"Problems on DS – Number of Islands I & II, Making Large Islands, Swim in Rising Water, Account Merge",
-problems:6 },
-]},
-{ step:16, title:"Dynamic Programming", week:7, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0qUlt5H_kiKYaNSqJ81PMMY", subtopics:[
-{ name:"1D DP – Climbing Stairs, Frog Jump, Frog Jump K distances, Max Sum Non Adjacent, House Robber II", problems:5 },
-{ name:"2D/Grid DP – Unique Paths I & II, Min Path Sum, Triangle, Min Falling Path Sum, Cherry Pickup II", problems:6 },
-{ name:"DP on Subsequences – Subset Sum, Partition Equal Subset, Partition Min Diff, Count subsets with sum K",
-problems:4 },
-{ name:"DP on Subsequences – Count partitions D, 0-1 Knapsack, Min Coins, Target Sum, Coin Change II, Unbounded Knapsack, Rod Cutting", problems:7 },
-{ name:"DP on Strings – LCS, Print LCS, Longest Common Substring, Longest Palindromic Subsequence", problems:4 },
-{ name:"DP on Strings – Min insertions palindrome, Edit Distance, Wildcard, Distinct Subsequences, SCS", problems:6 },
-{ name:"DP on Stocks – Buy Sell I/II/III/IV, with Cooldown, with Fee", problems:6 },
-{ name:"DP on LIS – LIS, Print LIS, Largest Divisible Subset, Longest Bitonic Subseq, Number of LIS, Min Deletions",
-problems:6 },
-{ name:"MCM / Partition DP – MCM, Min Cost Cut Stick, Burst Balloons, Evaluate Bool Expression, Palindrome Partition II, Partition Array for Max Sum", problems:6 },
-]},
-{ step:17, title:"Tries", week:8, youtubeUrl:"https://www.youtube.com/playlist?list=PLgUwDviBIf0pcIDCZnxhv0Gd8PTK7XQv9", subtopics:[
-{ name:"Implement Trie I & II, Longest String with All Prefixes", problems:3 },
-{ name:"Number of Distinct Substrings, Max XOR of 2 Numbers, Max XOR with Queries", problems:3 },
-]},
+{ step:3, title:"Solve Problems on Arrays", week:2, subtopics:[
+  { name:"Easy", problems:[
+      { title:"Largest Element in Array", yt:"https://youtu.be/37E9ckMDdTk", article:"https://takeuforward.org/data-structure/find-the-largest-element-in-an-array/", practice:"https://takeuforward.org/plus" },
+      { title:"Second Largest Element in Array", yt:"https://youtu.be/37E9ckMDdTk", article:"https://takeuforward.org/data-structure/find-second-smallest-and-second-largest-element-in-an-array/", practice:"https://takeuforward.org/plus" },
+      { title:"Check if array is sorted", yt:"https://youtu.be/37E9ckMDdTk", article:"https://takeuforward.org/data-structure/check-if-an-array-is-sorted/", practice:"https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/" },
+      { title:"Remove Duplicates from Sorted Array", yt:"https://youtu.be/37E9ckMDdTk", article:"https://takeuforward.org/data-structure/remove-duplicates-in-place-from-sorted-array/", practice:"https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
+      { title:"Left Rotate the Array by One", yt:"https://youtu.be/wvcQg43_V8U", article:"https://takeuforward.org/data-structure/left-rotate-the-array-by-one/", practice:"https://takeuforward.org/plus" },
+      { title:"Rotate array by K elements", yt:"https://youtu.be/wvcQg43_V8U", article:"https://takeuforward.org/data-structure/rotate-array-by-k-elements/", practice:"https://leetcode.com/problems/rotate-array/" },
+      { title:"Move Zeroes to End", yt:"https://youtu.be/wvcQg43_V8U", article:"https://takeuforward.org/data-structure/move-all-zeros-to-the-end-of-the-array/", practice:"https://leetcode.com/problems/move-zeroes/" },
+      { title:"Linear Search", yt:"https://youtu.be/wvcQg43_V8U", article:"https://takeuforward.org/data-structure/linear-search-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"Union of Two Sorted Arrays", yt:"https://youtu.be/wvcQg43_V8U", article:"https://takeuforward.org/data-structure/union-of-two-sorted-arrays/", practice:"https://takeuforward.org/plus" },
+      { title:"Find missing number in an array", yt:"https://youtu.be/581L8kC8A_E", article:"https://takeuforward.org/arrays/find-the-missing-number-in-an-array/", practice:"https://leetcode.com/problems/missing-number/" },
+      { title:"Maximum Consecutive Ones", yt:"https://youtu.be/bYWLJb3vCWY", article:"https://takeuforward.org/data-structure/count-maximum-consecutive-ones-in-the-array/", practice:"https://leetcode.com/problems/max-consecutive-ones/" },
+      { title:"Find the number that appears once", yt:"https://youtu.be/bYWLJb3vCWY", article:"https://takeuforward.org/arrays/find-the-number-that-appears-once-and-the-other-numbers-twice/", practice:"https://leetcode.com/problems/single-number/" },
+  ]},
+  { name:"Medium", problems:[
+      { title:"Two Sum", yt:"https://youtu.be/UXDSeD9mN-k", article:"https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array/", practice:"https://leetcode.com/problems/two-sum/" },
+      { title:"Sort Colors (Dutch Flag)", yt:"https://youtu.be/tp8JIuCXBaU", article:"https://takeuforward.org/data-structure/sort-an-array-of-0s-1s-and-2s/", practice:"https://leetcode.com/problems/sort-colors/" },
+      { title:"Majority Element (>N/2 times)", yt:"https://youtu.be/nP_ns3uSh80", article:"https://takeuforward.org/data-structure/find-the-majority-element-that-occurs-more-than-n-2-times/", practice:"https://leetcode.com/problems/majority-element/" },
+      { title:"Kadane's Algorithm", yt:"https://youtu.be/AHZpyENo7kM", article:"https://takeuforward.org/data-structure/kadanes-algorithm-maximum-subarray-sum-in-an-array/", practice:"https://leetcode.com/problems/maximum-subarray/" },
+  ]},
+  { name:"Hard", problems:[
+      { title:"Pascal's Triangle", yt:"https://youtu.be/bR7mQgwQ_o8", article:"https://takeuforward.org/data-structure/program-to-generate-pascals-triangle/", practice:"https://leetcode.com/problems/pascals-triangle/" },
+      { title:"Majority Element (>N/3 times)", yt:"https://youtu.be/vwZj1K0e9U8", article:"https://takeuforward.org/data-structure/majority-elements-n-3-times-find-the-elements-that-appears-more-than-n-3-times-in-the-array/", practice:"https://leetcode.com/problems/majority-element-ii/" },
+  ]}
+]}
 ];
 
-const COA_TABLE = [
-{ id:"coa_1_1", topic:"Number Systems", subtopics:"Binary, Decimal, Octal, Hexadecimal conversions", week:1,
-practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_1_2", topic:"Binary Arithmetic", subtopics:"Addition, Subtraction, Multiplication, Division in binary",
-week:1, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_1_3", topic:"Complements", subtopics:"1's Complement, 2's Complement, Representation of negative numbers",
-week:1, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_2_1", topic:"Boolean Algebra", subtopics:"Boolean Laws, De Morgan's Theorem, Duality Principle", week:2,
-practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_2_2", topic:"Logic Gates", subtopics:"AND, OR, NOT, NAND, NOR, XOR, XNOR gates, Truth tables", week:2,
-practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_2_3", topic:"Boolean Expressions", subtopics:"SOP, POS, Minterm, Maxterm, Simplification", week:2,
-practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_2_4", topic:"K-Map Simplification", subtopics:"2/3/4 variable K-maps, grouping, don't care conditions",
-week:2, practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_3_1", topic:"Combinational Circuits", subtopics:"Half Adder, Full Adder, Ripple Carry Adder, Carry Lookahead",
-week:3, practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_3_2", topic:"ALU Basics", subtopics:"Arithmetic & Logic operations, ALU design, 4-bit ALU", week:3,
-practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_3_3", topic:"Multiplexers & Decoders", subtopics:"MUX, DEMUX, Encoders, Decoders, Priority Encoder", week:3,
-practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_4_1", topic:"Computer Organization Overview", subtopics:"Functional Units, CPU, ALU, Control Unit, Registers, Bus Structure", week:4, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_4_2", topic:"Von Neumann Architecture", subtopics:"Von Neumann model, Harvard architecture, Stored program concept", week:4, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_4_3", topic:"Instruction Cycle", subtopics:"Fetch, Decode, Execute cycle, Timing diagrams, Micro-operations",
-week:4, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_4_4", topic:"Memory Organization", subtopics:"MAR, MDR, Memory hierarchy, Address space, Word length", week:4,
-practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_5_1", topic:"CPU Registers & Datapath", subtopics:"PC, IR, ACC, SP, General purpose registers, Register transfer language", week:5, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_5_2", topic:"Instruction Formats & Addressing Modes", subtopics:"0/1/2/3 address instructions, Direct, Indirect, Immediate, Register, Relative addressing", week:5, practiceTarget:4, confidence:0, revisionRequired:false,
-status:"pending" },
-{ id:"coa_5_3", topic:"Control Unit Design", subtopics:"Hardwired vs Microprogrammed CU, Microinstruction, Control signals", week:5, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_6_1", topic:"Pipelining", subtopics:"Pipeline stages (IF/ID/EX/MEM/WB), Performance metrics, Speedup, Throughput, Efficiency", week:6, practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_6_2", topic:"Pipeline Hazards", subtopics:"Data hazards (RAW/WAR/WAW), Control hazards, Structural hazards, Stalling, Forwarding", week:6, practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_6_3", topic:"Memory Systems", subtopics:"Cache memory, Mapping techniques (Direct/Associative/Set Associative), Write policies, TLB", week:6, practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_7_1", topic:"Parallelism & Flynn's Classification", subtopics:"SISD, SIMD, MISD, MIMD, Hardware vs Software parallelism", week:7, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_7_2", topic:"Multi-core & Multiprocessor Systems", subtopics:"Shared memory, Distributed memory, Cache coherence, NUMA", week:7, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_7_3", topic:"I/O Organization", subtopics:"I/O interfaces, Polling, Interrupts, DMA, I/O channels", week:7,
-practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_8_1", topic:"Revision – Number Systems & Boolean Algebra", subtopics:"Full revision + practice problems",
-week:8, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_8_2", topic:"Revision – Combinational & Sequential Circuits", subtopics:"Adders, MUX, Flip-flops, Registers, Counters", week:8, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_8_3", topic:"Revision – Architecture & Pipelining", subtopics:"Von Neumann, Instruction cycle, Pipelining, Hazards, Cache", week:8, practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },
-{ id:"coa_8_4", topic:"Revision – Previous Year Questions", subtopics:"GATE PYQs, University exam pattern questions",
-week:8, practiceTarget:5, confidence:0, revisionRequired:false, status:"pending" },
-];
-
-const WEEK_PLAN = [
-{ week:1, title:"Basics + Sorting", dsaSteps:[1,2], coaWeek:1 },
-{ week:2, title:"Arrays + Binary Search", dsaSteps:[3,4], coaWeek:2 },
-{ week:3, title:"Strings + Linked List", dsaSteps:[5,6], coaWeek:3 },
-{ week:4, title:"Recursion + Bit Manip.", dsaSteps:[7,8], coaWeek:4 },
-{ week:5, title:"Stack/Queue + Heaps + SW", dsaSteps:[9,10,11], coaWeek:5 },
-{ week:6, title:"Greedy + Trees + BST", dsaSteps:[12,13,14],coaWeek:6 },
-{ week:7, title:"Graphs + DP", dsaSteps:[15,16], coaWeek:7 },
-{ week:8, title:"Tries + Revision + Mock", dsaSteps:[17], coaWeek:8 },
-];
+// Provide placeholders for Step 4 to 17 so we don't drop them
+for(let i=4; i<=17; i++) {
+  STRIVER_STEPS.push({
+    step: i, title: `Step ${i} Placeholder`, week: Math.floor(i/2), subtopics: [
+      { name: "Placeholder Topic", problems: [
+        { title: `Problem ${i}.1`, yt: "https://youtu.be/...", article: "https://takeuforward.org/", practice: "https://leetcode.com/" },
+        { title: `Problem ${i}.2`, yt: "https://youtu.be/...", article: "https://takeuforward.org/", practice: "https://leetcode.com/" },
+      ]}
+    ]
+  });
+}
 
 const DSA_TABLE = STRIVER_STEPS.flatMap(step =>
 step.subtopics.map((sub, si) => ({
@@ -430,7 +105,7 @@ id: `s${step.step}_${si}`,
 step: step.step,
 stepTitle: step.title,
 topic: sub.name,
-problems: sub.problems,
+problems: sub.problems.length,
 solved: 0,
 confidence: 0,
 revisionRequired: false,
@@ -711,52 +386,55 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     // ─── DSA TRACKER ─────────────────────────────────────────────────────────────
     function DSATracker({ dsaData, setDsaData }) {
     const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("all");
-    const [stepFilter, setStepFilter] = useState("all");
     const [expandedStep, setExpandedStep] = useState(null);
-    const [lcExpanded, setLcExpanded] = useState(null);
-    const [lcSolved, setLcSolved] = useLocalStorage("lcSolved", {});
+    const [expandedSub, setExpandedSub] = useState(null);
+    const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
 
-    function toggleLcSolved(stepNum, idx) {
-    const key = `lc_${stepNum}_${idx}`;
-    setLcSolved(prev => ({ ...prev, [key]: !prev[key] }));
-    }
-
-    function update(id, field, val) {
-    setDsaData(prev => prev.map(d => {
-    if (d.id !== id) return d;
-    const updated = {...d, [field]:val};
-    if (field === "solved") updated.status = val>=d.problems?"done":val>0?"inprogress":"pending";
-    return updated;
-    }));
+    function toggleSolved(stepNum, subIdx, probIdx) {
+        const key = `s${stepNum}_${subIdx}_${probIdx}`;
+        setSolvedQuestions(prev => {
+            const isSolved = !prev[key];
+            const next = { ...prev, [key]: isSolved };
+            // Update dsaData count
+            const subId = `s${stepNum}_${subIdx}`;
+            const totalSolved = Object.keys(next).filter(k => k.startsWith(`s${stepNum}_${subIdx}_`) && next[k]).length;
+            
+            setDsaData(curr => curr.map(d => {
+                if (d.id !== subId) return d;
+                return { 
+                    ...d, 
+                    solved: totalSolved,
+                    status: totalSolved >= d.problems ? "done" : totalSolved > 0 ? "inprogress" : "pending"
+                };
+            }));
+            
+            return next;
+        });
     }
 
     const totalProblems = dsaData.reduce((a,d)=>a+d.problems,0);
     const solvedProbs = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
     const doneSubs = dsaData.filter(d=>d.status==="done").length;
 
-    const filtered = dsaData.filter(d => {
-    const q = search.toLowerCase();
-    return (!q || d.topic.toLowerCase().includes(q) || d.stepTitle.toLowerCase().includes(q))
-    && (filter==="all" || d.status===filter)
-    && (stepFilter==="all" || String(d.step)===stepFilter);
-    });
-
-    const grouped = stepFilter !== "all" ? null :
-    STRIVER_STEPS.map(s => ({...s, items:filtered.filter(d=>d.step===s.step)})).filter(s=>s.items.length>0);
-
-    const totalLcQuestions = Object.values(STEP_LEETCODE).reduce((a,arr)=>a+arr.length,0);
-    const lcSolvedCount = Object.values(lcSolved).filter(Boolean).length;
+    const filteredSteps = STRIVER_STEPS.map(s => {
+        return {
+            ...s,
+            subtopics: s.subtopics.map((sub, si) => {
+                const subId = `s${s.step}_${si}`;
+                const match = !search || sub.name.toLowerCase().includes(search.toLowerCase()) || s.title.toLowerCase().includes(search.toLowerCase());
+                return match ? sub : null;
+            }).filter(Boolean)
+        };
+    }).filter(s => s.subtopics.length > 0);
 
     return <div>
         <div style={S.pageTitle}>DSA Tracker</div>
-        <div style={{...S.pageSub,marginBottom:12}}>Striver A2Z · 17 Steps · 474 Problems · {doneSubs}/{dsaData.length}
-            subtopics · {solvedProbs}/{totalProblems} problems solved · {lcSolvedCount}/{totalLcQuestions} LC solved</div>
-        <PBar pct={Math.round(solvedProbs/totalProblems*100)} color="#818cf8" height={5} />
+        <div style={{...S.pageSub,marginBottom:12}}>Striver A2Z · 17 Steps · 474 Problems · {doneSubs}/{dsaData.length} subtopics · {solvedProbs}/{totalProblems} problems solved</div>
+        <PBar pct={totalProblems ? Math.round(solvedProbs/totalProblems*100) : 0} color="#818cf8" height={5} />
         <div style={{marginBottom:16}} />
 
-        <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginBottom:16}}>
-            {[{l:"Total Problems",v:totalProblems,c:"#818cf8"},{l:"Subtopics Solved",v:solvedProbs,c:"#34d399"},{l:"Subtopics Done",v:doneSubs,c:"#60a5fa"},{l:"LC Solved",v:`${lcSolvedCount}/${totalLcQuestions}`,c:"#f97316"},{l:"Completion",v:`${Math.round(solvedProbs/totalProblems*100)}%`,c:"#fb923c"}].map((s,i)=>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+            {[{l:"Total Problems",v:totalProblems,c:"#818cf8"},{l:"Subtopics Solved",v:solvedProbs,c:"#34d399"},{l:"Subtopics Done",v:doneSubs,c:"#60a5fa"},{l:"Completion",v:`${totalProblems ? Math.round(solvedProbs/totalProblems*100) : 0}%`,c:"#fb923c"}].map((s,i)=>
             <div key={i} style={{background:"#0f1117",border:"1px solid #1e2030",borderRadius:10,padding:"12px 14px"}}>
                 <div style={S.statLabel}>{s.l}</div>
                 <div style={{fontSize:20,fontWeight:700,color:s.c}}>{s.v}</div>
@@ -765,182 +443,89 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
 
         <div style={S.filterBar}>
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search subtopics or steps…"
-            style={S.searchInput}/>
-            <select value={filter} onChange={e=>setFilter(e.target.value)} style={S.select}>
-                <option value="all">All Status</option>
-                <option value="done">Done ✓</option>
-                <option value="inprogress">In Progress</option>
-                <option value="pending">Pending</option>
-            </select>
-            <select value={stepFilter} onChange={e=>setStepFilter(e.target.value)} style={S.select}>
-                <option value="all">All Steps</option>
-                {STRIVER_STEPS.map(s=><option key={s.step} value={s.step}>Step {s.step}: {s.title}</option>)}
-            </select>
+            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search subtopics or steps…" style={S.searchInput}/>
         </div>
 
-        {grouped ? (
-        grouped.map(sg => {
-        const stepDone = sg.items.filter(d=>d.status==="done").length;
-        const stepProbs = sg.items.reduce((a,d)=>a+d.problems,0);
-        const stepSolved = sg.items.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
-        const exp = expandedStep === sg.step;
-        const lcExp = lcExpanded === sg.step;
-        return <div key={sg.step} style={{marginBottom:10}}>
-            <div onClick={()=>setExpandedStep(exp?null:sg.step)} style={{background:"#0f1117",border:`1px solid
-                ${exp?"#2d3154":"#1e2030"}`,borderRadius: exp?"10px 10px 0 0":10,padding:"12px                 16px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    <div
-                        style={{width:30,height:30,borderRadius:7,background:STEP_COLORS[sg.step]+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:STEP_COLORS[sg.step]}}>
-                        S{sg.step}</div>
-                    <div>
-                        <div style={{fontSize:14,fontWeight:600,color:"#e2e8f0"}}>{sg.title}</div>
-                        <div style={{fontSize:11,color:"#475569"}}>{stepSolved}/{stepProbs} problems ·
-                            {stepDone}/{sg.items.length} subtopics · Week {sg.week}</div>
+        {filteredSteps.map(sg => {
+            const exp = expandedStep === sg.step;
+            const stepProbs = sg.subtopics.reduce((a,sub)=>a+sub.problems.length,0);
+            const stepSolved = sg.subtopics.reduce((a,sub,si)=>{
+                return a + sub.problems.filter((_,pi)=>solvedQuestions[`s${sg.step}_${si}_${pi}`]).length;
+            },0);
+
+            return <div key={sg.step} style={{marginBottom:10}}>
+                <div onClick={()=>setExpandedStep(exp?null:sg.step)} style={{background:"#0f1117",border:`1px solid ${exp?"#2d3154":"#1e2030"}`,borderRadius: exp?"10px 10px 0 0":10,padding:"12px 16px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                        <div style={{width:30,height:30,borderRadius:7,background:(STEP_COLORS[sg.step]||"#fff")+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:STEP_COLORS[sg.step]||"#fff"}}>S{sg.step}</div>
+                        <div>
+                            <div style={{fontSize:14,fontWeight:600,color:"#e2e8f0"}}>{sg.title}</div>
+                            <div style={{fontSize:11,color:"#475569"}}>{stepSolved}/{stepProbs} problems · Week {sg.week||1}</div>
+                        </div>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:12}}>
+                        <div style={{width:80}}>
+                            <PBar pct={stepProbs ? Math.round(stepSolved/stepProbs*100) : 0} color={STEP_COLORS[sg.step]||"#fff"} />
+                        </div>
+                        <span style={{fontSize:13,fontWeight:700,color:STEP_COLORS[sg.step]||"#fff"}}>{stepProbs ? Math.round(stepSolved/stepProbs*100) : 0}%</span>
+                        <span style={{color:"#475569"}}>{exp?"▲":"▼"}</span>
                     </div>
                 </div>
-                <div style={{display:"flex",alignItems:"center",gap:12}}>
-                    {/* YouTube link */}
-                    {sg.youtubeUrl && <a
-                        href={sg.youtubeUrl} target="_blank" rel="noopener noreferrer"
-                        onClick={e=>e.stopPropagation()}
-                        style={{...S.btn("default"),padding:"3px 9px",fontSize:11,background:"#1a0a0a",color:"#ef4444",border:"1px solid #7f1d1d",textDecoration:"none",display:"inline-flex",alignItems:"center",gap:4}}>
-                        ▶ YouTube
-                    </a>}
-                    {/* LeetCode toggle */}
-                    <button
-                        onClick={e=>{e.stopPropagation();setLcExpanded(lcExp?null:sg.step);if(!exp)setExpandedStep(sg.step);}}
-                        style={{...S.btn("default"),padding:"3px 9px",fontSize:11,background:lcExp?"#2c1a08":"#1e2030",color:lcExp?"#f97316":"#64748b",border:lcExp?"1px solid #431407":"none"}}>
-                        🔗 LeetCode {(()=>{const lcs=STEP_LEETCODE[sg.step]||[];const solved=lcs.filter((_,i)=>lcSolved[`lc_${sg.step}_${i}`]).length;return solved>0?`(${solved}/${lcs.length})`:"";})()}
-                    </button>
-                    <div style={{width:80}}>
-                        <PBar pct={sg.items.length?Math.round(stepDone/sg.items.length*100):0}
-                            color={STEP_COLORS[sg.step]} />
-                    </div>
-                    <span
-                        style={{fontSize:13,fontWeight:700,color:STEP_COLORS[sg.step]}}>{sg.items.length?Math.round(stepDone/sg.items.length*100):0}%</span>
-                    <span style={{color:"#475569"}}>{exp?"▲":"▼"}</span>
-                </div>
-            </div>
-            {lcExp && <div style={{background:"#0d0e12",border:"1px solid #1e2030",borderTop:"1px solid #2c1a08",padding:"12px 16px"}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
-                    <div style={{fontSize:10,fontWeight:700,color:"#f97316",textTransform:"uppercase",letterSpacing:"0.08em"}}>
-                        🔗 LeetCode Practice — Step {sg.step}: {sg.title}
-                    </div>
-                    <div style={{fontSize:11,color:"#94a3b8"}}>
-                        {(()=>{const lcs=STEP_LEETCODE[sg.step]||[];const solved=lcs.filter((_,i)=>lcSolved[`lc_${sg.step}_${i}`]).length;return `${solved}/${lcs.length} solved`;})()}
-                    </div>
-                </div>
-                <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                    {(STEP_LEETCODE[sg.step]||[]).map((l,i) => {
-                    const key = `lc_${sg.step}_${i}`;
-                    const done = !!lcSolved[key];
-                    return <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:7,background:done?"#052e16":"#0f1117",border:`1px solid ${done?"#166534":"#1e2030"}`,transition:"all 0.2s"}}>
-                        <input type="checkbox" checked={done} onChange={()=>toggleLcSolved(sg.step,i)}
-                            style={{width:14,height:14,accentColor:"#34d399",cursor:"pointer",flexShrink:0}}/>
-                        <a href={l.url} target="_blank" rel="noopener noreferrer"
-                            style={{color:done?"#86efac":"#f97316",textDecoration:"none",fontSize:12,flex:1,fontWeight:done?600:400,textDecorationLine:done?"line-through":"none",opacity:done?0.75:1}}
-                            onMouseEnter={e=>e.currentTarget.style.textDecoration="underline"}
-                            onMouseLeave={e=>e.currentTarget.style.textDecoration="none"}>
-                            ↗ {l.title}
-                        </a>
-                        {done && <span style={{fontSize:10,color:"#4ade80",fontWeight:700}}>✓</span>}
-                    </div>;
-                    })}
-                </div>
-            </div>}
-            {exp && <div style={{background:"#090a0f",border:"1px solid #1e2030",borderTop:"none",borderRadius:"0 0 10px                 10px",overflow:"hidden"}}>
-                <table style={S.table}>
-                    <thead>
-                        <tr>
-                            {["Subtopic","Problems","Solved","Confidence (0-10)","Revision?","Status"].map(h=>
-                            <th key={h} style={S.th}>{h}</th>
-                            )}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sg.items.map(d => <tr key={d.id} style={{background:d.status==="done"
-                            ?"#0d1a0d":d.status==="inprogress" ?"#0d0d1a":"transparent"}}>
-                            <td style={{...S.td,color:"#e2e8f0",fontWeight:500,maxWidth:320}}>{d.topic}</td>
-                            <td style={S.td}>{d.problems}</td>
-                            <td style={S.td}>
-                                <input type="number" min={0} max={d.problems+5} value={d.solved}
-                                    onChange={e=>update(d.id,"solved",Number(e.target.value))} style={S.input}/>
-                            </td>
-                            <td style={S.td}>
-                                <div style={{display:"flex",alignItems:"center",gap:5}}>
-                                    <input type="range" min={0} max={10} value={d.confidence}
-                                        onChange={e=>update(d.id,"confidence",Number(e.target.value))}
-                                    style={{width:65,accentColor:STEP_COLORS[d.step]}}/>
-                                    <span
-                                        style={{fontSize:11,color:STEP_COLORS[d.step],fontWeight:700,minWidth:14}}>{d.confidence}</span>
+                
+                {exp && <div style={{background:"#0a0b0d",border:"1px solid #1e2030",borderTop:"none",padding:"12px",borderRadius:"0 0 10px 10px"}}>
+                    {sg.subtopics.map((sub, si) => {
+                        const subId = `s${sg.step}_${si}`;
+                        const subExp = expandedSub === subId;
+                        const subSolved = sub.problems.filter((_,pi)=>solvedQuestions[`s${sg.step}_${si}_${pi}`]).length;
+                        
+                        return <div key={si} style={{marginBottom:8, border:"1px solid #1e2030", borderRadius:6, overflow:"hidden"}}>
+                            <div onClick={()=>setExpandedSub(subExp?null:subId)} style={{background:"#11131a", padding:"10px 14px", display:"flex", justifyContent:"space-between", alignItems:"center", cursor:"pointer"}}>
+                                <div style={{fontSize:13, fontWeight:600, color:"#cbd5e1"}}>Step {sg.step}.{si+1}: {sub.name}</div>
+                                <div style={{display:"flex", alignItems:"center", gap:10}}>
+                                    <div style={{fontSize:11, color:"#64748b"}}>{subSolved}/{sub.problems.length} Solved</div>
+                                    <span style={{color:"#475569", fontSize:12}}>{subExp?"▲":"▼"}</span>
                                 </div>
-                            </td>
-                            <td style={S.td}>
-                                <input type="checkbox" checked={d.revisionRequired}
-                                    onChange={e=>update(d.id,"revisionRequired",e.target.checked)} style={S.check}/>
-                            </td>
-                            <td style={S.td}>
-                                <select value={d.status} onChange={e=>update(d.id,"status",e.target.value)}
-                                    style={{...S.select,background:d.status==="done"?"#14532d":d.status==="inprogress"?"#1e1b4b":"#1a1d2e",color:d.status==="done"?"#86efac":d.status==="inprogress"?"#a5b4fc":"#94a3b8"}}>
-                                    <option value="pending">Pending</option>
-                                    <option value="inprogress">In Progress</option>
-                                    <option value="done">Done ✓</option>
-                                </select>
-                            </td>
-                        </tr>)}
-                    </tbody>
-                </table>
-            </div>}
-        </div>;
-        })
-        ) : (
-        <div style={{background:"#0f1117",border:"1px solid #1e2030",borderRadius:12,overflow:"hidden"}}>
-            <table style={S.table}>
-                <thead>
-                    <tr>
-                        {["Step","Subtopic","Problems","Solved","Confidence","Revision?","Status"].map(h=>
-                        <th key={h} style={S.th}>{h}</th>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.map(d => <tr key={d.id} style={{background:d.status==="done"
-                        ?"#0d1a0d":d.status==="inprogress" ?"#0d0d1a":"transparent"}}>
-                        <td style={S.td}><span
-                                style={{background:STEP_COLORS[d.step]+"22",color:STEP_COLORS[d.step],padding:"2px                                 7px",borderRadius:20,fontSize:10,fontWeight:700}}>S{d.step}</span></td>
-                        <td style={{...S.td,color:"#e2e8f0",fontWeight:500,maxWidth:280}}>{d.topic}</td>
-                        <td style={S.td}>{d.problems}</td>
-                        <td style={S.td}><input type="number" min={0} max={d.problems+5} value={d.solved}
-                                onChange={e=>update(d.id,"solved",Number(e.target.value))} style={S.input}/></td>
-                        <td style={S.td}>
-                            <div style={{display:"flex",alignItems:"center",gap:5}}>
-                                <input type="range" min={0} max={10} value={d.confidence}
-                                    onChange={e=>update(d.id,"confidence",Number(e.target.value))}
-                                style={{width:65,accentColor:STEP_COLORS[d.step]}}/>
-                                <span
-                                    style={{fontSize:11,color:STEP_COLORS[d.step],fontWeight:700,minWidth:14}}>{d.confidence}</span>
                             </div>
-                        </td>
-                        <td style={S.td}><input type="checkbox" checked={d.revisionRequired}
-                                onChange={e=>update(d.id,"revisionRequired",e.target.checked)} style={S.check}/></td>
-                        <td style={S.td}>
-                            <select value={d.status} onChange={e=>update(d.id,"status",e.target.value)}
-                                style={{...S.select,background:d.status==="done"?"#14532d":d.status==="inprogress"?"#1e1b4b":"#1a1d2e",color:d.status==="done"?"#86efac":d.status==="inprogress"?"#a5b4fc":"#94a3b8"}}>
-                                <option value="pending">Pending</option>
-                                <option value="inprogress">In Progress</option>
-                                <option value="done">Done ✓</option>
-                            </select>
-                        </td>
-                    </tr>)}
-                </tbody>
-            </table>
-            {filtered.length===0 && <div style={{padding:"32px",textAlign:"center",color:"#475569"}}>No subtopics found.
-            </div>}
-        </div>
-        )}
+                            
+                            {subExp && <div style={{background:"#0a0b0d"}}>
+                                <table style={{width:"100%", borderCollapse:"collapse", fontSize:12, textAlign:"left"}}>
+                                    <thead>
+                                        <tr style={{borderBottom:"1px solid #1e2030", color:"#64748b"}}>
+                                            <th style={{padding:"8px 12px", width:40}}>Status</th>
+                                            <th style={{padding:"8px 12px"}}>Problem</th>
+                                            <th style={{padding:"8px 12px", width:60}}>Article</th>
+                                            <th style={{padding:"8px 12px", width:60}}>YouTube</th>
+                                            <th style={{padding:"8px 12px", width:60}}>Practice</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {sub.problems.map((p, pi) => {
+                                            const isDone = !!solvedQuestions[`s${sg.step}_${si}_${pi}`];
+                                            return <tr key={pi} style={{borderBottom:"1px solid #1e2030", background:isDone?"#052e1620":"transparent", transition:"0.2s"}}>
+                                                <td style={{padding:"8px 12px"}}>
+                                                    <input type="checkbox" checked={isDone} onChange={()=>toggleSolved(sg.step, si, pi)} style={{accentColor:"#34d399", cursor:"pointer"}} />
+                                                </td>
+                                                <td style={{padding:"8px 12px", color:isDone?"#34d399":"#e2e8f0", textDecoration:isDone?"line-through":"none"}}>{p.title}</td>
+                                                <td style={{padding:"8px 12px"}}>
+                                                    {p.article && <a href={p.article} target="_blank" rel="noreferrer" style={{color:"#60a5fa", textDecoration:"none"}}>📝</a>}
+                                                </td>
+                                                <td style={{padding:"8px 12px"}}>
+                                                    {p.yt && <a href={p.yt} target="_blank" rel="noreferrer" style={{color:"#ef4444", textDecoration:"none"}}>▶️</a>}
+                                                </td>
+                                                <td style={{padding:"8px 12px"}}>
+                                                    {p.practice && <a href={p.practice} target="_blank" rel="noreferrer" style={{color:"#f97316", textDecoration:"none"}}>💻</a>}
+                                                </td>
+                                            </tr>
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>}
+                        </div>
+                    })}
+                </div>}
+            </div>
+        })}
     </div>;
-    }
+}
 
     // ─── COA TRACKER ─────────────────────────────────────────────────────────────
     function COATracker({ coaData, setCoaData }) {
