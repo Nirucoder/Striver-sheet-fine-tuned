@@ -99,6 +99,9 @@ for(let i=4; i<=17; i++) {
   });
 }
 
+
+const STEP_LEETCODE = {};
+STRIVER_STEPS.forEach(step => { STEP_LEETCODE[step.step] = step.subtopics.flatMap(sub => sub.problems.map(p => ({ title: p.title, url: p.practice }))); });
 const DSA_TABLE = STRIVER_STEPS.flatMap(step =>
 step.subtopics.map((sub, si) => ({
 id: `s${step.step}_${si}`,
