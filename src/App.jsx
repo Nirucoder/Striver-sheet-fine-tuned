@@ -1021,6 +1021,20 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     // ─── DSA TRACKER ─────────────────────────────────────────────────────────────
+    function getDiffFromSubtopic(name) {
+        if (!name) return null;
+        const n = name.toLowerCase();
+        if (n.includes("easy")) return "Easy";
+        if (n.includes("hard")) return "Hard";
+        if (n.includes("medium")) return "Medium";
+        return null;
+    }
+    const DIFF_STYLE = {
+        Easy:   { background:"#052e1a", color:"#34d399", border:"1px solid #16533a" },
+        Medium: { background:"#2d1f04", color:"#fbbf24", border:"1px solid #78450a" },
+        Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
+    };
+
     function DSATracker({ dsaData, setDsaData }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
@@ -1129,27 +1143,37 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                         <tr style={{borderBottom:"1px solid #1e2030", color:"#64748b"}}>
                                             <th style={{padding:"8px 12px", width:40}}>Status</th>
                                             <th style={{padding:"8px 12px"}}>Problem</th>
-                                            <th style={{padding:"8px 12px", width:60}}>Article</th>
-                                            <th style={{padding:"8px 12px", width:60}}>YouTube</th>
-                                            <th style={{padding:"8px 12px", width:60}}>Practice</th>
+                                            <th style={{padding:"8px 12px", width:80}}>Difficulty</th>
+                                            <th style={{padding:"8px 12px", width:50, textAlign:"center"}}>Article</th>
+                                            <th style={{padding:"8px 12px", width:50, textAlign:"center"}}>Video</th>
+                                            <th style={{padding:"8px 12px", width:60, textAlign:"center"}}>Practice</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {sub.problems.map((p, pi) => {
                                             const isDone = !!solvedQuestions[`s${sg.step}_${si}_${pi}`];
+                                            const diff = p.difficulty || getDiffFromSubtopic(sub.name);
+                                            const hasArticle = p.article && !p.article.endsWith("/plus") && !p.article.endsWith("/plus/");
+                                            const hasYT = p.yt && (p.yt.includes("youtu.be") || p.yt.includes("youtube.com"));
+                                            const hasPractice = p.practice && !p.practice.includes("takeuforward.org");
                                             return <tr key={pi} style={{borderBottom:"1px solid #1e2030", background:isDone?"#052e1620":"transparent", transition:"0.2s"}}>
                                                 <td style={{padding:"8px 12px"}}>
                                                     <input type="checkbox" checked={isDone} onChange={()=>toggleSolved(sg.step, si, pi)} style={{accentColor:"#34d399", cursor:"pointer"}} />
                                                 </td>
                                                 <td style={{padding:"8px 12px", color:isDone?"#34d399":"#e2e8f0", textDecoration:isDone?"line-through":"none"}}>{p.title}</td>
                                                 <td style={{padding:"8px 12px"}}>
-                                                    {p.article && <a href={p.article} target="_blank" rel="noreferrer" style={{color:"#60a5fa", textDecoration:"none"}}>📝</a>}
+                                                    {diff
+                                                        ? <span style={{...DIFF_STYLE[diff], padding:"2px 8px", borderRadius:10, fontSize:10, fontWeight:700, whiteSpace:"nowrap"}}>{diff}</span>
+                                                        : <span style={{color:"#334155", fontSize:11}}>—</span>}
                                                 </td>
-                                                <td style={{padding:"8px 12px"}}>
-                                                    {p.yt && <a href={p.yt} target="_blank" rel="noreferrer" style={{color:"#ef4444", textDecoration:"none"}}>▶️</a>}
+                                                <td style={{padding:"8px 12px", textAlign:"center"}}>
+                                                    {hasArticle && <a href={p.article} target="_blank" rel="noreferrer" title="Read Article" style={{color:"#60a5fa", textDecoration:"none", fontSize:15}}>📝</a>}
                                                 </td>
-                                                <td style={{padding:"8px 12px"}}>
-                                                    {p.practice && <a href={p.practice} target="_blank" rel="noreferrer" style={{color:"#f97316", textDecoration:"none"}}>💻</a>}
+                                                <td style={{padding:"8px 12px", textAlign:"center"}}>
+                                                    {hasYT && <a href={p.yt} target="_blank" rel="noreferrer" title="Watch Video" style={{color:"#ef4444", textDecoration:"none", fontSize:15}}>▶️</a>}
+                                                </td>
+                                                <td style={{padding:"8px 12px", textAlign:"center"}}>
+                                                    {hasPractice && <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode" style={{color:"#f97316", textDecoration:"none", fontSize:15}}>💻</a>}
                                                 </td>
                                             </tr>
                                         })}
