@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
@@ -1117,7 +1117,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const solvedProbs = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
     const doneSubs = dsaData.filter(d=>d.status==="done").length;
 
-    const filteredSteps = React.useMemo(() => {
+    const filteredSteps = useMemo(() => {
         return STRIVER_STEPS.map(s => {
             const seenTitles = new Set();
             return {
