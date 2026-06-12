@@ -976,7 +976,62 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog }) {
+    function DifficultyDonut({ solvedCounts, totalCounts }) {
+        const R = 44, CX = 56, CY = 56, SW = 8;
+        const C = 2 * Math.PI * R;
+        const totalSolved = (solvedCounts.Easy||0) + (solvedCounts.Medium||0) + (solvedCounts.Hard||0);
+        const totalAvail  = (totalCounts.Easy||0)  + (totalCounts.Medium||0)  + (totalCounts.Hard||0);
+        const eT = totalAvail > 0 ? C * (totalCounts.Easy||0)   / totalAvail : 0;
+        const mT = totalAvail > 0 ? C * (totalCounts.Medium||0) / totalAvail : 0;
+        const hT = totalAvail > 0 ? C * (totalCounts.Hard||0)   / totalAvail : 0;
+        const eF = totalCounts.Easy   > 0 ? (solvedCounts.Easy||0)   / totalCounts.Easy   * eT : 0;
+        const mF = totalCounts.Medium > 0 ? (solvedCounts.Medium||0) / totalCounts.Medium * mT : 0;
+        const hF = totalCounts.Hard   > 0 ? (solvedCounts.Hard||0)   / totalCounts.Hard   * hT : 0;
+        const seg = (len, start, fillColor, bgColor) => [
+            <circle key={bgColor} cx={CX} cy={CY} r={R} fill="none" stroke={bgColor} strokeWidth={SW}
+                strokeDasharray={`${len} ${C-len}`} strokeDashoffset={-start}
+                style={{transform:`rotate(-90deg)`,transformOrigin:`${CX}px ${CY}px`}}/>,
+            len > 0 && <circle key={fillColor} cx={CX} cy={CY} r={R} fill="none" stroke={fillColor} strokeWidth={SW} strokeLinecap="round"
+                strokeDasharray={`${len} ${C-len}`} strokeDashoffset={-start}
+                style={{transform:`rotate(-90deg)`,transformOrigin:`${CX}px ${CY}px`}}/>
+        ];
+        return <div style={{display:"flex",alignItems:"center",gap:18}}>
+            <div style={{position:"relative",flexShrink:0}}>
+                <svg width={112} height={112} viewBox={`0 0 ${CX*2} ${CY*2}`}>
+                    <circle cx={CX} cy={CY} r={R} fill="none" stroke="#1e2030" strokeWidth={SW}/>
+                    {seg(eT, 0,   "#34d399","#0b2a1a")}
+                    {seg(mT, eT,  "#fbbf24","#2d1f04")}
+                    {seg(hT, eT+mT,"#f87171","#3b0a0a")}
+                    {eF>0 && <circle cx={CX} cy={CY} r={R} fill="none" stroke="#34d399" strokeWidth={SW} strokeLinecap="round"
+                        strokeDasharray={`${eF} ${C-eF}`} strokeDashoffset={0}
+                        style={{transform:`rotate(-90deg)`,transformOrigin:`${CX}px ${CY}px`}}/>}
+                    {mF>0 && <circle cx={CX} cy={CY} r={R} fill="none" stroke="#fbbf24" strokeWidth={SW} strokeLinecap="round"
+                        strokeDasharray={`${mF} ${C-mF}`} strokeDashoffset={-eT}
+                        style={{transform:`rotate(-90deg)`,transformOrigin:`${CX}px ${CY}px`}}/>}
+                    {hF>0 && <circle cx={CX} cy={CY} r={R} fill="none" stroke="#f87171" strokeWidth={SW} strokeLinecap="round"
+                        strokeDasharray={`${hF} ${C-hF}`} strokeDashoffset={-(eT+mT)}
+                        style={{transform:`rotate(-90deg)`,transformOrigin:`${CX}px ${CY}px`}}/>}
+                    <text x={CX} y={CY-5} textAnchor="middle" fill="#e2e8f0" fontSize={20} fontWeight={700} fontFamily="DM Sans,sans-serif">{totalSolved}</text>
+                    <text x={CX} y={CY+11} textAnchor="middle" fill="#475569" fontSize={9} fontFamily="DM Sans,sans-serif">/ {totalAvail} solved</text>
+                </svg>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {[
+                    {label:"Easy",   color:"#34d399",bg:"#052e1a",border:"#16533a",s:solvedCounts.Easy||0,  t:totalCounts.Easy||0},
+                    {label:"Medium", color:"#fbbf24",bg:"#2d1f04",border:"#78450a",s:solvedCounts.Medium||0,t:totalCounts.Medium||0},
+                    {label:"Hard",   color:"#f87171",bg:"#3b0a0a",border:"#7f1d1d",s:solvedCounts.Hard||0,  t:totalCounts.Hard||0},
+                ].map(({label,color,bg,border,s,t})=>(
+                    <div key={label} style={{display:"flex",alignItems:"center",gap:10}}>
+                        <span style={{background:bg,color,border:`1px solid ${border}`,padding:"2px 10px",borderRadius:10,fontSize:10,fontWeight:700,minWidth:52,textAlign:"center",display:"inline-block"}}>{label}</span>
+                        <span style={{fontSize:15,fontWeight:700,color:"#e2e8f0",minWidth:24,textAlign:"right"}}>{s}</span>
+                        <span style={{fontSize:11,color:"#475569"}}>/ {t}</span>
+                    </div>
+                ))}
+            </div>
+        </div>;
+    }
+
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, diffCounts, diffTotal }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
@@ -1035,6 +1090,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 pct={Math.round(coaDone/coaData.length*100)} color="#34d399" icon="◉" />
             <StatCard label="Overall Progress" value={`${overallPct}%`} sub={`${weeksDone}/8 weeks done`}
                 pct={overallPct} color="#fb923c" icon="★" />
+        </div>
+
+        <div style={{...S.card, marginBottom:16}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+                <div style={S.sectionTitle}>Difficulty Breakdown</div>
+                <div style={{fontSize:11,color:"#475569"}}>LeetCode-style progress</div>
+            </div>
+            <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal}/>
         </div>
 
         <div style={S.grid2}>
@@ -1108,12 +1171,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
-    const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
     const [diffFilter, setDiffFilter] = useState("All");
+    const [probNotes, setProbNotes] = useLocalStorage("dsa_notes_v1", {});
+    const [activeNote, setActiveNote] = useState(null);
+    const [noteText, setNoteText] = useState("");
     const [lcSyncing, setLcSyncing] = useState(false);
     const [lcSyncMsg, setLcSyncMsg] = useState("");
 
@@ -1198,15 +1263,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 if (d.id !== subId) return d;
                 return { ...d, solved: totalSolved, status: totalSolved >= d.problems ? "done" : totalSolved > 0 ? "inprogress" : "pending" };
             }));
-            // Auto-log today when marking solved (not when unchecking)
+            const stepData = STRIVER_STEPS.find(s => s.step === stepNum);
+            const subData = stepData?.subtopics[subIdx];
+            const prob = subData?.problems[probIdx];
+            const probTitle = prob?.title || "Unknown";
+            const stepTitle = stepData?.title || `Step ${stepNum}`;
+            const subName = subData?.name || "Unknown";
             if (isSolved) {
+                // Add to activity log (calendar heatmap)
                 const today = new Date().toISOString().slice(0,10);
-                const stepData = STRIVER_STEPS.find(s => s.step === stepNum);
-                const subData = stepData?.subtopics[subIdx];
-                const prob = subData?.problems[probIdx];
-                const probTitle = prob?.title || "Unknown";
-                const stepTitle = stepData?.title || `Step ${stepNum}`;
-                const subName = subData?.name || "Unknown";
                 setActivityLog(prev => {
                     const dayProbs = prev[today] || [];
                     if (dayProbs.find(p => p.title === probTitle && p.subName === subName)) return prev;
@@ -1218,6 +1283,16 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         return [{ date: today, note: `Solved problems in DSA tracker`, ts: Date.now() }, ...logs.slice(0, 19)];
                     });
                 }
+            } else {
+                // Remove from activity log across ALL days when unchecking
+                setActivityLog(prev => {
+                    const updated = {};
+                    for (const [date, probs] of Object.entries(prev)) {
+                        const filtered = probs.filter(p => !(p.title === probTitle && p.subName === subName));
+                        if (filtered.length > 0) updated[date] = filtered;
+                    }
+                    return updated;
+                });
             }
             return next;
         });
@@ -1398,7 +1473,36 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                     style={{width:15,height:15,accentColor:"#34d399",cursor:"pointer"}}/>
                                             </td>
                                             <td style={{...TD, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none", fontWeight:isDone?400:500, fontSize:13}}>
-                                                {p.title}
+                                                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                                                    <span style={{flex:1}}>{p.title}</span>
+                                                    <span
+                                                        onClick={e=>{e.stopPropagation();const nk=`s${sg.step}_${si}_${pi}`;if(activeNote===nk){setActiveNote(null);}else{setActiveNote(nk);setNoteText(probNotes[nk]||"");}}}
+                                                        title={probNotes[`s${sg.step}_${si}_${pi}`]?"Edit note":"Add note"}
+                                                        style={{cursor:"pointer",fontSize:12,color:probNotes[`s${sg.step}_${si}_${pi}`]?"#fbbf24":"#2a3040",flexShrink:0,userSelect:"none",transition:"color 0.15s"}}
+                                                        onMouseEnter={e=>e.currentTarget.style.color=probNotes[`s${sg.step}_${si}_${pi}`]?"#fde68a":"#475569"}
+                                                        onMouseLeave={e=>e.currentTarget.style.color=probNotes[`s${sg.step}_${si}_${pi}`]?"#fbbf24":"#2a3040"}
+                                                    >✏</span>
+                                                </div>
+                                                {probNotes[`s${sg.step}_${si}_${pi}`] && activeNote!==`s${sg.step}_${si}_${pi}` && (
+                                                    <div style={{fontSize:11,color:"#64748b",marginTop:3,paddingLeft:0,fontStyle:"italic",whiteSpace:"pre-wrap",lineHeight:1.4}}>{probNotes[`s${sg.step}_${si}_${pi}`]}</div>
+                                                )}
+                                                {activeNote===`s${sg.step}_${si}_${pi}` && (
+                                                    <div style={{marginTop:6}} onClick={e=>e.stopPropagation()}>
+                                                        <textarea value={noteText} onChange={e=>setNoteText(e.target.value)}
+                                                            autoFocus placeholder="Add your note, approach, or key insight…"
+                                                            style={{width:"100%",background:"#0a0c14",border:"1px solid #2d3154",borderRadius:6,color:"#e2e8f0",fontSize:11,padding:"6px 8px",resize:"vertical",minHeight:52,fontFamily:"inherit",boxSizing:"border-box",outline:"none"}}/>
+                                                        <div style={{display:"flex",gap:6,marginTop:4}}>
+                                                            <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>({...prev,[nk]:noteText}));setActiveNote(null);}}
+                                                                style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #34d399",background:"#052e1a",color:"#34d399",cursor:"pointer"}}>Save</button>
+                                                            <button onClick={()=>setActiveNote(null)}
+                                                                style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #1e2030",background:"transparent",color:"#475569",cursor:"pointer"}}>Cancel</button>
+                                                            {probNotes[`s${sg.step}_${si}_${pi}`] && (
+                                                                <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>{const n={...prev};delete n[nk];return n;});setActiveNote(null);}}
+                                                                    style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </td>
                                             <td style={{...TD, textAlign:"center"}}>
                                                 {diff
@@ -1884,7 +1988,27 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [dailyLog, setDailyLog] = useLocalStorage("srm_log_v3", []);
     const [lastLogDate, setLastLogDate] = useLocalStorage("srm_lastlog_v3", "");
     const [activityLog, setActivityLog] = useLocalStorage("srm_activity_v1", {});
+    const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
     const [confetti, setConfetti] = useState(false);
+
+    // Compute Easy/Medium/Hard solved & total counts for donut widget
+    const { diffCounts, diffTotal } = useMemo(() => {
+        const solved = { Easy:0, Medium:0, Hard:0 };
+        const total  = { Easy:0, Medium:0, Hard:0 };
+        STRIVER_STEPS.forEach(sg => {
+            sg.subtopics.forEach((sub, si) => {
+                sub.problems.forEach((p, pi) => {
+                    if (p.difficulty) {
+                        total[p.difficulty] = (total[p.difficulty]||0) + 1;
+                        if (solvedQuestions[`s${sg.step}_${si}_${pi}`]) {
+                            solved[p.difficulty] = (solved[p.difficulty]||0) + 1;
+                        }
+                    }
+                });
+            });
+        });
+        return { diffCounts: solved, diffTotal: total };
+    }, [solvedQuestions]);
 
     useEffect(() => {
     const today = new Date().toISOString().slice(0,10);
@@ -1965,9 +2089,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <main style={S.main}>
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
-                    dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} />}
+                    dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog}
+                    diffCounts={diffCounts} diffTotal={diffTotal} />}
                 {page==="dsa" &&
-                <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate} setActivityLog={setActivityLog} />}
+                <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
+                    setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions} />}
                 {page==="coa" &&
                 <COATracker coaData={coaData} setCoaData={setCoaData} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
