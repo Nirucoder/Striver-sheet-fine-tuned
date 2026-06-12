@@ -1142,6 +1142,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             );
             const newSolved = { ...solvedQuestions };
             const newlySolvedSlugs = new Set();
+            const newlySolvedProblems = []; // collect meta for activityLog
             STRIVER_STEPS.forEach(sg => {
                 sg.subtopics.forEach((sub, si) => {
                     sub.problems.forEach((p, pi) => {
@@ -1150,6 +1151,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             if (slug && accepted.has(slug) && !newSolved[`s${sg.step}_${si}_${pi}`]) {
                                 newSolved[`s${sg.step}_${si}_${pi}`] = true;
                                 newlySolvedSlugs.add(slug);
+                                newlySolvedProblems.push({
+                                    title: p.title,
+                                    stepTitle: sg.title,
+                                    subName: sub.name
+                                });
                             }
                         }
                     });
@@ -1160,6 +1166,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             recomputeDsaData(newSolved);
             if (count > 0) {
                 const today = new Date().toISOString().slice(0, 10);
+                // Update activity log (feeds the calendar heatmap)
+                setActivityLog(prev => {
+                    const dayProbs = prev[today] || [];
+                    const existing = new Set(dayProbs.map(p => p.title + "|" + p.subName));
+                    const toAdd = newlySolvedProblems.filter(p => !existing.has(p.title + "|" + p.subName));
+                    if (toAdd.length === 0) return prev;
+                    return { ...prev, [today]: [...dayProbs, ...toAdd] };
+                });
+                // Update streak log
                 setDailyLog(logs => {
                     if (logs.length > 0 && logs[0].date === today) return logs;
                     return [{ date: today, note: `Synced ${count} problem${count !== 1 ? "s" : ""} from LeetCode`, ts: Date.now() }, ...logs.slice(0, 19)];
