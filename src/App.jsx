@@ -1035,7 +1035,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
@@ -1096,19 +1096,22 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         setSolvedQuestions(prev => {
             const isSolved = !prev[key];
             const next = { ...prev, [key]: isSolved };
-            // Update dsaData count
             const subId = `s${stepNum}_${subIdx}`;
             const totalSolved = Object.keys(next).filter(k => k.startsWith(`s${stepNum}_${subIdx}_`) && next[k]).length;
-            
             setDsaData(curr => curr.map(d => {
                 if (d.id !== subId) return d;
-                return { 
-                    ...d, 
-                    solved: totalSolved,
-                    status: totalSolved >= d.problems ? "done" : totalSolved > 0 ? "inprogress" : "pending"
-                };
+                return { ...d, solved: totalSolved, status: totalSolved >= d.problems ? "done" : totalSolved > 0 ? "inprogress" : "pending" };
             }));
-            
+            // Auto-log today when marking solved (not when unchecking)
+            if (isSolved) {
+                const today = new Date().toISOString().slice(0,10);
+                if (lastLogDate !== today) {
+                    setDailyLog(logs => {
+                        if (logs.length > 0 && logs[0].date === today) return logs;
+                        return [{ date: today, note: "Solved problems in DSA tracker 💻", ts: Date.now() }, ...logs.slice(0, 19)];
+                    });
+                }
+            }
             return next;
         });
     }
@@ -1787,7 +1790,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} />}
                 {page==="dsa" &&
-                <DSATracker dsaData={dsaData} setDsaData={setDsaData} />}
+                <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate} />}
                 {page==="coa" &&
                 <COATracker coaData={coaData} setCoaData={setCoaData} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
