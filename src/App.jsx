@@ -1065,8 +1065,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     return <div>
         <div style={S.pageTitle}>Good morning, Engineer 👋</div>
-        <div style={{...S.pageSub, marginBottom:16}}>SRM KTR · Semester Break · Striver A2Z Sheet (474 problems) + Nesa
-            COA</div>
+        <div style={{...S.pageSub, marginBottom:16}}>SRM KTR · Semester Break · Striver A2Z Sheet ({STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0)} problems) + Nesa COA</div>
 
         <div style={S.streakBox}>
             <span style={{fontSize:28}}>🔥</span>
@@ -1472,33 +1471,44 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                 <input type="checkbox" checked={isDone} onChange={()=>toggleSolved(sg.step,si,pi)}
                                                     style={{width:15,height:15,accentColor:"#34d399",cursor:"pointer"}}/>
                                             </td>
-                                            <td style={{...TD, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none", fontWeight:isDone?400:500, fontSize:13}}>
-                                                <div style={{display:"flex",alignItems:"center",gap:6}}>
-                                                    <span style={{flex:1}}>{p.title}</span>
-                                                    <span
-                                                        onClick={e=>{e.stopPropagation();const nk=`s${sg.step}_${si}_${pi}`;if(activeNote===nk){setActiveNote(null);}else{setActiveNote(nk);setNoteText(probNotes[nk]||"");}}}
-                                                        title={probNotes[`s${sg.step}_${si}_${pi}`]?"Edit note":"Add note"}
-                                                        style={{cursor:"pointer",fontSize:12,color:probNotes[`s${sg.step}_${si}_${pi}`]?"#fbbf24":"#2a3040",flexShrink:0,userSelect:"none",transition:"color 0.15s"}}
-                                                        onMouseEnter={e=>e.currentTarget.style.color=probNotes[`s${sg.step}_${si}_${pi}`]?"#fde68a":"#475569"}
-                                                        onMouseLeave={e=>e.currentTarget.style.color=probNotes[`s${sg.step}_${si}_${pi}`]?"#fbbf24":"#2a3040"}
-                                                    >✏</span>
+                                            <td style={{...TD, fontWeight:isDone?400:500, fontSize:13}}>
+                                                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                                                    <span style={{flex:1, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none"}}>{p.title}</span>
+                                                    {(() => {
+                                                        const nk = `s${sg.step}_${si}_${pi}`;
+                                                        const hasNote = !!probNotes[nk];
+                                                        return <span
+                                                            onClick={e=>{e.stopPropagation();if(activeNote===nk){setActiveNote(null);}else{setActiveNote(nk);setNoteText(probNotes[nk]||"");}}}
+                                                            title={hasNote?"Edit note":"Add note"}
+                                                            style={{
+                                                                cursor:"pointer", flexShrink:0, userSelect:"none",
+                                                                display:"inline-flex", alignItems:"center", gap:3,
+                                                                padding:"2px 7px", borderRadius:8, fontSize:10, fontWeight:600,
+                                                                border:`1px solid ${hasNote?"#78450a":"#2a2e40"}`,
+                                                                background:hasNote?"#2d1f04":"#13151f",
+                                                                color:hasNote?"#fbbf24":"#475569",
+                                                                transition:"all 0.15s", textDecoration:"none"
+                                                            }}
+                                                            onMouseEnter={e=>{e.currentTarget.style.borderColor=hasNote?"#fbbf24":"#475569";e.currentTarget.style.color=hasNote?"#fde68a":"#94a3b8";}}
+                                                            onMouseLeave={e=>{e.currentTarget.style.borderColor=hasNote?"#78450a":"#2a2e40";e.currentTarget.style.color=hasNote?"#fbbf24":"#475569";}}
+                                                        >
+                                                            {hasNote ? "📝 Note" : "+ Note"}
+                                                        </span>;
+                                                    })()}
                                                 </div>
-                                                {probNotes[`s${sg.step}_${si}_${pi}`] && activeNote!==`s${sg.step}_${si}_${pi}` && (
-                                                    <div style={{fontSize:11,color:"#64748b",marginTop:3,paddingLeft:0,fontStyle:"italic",whiteSpace:"pre-wrap",lineHeight:1.4}}>{probNotes[`s${sg.step}_${si}_${pi}`]}</div>
-                                                )}
                                                 {activeNote===`s${sg.step}_${si}_${pi}` && (
-                                                    <div style={{marginTop:6}} onClick={e=>e.stopPropagation()}>
+                                                    <div style={{marginTop:8,textDecoration:"none"}} onClick={e=>e.stopPropagation()}>
                                                         <textarea value={noteText} onChange={e=>setNoteText(e.target.value)}
-                                                            autoFocus placeholder="Add your note, approach, or key insight…"
-                                                            style={{width:"100%",background:"#0a0c14",border:"1px solid #2d3154",borderRadius:6,color:"#e2e8f0",fontSize:11,padding:"6px 8px",resize:"vertical",minHeight:52,fontFamily:"inherit",boxSizing:"border-box",outline:"none"}}/>
-                                                        <div style={{display:"flex",gap:6,marginTop:4}}>
-                                                            <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>({...prev,[nk]:noteText}));setActiveNote(null);}}
-                                                                style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #34d399",background:"#052e1a",color:"#34d399",cursor:"pointer"}}>Save</button>
+                                                            autoFocus placeholder="Add your approach, key insight, or gotcha…"
+                                                            style={{width:"100%",background:"#0a0c14",border:"1px solid #2d3154",borderRadius:6,color:"#e2e8f0",fontSize:11,padding:"7px 10px",resize:"vertical",minHeight:56,fontFamily:"inherit",boxSizing:"border-box",outline:"none",textDecoration:"none",lineHeight:1.5}}/>
+                                                        <div style={{display:"flex",gap:6,marginTop:5}}>
+                                                            <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>({...prev,[nk]:noteText.trim()}));setActiveNote(null);}}
+                                                                style={{fontSize:11,padding:"4px 14px",borderRadius:6,border:"1px solid #34d399",background:"#052e1a",color:"#34d399",cursor:"pointer",fontWeight:600}}>Save</button>
                                                             <button onClick={()=>setActiveNote(null)}
-                                                                style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #1e2030",background:"transparent",color:"#475569",cursor:"pointer"}}>Cancel</button>
+                                                                style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #1e2030",background:"transparent",color:"#64748b",cursor:"pointer"}}>Cancel</button>
                                                             {probNotes[`s${sg.step}_${si}_${pi}`] && (
                                                                 <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>{const n={...prev};delete n[nk];return n;});setActiveNote(null);}}
-                                                                    style={{fontSize:10,padding:"3px 10px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>
+                                                                    style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>
                                                             )}
                                                         </div>
                                                     </div>
