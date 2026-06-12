@@ -7,12 +7,12 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, R
 const STRIVER_STEPS = [
 { step:1, title:"Learn the Basics", week:1, subtopics:[
   { name:"Things to Know in C++, Java, Python or any language", problems:[
-      { title:"User Input / Output", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/user-input-output-in-c/", practice:"https://takeuforward.org/plus" },
-      { title:"Data Types", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/data-types-in-c/", practice:"https://takeuforward.org/plus" },
-      { title:"If Else statements", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/if-else-in-c/", practice:"https://takeuforward.org/plus" },
-      { title:"Switch Statement", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/switch-statement-in-c/", practice:"https://takeuforward.org/plus" },
-      { title:"arrays, strings", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/arrays-and-strings-in-c/", practice:"https://takeuforward.org/plus" },
-      { title:"For loops, while loops", yt:"https://youtu.be/FPvPEA0Bkoo", article:"https://takeuforward.org/c/loops-in-c/", practice:"https://takeuforward.org/plus" },
+      { title:"User Input / Output", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
+      { title:"Data Types", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
+      { title:"If Else statements", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
+      { title:"Switch Statement", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
+      { title:"arrays, strings", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
+      { title:"For loops, while loops", yt:"https://youtu.be/FPvPEA0Bkoo", practice:"https://takeuforward.org/plus" },
   ]},
   { name:"Build-up Logical Thinking", problems:[
       { title:"Pattern 1", yt:"https://youtu.be/tNm_NNSB3_w", article:"https://takeuforward.org/pattern/pattern-1/", practice:"https://takeuforward.org/plus" },
@@ -20,7 +20,7 @@ const STRIVER_STEPS = [
       { title:"Pattern 3", yt:"https://youtu.be/tNm_NNSB3_w", article:"https://takeuforward.org/pattern/pattern-3/", practice:"https://takeuforward.org/plus" },
   ]},
   { name:"Learn STL", problems:[
-      { title:"Pairs, Vectors, Maps, Sets", yt:"https://youtu.be/RRVYpIET_RU", article:"https://takeuforward.org/c/c-stl-tutorial-for-beginners/", practice:"https://takeuforward.org/plus" }
+      { title:"Pairs, Vectors, Maps, Sets", yt:"https://youtu.be/RRVYpIET_RU", practice:"https://takeuforward.org/plus" }
   ]},
   { name:"Know Basic Maths", problems:[
       { title:"Count Digits", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/count-digits-in-a-number/", practice:"https://leetcode.com/problems/count-primes/" },
@@ -893,7 +893,97 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     // ─── DASHBOARD ────────────────────────────────────────────────────────────────
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog }) {
+    function ActivityHeatmap({ activityLog }) {
+    const [selectedDay, setSelectedDay] = useState(null);
+    const safeLog = (activityLog && typeof activityLog === "object" && !Array.isArray(activityLog)) ? activityLog : {};
+    const todayDate = new Date();
+    const cells = [];
+    for (let i = 181; i >= 0; i--) {
+        const d = new Date(todayDate);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0,10);
+        cells.push({ date: dateStr, count: (safeLog[dateStr]||[]).length, dow: d.getDay() });
+    }
+    const firstDow = cells[0].dow;
+    const weeks = [];
+    let cur = Array(firstDow).fill(null);
+    cells.forEach(cell => {
+        cur.push(cell);
+        if (cur.length === 7) { weeks.push(cur); cur = []; }
+    });
+    if (cur.length > 0) { while(cur.length < 7) cur.push(null); weeks.push(cur); }
+
+    const getColor = c => { if (!c) return "#161b22"; if (c===1) return "#0e4429"; if (c<=3) return "#006d32"; if (c<=6) return "#26a641"; return "#39d353"; };
+    const DAYS = ["S","M","T","W","T","F","S"];
+
+    // Month labels
+    const monthLabels = {};
+    weeks.forEach((week, wi) => {
+        const first = week.find(c=>c);
+        if (first) { const d=new Date(first.date); if (d.getDate()<=7) monthLabels[wi]=d.toLocaleString("default",{month:"short"}); }
+    });
+
+    const totalTracked = Object.values(safeLog).reduce((a,b)=>a+b.length,0);
+    const selectedProbs = selectedDay ? (safeLog[selectedDay]||[]) : [];
+
+    return <div style={{...S.card, marginTop:16}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <div style={S.sectionTitle}>Activity Calendar</div>
+            <div style={{fontSize:11,color:"#475569"}}>{totalTracked} problems tracked · {Object.keys(safeLog).length} active days</div>
+        </div>
+        <div style={{overflowX:"auto"}}>
+            <div>
+                {/* Month row */}
+                <div style={{display:"flex",gap:3,marginBottom:3,paddingLeft:20}}>
+                    {weeks.map((_,wi)=><div key={wi} style={{width:12,fontSize:9,color:monthLabels[wi]?"#8b949e":"transparent",whiteSpace:"nowrap",overflow:"visible",flexShrink:0}}>{monthLabels[wi]||""}</div>)}
+                </div>
+                <div style={{display:"flex",gap:4}}>
+                    {/* Day labels */}
+                    <div style={{display:"flex",flexDirection:"column",gap:3,width:16,flexShrink:0}}>
+                        {DAYS.map((d,i)=><div key={i} style={{height:12,fontSize:9,color:i%2===1?"#8b949e":"transparent",lineHeight:"12px",textAlign:"right"}}>{d}</div>)}
+                    </div>
+                    {/* Week columns */}
+                    {weeks.map((week,wi)=>(
+                        <div key={wi} style={{display:"flex",flexDirection:"column",gap:3,flexShrink:0}}>
+                            {week.map((cell,di)=>cell?(
+                                <div key={di}
+                                    onClick={()=>cell.count>0&&setSelectedDay(selectedDay===cell.date?null:cell.date)}
+                                    title={`${cell.date}: ${cell.count} problem${cell.count!==1?"s":""}`}
+                                    style={{width:12,height:12,borderRadius:2,background:getColor(cell.count),cursor:cell.count>0?"pointer":"default",border:selectedDay===cell.date?"1.5px solid #58a6ff":"1px solid transparent",boxSizing:"border-box"}}
+                                />
+                            ):<div key={di} style={{width:12,height:12}}/>)}
+                        </div>
+                    ))}
+                </div>
+                {/* Legend */}
+                <div style={{display:"flex",alignItems:"center",gap:4,marginTop:6,paddingLeft:20}}>
+                    <span style={{fontSize:10,color:"#475569"}}>Less</span>
+                    {[0,1,3,5,8].map(c=><div key={c} style={{width:10,height:10,borderRadius:2,background:getColor(c)}}/>)}
+                    <span style={{fontSize:10,color:"#475569"}}>More</span>
+                </div>
+            </div>
+        </div>
+        {selectedDay&&(
+            <div style={{marginTop:12,padding:"10px 14px",background:"#0d1117",borderRadius:8,border:"1px solid #30363d"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                    <span style={{fontSize:12,fontWeight:700,color:"#39d353"}}>{selectedDay}</span>
+                    <span style={{fontSize:11,color:"#8b949e"}}>{selectedProbs.length} problem{selectedProbs.length!==1?"s":""} solved</span>
+                </div>
+                {selectedProbs.length===0?(
+                    <div style={{fontSize:12,color:"#475569"}}>No problems tracked this day.</div>
+                ):selectedProbs.map((p,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"5px 0",borderBottom:i<selectedProbs.length-1?"1px solid #21262d":"none"}}>
+                        <span style={{fontSize:11,color:"#39d353",fontWeight:700,flexShrink:0}}>✓</span>
+                        <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{p.title}</span>
+                        <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{p.subName}</span>
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>;
+    }
+
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
@@ -1005,18 +1095,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     })}
                 </div>
             </div>
-            <div style={S.card}>
-                <div style={S.sectionTitle}>Daily Log</div>
-                {dailyLog.length===0 && <div style={{color:"#475569",fontSize:12,textAlign:"center",padding:"16px 0"}}>
-                    No entries yet.</div>}
-                <div style={{maxHeight:170,overflowY:"auto"}}>
-                    {dailyLog.map((l,i) => <div key={i} style={{display:"flex",gap:8,padding:"5px 0",borderBottom:"1px                         solid #1e2030"}}>
-                        <span style={{fontSize:10,color:"#475569",whiteSpace:"nowrap",marginTop:2}}>{l.date}</span>
-                        <span style={{fontSize:12,color:"#94a3b8"}}>{l.note}</span>
-                    </div>)}
-                </div>
-            </div>
         </div>
+        <ActivityHeatmap activityLog={activityLog} />
     </div>;
     }
 
@@ -1035,7 +1115,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
@@ -1105,10 +1185,21 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             // Auto-log today when marking solved (not when unchecking)
             if (isSolved) {
                 const today = new Date().toISOString().slice(0,10);
+                const stepData = STRIVER_STEPS.find(s => s.step === stepNum);
+                const subData = stepData?.subtopics[subIdx];
+                const prob = subData?.problems[probIdx];
+                const probTitle = prob?.title || "Unknown";
+                const stepTitle = stepData?.title || `Step ${stepNum}`;
+                const subName = subData?.name || "Unknown";
+                setActivityLog(prev => {
+                    const dayProbs = prev[today] || [];
+                    if (dayProbs.find(p => p.title === probTitle && p.subName === subName)) return prev;
+                    return { ...prev, [today]: [...dayProbs, { title: probTitle, stepTitle, subName }] };
+                });
                 if (lastLogDate !== today) {
                     setDailyLog(logs => {
                         if (logs.length > 0 && logs[0].date === today) return logs;
-                        return [{ date: today, note: "Solved problems in DSA tracker 💻", ts: Date.now() }, ...logs.slice(0, 19)];
+                        return [{ date: today, note: `Solved problems in DSA tracker`, ts: Date.now() }, ...logs.slice(0, 19)];
                     });
                 }
             }
@@ -1714,6 +1805,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [streak, setStreak] = useLocalStorage("srm_streak_v3", 0);
     const [dailyLog, setDailyLog] = useLocalStorage("srm_log_v3", []);
     const [lastLogDate, setLastLogDate] = useLocalStorage("srm_lastlog_v3", "");
+    const [activityLog, setActivityLog] = useLocalStorage("srm_activity_v1", {});
     const [confetti, setConfetti] = useState(false);
 
     useEffect(() => {
@@ -1795,9 +1887,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <main style={S.main}>
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
-                    dailyLog={dailyLog} setDailyLog={setDailyLog} />}
+                    dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} />}
                 {page==="dsa" &&
-                <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate} />}
+                <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate} setActivityLog={setActivityLog} />}
                 {page==="coa" &&
                 <COATracker coaData={coaData} setCoaData={setCoaData} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
