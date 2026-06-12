@@ -1266,7 +1266,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                     </a>}
                                                 </td>
                                                 <td style={{padding:"8px 12px", textAlign:"center"}}>
-                                                    {hasPractice && <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode" style={{color:"#f97316", textDecoration:"none", fontSize:15}}>💻</a>}
+                                                    {hasPractice && <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode" style={{textDecoration:"none", display:"inline-flex", verticalAlign:"middle"}}>
+                                                        <svg width="18" height="18" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect width="50" height="50" rx="8" fill="#FFA116"/>
+                                                            <path d="M16 34 L10 25 L16 16" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                                                            <path d="M28 16 L34 25 L28 34" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                                                            <line x1="20" y1="30" x2="30" y2="20" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
+                                                        </svg>
+                                                    </a>}
                                                 </td>
                                             </tr>
                                         })}
