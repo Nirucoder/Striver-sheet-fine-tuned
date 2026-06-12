@@ -1255,7 +1255,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                     {hasArticle && <a href={p.article} target="_blank" rel="noreferrer" title="Read Article" style={{color:"#60a5fa", textDecoration:"none", fontSize:15}}>📝</a>}
                                                 </td>
                                                 <td style={{padding:"8px 12px", textAlign:"center"}}>
-                                                    {hasYT && <a href={p.yt} target="_blank" rel="noreferrer" title="Watch Video" style={{color:"#ef4444", textDecoration:"none", fontSize:15}}>▶️</a>}
+                                                    {hasYT && <a href={p.yt} target="_blank" rel="noreferrer" title="Watch on YouTube" style={{textDecoration:"none", display:"inline-flex", verticalAlign:"middle"}}>
+                                                        <svg width="20" height="14" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect width="20" height="14" rx="3" fill="#FF0000"/>
+                                                            <polygon points="8,3.5 8,10.5 14,7" fill="white"/>
+                                                        </svg>
+                                                    </a>}
                                                 </td>
                                                 <td style={{padding:"8px 12px", textAlign:"center"}}>
                                                     {hasPractice && <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode" style={{color:"#f97316", textDecoration:"none", fontSize:15}}>💻</a>}
