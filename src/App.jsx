@@ -44,28 +44,6 @@ const STRIVER_STEPS = [
   { name:"Learn Basic Hashing", problems:[
       { title:"Counting frequencies of array elements", yt:"https://youtu.be/KEs5UyBJ39g", article:"https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/", practice:"https://takeuforward.org/plus" },
       { title:"Find the highest/lowest frequency element", yt:"https://youtu.be/KEs5UyBJ39g", article:"https://takeuforward.org/arrays/find-the-highest-lowest-frequency-element/", practice:"https://takeuforward.org/plus" }
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Reverse Integer", practice:"https://leetcode.com/problems/reverse-integer/" },
-      { title:"Palindrome Number", practice:"https://leetcode.com/problems/palindrome-number/" },
-      { title:"Single Number", practice:"https://leetcode.com/problems/single-number/" },
-      { title:"Contains Duplicate", practice:"https://leetcode.com/problems/contains-duplicate/" },
-      { title:"Move Zeroes", practice:"https://leetcode.com/problems/move-zeroes/" },
-      { title:"Remove Duplicates from Sorted Array", practice:"https://leetcode.com/problems/remove-duplicates-from-sorted-array/" },
-      { title:"Plus One", practice:"https://leetcode.com/problems/plus-one/" },
-      { title:"Fibonacci Number", practice:"https://leetcode.com/problems/fibonacci-number/" },
-      { title:"Climbing Stairs", practice:"https://leetcode.com/problems/climbing-stairs/" },
-      { title:"Two Sum", practice:"https://leetcode.com/problems/two-sum/" },
-      { title:"Power of Two", practice:"https://leetcode.com/problems/power-of-two/" },
-      { title:"Majority Element", practice:"https://leetcode.com/problems/majority-element/" },
-      { title:"Find All Numbers Disappeared in Array", practice:"https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/" },
-      { title:"Reverse String", practice:"https://leetcode.com/problems/reverse-string/" },
-      { title:"First Unique Character in a String", practice:"https://leetcode.com/problems/first-unique-character-in-a-string/" },
-      { title:"Intersection of Two Arrays II", practice:"https://leetcode.com/problems/intersection-of-two-arrays-ii/" },
-      { title:"Valid Palindrome", practice:"https://leetcode.com/problems/valid-palindrome/" },
-      { title:"Maximum Average Subarray I", practice:"https://leetcode.com/problems/maximum-average-subarray-i/" },
-      { title:"Missing Number", practice:"https://leetcode.com/problems/missing-number/" },
-      { title:"Number of Good Pairs", practice:"https://leetcode.com/problems/number-of-good-pairs/" },
   ]}
 ]},
 { step:2, title:"Learn Important Sorting Techniques", week:1, subtopics:[
@@ -78,26 +56,6 @@ const STRIVER_STEPS = [
       { title:"Merge Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/data-structure/merge-sort-algorithm/", practice:"https://leetcode.com/problems/sort-an-array/" },
       { title:"Recursive Bubble Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/arrays/recursive-bubble-sort-algorithm/", practice:"https://takeuforward.org/plus" },
       { title:"Recursive Insertion Sort", yt:"https://youtu.be/ogjf7ORKfd8", article:"https://takeuforward.org/arrays/recursive-insertion-sort-algorithm/", practice:"https://takeuforward.org/plus" },
-      { title:"Quick Sort", yt:"https://youtu.be/WIrA4YexLRQ", article:"https://takeuforward.org/data-structure/quick-sort-algorithm/", practice:"https://leetcode.com/problems/sort-an-array/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Sort an Array", practice:"https://leetcode.com/problems/sort-an-array/" },
-      { title:"Sort Colors (Dutch National Flag)", practice:"https://leetcode.com/problems/sort-colors/" },
-      { title:"Kth Largest Element in an Array", practice:"https://leetcode.com/problems/kth-largest-element-in-an-array/" },
-      { title:"Merge Sorted Array", practice:"https://leetcode.com/problems/merge-sorted-array/" },
-      { title:"Sort List (Linked List)", practice:"https://leetcode.com/problems/sort-list/" },
-      { title:"Largest Number", practice:"https://leetcode.com/problems/largest-number/" },
-      { title:"Count of Smaller Numbers After Self", practice:"https://leetcode.com/problems/count-of-smaller-numbers-after-self/" },
-      { title:"Reverse Pairs", practice:"https://leetcode.com/problems/reverse-pairs/" },
-      { title:"Wiggle Sort II", practice:"https://leetcode.com/problems/wiggle-sort-ii/" },
-      { title:"Maximum Gap", practice:"https://leetcode.com/problems/maximum-gap/" },
-      { title:"Sort Array by Parity", practice:"https://leetcode.com/problems/sort-array-by-parity/" },
-      { title:"Sort Array by Parity II", practice:"https://leetcode.com/problems/sort-array-by-parity-ii/" },
-      { title:"Pancake Sorting", practice:"https://leetcode.com/problems/pancake-sorting/" },
-      { title:"H-Index", practice:"https://leetcode.com/problems/h-index/" },
-      { title:"Relative Sort Array", practice:"https://leetcode.com/problems/relative-sort-array/" },
-      { title:"Find Minimum in Rotated Sorted Array", practice:"https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" },
-      { title:"Meeting Rooms II (Min Platforms)", practice:"https://leetcode.com/problems/meeting-rooms-ii/" },
   ]}
 ]},
 { step:3, title:"Solve Problems on Arrays", week:2, subtopics:[
@@ -148,8 +106,6 @@ const STRIVER_STEPS = [
   { name:"BS on 1D Arrays", problems:[
       { title:"Binary Search Introduction", yt:"https://youtu.be/W9QJ8HaRvJQ", article:"https://takeuforward.org/data-structure/binary-search-explained/", practice:"https://leetcode.com/problems/binary-search/" },
       { title:"Implement Lower Bound", yt:"https://youtu.be/6zhGS79oQ4k", article:"https://takeuforward.org/data-structure/implement-lower-bound/", practice:"https://leetcode.com/problems/search-insert-position/" },
-      { title:"Implement Upper Bound", yt:"https://youtu.be/6zhGS79oQ4k", article:"https://takeuforward.org/data-structure/implement-upper-bound/", practice:"https://leetcode.com/problems/search-insert-position/" },
-      { title:"Search Insert Position", yt:"https://youtu.be/6zhGS79oQ4k", article:"https://takeuforward.org/data-structure/search-insert-position/", practice:"https://leetcode.com/problems/search-insert-position/" },
       { title:"Floor and Ceil in Sorted Array", yt:"https://youtu.be/6zhGS79oQ4k", article:"https://takeuforward.org/data-structure/floor-and-ceil-in-sorted-array/", practice:"https://takeuforward.org/plus" },
       { title:"First and Last Occurrence of X", yt:"https://youtu.be/hjR1IYVx9lY", article:"https://takeuforward.org/data-structure/last-occurrence-in-a-sorted-array/", practice:"https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" },
       { title:"Count Occurrences in Sorted Array", yt:"https://youtu.be/hjR1IYVx9lY", article:"https://takeuforward.org/data-structure/count-occurrences-in-sorted-array/", practice:"https://takeuforward.org/plus" },
@@ -208,13 +164,10 @@ const STRIVER_STEPS = [
 { step:6, title:"Learn LinkedList [Single LL, Double LL, Medium, Hard, FAQs]", week:4, subtopics:[
   { name:"Learn Single Linked List", problems:[
       { title:"Introduction to Linked List", yt:"https://youtu.be/Nq7ok-OyEpg", article:"https://takeuforward.org/linked-list/introduction-to-linked-list/", practice:"https://leetcode.com/problems/design-linked-list/" },
-      { title:"Insert at Head, Tail, Kth Position", yt:"https://youtu.be/rnYHa90k4pE", article:"https://takeuforward.org/linked-list/inserting-a-node-in-linked-list/", practice:"https://leetcode.com/problems/design-linked-list/" },
       { title:"Delete Node in Linked List", yt:"https://youtu.be/QHvoZsCROpQ", article:"https://takeuforward.org/data-structure/delete-last-node-of-linked-list/", practice:"https://leetcode.com/problems/delete-node-in-a-linked-list/" },
       { title:"Search in Linked List", yt:"https://youtu.be/W_CPMDsRDEU", article:"https://takeuforward.org/linked-list/search-an-element-in-linked-list/", practice:"https://takeuforward.org/plus" },
   ]},
   { name:"Learn Doubly Linked List", problems:[
-      { title:"Introduction to DLL", yt:"https://youtu.be/e9NG717E6fI", article:"https://takeuforward.org/data-structure/introduction-to-doubly-linked-list/", practice:"https://leetcode.com/problems/design-linked-list/" },
-      { title:"Insert and Delete in DLL", yt:"https://youtu.be/wr7t6nQtJqg", article:"https://takeuforward.org/data-structure/delete-a-node-in-doubly-linked-list/", practice:"https://leetcode.com/problems/design-linked-list/" },
       { title:"Reverse a DLL", yt:"https://youtu.be/BJHpDc9c8pc", article:"https://takeuforward.org/data-structure/reverse-a-doubly-linked-list/", practice:"https://takeuforward.org/plus" },
   ]},
   { name:"Medium Problems on LL", problems:[
@@ -267,26 +220,6 @@ const STRIVER_STEPS = [
       { title:"M Coloring Problem", yt:"https://youtu.be/wuVwUK25Rfc", article:"https://takeuforward.org/data-structure/m-coloring-problem/", practice:"https://takeuforward.org/plus" },
       { title:"Expression Add Operators", yt:"https://youtu.be/nV9OkLW-OvI", article:"https://takeuforward.org/data-structure/expression-add-operators/", practice:"https://leetcode.com/problems/expression-add-operators/" },
       { title:"Generate Parentheses", yt:"https://youtu.be/zuRQElJ6CwY", article:"https://takeuforward.org/data-structure/generate-parentheses/", practice:"https://leetcode.com/problems/generate-parentheses/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Subsets", practice:"https://leetcode.com/problems/subsets/" },
-      { title:"Subsets II", practice:"https://leetcode.com/problems/subsets-ii/" },
-      { title:"Combination Sum", practice:"https://leetcode.com/problems/combination-sum/" },
-      { title:"Combination Sum II", practice:"https://leetcode.com/problems/combination-sum-ii/" },
-      { title:"Combination Sum III", practice:"https://leetcode.com/problems/combination-sum-iii/" },
-      { title:"Permutations", practice:"https://leetcode.com/problems/permutations/" },
-      { title:"Permutations II (with duplicates)", practice:"https://leetcode.com/problems/permutations-ii/" },
-      { title:"Letter Combinations of a Phone Number", practice:"https://leetcode.com/problems/letter-combinations-of-a-phone-number/" },
-      { title:"Palindrome Partitioning", practice:"https://leetcode.com/problems/palindrome-partitioning/" },
-      { title:"N-Queens", practice:"https://leetcode.com/problems/n-queens/" },
-      { title:"Sudoku Solver", practice:"https://leetcode.com/problems/sudoku-solver/" },
-      { title:"Word Search", practice:"https://leetcode.com/problems/word-search/" },
-      { title:"Pow(x, n)", practice:"https://leetcode.com/problems/powx-n/" },
-      { title:"Count Good Numbers", practice:"https://leetcode.com/problems/count-good-numbers/" },
-      { title:"Beautiful Arrangement", practice:"https://leetcode.com/problems/beautiful-arrangement/" },
-      { title:"Target Sum (Assign +/- signs)", practice:"https://leetcode.com/problems/target-sum/" },
-      { title:"Letter Case Permutation", practice:"https://leetcode.com/problems/letter-case-permutation/" },
-      { title:"K-th Symbol in Grammar", practice:"https://leetcode.com/problems/k-th-symbol-in-grammar/" },
   ]}
 ]},
 { step:8, title:"Bit Manipulation [Concepts & Problems]", week:5, subtopics:[
@@ -302,29 +235,9 @@ const STRIVER_STEPS = [
       { title:"Find the two Non-Repeating Numbers (XOR)", yt:"https://youtu.be/jU07z14VIfs", article:"https://takeuforward.org/bit-manipulation/two-numbers-with-odd-occurrences/", practice:"https://leetcode.com/problems/single-number-iii/" },
       { title:"XOR of Numbers in Range [L, R]", yt:"https://youtu.be/EgI_P01P5-c", article:"https://takeuforward.org/bit-manipulation/xor-of-all-numbers-in-the-range/", practice:"https://takeuforward.org/plus" },
       { title:"Divide Two Integers Without / or *", yt:"https://youtu.be/5hHwnSPiMIs", article:"https://takeuforward.org/bit-manipulation/divide-two-integers-without-using-multiplication-division-and-mod-operator/", practice:"https://leetcode.com/problems/divide-two-integers/" },
-      { title:"Single Number III", yt:"https://youtu.be/S5bv3824NE0", article:"https://takeuforward.org/data-structure/single-number-iii/", practice:"https://leetcode.com/problems/single-number-iii/" },
       { title:"Maximum XOR of Two Numbers in Array", yt:"https://youtu.be/BTf05gs_8iU", article:"https://takeuforward.org/data-structure/maximum-xor-of-two-numbers-in-an-array/", practice:"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
       { title:"All Subsets Using Bit Masking", yt:"https://youtu.be/tnSi6synbgM", article:"https://takeuforward.org/bit-manipulation/all-subsets-using-bit-masking/", practice:"https://leetcode.com/problems/subsets/" },
       { title:"Count Total Set Bits 1 to N", yt:"https://youtu.be/g_hIx4yn_zg", article:"https://takeuforward.org/bit-manipulation/count-total-set-bits/", practice:"https://takeuforward.org/plus" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Single Number", practice:"https://leetcode.com/problems/single-number/" },
-      { title:"Single Number II", practice:"https://leetcode.com/problems/single-number-ii/" },
-      { title:"Single Number III", practice:"https://leetcode.com/problems/single-number-iii/" },
-      { title:"Counting Bits", practice:"https://leetcode.com/problems/counting-bits/" },
-      { title:"Number of 1 Bits (Hamming Weight)", practice:"https://leetcode.com/problems/number-of-1-bits/" },
-      { title:"Missing Number (XOR approach)", practice:"https://leetcode.com/problems/missing-number/" },
-      { title:"Sum of Two Integers (Bit Manipulation)", practice:"https://leetcode.com/problems/sum-of-two-integers/" },
-      { title:"Bitwise AND of Numbers Range", practice:"https://leetcode.com/problems/bitwise-and-of-numbers-range/" },
-      { title:"Total Hamming Distance", practice:"https://leetcode.com/problems/total-hamming-distance/" },
-      { title:"XOR Queries of a Subarray", practice:"https://leetcode.com/problems/xor-queries-of-a-subarray/" },
-      { title:"Decode XORed Array", practice:"https://leetcode.com/problems/decode-xored-array/" },
-      { title:"Power of Four", practice:"https://leetcode.com/problems/power-of-four/" },
-      { title:"Subsets (Bitmask approach)", practice:"https://leetcode.com/problems/subsets/" },
-      { title:"Reverse Bits", practice:"https://leetcode.com/problems/reverse-bits/" },
-      { title:"Maximum XOR of Two Numbers in Array", practice:"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
-      { title:"Find XOR Beauty of Array", practice:"https://leetcode.com/problems/find-xor-beauty-of-array/" },
-      { title:"Minimum Bit Flips to Convert Number", practice:"https://leetcode.com/problems/minimum-bit-flips-to-convert-number/" },
   ]}
 ]},
 { step:9, title:"Stack and Queues [Learning, Pre-In-Post-fix, Monotonic]", week:5, subtopics:[
@@ -335,7 +248,6 @@ const STRIVER_STEPS = [
       { title:"Queue using Stack", yt:"https://youtu.be/3Et9MrMc02A", article:"https://takeuforward.org/data-structure/queue-using-stack/", practice:"https://leetcode.com/problems/implement-queue-using-stacks/" },
       { title:"Stack using Queue", yt:"https://youtu.be/jDZQKzEtbYQ", article:"https://takeuforward.org/data-structure/stack-using-queue/", practice:"https://leetcode.com/problems/implement-stack-using-queues/" },
       { title:"Valid Parentheses", yt:"https://youtu.be/HVJ3DHTPhuI", article:"https://takeuforward.org/data-structure/valid-parentheses/", practice:"https://leetcode.com/problems/valid-parentheses/" },
-      { title:"Min Stack", yt:"https://youtu.be/133LfwxPaHE", article:"https://takeuforward.org/data-structure/implement-a-min-stack/", practice:"https://leetcode.com/problems/min-stack/" },
   ]},
   { name:"Prefix, Infix, Postfix Conversions", problems:[
       { title:"Infix to Postfix Conversion", yt:"https://youtu.be/aN0VB5eRLno", article:"https://takeuforward.org/data-structure/infix-to-postfix-conversion/", practice:"https://takeuforward.org/plus" },
@@ -360,10 +272,8 @@ const STRIVER_STEPS = [
   { name:"Medium Problems", problems:[
       { title:"Longest Subarray with Sum K (Positives)", yt:"https://youtu.be/SI_bV2t_0v4", article:"https://takeuforward.org/data-structure/longest-subarray-with-sum-k/", practice:"https://takeuforward.org/plus" },
       { title:"Longest Subarray with K 1s", yt:"https://youtu.be/fFe1uJX1uQg", article:"https://takeuforward.org/data-structure/longest-subarray-with-sum-k-for-arrays-with-positives-and-zeroes/", practice:"https://leetcode.com/problems/max-consecutive-ones-iii/" },
-      { title:"Count Subarrays with K sum", yt:"https://youtu.be/hyhnZkbcJuE", article:"https://takeuforward.org/data-structure/count-subarray-sum-equals-k/", practice:"https://leetcode.com/problems/subarray-sum-equals-k/" },
       { title:"Longest Substring with K Unique Characters", yt:"https://youtu.be/KiFLRc6l2gM", article:"https://takeuforward.org/data-structure/longest-substring-with-k-unique-characters/", practice:"https://takeuforward.org/plus" },
       { title:"Longest Substring Without Repeating Characters", yt:"https://youtu.be/qtVh-XEpsJo", article:"https://takeuforward.org/data-structure/length-of-longest-substring-without-any-repeating-character/", practice:"https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
-      { title:"Max Consecutive Ones III", yt:"https://youtu.be/3E4JBHSLpYk", article:"https://takeuforward.org/data-structure/maximum-consecutive-ones/", practice:"https://leetcode.com/problems/max-consecutive-ones-iii/" },
       { title:"Fruits into Baskets", yt:"https://youtu.be/e3bs0uA1NhQ", article:"https://takeuforward.org/data-structure/fruit-into-baskets/", practice:"https://leetcode.com/problems/fruit-into-baskets/" },
       { title:"Binary Subarrays with Sum", yt:"https://youtu.be/9LcMGLKo6V0", article:"https://takeuforward.org/data-structure/binary-subarrays-with-sum/", practice:"https://leetcode.com/problems/binary-subarrays-with-sum/" },
       { title:"Count Nice Subarrays (Odd Numbers)", yt:"https://youtu.be/UqlI4CuTZ9g", article:"https://takeuforward.org/data-structure/count-number-of-nice-subarrays/", practice:"https://leetcode.com/problems/count-number-of-nice-subarrays/" },
@@ -376,29 +286,11 @@ const STRIVER_STEPS = [
       { title:"Permutation in String", yt:"https://youtu.be/UbyhOgBN834", article:"https://takeuforward.org/data-structure/permutation-in-string/", practice:"https://leetcode.com/problems/permutation-in-string/" },
       { title:"Longest Repeating Character Replacement", yt:"https://youtu.be/_eNhaDkMXEA", article:"https://takeuforward.org/data-structure/longest-repeating-character-replacement/", practice:"https://leetcode.com/problems/longest-repeating-character-replacement/" },
       { title:"Number of Substrings with All 1s", yt:"https://youtu.be/1aFV0sUNHMc", article:"https://takeuforward.org/data-structure/count-substrings-with-all-1s/", practice:"https://leetcode.com/problems/count-substrings-with-only-one-distinct-letter/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Longest Substring Without Repeating Characters", practice:"https://leetcode.com/problems/longest-substring-without-repeating-characters/" },
-      { title:"Minimum Window Substring", practice:"https://leetcode.com/problems/minimum-window-substring/" },
-      { title:"Sliding Window Maximum", practice:"https://leetcode.com/problems/sliding-window-maximum/" },
-      { title:"Permutation in String", practice:"https://leetcode.com/problems/permutation-in-string/" },
-      { title:"Longest Repeating Character Replacement", practice:"https://leetcode.com/problems/longest-repeating-character-replacement/" },
-      { title:"Fruits into Baskets", practice:"https://leetcode.com/problems/fruit-into-baskets/" },
-      { title:"Max Consecutive Ones III", practice:"https://leetcode.com/problems/max-consecutive-ones-iii/" },
-      { title:"Subarray Sum Equals K", practice:"https://leetcode.com/problems/subarray-sum-equals-k/" },
-      { title:"Minimum Size Subarray Sum", practice:"https://leetcode.com/problems/minimum-size-subarray-sum/" },
-      { title:"Longest Turbulent Subarray", practice:"https://leetcode.com/problems/longest-turbulent-subarray/" },
-      { title:"Frequency of Most Frequent Element", practice:"https://leetcode.com/problems/frequency-of-the-most-frequent-element/" },
-      { title:"Get Equal Substrings Within Budget", practice:"https://leetcode.com/problems/get-equal-substrings-within-budget/" },
-      { title:"Grumpy Bookstore Owner", practice:"https://leetcode.com/problems/grumpy-bookstore-owner/" },
-      { title:"Substring with Concatenation of All Words", practice:"https://leetcode.com/problems/substring-with-concatenation-of-all-words/" },
-      { title:"Maximum Points You Can Obtain from Cards", practice:"https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/" },
   ]}
 ]},
 { step:11, title:"Heaps [Learning, Medium Problems, Hard Problems]", week:6, subtopics:[
   { name:"Learning", problems:[
       { title:"Introduction to Heap (Min/Max Heap)", yt:"https://youtu.be/HqPJF2L5h9U", article:"https://takeuforward.org/heap/introduction-to-heap/", practice:"https://takeuforward.org/plus" },
-      { title:"Heapify Algorithm and Heap Sort", yt:"https://youtu.be/3myiX37g2No", article:"https://takeuforward.org/heap/heapify-and-heap-sort/", practice:"https://leetcode.com/problems/sort-an-array/" },
       { title:"Check if Binary Tree is a Heap", yt:"https://youtu.be/i41AqPYdFBU", article:"https://takeuforward.org/heap/check-if-bt-is-heap/", practice:"https://takeuforward.org/plus" },
   ]},
   { name:"Medium Problems", problems:[
@@ -411,28 +303,10 @@ const STRIVER_STEPS = [
       { title:"K Most Frequent Words", yt:"https://youtu.be/WwfnCDtRRjk", article:"https://takeuforward.org/heap/k-most-frequent-words/", practice:"https://leetcode.com/problems/top-k-frequent-words/" },
   ]},
   { name:"Hard Problems", problems:[
-      { title:"Merge K Sorted Lists", yt:"https://youtu.be/kpCesr9VXDA", article:"https://takeuforward.org/heap/merge-k-sorted-lists/", practice:"https://leetcode.com/problems/merge-k-sorted-lists/" },
       { title:"Replace Elements by Rank", yt:"https://youtu.be/Xd_5FiQQGiI", article:"https://takeuforward.org/heap/replace-elements-by-rank/", practice:"https://takeuforward.org/plus" },
       { title:"Find Median from Data Stream", yt:"https://youtu.be/itmhHWaHupI", article:"https://takeuforward.org/data-structure/find-median-from-data-stream/", practice:"https://leetcode.com/problems/find-median-from-data-stream/" },
       { title:"K Closest Points to Origin", yt:"https://youtu.be/rI2EBUEMfTk", article:"https://takeuforward.org/heap/k-closest-points-to-origin/", practice:"https://leetcode.com/problems/k-closest-points-to-origin/" },
       { title:"Maximum Sum Combination", yt:"https://youtu.be/gCJovpFpEgg", article:"https://takeuforward.org/heap/maximum-sum-combinations/", practice:"https://www.interviewbit.com/problems/maximum-sum-combinations/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Kth Largest Element in an Array", practice:"https://leetcode.com/problems/kth-largest-element-in-an-array/" },
-      { title:"Top K Frequent Elements", practice:"https://leetcode.com/problems/top-k-frequent-elements/" },
-      { title:"Task Scheduler", practice:"https://leetcode.com/problems/task-scheduler/" },
-      { title:"Merge K Sorted Lists", practice:"https://leetcode.com/problems/merge-k-sorted-lists/" },
-      { title:"Find Median from Data Stream", practice:"https://leetcode.com/problems/find-median-from-data-stream/" },
-      { title:"K Closest Points to Origin", practice:"https://leetcode.com/problems/k-closest-points-to-origin/" },
-      { title:"Reorganize String", practice:"https://leetcode.com/problems/reorganize-string/" },
-      { title:"Last Stone Weight", practice:"https://leetcode.com/problems/last-stone-weight/" },
-      { title:"Kth Largest Element in a Stream", practice:"https://leetcode.com/problems/kth-largest-element-in-a-stream/" },
-      { title:"Ugly Number II", practice:"https://leetcode.com/problems/ugly-number-ii/" },
-      { title:"Find K Pairs with Smallest Sums", practice:"https://leetcode.com/problems/find-k-pairs-with-smallest-sums/" },
-      { title:"Kth Smallest Element in a Sorted Matrix", practice:"https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/" },
-      { title:"Top K Frequent Words", practice:"https://leetcode.com/problems/top-k-frequent-words/" },
-      { title:"Smallest Range Covering Elements from K Lists", practice:"https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/" },
-      { title:"Sort an Array (Heap Sort)", practice:"https://leetcode.com/problems/sort-an-array/" },
   ]}
 ]},
 { step:12, title:"Greedy Algorithms [Easy, Medium/Hard]", week:7, subtopics:[
@@ -449,45 +323,20 @@ const STRIVER_STEPS = [
       { title:"Jump Game II", yt:"https://youtu.be/7SedJZqajCU", article:"https://takeuforward.org/data-structure/jump-game-2-greedy-approach/", practice:"https://leetcode.com/problems/jump-game-ii/" },
       { title:"Candy Distribution", yt:"https://youtu.be/IIqVFvKE6RY", article:"https://takeuforward.org/data-structure/candy-leetcode-greedy-approach/", practice:"https://leetcode.com/problems/candy/" },
       { title:"Insert Intervals", yt:"https://youtu.be/xxRE-46OCC8", article:"https://takeuforward.org/data-structure/insert-interval/", practice:"https://leetcode.com/problems/insert-interval/" },
-      { title:"Merge Intervals", yt:"https://youtu.be/IexN60k62jo", article:"https://takeuforward.org/data-structure/merge-overlapping-sub-intervals/", practice:"https://leetcode.com/problems/merge-intervals/" },
       { title:"Non-overlapping Intervals", yt:"https://youtu.be/nONCGxWoUfM", article:"https://takeuforward.org/data-structure/non-overlapping-intervals/", practice:"https://leetcode.com/problems/non-overlapping-intervals/" },
       { title:"Valid Parenthesis String", yt:"https://youtu.be/cHT6sG_hUZI", article:"https://takeuforward.org/data-structure/valid-parenthesis-string/", practice:"https://leetcode.com/problems/valid-parenthesis-string/" },
       { title:"Shortest Job First (SJF) Scheduling", yt:"https://youtu.be/VyWp3BIHKY8", article:"https://takeuforward.org/operating-systems/shortest-job-first/", practice:"https://takeuforward.org/plus" },
       { title:"Gas Station", yt:"https://youtu.be/nTKdYm_5-ZY", article:"https://takeuforward.org/greedy/gas-station/", practice:"https://leetcode.com/problems/gas-station/" },
       { title:"Largest Number", yt:"https://youtu.be/ffBCBqBRgj0", article:"https://takeuforward.org/greedy/largest-number/", practice:"https://leetcode.com/problems/largest-number/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Assign Cookies", practice:"https://leetcode.com/problems/assign-cookies/" },
-      { title:"Jump Game", practice:"https://leetcode.com/problems/jump-game/" },
-      { title:"Jump Game II", practice:"https://leetcode.com/problems/jump-game-ii/" },
-      { title:"Candy", practice:"https://leetcode.com/problems/candy/" },
-      { title:"Gas Station", practice:"https://leetcode.com/problems/gas-station/" },
-      { title:"Merge Intervals", practice:"https://leetcode.com/problems/merge-intervals/" },
-      { title:"Insert Interval", practice:"https://leetcode.com/problems/insert-interval/" },
-      { title:"Non-overlapping Intervals", practice:"https://leetcode.com/problems/non-overlapping-intervals/" },
-      { title:"Valid Parenthesis String", practice:"https://leetcode.com/problems/valid-parenthesis-string/" },
-      { title:"Minimum Number of Arrows to Burst Balloons", practice:"https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/" },
-      { title:"Lemonade Change", practice:"https://leetcode.com/problems/lemonade-change/" },
-      { title:"Two City Scheduling", practice:"https://leetcode.com/problems/two-city-scheduling/" },
-      { title:"Queue Reconstruction by Height", practice:"https://leetcode.com/problems/queue-reconstruction-by-height/" },
-      { title:"Boats to Save People", practice:"https://leetcode.com/problems/boats-to-save-people/" },
-      { title:"Can Place Flowers", practice:"https://leetcode.com/problems/can-place-flowers/" },
-      { title:"Largest Number (Custom Comparator)", practice:"https://leetcode.com/problems/largest-number/" },
-      { title:"Remove Covered Intervals", practice:"https://leetcode.com/problems/remove-covered-intervals/" },
-      { title:"Advantage Shuffle", practice:"https://leetcode.com/problems/advantage-shuffle/" },
   ]}
 ]},
 { step:13, title:"Binary Trees [Traversals, Medium, Hard Problems]", week:7, subtopics:[
   { name:"Traversals", problems:[
       { title:"Introduction to Binary Trees", yt:"https://youtu.be/hyynSAFRFaI", article:"https://takeuforward.org/data-structure/introduction-to-binary-trees/", practice:"https://takeuforward.org/plus" },
       { title:"Preorder, Inorder, Postorder (Recursive)", yt:"https://youtu.be/RlUu72JrOUM", article:"https://takeuforward.org/data-structure/preorder-inorder-postorder-traversals-in-one-traversal/", practice:"https://leetcode.com/problems/binary-tree-inorder-traversal/" },
-      { title:"Iterative Inorder Traversal", yt:"https://youtu.be/lxTGsVXjwvM", article:"https://takeuforward.org/data-structure/inorder-traversal-of-binary-tree/", practice:"https://leetcode.com/problems/binary-tree-inorder-traversal/" },
       { title:"Iterative Preorder Traversal", yt:"https://youtu.be/80Zug6D1_r4", article:"https://takeuforward.org/data-structure/preorder-traversal-of-binary-tree-using-iterative-approach/", practice:"https://leetcode.com/problems/binary-tree-preorder-traversal/" },
       { title:"Iterative Postorder (2 Stacks)", yt:"https://youtu.be/fCmKqRfuMb8", article:"https://takeuforward.org/data-structure/post-order-traversal-of-binary-tree/", practice:"https://leetcode.com/problems/binary-tree-postorder-traversal/" },
-      { title:"Iterative Postorder (1 Stack)", yt:"https://youtu.be/kC6p-t2DEos", article:"https://takeuforward.org/data-structure/binary-tree-post-order-traversal-using-1-stack/", practice:"https://leetcode.com/problems/binary-tree-postorder-traversal/" },
       { title:"Level Order Traversal (BFS)", yt:"https://youtu.be/EoAsWbO7sqg", article:"https://takeuforward.org/data-structure/level-order-traversal-of-a-binary-tree/", practice:"https://leetcode.com/problems/binary-tree-level-order-traversal/" },
-      { title:"Morris Inorder Traversal (O(1) space)", yt:"https://youtu.be/80Zug6D1_r4", article:"https://takeuforward.org/data-structure/morris-inorder-traversal/", practice:"https://leetcode.com/problems/binary-tree-inorder-traversal/" },
-      { title:"Morris Preorder Traversal", yt:"https://youtu.be/80Zug6D1_r4", article:"https://takeuforward.org/data-structure/morris-preorder-traversal/", practice:"https://leetcode.com/problems/binary-tree-preorder-traversal/" },
   ]},
   { name:"Medium Problems", problems:[
       { title:"Height of Binary Tree", yt:"https://youtu.be/eD95WRfh81c", article:"https://takeuforward.org/data-structure/find-the-height-depth-of-a-binary-tree/", practice:"https://leetcode.com/problems/maximum-depth-of-binary-tree/" },
@@ -520,7 +369,6 @@ const STRIVER_STEPS = [
 { step:14, title:"Binary Search Trees [Concept & Problems]", week:7, subtopics:[
   { name:"Concepts", problems:[
       { title:"Introduction to BST", yt:"https://youtu.be/p7-9UvDQZ3w", article:"https://takeuforward.org/data-structure/introduction-to-binary-search-tree/", practice:"https://leetcode.com/problems/search-in-a-binary-search-tree/" },
-      { title:"Search in BST", yt:"https://youtu.be/KcNt6v_56cc", article:"https://takeuforward.org/data-structure/search-in-a-binary-search-tree/", practice:"https://leetcode.com/problems/search-in-a-binary-search-tree/" },
       { title:"Floor in BST", yt:"https://youtu.be/xm_W1ub-K-w", article:"https://takeuforward.org/data-structure/floor-in-a-binary-search-tree/", practice:"https://takeuforward.org/plus" },
       { title:"Ceil in BST", yt:"https://youtu.be/xm_W1ub-K-w", article:"https://takeuforward.org/data-structure/ceil-in-a-binary-search-tree/", practice:"https://takeuforward.org/plus" },
       { title:"Insert a Node in BST", yt:"https://youtu.be/FiFiNvM29ps", article:"https://takeuforward.org/data-structure/insert-a-node-in-binary-search-tree/", practice:"https://leetcode.com/problems/insert-into-a-binary-search-tree/" },
@@ -536,35 +384,13 @@ const STRIVER_STEPS = [
       { title:"Recover BST (Fix Two Swapped Nodes)", yt:"https://youtu.be/ZWGW7FminDM", article:"https://takeuforward.org/data-structure/recover-bst-correct-bst-with-two-nodes-swapped/", practice:"https://leetcode.com/problems/recover-binary-search-tree/" },
       { title:"Largest BST in a Binary Tree", yt:"https://youtu.be/X0oXMdtUDwo", article:"https://takeuforward.org/data-structure/largest-bst-in-binary-tree/", practice:"https://takeuforward.org/plus" },
       { title:"Validate Binary Search Tree", yt:"https://youtu.be/f-sj7I5oXEI", article:"https://takeuforward.org/data-structure/validate-binary-search-tree/", practice:"https://leetcode.com/problems/validate-binary-search-tree/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Search in a Binary Search Tree", practice:"https://leetcode.com/problems/search-in-a-binary-search-tree/" },
-      { title:"Insert into a Binary Search Tree", practice:"https://leetcode.com/problems/insert-into-a-binary-search-tree/" },
-      { title:"Delete Node in a BST", practice:"https://leetcode.com/problems/delete-node-in-a-bst/" },
-      { title:"Validate Binary Search Tree", practice:"https://leetcode.com/problems/validate-binary-search-tree/" },
-      { title:"Kth Smallest Element in a BST", practice:"https://leetcode.com/problems/kth-smallest-element-in-a-bst/" },
-      { title:"Lowest Common Ancestor of BST", practice:"https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" },
-      { title:"Range Sum of BST", practice:"https://leetcode.com/problems/range-sum-of-bst/" },
-      { title:"Construct BST from Preorder Traversal", practice:"https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/" },
-      { title:"BST Iterator", practice:"https://leetcode.com/problems/binary-search-tree-iterator/" },
-      { title:"Two Sum IV – Input is a BST", practice:"https://leetcode.com/problems/two-sum-iv-input-is-a-bst/" },
-      { title:"Recover Binary Search Tree", practice:"https://leetcode.com/problems/recover-binary-search-tree/" },
-      { title:"Convert Sorted Array to BST", practice:"https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/" },
-      { title:"Trim a Binary Search Tree", practice:"https://leetcode.com/problems/trim-a-binary-search-tree/" },
-      { title:"Minimum Absolute Difference in BST", practice:"https://leetcode.com/problems/minimum-absolute-difference-in-bst/" },
-      { title:"Convert BST to Greater Tree", practice:"https://leetcode.com/problems/convert-bst-to-greater-tree/" },
-      { title:"Find Mode in Binary Search Tree", practice:"https://leetcode.com/problems/find-mode-in-binary-search-tree/" },
-      { title:"Unique Binary Search Trees", practice:"https://leetcode.com/problems/unique-binary-search-trees/" },
-      { title:"Balance a Binary Search Tree", practice:"https://leetcode.com/problems/balance-a-binary-search-tree/" },
   ]}
 ]},
 { step:15, title:"Graphs [BFS, DFS, Topo, Shortest Path, MST, DSU]", week:8, subtopics:[
   { name:"Learning – BFS/DFS", problems:[
       { title:"Graph Representation (Adjacency Matrix/List)", yt:"https://youtu.be/M3_pLsDdeuU", article:"https://takeuforward.org/graph/introduction-to-graph/", practice:"https://takeuforward.org/plus" },
       { title:"BFS Traversal", yt:"https://youtu.be/iu1umy77DvI", article:"https://takeuforward.org/graph/breadth-first-search-bfs-level-order-traversal/", practice:"https://leetcode.com/problems/number-of-islands/" },
-      { title:"DFS Traversal", yt:"https://youtu.be/Qzf1a--rhp8", article:"https://takeuforward.org/graph/dfs-traversal-of-graph/", practice:"https://leetcode.com/problems/number-of-islands/" },
       { title:"Number of Provinces", yt:"https://youtu.be/ACzkVtewUYA", article:"https://takeuforward.org/graph/number-of-provinces/", practice:"https://leetcode.com/problems/number-of-provinces/" },
-      { title:"Number of Islands", yt:"https://youtu.be/muncqlKJrH0", article:"https://takeuforward.org/graph/number-of-islands/", practice:"https://leetcode.com/problems/number-of-islands/" },
       { title:"Flood Fill", yt:"https://youtu.be/C-2_uSRli8o", article:"https://takeuforward.org/graph/flood-fill-algorithm/", practice:"https://leetcode.com/problems/flood-fill/" },
       { title:"Rotten Oranges", yt:"https://youtu.be/yf3oUhkvqA0", article:"https://takeuforward.org/graph/rotten-oranges/", practice:"https://leetcode.com/problems/rotting-oranges/" },
       { title:"Cycle Detection in Undirected Graph (BFS)", yt:"https://youtu.be/BPlrALf1LDU", article:"https://takeuforward.org/graph/detect-cycle-in-an-undirected-graph-using-bfs/", practice:"https://takeuforward.org/plus" },
@@ -574,7 +400,6 @@ const STRIVER_STEPS = [
   ]},
   { name:"Topo Sort & Directed Graph", problems:[
       { title:"Bipartite Graph (BFS)", yt:"https://youtu.be/nbgaEu-pvkU", article:"https://takeuforward.org/graph/bipartite-graph/", practice:"https://leetcode.com/problems/is-graph-bipartite/" },
-      { title:"Bipartite Graph (DFS)", yt:"https://youtu.be/KG5YFfR0j8A", article:"https://takeuforward.org/graph/bipartite-graph/", practice:"https://leetcode.com/problems/is-graph-bipartite/" },
       { title:"Topological Sort (DFS)", yt:"https://youtu.be/5lJ8-TlG7YE", article:"https://takeuforward.org/graph/topological-sort-algorithm-dfs/", practice:"https://takeuforward.org/plus" },
       { title:"Topological Sort – Kahn's Algorithm (BFS)", yt:"https://youtu.be/73sneFXuTEg", article:"https://takeuforward.org/graph/kahns-algorithm-topological-sort/", practice:"https://takeuforward.org/plus" },
       { title:"Cycle Detection in Directed Graph (DFS)", yt:"https://youtu.be/9twcmtQj4DU", article:"https://takeuforward.org/graph/detect-cycle-in-directed-graph-using-dfs-based-approach/", practice:"https://takeuforward.org/plus" },
@@ -595,17 +420,14 @@ const STRIVER_STEPS = [
   ]},
   { name:"MST / DSU / Advanced", problems:[
       { title:"Prim's Algorithm – Minimum Spanning Tree", yt:"https://youtu.be/mJcZjjKzeqk", article:"https://takeuforward.org/graph/prims-algorithm-minimum-spanning-tree/", practice:"https://leetcode.com/problems/min-cost-to-connect-all-points/" },
-      { title:"Kruskal's Algorithm / Disjoint Set Union", yt:"https://youtu.be/DMnDM_sxVig", article:"https://takeuforward.org/graph/kruskal-algorithm/", practice:"https://leetcode.com/problems/min-cost-to-connect-all-points/" },
       { title:"Strongly Connected Components (Kosaraju)", yt:"https://youtu.be/R6uoSjZ2imo", article:"https://takeuforward.org/graph/strongly-connected-components-kosarajus-algorithm/", practice:"https://takeuforward.org/plus" },
       { title:"Articulation Points in Graph", yt:"https://youtu.be/j1QX9hxM3S0", article:"https://takeuforward.org/graph/articulation-point-in-graph/", practice:"https://leetcode.com/problems/critical-connections-in-a-network/" },
-      { title:"Bridges in Graph", yt:"https://youtu.be/qrAub5z8FeA", article:"https://takeuforward.org/graph/bridges-in-graph/", practice:"https://leetcode.com/problems/critical-connections-in-a-network/" },
       { title:"Number of Ways to Reach Destination (DP+Graph)", yt:"https://youtu.be/PATgNiyd2n0", article:"https://takeuforward.org/graph/number-of-ways-in-maze/", practice:"https://leetcode.com/problems/number-of-paths-in-directed-graph/" },
   ]}
 ]},
 { step:16, title:"Dynamic Programming [Patterns & Problems]", week:8, subtopics:[
   { name:"Introduction to DP", problems:[
       { title:"Introduction to DP (Memoization & Tabulation)", yt:"https://youtu.be/tyB0ztf0DNY", article:"https://takeuforward.org/data-structure/dynamic-programming-introduction/", practice:"https://leetcode.com/problems/climbing-stairs/" },
-      { title:"Climbing Stairs", yt:"https://youtu.be/mJfkuCHMPxc", article:"https://takeuforward.org/data-structure/climbing-stairs/", practice:"https://leetcode.com/problems/climbing-stairs/" },
       { title:"Frog Jump (1D DP)", yt:"https://youtu.be/EgG3jsGoPvg", article:"https://takeuforward.org/data-structure/frog-jump-dp-3/", practice:"https://takeuforward.org/plus" },
       { title:"Frog Jump with K Distances", yt:"https://youtu.be/Kmh3rhyEtB8", article:"https://takeuforward.org/data-structure/frog-jump-with-k-distances-dp-4/", practice:"https://takeuforward.org/plus" },
       { title:"Maximum Sum of Non-Adjacent Elements", yt:"https://youtu.be/GrMBfJNk_NY", article:"https://takeuforward.org/data-structure/maximum-sum-of-non-adjacent-elements/", practice:"https://leetcode.com/problems/house-robber/" },
@@ -625,7 +447,6 @@ const STRIVER_STEPS = [
       { title:"Partition Equal Subset Sum", yt:"https://youtu.be/7win3dcgo3k", article:"https://takeuforward.org/data-structure/partition-equal-subset-sum-dp-15/", practice:"https://leetcode.com/problems/partition-equal-subset-sum/" },
       { title:"Partition Two Subsets with Min Difference", yt:"https://youtu.be/GS_OqZb2CWc", article:"https://takeuforward.org/data-structure/minimum-absolute-difference-in-partition/", practice:"https://leetcode.com/problems/last-stone-weight-ii/" },
       { title:"0/1 Knapsack", yt:"https://youtu.be/GqOTyWuiBOQ", article:"https://takeuforward.org/data-structure/0-1-knapsack-dp-19/", practice:"https://takeuforward.org/plus" },
-      { title:"Coin Change – Minimum Coins", yt:"https://youtu.be/myPeWb3X9Ow", article:"https://takeuforward.org/data-structure/minimum-number-of-coins/", practice:"https://leetcode.com/problems/coin-change/" },
       { title:"Coin Change II – Number of Ways", yt:"https://youtu.be/HgyouUi11zk", article:"https://takeuforward.org/data-structure/count-partitions-with-given-difference-dp-18/", practice:"https://leetcode.com/problems/coin-change-ii/" },
       { title:"Target Sum (Assign +/- to Nums)", yt:"https://youtu.be/b3GmCYQfIvY", article:"https://takeuforward.org/data-structure/target-sum-dp-21/", practice:"https://leetcode.com/problems/target-sum/" },
       { title:"Rod Cutting", yt:"https://youtu.be/mO8XpGoJwuo", article:"https://takeuforward.org/data-structure/rod-cutting-problem-dp-24/", practice:"https://takeuforward.org/plus" },
@@ -642,7 +463,6 @@ const STRIVER_STEPS = [
       { title:"Wildcard Matching", yt:"https://youtu.be/ZmlQ3vgAOMo", article:"https://takeuforward.org/data-structure/wildcard-matching-dp-34/", practice:"https://leetcode.com/problems/wildcard-matching/" },
   ]},
   { name:"DP on Stocks", problems:[
-      { title:"Best Time to Buy and Sell Stock I", yt:"https://youtu.be/excAOvwF_Wk", article:"https://takeuforward.org/data-structure/stock-buy-and-sell-dp-35/", practice:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" },
       { title:"Buy & Sell Stock II (Multiple Transactions)", yt:"https://youtu.be/nGJTWaaFdjc", article:"https://takeuforward.org/data-structure/buy-and-sell-stock-ii-dp-36/", practice:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/" },
       { title:"Buy & Sell Stock III (At Most 2 Trans.)", yt:"https://youtu.be/wuzTpONbd-g", article:"https://takeuforward.org/data-structure/buy-and-sell-stocks-iii-dp-37/", practice:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/" },
       { title:"Buy & Sell Stock IV (At Most K Trans.)", yt:"https://youtu.be/IV1dHbk5Zm4", article:"https://takeuforward.org/data-structure/buy-and-sell-stocks-iv-dp-38/", practice:"https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/" },
@@ -651,7 +471,6 @@ const STRIVER_STEPS = [
   ]},
   { name:"DP on LIS", problems:[
       { title:"Longest Increasing Subsequence (DP)", yt:"https://youtu.be/ekcwMsSIzVc", article:"https://takeuforward.org/data-structure/longest-increasing-subsequence-dp-41/", practice:"https://leetcode.com/problems/longest-increasing-subsequence/" },
-      { title:"LIS using Binary Search O(NlogN)", yt:"https://youtu.be/on2hvxBXJH4", article:"https://takeuforward.org/data-structure/longest-increasing-subsequence-binary-search-dp-43/", practice:"https://leetcode.com/problems/longest-increasing-subsequence/" },
       { title:"Largest Divisible Subset", yt:"https://youtu.be/gDuZwBW9VvM", article:"https://takeuforward.org/data-structure/largest-divisible-subset-dp-44/", practice:"https://leetcode.com/problems/largest-divisible-subset/" },
       { title:"Longest String Chain", yt:"https://youtu.be/YY8iBaYcc4g", article:"https://takeuforward.org/data-structure/longest-string-chain-dp-45/", practice:"https://leetcode.com/problems/longest-string-chain/" },
       { title:"Longest Bitonic Subsequence", yt:"https://youtu.be/y4vN0WNdrlg", article:"https://takeuforward.org/data-structure/longest-bitonic-subsequence-dp-46/", practice:"https://takeuforward.org/plus" },
@@ -674,31 +493,13 @@ const STRIVER_STEPS = [
   { name:"Problems", problems:[
       { title:"Longest String with All Prefixes (Complete String)", yt:"https://youtu.be/AWnBa91lThI", article:"https://takeuforward.org/data-structure/longest-string-with-all-prefixes/", practice:"https://takeuforward.org/plus" },
       { title:"Number of Distinct Substrings", yt:"https://youtu.be/RV0QETsfAAo", article:"https://takeuforward.org/data-structure/number-of-distinct-substrings-in-a-string/", practice:"https://takeuforward.org/plus" },
-      { title:"Maximum XOR of Two Numbers in Array", yt:"https://youtu.be/BTf05gs_8iU", article:"https://takeuforward.org/data-structure/maximum-xor-of-two-numbers-in-an-array/", practice:"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
       { title:"Maximum XOR with Element from Array", yt:"https://youtu.be/Q8LhG9Pi5KM", article:"https://takeuforward.org/data-structure/maximum-xor-with-an-element-from-array/", practice:"https://leetcode.com/problems/maximum-xor-with-an-element-from-array/" },
       { title:"Word Search II (Trie + Backtracking)", yt:"https://youtu.be/asbcE9mZz_U", article:"https://takeuforward.org/data-structure/word-search-ii/", practice:"https://leetcode.com/problems/word-search-ii/" },
       { title:"Replace Words (Dictionary to Roots)", yt:"https://youtu.be/RV0QETsfAAo", article:"https://takeuforward.org/data-structure/replace-words/", practice:"https://leetcode.com/problems/replace-words/" },
       { title:"Design Add and Search Words Data Structure", yt:"https://youtu.be/BTf05gs_8iU", article:"https://takeuforward.org/data-structure/design-add-search-words-structure/", practice:"https://leetcode.com/problems/design-add-and-search-words-data-structure/" },
       { title:"Palindrome Pairs using Trie", yt:"https://youtu.be/AWnBa91lThI", article:"https://takeuforward.org/data-structure/palindrome-pairs/", practice:"https://leetcode.com/problems/palindrome-pairs/" },
-  ]},
-  { name:"LeetCode Practice Set", problems:[
-      { title:"Implement Trie (Prefix Tree)", practice:"https://leetcode.com/problems/implement-trie-prefix-tree/" },
-      { title:"Design Add and Search Words Data Structure", practice:"https://leetcode.com/problems/design-add-and-search-words-data-structure/" },
-      { title:"Word Search II (Trie + Backtracking)", practice:"https://leetcode.com/problems/word-search-ii/" },
-      { title:"Longest Word in Dictionary", practice:"https://leetcode.com/problems/longest-word-in-dictionary/" },
-      { title:"Replace Words", practice:"https://leetcode.com/problems/replace-words/" },
-      { title:"Map Sum Pairs", practice:"https://leetcode.com/problems/map-sum-pairs/" },
-      { title:"Maximum XOR of Two Numbers in Array", practice:"https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/" },
-      { title:"Maximum XOR with Element from Array", practice:"https://leetcode.com/problems/maximum-xor-with-an-element-from-array/" },
-      { title:"Palindrome Pairs", practice:"https://leetcode.com/problems/palindrome-pairs/" },
-      { title:"Search Suggestions System", practice:"https://leetcode.com/problems/search-suggestions-system/" },
-      { title:"Stream of Characters", practice:"https://leetcode.com/problems/stream-of-characters/" },
-      { title:"Top K Frequent Words", practice:"https://leetcode.com/problems/top-k-frequent-words/" },
-      { title:"Short Encoding of Words", practice:"https://leetcode.com/problems/short-encoding-of-words/" },
-      { title:"Camelcase Matching", practice:"https://leetcode.com/problems/camelcase-matching/" },
-      { title:"Index Pairs of a String", practice:"https://leetcode.com/problems/index-pairs-of-a-string/" },
   ]}
-]}
+]},
 ];
 
 const STEP_LEETCODE = {};
@@ -1148,7 +949,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     .map(s => s.titleSlug)
             );
             const newSolved = { ...solvedQuestions };
-            let count = 0;
+            const newlySolvedSlugs = new Set();
             STRIVER_STEPS.forEach(sg => {
                 sg.subtopics.forEach((sub, si) => {
                     sub.problems.forEach((p, pi) => {
@@ -1156,15 +957,23 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
                             if (slug && accepted.has(slug) && !newSolved[`s${sg.step}_${si}_${pi}`]) {
                                 newSolved[`s${sg.step}_${si}_${pi}`] = true;
-                                count++;
+                                newlySolvedSlugs.add(slug);
                             }
                         }
                     });
                 });
             });
+            const count = newlySolvedSlugs.size;
             setSolvedQuestions(newSolved);
             recomputeDsaData(newSolved);
-            setLcSyncMsg(`✓ Marked ${count} new problem${count !== 1 ? "s" : ""} as solved from LeetCode!`);
+            if (count > 0) {
+                const today = new Date().toISOString().slice(0, 10);
+                setDailyLog(logs => {
+                    if (logs.length > 0 && logs[0].date === today) return logs;
+                    return [{ date: today, note: `Synced ${count} problem${count !== 1 ? "s" : ""} from LeetCode`, ts: Date.now() }, ...logs.slice(0, 19)];
+                });
+            }
+            setLcSyncMsg(`✓ ${count} new LeetCode problem${count !== 1 ? "s" : ""} synced!`);
         } catch {
             setLcSyncMsg("⚠ Could not fetch LeetCode data. Try again.");
         }
