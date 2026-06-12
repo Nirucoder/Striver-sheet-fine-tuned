@@ -1040,6 +1040,56 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
     const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
+    const [diffFilter, setDiffFilter] = useState("All");
+    const [lcSyncing, setLcSyncing] = useState(false);
+    const [lcSyncMsg, setLcSyncMsg] = useState("");
+
+    function recomputeDsaData(solved) {
+        setDsaData(curr => curr.map(d => {
+            const m = d.id.match(/^s(\d+)_(\d+)$/);
+            if (!m) return d;
+            const [, stepStr, subStr] = m;
+            const pfx = `s${stepStr}_${subStr}_`;
+            const totalSolved = Object.keys(solved).filter(k => k.startsWith(pfx) && solved[k]).length;
+            return { ...d, solved: totalSolved, status: totalSolved >= d.problems ? "done" : totalSolved > 0 ? "inprogress" : "pending" };
+        }));
+    }
+
+    async function syncFromLeetCode() {
+        setLcSyncing(true);
+        setLcSyncMsg("Fetching your LeetCode submissions…");
+        try {
+            const res = await fetch("https://alfa-leetcode-api.onrender.com/userProfile/Nirattay");
+            if (!res.ok) throw new Error("API error");
+            const data = await res.json();
+            const accepted = new Set(
+                (data.recentSubmissions || [])
+                    .filter(s => s.statusDisplay === "Accepted")
+                    .map(s => s.titleSlug)
+            );
+            const newSolved = { ...solvedQuestions };
+            let count = 0;
+            STRIVER_STEPS.forEach(sg => {
+                sg.subtopics.forEach((sub, si) => {
+                    sub.problems.forEach((p, pi) => {
+                        if (p.practice && p.practice.includes("leetcode.com/problems/")) {
+                            const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+                            if (slug && accepted.has(slug) && !newSolved[`s${sg.step}_${si}_${pi}`]) {
+                                newSolved[`s${sg.step}_${si}_${pi}`] = true;
+                                count++;
+                            }
+                        }
+                    });
+                });
+            });
+            setSolvedQuestions(newSolved);
+            recomputeDsaData(newSolved);
+            setLcSyncMsg(`✓ Marked ${count} new problem${count !== 1 ? "s" : ""} as solved from LeetCode!`);
+        } catch {
+            setLcSyncMsg("⚠ Could not fetch LeetCode data. Try again.");
+        }
+        setLcSyncing(false);
+    }
 
     function toggleSolved(stepNum, subIdx, probIdx) {
         const key = `s${stepNum}_${subIdx}_${probIdx}`;
@@ -1067,16 +1117,27 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const solvedProbs = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
     const doneSubs = dsaData.filter(d=>d.status==="done").length;
 
-    const filteredSteps = STRIVER_STEPS.map(s => {
-        return {
-            ...s,
-            subtopics: s.subtopics.map((sub, si) => {
-                const subId = `s${s.step}_${si}`;
-                const match = !search || sub.name.toLowerCase().includes(search.toLowerCase()) || s.title.toLowerCase().includes(search.toLowerCase());
-                return match ? sub : null;
-            }).filter(Boolean)
-        };
-    }).filter(s => s.subtopics.length > 0);
+    const filteredSteps = React.useMemo(() => {
+        return STRIVER_STEPS.map(s => {
+            const seenTitles = new Set();
+            return {
+                ...s,
+                subtopics: s.subtopics.map((sub, si) => {
+                    const match = !search || sub.name.toLowerCase().includes(search.toLowerCase()) || s.title.toLowerCase().includes(search.toLowerCase());
+                    if (!match) return null;
+                    const dedupedProblems = sub.problems
+                        .map((p, pi) => ({ ...p, _origIdx: pi }))
+                        .filter(p => {
+                            const key = p.title.toLowerCase().trim();
+                            if (seenTitles.has(key)) return false;
+                            seenTitles.add(key);
+                            return true;
+                        });
+                    return { ...sub, problems: dedupedProblems };
+                }).filter(Boolean)
+            };
+        }).filter(s => s.subtopics.length > 0);
+    }, [search]);
 
     return <div>
         <div style={S.pageTitle}>DSA Tracker</div>
@@ -1093,8 +1154,25 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             )}
         </div>
 
-        <div style={S.filterBar}>
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search subtopics or steps…" style={S.searchInput}/>
+        <div style={{...S.filterBar, flexWrap:"wrap", gap:8}}>
+            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search subtopics or steps…" style={{...S.searchInput, flex:1, minWidth:160}}/>
+            <div style={{display:"flex", gap:5}}>
+                {["All","Easy","Medium","Hard"].map(d => (
+                    <button key={d} onClick={()=>setDiffFilter(d)} style={{
+                        padding:"5px 12px", borderRadius:20, fontSize:11, fontWeight:700, cursor:"pointer", border:"none",
+                        background: diffFilter===d ? (d==="Easy"?"#052e1a":d==="Medium"?"#2d1f04":d==="Hard"?"#3b0a0a":"#1e2030") : "transparent",
+                        color: diffFilter===d ? (d==="Easy"?"#34d399":d==="Medium"?"#fbbf24":d==="Hard"?"#f87171":"#818cf8") : "#64748b",
+                        outline: diffFilter===d ? `1px solid ${d==="Easy"?"#16533a":d==="Medium"?"#78450a":d==="Hard"?"#7f1d1d":"#3d4475"}` : "1px solid transparent"
+                    }}>{d}</button>
+                ))}
+            </div>
+            <button onClick={syncFromLeetCode} disabled={lcSyncing} style={{
+                padding:"5px 14px", borderRadius:20, fontSize:11, fontWeight:700, cursor:lcSyncing?"wait":"pointer",
+                border:"1px solid #1e293b", background:"#0f172a", color:lcSyncing?"#475569":"#818cf8", whiteSpace:"nowrap"
+            }}>
+                {lcSyncing ? "⏳ Syncing…" : "⟳ Sync LeetCode"}
+            </button>
+            {lcSyncMsg && <span style={{fontSize:11, color:lcSyncMsg.startsWith("✓")?"#34d399":"#fb923c", alignSelf:"center"}}>{lcSyncMsg}</span>}
         </div>
 
         {filteredSteps.map(sg => {
@@ -1126,7 +1204,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     {sg.subtopics.map((sub, si) => {
                         const subId = `s${sg.step}_${si}`;
                         const subExp = expandedSub === subId;
-                        const subSolved = sub.problems.filter((_,pi)=>solvedQuestions[`s${sg.step}_${si}_${pi}`]).length;
+                        const subSolved = sub.problems.filter(p=>solvedQuestions[`s${sg.step}_${si}_${p._origIdx}`]).length;
                         
                         return <div key={si} style={{marginBottom:8, border:"1px solid #1e2030", borderRadius:6, overflow:"hidden"}}>
                             <div onClick={()=>setExpandedSub(subExp?null:subId)} style={{background:"#11131a", padding:"10px 14px", display:"flex", justifyContent:"space-between", alignItems:"center", cursor:"pointer"}}>
@@ -1150,7 +1228,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {sub.problems.map((p, pi) => {
+                                        {sub.problems
+                                            .filter(p => {
+                                                if (diffFilter === "All") return true;
+                                                const d = p.difficulty || getDiffFromSubtopic(sub.name);
+                                                return d === diffFilter;
+                                            })
+                                            .map(p => {
+                                            const pi = p._origIdx;
                                             const isDone = !!solvedQuestions[`s${sg.step}_${si}_${pi}`];
                                             const diff = p.difficulty || getDiffFromSubtopic(sub.name);
                                             const hasArticle = p.article && !p.article.endsWith("/plus") && !p.article.endsWith("/plus/");
