@@ -1031,14 +1031,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, diffCounts, diffTotal }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, diffCounts, diffTotal, solvedQuestions }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
-    const totalProblems = dsaData.reduce((a,d)=>a+d.problems,0);
-    const solvedProblems = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
+    const totalProblems = useMemo(()=>STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0),[]);
+    const solvedProblems = Object.keys(solvedQuestions||{}).length;
     const overallPct = Math.round((dsaDone+coaDone)/(dsaData.length+coaData.length)*100);
     const weeksDone = weekStatus.filter(Boolean).length;
 
@@ -1178,6 +1178,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [probNotes, setProbNotes] = useLocalStorage("dsa_notes_v1", {});
     const [activeNote, setActiveNote] = useState(null);
     const [noteText, setNoteText] = useState("");
+    const [noteIsEditing, setNoteIsEditing] = useState(false);
     const [lcSyncing, setLcSyncing] = useState(false);
     const [lcSyncMsg, setLcSyncMsg] = useState("");
 
@@ -1298,8 +1299,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     const [revStars, setRevStars] = useLocalStorage("dsa_rev_stars_v1", {});
-    const totalProblems = dsaData.reduce((a,d)=>a+d.problems,0);
-    const solvedProbs = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
+    const totalProblems = useMemo(()=>STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0),[]);
+    const solvedProbs = Object.keys(solvedQuestions||{}).length;
     const doneSubs = dsaData.filter(d=>d.status==="done").length;
 
     function toggleStar(key) {
@@ -1478,8 +1479,16 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                         const nk = `s${sg.step}_${si}_${pi}`;
                                                         const hasNote = !!probNotes[nk];
                                                         return <span
-                                                            onClick={e=>{e.stopPropagation();if(activeNote===nk){setActiveNote(null);}else{setActiveNote(nk);setNoteText(probNotes[nk]||"");}}}
-                                                            title={hasNote?"Edit note":"Add note"}
+                                                            onClick={e=>{
+                                                                e.stopPropagation();
+                                                                if(activeNote===nk){ setActiveNote(null); setNoteIsEditing(false); }
+                                                                else {
+                                                                    setActiveNote(nk);
+                                                                    if (hasNote) { setNoteIsEditing(false); }
+                                                                    else { setNoteText(""); setNoteIsEditing(true); }
+                                                                }
+                                                            }}
+                                                            title={hasNote?"View / edit note":"Add note"}
                                                             style={{
                                                                 cursor:"pointer", flexShrink:0, userSelect:"none",
                                                                 display:"inline-flex", alignItems:"center", gap:3,
@@ -1496,23 +1505,36 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                                         </span>;
                                                     })()}
                                                 </div>
-                                                {activeNote===`s${sg.step}_${si}_${pi}` && (
-                                                    <div style={{marginTop:8,textDecoration:"none"}} onClick={e=>e.stopPropagation()}>
+                                                {activeNote===`s${sg.step}_${si}_${pi}` && (() => {
+                                                    const nk = `s${sg.step}_${si}_${pi}`;
+                                                    const existingNote = probNotes[nk];
+                                                    if (existingNote && !noteIsEditing) {
+                                                        return <div style={{marginTop:8,background:"#0d0f18",border:"1px solid #1e2030",borderRadius:9,padding:"12px 14px",textDecoration:"none"}} onClick={e=>e.stopPropagation()}>
+                                                            <div style={{fontSize:12,color:"#94a3b8",whiteSpace:"pre-wrap",lineHeight:1.65,fontStyle:"normal"}}>{existingNote}</div>
+                                                            <div style={{display:"flex",gap:6,marginTop:10}}>
+                                                                <button onClick={()=>{setNoteText(existingNote);setNoteIsEditing(true);}}
+                                                                    style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #2d3154",background:"#1a1d2e",color:"#94a3b8",cursor:"pointer"}}>Edit</button>
+                                                                <button onClick={()=>{setProbNotes(prev=>{const n={...prev};delete n[nk];return n;});setActiveNote(null);setNoteIsEditing(false);}}
+                                                                    style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>
+                                                                <button onClick={()=>setActiveNote(null)}
+                                                                    style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #1e2030",background:"transparent",color:"#475569",cursor:"pointer"}}>Close</button>
+                                                            </div>
+                                                        </div>;
+                                                    }
+                                                    return <div style={{marginTop:8,textDecoration:"none"}} onClick={e=>e.stopPropagation()}>
                                                         <textarea value={noteText} onChange={e=>setNoteText(e.target.value)}
                                                             autoFocus placeholder="Add your approach, key insight, or gotcha…"
                                                             style={{width:"100%",background:"#0a0c14",border:"1px solid #2d3154",borderRadius:6,color:"#e2e8f0",fontSize:11,padding:"7px 10px",resize:"vertical",minHeight:56,fontFamily:"inherit",boxSizing:"border-box",outline:"none",textDecoration:"none",lineHeight:1.5}}/>
                                                         <div style={{display:"flex",gap:6,marginTop:5}}>
-                                                            <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>({...prev,[nk]:noteText.trim()}));setActiveNote(null);}}
+                                                            <button onClick={()=>{setProbNotes(prev=>({...prev,[nk]:noteText.trim()}));setActiveNote(null);setNoteIsEditing(false);}}
                                                                 style={{fontSize:11,padding:"4px 14px",borderRadius:6,border:"1px solid #34d399",background:"#052e1a",color:"#34d399",cursor:"pointer",fontWeight:600}}>Save</button>
-                                                            <button onClick={()=>setActiveNote(null)}
+                                                            <button onClick={()=>{setNoteIsEditing(false);if(!existingNote)setActiveNote(null);else setNoteIsEditing(false);}}
                                                                 style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #1e2030",background:"transparent",color:"#64748b",cursor:"pointer"}}>Cancel</button>
-                                                            {probNotes[`s${sg.step}_${si}_${pi}`] && (
-                                                                <button onClick={()=>{const nk=`s${sg.step}_${si}_${pi}`;setProbNotes(prev=>{const n={...prev};delete n[nk];return n;});setActiveNote(null);}}
-                                                                    style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>
-                                                            )}
+                                                            {existingNote && <button onClick={()=>{setProbNotes(prev=>{const n={...prev};delete n[nk];return n;});setActiveNote(null);setNoteIsEditing(false);}}
+                                                                style={{fontSize:11,padding:"4px 12px",borderRadius:6,border:"1px solid #7f1d1d",background:"#3b0a0a",color:"#f87171",cursor:"pointer"}}>Delete</button>}
                                                         </div>
-                                                    </div>
-                                                )}
+                                                    </div>;
+                                                })()}
                                             </td>
                                             <td style={{...TD, textAlign:"center"}}>
                                                 {diff
@@ -1978,6 +2000,241 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     </div>;
     }
 
+    // ─── TODO APP ─────────────────────────────────────────────────────────────────
+    function TodoApp({ todos, setTodos }) {
+        const PROJECTS = ["Inbox", "DSA", "COA", "Study", "Personal"];
+        const P_COLORS = { 1:"#ef4444", 2:"#f97316", 3:"#3b82f6", 4:"#64748b" };
+        const P_BG     = { 1:"#3b0a0a", 2:"#431407", 3:"#172554", 4:"#0f172a" };
+        const P_BORDER = { 1:"#7f1d1d", 2:"#7c2d12", 3:"#1e3a8a", 4:"#1e2030" };
+        const today = new Date().toISOString().slice(0,10);
+
+        const [view, setView] = useState("inbox");
+        const [addingTask, setAddingTask] = useState(false);
+        const [newTask, setNewTask] = useState({ text:"", priority:4, due:"", project:"Inbox" });
+        const [editId, setEditId] = useState(null);
+        const [editText, setEditText] = useState("");
+        const [showDone, setShowDone] = useState(false);
+        const [hoverId, setHoverId] = useState(null);
+
+        function addTodo() {
+            if (!newTask.text.trim()) return;
+            const proj = view.startsWith("p:") ? view.slice(2) : (newTask.project || "Inbox");
+            setTodos(prev => [{
+                id: Date.now(),
+                text: newTask.text.trim(),
+                priority: newTask.priority,
+                due: newTask.due || null,
+                project: proj,
+                done: false,
+                createdAt: Date.now()
+            }, ...prev]);
+            setNewTask(t => ({ ...t, text:"", due:"" }));
+            setAddingTask(false);
+        }
+
+        function toggleDone(id) {
+            setTodos(prev => prev.map(t => t.id===id ? { ...t, done:!t.done } : t));
+        }
+
+        function deleteTodo(id) {
+            setTodos(prev => prev.filter(t => t.id!==id));
+        }
+
+        function updateText(id, text) {
+            if (text.trim()) setTodos(prev => prev.map(t => t.id===id ? { ...t, text:text.trim() } : t));
+            setEditId(null);
+        }
+
+        const viewedTodos = useMemo(() => {
+            let list = [...todos];
+            if (view === "today")          list = list.filter(t => t.due === today);
+            else if (view === "upcoming")  list = list.filter(t => t.due && t.due > today);
+            else if (view.startsWith("p:")) list = list.filter(t => t.project === view.slice(2));
+            else                           list = list.filter(t => t.project === "Inbox");
+            if (!showDone) list = list.filter(t => !t.done);
+            return list.sort((a,b) => a.done - b.done || a.priority - b.priority || a.createdAt - b.createdAt);
+        }, [todos, view, showDone, today]);
+
+        const todayCnt    = todos.filter(t => !t.done && t.due === today).length;
+        const inboxCnt    = todos.filter(t => !t.done && t.project === "Inbox").length;
+        const upcomingCnt = todos.filter(t => !t.done && t.due && t.due > today).length;
+        const viewLabel   = view==="today" ? "Today" : view==="upcoming" ? "Upcoming" : view.startsWith("p:") ? view.slice(2) : "Inbox";
+
+        const doneCount = todos.filter(t => {
+            if (!t.done) return false;
+            if (view==="today") return t.due === today;
+            if (view==="upcoming") return t.due && t.due > today;
+            if (view.startsWith("p:")) return t.project === view.slice(2);
+            return t.project === "Inbox";
+        }).length;
+
+        const sideItems = [
+            { id:"inbox",    label:"Inbox",    icon:"📥", count:inboxCnt },
+            { id:"today",    label:"Today",    icon:"📅", count:todayCnt },
+            { id:"upcoming", label:"Upcoming", icon:"📆", count:upcomingCnt },
+        ];
+
+        return <div style={{display:"flex", gap:0, minHeight:"100%"}}>
+            {/* Left sidebar */}
+            <div style={{width:190, flexShrink:0, paddingRight:16, borderRight:"1px solid #1e2030", marginRight:28}}>
+                <div style={{marginBottom:20}}>
+                    {sideItems.map(s => <div key={s.id} onClick={()=>setView(s.id)} style={{
+                        display:"flex", alignItems:"center", justifyContent:"space-between",
+                        padding:"8px 12px", borderRadius:8, cursor:"pointer", marginBottom:2,
+                        background: view===s.id ? "#1a1d2e" : "transparent",
+                        color: view===s.id ? "#e2e8f0" : "#64748b", fontSize:13,
+                        border: view===s.id ? "1px solid #2d3154" : "1px solid transparent",
+                        transition:"all 0.15s"
+                    }}>
+                        <span style={{display:"flex",alignItems:"center",gap:8}}><span>{s.icon}</span><span>{s.label}</span></span>
+                        {s.count > 0 && <span style={{fontSize:10,color:"#475569",background:"#1e2030",padding:"1px 7px",borderRadius:10,fontWeight:600}}>{s.count}</span>}
+                    </div>)}
+                </div>
+                <div style={{fontSize:10,color:"#334155",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8,padding:"0 12px",fontWeight:700}}>Projects</div>
+                {PROJECTS.map((proj,pi) => {
+                    const cnt = todos.filter(t => !t.done && t.project===proj).length;
+                    const DOT_COLORS = ["#818cf8","#34d399","#60a5fa","#fb923c","#f472b6"];
+                    const vid = `p:${proj}`;
+                    return <div key={proj} onClick={()=>setView(vid)} style={{
+                        display:"flex", alignItems:"center", justifyContent:"space-between",
+                        padding:"8px 12px", borderRadius:8, cursor:"pointer", marginBottom:2,
+                        background: view===vid ? "#1a1d2e" : "transparent",
+                        color: view===vid ? "#e2e8f0" : "#64748b", fontSize:13,
+                        border: view===vid ? "1px solid #2d3154" : "1px solid transparent",
+                        transition:"all 0.15s"
+                    }}>
+                        <span style={{display:"flex",alignItems:"center",gap:8}}>
+                            <span style={{width:8,height:8,borderRadius:"50%",background:DOT_COLORS[pi%DOT_COLORS.length],flexShrink:0}}/>
+                            <span>{proj}</span>
+                        </span>
+                        {cnt > 0 && <span style={{fontSize:10,color:"#475569",fontWeight:600}}>{cnt}</span>}
+                    </div>;
+                })}
+            </div>
+
+            {/* Main area */}
+            <div style={{flex:1, minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+                    <div>
+                        <div style={S.pageTitle}>{viewLabel}</div>
+                        <div style={{...S.pageSub,marginBottom:0}}>{viewedTodos.filter(t=>!t.done).length} tasks open{doneCount>0 && ` · ${doneCount} completed`}</div>
+                    </div>
+                    {doneCount > 0 && <span onClick={()=>setShowDone(v=>!v)} style={{
+                        fontSize:11,color:showDone?"#818cf8":"#475569",cursor:"pointer",
+                        padding:"4px 12px",border:`1px solid ${showDone?"#2d3154":"#1e2030"}`,
+                        borderRadius:6, transition:"all 0.15s", userSelect:"none"
+                    }}>{showDone ? "Hide completed" : `Show ${doneCount} completed`}</span>}
+                </div>
+
+                {/* Add task trigger */}
+                {!addingTask && <div onClick={()=>setAddingTask(true)} style={{
+                    display:"flex",alignItems:"center",gap:8,padding:"11px 16px",
+                    border:"1px dashed #1e2030",borderRadius:10,cursor:"pointer",
+                    color:"#475569",fontSize:13,marginBottom:16,transition:"all 0.15s"
+                }}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor="#818cf8";e.currentTarget.style.color="#818cf8";e.currentTarget.style.background="#0d0f18";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor="#1e2030";e.currentTarget.style.color="#475569";e.currentTarget.style.background="transparent";}}>
+                    <span style={{fontSize:18,lineHeight:1,fontWeight:300,color:"inherit"}}>+</span>
+                    <span>Add task</span>
+                </div>}
+
+                {/* Add task form */}
+                {addingTask && <div style={{border:"1px solid #2d3154",borderRadius:12,padding:"16px 18px",marginBottom:16,background:"#0f1117"}}>
+                    <input autoFocus value={newTask.text}
+                        onChange={e=>setNewTask(t=>({...t,text:e.target.value}))}
+                        onKeyDown={e=>{if(e.key==="Enter")addTodo();if(e.key==="Escape"){setAddingTask(false);setNewTask({text:"",priority:4,due:"",project:"Inbox"});}}}
+                        placeholder="Task name"
+                        style={{width:"100%",background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:14,fontWeight:500,marginBottom:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+                    <div style={{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
+                        {[1,2,3,4].map(p=><span key={p} onClick={()=>setNewTask(t=>({...t,priority:p}))} style={{
+                            display:"inline-flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:6,
+                            fontSize:11,fontWeight:700,cursor:"pointer",
+                            background: newTask.priority===p ? P_BG[p] : "#13151f",
+                            color: newTask.priority===p ? P_COLORS[p] : "#475569",
+                            border:`1px solid ${newTask.priority===p ? P_BORDER[p] : "#1e2030"}`,
+                            transition:"all 0.1s"
+                        }}>P{p}</span>)}
+                        <input type="date" value={newTask.due}
+                            onChange={e=>setNewTask(t=>({...t,due:e.target.value}))}
+                            style={{background:"#13151f",border:"1px solid #1e2030",borderRadius:6,color:"#64748b",fontSize:11,padding:"4px 10px",cursor:"pointer",colorScheme:"dark",fontFamily:"inherit"}}/>
+                        <select value={view.startsWith("p:") ? view.slice(2) : newTask.project}
+                            onChange={e=>setNewTask(t=>({...t,project:e.target.value}))}
+                            disabled={view.startsWith("p:")}
+                            style={{background:"#13151f",border:"1px solid #1e2030",borderRadius:6,color:"#64748b",fontSize:11,padding:"4px 10px",cursor:"pointer",fontFamily:"inherit"}}>
+                            {PROJECTS.map(p=><option key={p} value={p}>{p}</option>)}
+                        </select>
+                        <div style={{marginLeft:"auto",display:"flex",gap:8}}>
+                            <button onClick={addTodo}
+                                style={{padding:"6px 18px",borderRadius:8,background:"#818cf8",border:"none",color:"white",fontSize:12,fontWeight:700,cursor:"pointer",letterSpacing:"0.02em"}}>Add task</button>
+                            <button onClick={()=>{setAddingTask(false);setNewTask({text:"",priority:4,due:"",project:"Inbox"});}}
+                                style={{padding:"6px 14px",borderRadius:8,background:"transparent",border:"1px solid #1e2030",color:"#64748b",fontSize:12,cursor:"pointer"}}>Cancel</button>
+                        </div>
+                    </div>
+                </div>}
+
+                {/* Task list */}
+                {viewedTodos.length === 0 ? <div style={{textAlign:"center",padding:"60px 0",color:"#2a2e40"}}>
+                    <div style={{fontSize:42,marginBottom:14}}>✓</div>
+                    <div style={{fontSize:14,color:"#334155"}}>All clear! Press <strong>+ Add task</strong> to get started.</div>
+                </div> : <div>
+                    {viewedTodos.map(todo => <div key={todo.id}
+                        onMouseEnter={()=>setHoverId(todo.id)}
+                        onMouseLeave={()=>setHoverId(null)}
+                        style={{
+                            display:"flex",alignItems:"center",gap:12,
+                            padding:"11px 14px",borderRadius:9,marginBottom:4,
+                            background: hoverId===todo.id && !todo.done ? "#0d0f18" : "#0f1117",
+                            border:"1px solid #1e2030",
+                            opacity: todo.done ? 0.55 : 1,
+                            transition:"background 0.1s"
+                        }}>
+                        {/* Priority circle checkbox */}
+                        <div onClick={()=>toggleDone(todo.id)} style={{
+                            width:18,height:18,borderRadius:"50%",flexShrink:0,
+                            border:`2px solid ${P_COLORS[todo.priority]}`,
+                            display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",
+                            background: todo.done ? P_COLORS[todo.priority] : "transparent",
+                            transition:"background 0.15s"
+                        }}>
+                            {todo.done && <span style={{color:"white",fontSize:9,lineHeight:1,fontWeight:700}}>✓</span>}
+                        </div>
+
+                        {/* Task text — click to inline edit */}
+                        <div style={{flex:1,minWidth:0}}>
+                            {editId===todo.id ? <input autoFocus value={editText}
+                                onChange={e=>setEditText(e.target.value)}
+                                onKeyDown={e=>{if(e.key==="Enter")updateText(todo.id,editText);if(e.key==="Escape")setEditId(null);}}
+                                onBlur={()=>updateText(todo.id,editText)}
+                                style={{background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:13,fontFamily:"inherit",width:"100%"}}/>
+                            : <span onClick={()=>{if(!todo.done){setEditId(todo.id);setEditText(todo.text);}}}
+                                style={{fontSize:13,color:todo.done?"#475569":"#e2e8f0",textDecoration:todo.done?"line-through":"none",cursor:todo.done?"default":"text",display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                                {todo.text}
+                            </span>}
+                        </div>
+
+                        {/* Due date chip */}
+                        {todo.due && <span style={{
+                            fontSize:11,padding:"2px 8px",borderRadius:6,flexShrink:0,
+                            background: todo.due < today ? "#3b0a0a" : todo.due===today ? "#2d1f04" : "#13151f",
+                            color: todo.due < today ? "#f87171" : todo.due===today ? "#fbbf24" : "#64748b",
+                            border:`1px solid ${todo.due < today ? "#7f1d1d" : todo.due===today ? "#78450a" : "#1e2030"}`
+                        }}>{todo.due===today ? "Today" : todo.due}</span>}
+
+                        {/* Priority badge */}
+                        <span style={{fontSize:10,fontWeight:700,color:P_COLORS[todo.priority],flexShrink:0,minWidth:16,textAlign:"right"}}>P{todo.priority}</span>
+
+                        {/* Delete (hover only) */}
+                        <span onClick={()=>deleteTodo(todo.id)} style={{
+                            opacity: hoverId===todo.id ? 1 : 0,
+                            transition:"opacity 0.15s",color:"#ef4444",cursor:"pointer",
+                            fontSize:16,lineHeight:1,padding:"0 2px",flexShrink:0
+                        }}>×</span>
+                    </div>)}
+                </div>}
+            </div>
+        </div>;
+    }
+
     // ─── MAIN APP ─────────────────────────────────────────────────────────────────
     const NAV = [
     { id:"dashboard", label:"Dashboard", icon:"⊞" },
@@ -1986,6 +2243,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     { id:"weekly", label:"Weekly Planner", icon:"▦" },
     { id:"revision", label:"Revision Tracker", icon:"↺" },
     { id:"analytics", label:"Analytics", icon:"⋯" },
+    { id:"todo", label:"To-Do", icon:"✓" },
     ];
 
     export default function App() {
@@ -1999,6 +2257,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [lastLogDate, setLastLogDate] = useLocalStorage("srm_lastlog_v3", "");
     const [activityLog, setActivityLog] = useLocalStorage("srm_activity_v1", {});
     const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
+    const [todos, setTodos] = useLocalStorage("studyos_todos_v1", []);
     const [confetti, setConfetti] = useState(false);
 
     // Compute Easy/Medium/Hard solved & total counts for donut widget
@@ -2100,7 +2359,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog}
-                    diffCounts={diffCounts} diffTotal={diffTotal} />}
+                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions} />}
@@ -2112,6 +2371,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     <RevisionTracker revData={revData} setRevData={setRevData} />}
                     {page==="analytics" &&
                     <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} />}
+                    {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} />}
             </main>
     </div>
     );
