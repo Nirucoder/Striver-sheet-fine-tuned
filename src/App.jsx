@@ -887,68 +887,96 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     // ─── DASHBOARD ────────────────────────────────────────────────────────────────
     function ActivityHeatmap({ activityLog }) {
+    const [tab, setTab] = useState("all");
     const [selectedDay, setSelectedDay] = useState(null);
     const safeLog = (activityLog && typeof activityLog === "object" && !Array.isArray(activityLog)) ? activityLog : {};
     const todayDate = new Date();
+    const DAYS = ["S","M","T","W","T","F","S"];
+
+    const TABS = [
+        { id:"all",   label:"All",             colors:["#161b22","#0e4429","#006d32","#26a641","#39d353"],    accent:"#39d353" },
+        { id:"dsa",   label:"Questions",       colors:["#161b22","#1e3a5f","#1d4ed8","#3b82f6","#60a5fa"],    accent:"#60a5fa" },
+        { id:"study", label:"Study Sessions",  colors:["#161b22","#0a3d3a","#0f766e","#0d9488","#2dd4bf"],    accent:"#2dd4bf" },
+        { id:"todo",  label:"To-Do Done",      colors:["#161b22","#2e1065","#5b21b6","#7c3aed","#a78bfa"],    accent:"#a78bfa" },
+    ];
+    const curTab = TABS.find(t=>t.id===tab) || TABS[0];
+
+    function filterEntries(entries) {
+        if (!Array.isArray(entries)) return [];
+        if (tab === "all")   return entries;
+        if (tab === "dsa")   return entries.filter(e => !e.type || e.type === "dsa");
+        if (tab === "study") return entries.filter(e => e.type === "study");
+        if (tab === "todo")  return entries.filter(e => e.type === "todo");
+        return entries;
+    }
+
     const cells = [];
     for (let i = 181; i >= 0; i--) {
         const d = new Date(todayDate);
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().slice(0,10);
-        cells.push({ date: dateStr, count: (safeLog[dateStr]||[]).length, dow: d.getDay() });
+        const cnt = filterEntries(safeLog[dateStr] || []).length;
+        cells.push({ date: dateStr, count: cnt, dow: d.getDay() });
     }
     const firstDow = cells[0].dow;
     const weeks = [];
     let cur = Array(firstDow).fill(null);
-    cells.forEach(cell => {
-        cur.push(cell);
-        if (cur.length === 7) { weeks.push(cur); cur = []; }
-    });
+    cells.forEach(cell => { cur.push(cell); if (cur.length === 7) { weeks.push(cur); cur = []; } });
     if (cur.length > 0) { while(cur.length < 7) cur.push(null); weeks.push(cur); }
 
-    const getColor = c => { if (!c) return "#161b22"; if (c===1) return "#0e4429"; if (c<=3) return "#006d32"; if (c<=6) return "#26a641"; return "#39d353"; };
-    const DAYS = ["S","M","T","W","T","F","S"];
-
-    // Month labels
+    const getColor = c => {
+        const sc = curTab.colors;
+        if (!c) return sc[0]; if (c===1) return sc[1]; if (c<=3) return sc[2]; if (c<=6) return sc[3]; return sc[4];
+    };
     const monthLabels = {};
-    weeks.forEach((week, wi) => {
-        const first = week.find(c=>c);
-        if (first) { const d=new Date(first.date); if (d.getDate()<=7) monthLabels[wi]=d.toLocaleString("default",{month:"short"}); }
-    });
+    weeks.forEach((week,wi) => { const first=week.find(c=>c); if(first){const d=new Date(first.date);if(d.getDate()<=7)monthLabels[wi]=d.toLocaleString("default",{month:"short"});} });
 
-    const totalTracked = Object.values(safeLog).reduce((a,b)=>a+b.length,0);
-    const selectedProbs = selectedDay ? (safeLog[selectedDay]||[]) : [];
+    const totalTracked = Object.values(safeLog).reduce((a,v)=>a+filterEntries(v).length, 0);
+    const activeDays   = Object.values(safeLog).filter(v=>filterEntries(v).length>0).length;
+    const selectedEntries = selectedDay ? filterEntries(safeLog[selectedDay]||[]) : [];
+
+    const TYPE_ICON  = { dsa:"◈", study:"📖", todo:"✓" };
+    const TYPE_COLOR = { dsa:"#60a5fa", study:"#2dd4bf", todo:"#a78bfa" };
+    const TYPE_LABEL = { dsa:"", study:"Session", todo:"To-Do" };
 
     return <div style={{...S.card, marginTop:16}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
             <div style={S.sectionTitle}>Activity Calendar</div>
-            <div style={{fontSize:11,color:"#475569"}}>{totalTracked} problems tracked · {Object.keys(safeLog).length} active days</div>
+            <div style={{fontSize:11,color:"#475569"}}>{totalTracked} {tab==="dsa"?"problems":tab==="study"?"sessions":tab==="todo"?"tasks":"entries"} · {activeDays} active days</div>
         </div>
+
+        {/* Tab bar */}
+        <div style={{display:"flex",gap:5,marginBottom:14,flexWrap:"wrap"}}>
+            {TABS.map(t=><span key={t.id} onClick={()=>{setTab(t.id);setSelectedDay(null);}} style={{
+                padding:"3px 11px",borderRadius:7,fontSize:11,fontWeight:600,cursor:"pointer",
+                background: tab===t.id ? t.colors[3]+"28" : "transparent",
+                color: tab===t.id ? t.accent : "#475569",
+                border:`1px solid ${tab===t.id ? t.colors[3]+"66" : "#1e2030"}`,
+                transition:"all 0.15s", userSelect:"none"
+            }}>{t.label}</span>)}
+        </div>
+
         <div style={{overflowX:"auto"}}>
             <div>
-                {/* Month row */}
                 <div style={{display:"flex",gap:3,marginBottom:3,paddingLeft:20}}>
                     {weeks.map((_,wi)=><div key={wi} style={{width:12,fontSize:9,color:monthLabels[wi]?"#8b949e":"transparent",whiteSpace:"nowrap",overflow:"visible",flexShrink:0}}>{monthLabels[wi]||""}</div>)}
                 </div>
                 <div style={{display:"flex",gap:4}}>
-                    {/* Day labels */}
                     <div style={{display:"flex",flexDirection:"column",gap:3,width:16,flexShrink:0}}>
                         {DAYS.map((d,i)=><div key={i} style={{height:12,fontSize:9,color:i%2===1?"#8b949e":"transparent",lineHeight:"12px",textAlign:"right"}}>{d}</div>)}
                     </div>
-                    {/* Week columns */}
                     {weeks.map((week,wi)=>(
                         <div key={wi} style={{display:"flex",flexDirection:"column",gap:3,flexShrink:0}}>
                             {week.map((cell,di)=>cell?(
                                 <div key={di}
                                     onClick={()=>cell.count>0&&setSelectedDay(selectedDay===cell.date?null:cell.date)}
-                                    title={`${cell.date}: ${cell.count} problem${cell.count!==1?"s":""}`}
-                                    style={{width:12,height:12,borderRadius:2,background:getColor(cell.count),cursor:cell.count>0?"pointer":"default",border:selectedDay===cell.date?"1.5px solid #58a6ff":"1px solid transparent",boxSizing:"border-box"}}
+                                    title={`${cell.date}: ${cell.count} ${tab==="dsa"?"problem":tab==="study"?"session":tab==="todo"?"task":"entr"}${cell.count!==1?"s":tab==="dsa"||tab==="todo"?"":"y"}`}
+                                    style={{width:12,height:12,borderRadius:2,background:getColor(cell.count),cursor:cell.count>0?"pointer":"default",border:selectedDay===cell.date?`1.5px solid ${curTab.accent}`:"1px solid transparent",boxSizing:"border-box"}}
                                 />
                             ):<div key={di} style={{width:12,height:12}}/>)}
                         </div>
                     ))}
                 </div>
-                {/* Legend */}
                 <div style={{display:"flex",alignItems:"center",gap:4,marginTop:6,paddingLeft:20}}>
                     <span style={{fontSize:10,color:"#475569"}}>Less</span>
                     {[0,1,3,5,8].map(c=><div key={c} style={{width:10,height:10,borderRadius:2,background:getColor(c)}}/>)}
@@ -956,21 +984,25 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 </div>
             </div>
         </div>
-        {selectedDay&&(
-            <div style={{marginTop:12,padding:"10px 14px",background:"#0d1117",borderRadius:8,border:"1px solid #30363d"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                    <span style={{fontSize:12,fontWeight:700,color:"#39d353"}}>{selectedDay}</span>
-                    <span style={{fontSize:11,color:"#8b949e"}}>{selectedProbs.length} problem{selectedProbs.length!==1?"s":""} solved</span>
+
+        {selectedDay && (
+            <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid ${curTab.colors[2]}44`}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                    <span style={{fontSize:12,fontWeight:700,color:curTab.accent}}>{selectedDay}</span>
+                    <span style={{fontSize:11,color:"#8b949e"}}>{selectedEntries.length} {tab==="dsa"?"problem":tab==="study"?"session":tab==="todo"?"task":"entr"}{selectedEntries.length!==1?"s":""}</span>
                 </div>
-                {selectedProbs.length===0?(
-                    <div style={{fontSize:12,color:"#475569"}}>No problems tracked this day.</div>
-                ):selectedProbs.map((p,i)=>(
-                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"5px 0",borderBottom:i<selectedProbs.length-1?"1px solid #21262d":"none"}}>
-                        <span style={{fontSize:11,color:"#39d353",fontWeight:700,flexShrink:0}}>✓</span>
-                        <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{p.title}</span>
-                        <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{p.subName}</span>
-                    </div>
-                ))}
+                {selectedEntries.length===0 ? (
+                    <div style={{fontSize:12,color:"#475569"}}>Nothing tracked here.</div>
+                ) : selectedEntries.map((e,i)=>{
+                    const t = e.type || "dsa";
+                    return <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<selectedEntries.length-1?"1px solid #21262d":"none"}}>
+                        <span style={{fontSize:11,color:TYPE_COLOR[t]||"#39d353",fontWeight:700,flexShrink:0}}>{TYPE_ICON[t]||"✓"}</span>
+                        <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
+                        <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>
+                            {t==="dsa" ? e.subName : t==="study" ? TYPE_LABEL.study : (e.project||TYPE_LABEL.todo)}
+                        </span>
+                    </div>;
+                })}
             </div>
         )}
     </div>;
@@ -1031,7 +1063,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, diffCounts, diffTotal, solvedQuestions }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
@@ -1044,7 +1076,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     function addLog() {
     if (!logNote.trim()) return;
-    setDailyLog(prev => [{date:today,note:logNote.trim(),ts:Date.now()},...prev.slice(0,19)]);
+    const note = logNote.trim();
+    setDailyLog(prev => [{date:today,note,ts:Date.now()},...prev.slice(0,19)]);
+    setActivityLog(prev => {
+        const dayEntries = prev[today] || [];
+        return { ...prev, [today]: [...dayEntries, { title: note, type:"study" }] };
+    });
     setLogNote("");
     }
 
@@ -1235,7 +1272,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 setActivityLog(prev => {
                     const dayProbs = prev[today] || [];
                     const existing = new Set(dayProbs.map(p => p.title + "|" + p.subName));
-                    const toAdd = newlySolvedProblems.filter(p => !existing.has(p.title + "|" + p.subName));
+                    const toAdd = newlySolvedProblems.filter(p => !existing.has(p.title + "|" + p.subName)).map(p=>({...p,type:"dsa"}));
                     if (toAdd.length === 0) return prev;
                     return { ...prev, [today]: [...dayProbs, ...toAdd] };
                 });
@@ -1275,7 +1312,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 setActivityLog(prev => {
                     const dayProbs = prev[today] || [];
                     if (dayProbs.find(p => p.title === probTitle && p.subName === subName)) return prev;
-                    return { ...prev, [today]: [...dayProbs, { title: probTitle, stepTitle, subName }] };
+                    return { ...prev, [today]: [...dayProbs, { title: probTitle, stepTitle, subName, type:"dsa" }] };
                 });
                 if (lastLogDate !== today) {
                     setDailyLog(logs => {
@@ -2001,7 +2038,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     // ─── TODO APP ─────────────────────────────────────────────────────────────────
-    function TodoApp({ todos, setTodos }) {
+    function TodoApp({ todos, setTodos, setActivityLog }) {
         const PROJECTS = ["Inbox", "DSA", "COA", "Study", "Personal"];
         const P_COLORS = { 1:"#ef4444", 2:"#f97316", 3:"#3b82f6", 4:"#64748b" };
         const P_BG     = { 1:"#3b0a0a", 2:"#431407", 3:"#172554", 4:"#0f172a" };
@@ -2033,7 +2070,17 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         }
 
         function toggleDone(id) {
-            setTodos(prev => prev.map(t => t.id===id ? { ...t, done:!t.done } : t));
+            setTodos(prev => {
+                const todo = prev.find(t => t.id === id);
+                if (todo && !todo.done) {
+                    const todayStr = new Date().toISOString().slice(0,10);
+                    setActivityLog(actLog => {
+                        const dayEntries = actLog[todayStr] || [];
+                        return { ...actLog, [todayStr]: [...dayEntries, { title: todo.text, project: todo.project, type:"todo" }] };
+                    });
+                }
+                return prev.map(t => t.id===id ? { ...t, done:!t.done } : t);
+            });
         }
 
         function deleteTodo(id) {
@@ -2358,7 +2405,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <main style={S.main}>
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
-                    dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog}
+                    dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
                     diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
@@ -2371,7 +2418,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     <RevisionTracker revData={revData} setRevData={setRevData} />}
                     {page==="analytics" &&
                     <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} />}
-                    {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} />}
+                    {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} setActivityLog={setActivityLog} />}
             </main>
     </div>
     );
