@@ -2435,11 +2435,13 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         function handleDropOnSidebar(e, targetView) {
             e.preventDefault();
             if (!dragId) return;
+            const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().slice(0,10);
             setTodos(prev => prev.map(t => {
                 if (t.id !== dragId) return t;
                 if (targetView === "today")    return { ...t, due: today };
                 if (targetView === "inbox")    return { ...t, project: "Inbox", due: null };
-                if (targetView === "upcoming") return t;
+                if (targetView === "upcoming") return { ...t, due: t.due && t.due > today ? t.due : tomorrowStr };
                 if (targetView === "overdue")  return t;
                 if (targetView.startsWith("p:")) return { ...t, project: targetView.slice(2) };
                 return t;
@@ -2450,19 +2452,19 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
         const viewedTodos = useMemo(() => {
             let list = [...todos];
-            if (view === "today")           list = list.filter(t => t.due === today);
+            if (view === "today")           list = list.filter(t => t.due && t.due <= today);
             else if (view === "upcoming")   list = list.filter(t => t.due && t.due > today);
-            else if (view === "overdue")    list = list.filter(t => t.project === "Inbox" && t.due && t.due < today);
+            else if (view === "overdue")    list = list.filter(t => t.due && t.due < today);
             else if (view.startsWith("p:")) list = list.filter(t => t.project === view.slice(2));
-            else                            list = list.filter(t => t.project === "Inbox" && !(t.due && t.due < today));
+            else                            list = list.filter(t => t.project === "Inbox");
             if (!showDone) list = list.filter(t => !t.done);
             return list.sort((a,b) => a.done - b.done || a.priority - b.priority || a.createdAt - b.createdAt);
         }, [todos, view, showDone, today]);
 
         const todayCnt    = todos.filter(t => !t.done && t.due === today).length;
-        const inboxCnt    = todos.filter(t => !t.done && t.project === "Inbox" && !(t.due && t.due < today)).length;
+        const inboxCnt    = todos.filter(t => !t.done && t.project === "Inbox").length;
         const upcomingCnt = todos.filter(t => !t.done && t.due && t.due > today).length;
-        const overdueCnt  = todos.filter(t => !t.done && t.project === "Inbox" && t.due && t.due < today).length;
+        const overdueCnt  = todos.filter(t => !t.done && t.due && t.due < today).length;
         const viewLabel   = view==="today" ? "Today" : view==="upcoming" ? "Upcoming" : view==="overdue" ? "Overdue" : view.startsWith("p:") ? view.slice(2) : "Inbox";
 
         const doneCount = todos.filter(t => {
@@ -2505,21 +2507,24 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         onDragLeave={()=>setDragOverSidebar(null)}
                         onDrop={e=>handleDropOnSidebar(e,s.id)} />)}
 
-                    {/* Overdue — Inbox-only, auto-updates */}
-                    {(view==="inbox" || view==="overdue" || overdueCnt > 0) &&
-                    <div onClick={()=>setView("overdue")} style={{
+                    {/* Overdue — always visible, supports drag-to-move */}
+                    <div onClick={()=>setView("overdue")}
+                        onDragOver={e=>{e.preventDefault();setDragOverSidebar("overdue");}}
+                        onDragLeave={()=>setDragOverSidebar(null)}
+                        onDrop={e=>handleDropOnSidebar(e,"overdue")}
+                        style={{
                         display:"flex", alignItems:"center", justifyContent:"space-between",
                         padding:"8px 12px", borderRadius:8, cursor:"pointer", marginBottom:2,
-                        background: view==="overdue" ? "#200a0a" : "transparent",
+                        background: dragOverSidebar==="overdue" ? "#2d0a0a" : view==="overdue" ? "#200a0a" : "transparent",
                         color: view==="overdue" ? "#f87171" : overdueCnt > 0 ? "#ef4444" : "#475569", fontSize:13,
-                        border: view==="overdue" ? "1px solid #7f1d1d" : overdueCnt > 0 ? "1px dashed #7f1d1d" : "1px dashed #1e2030",
+                        border: dragOverSidebar==="overdue" ? "1px solid #ef4444" : view==="overdue" ? "1px solid #7f1d1d" : overdueCnt > 0 ? "1px dashed #7f1d1d" : "1px dashed #1e2030",
                         transition:"all 0.15s"
                     }}>
                         <span style={{display:"flex",alignItems:"center",gap:8}}>
                             <span>⚠️</span><span>Overdue</span>
                         </span>
                         {overdueCnt > 0 && <span style={{fontSize:10,color:"#f87171",background:"#3b0a0a",padding:"1px 7px",borderRadius:10,fontWeight:700}}>{overdueCnt}</span>}
-                    </div>}
+                    </div>
                 </div>
 
                 <div style={{fontSize:10,color:"#334155",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8,padding:"0 12px",fontWeight:700}}>Projects</div>
@@ -2619,79 +2624,89 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 </div>}
 
                 {/* Task list — draggable cards */}
-                {viewedTodos.length === 0
-                    ? <div style={{textAlign:"center",padding:"60px 0"}}>
+                {(() => {
+                    const isGrouped = (view === "today" || view === "inbox");
+                    const overdueTasks = isGrouped ? viewedTodos.filter(t => !t.done && t.due && t.due < today) : [];
+                    const normalTasks  = isGrouped ? viewedTodos.filter(t => !(t.due && t.due < today) || t.done) : viewedTodos;
+
+                    const TaskCard = (todo) => <div key={todo.id}
+                        draggable={!todo.done}
+                        onDragStart={e=>handleDragStart(e, todo.id)}
+                        onDragEnd={handleDragEnd}
+                        onDragOver={e=>handleDragOverCard(e, todo.id)}
+                        onDrop={e=>handleDropOnCard(e, todo.id)}
+                        style={{
+                            display:"flex",alignItems:"center",gap:12,
+                            padding:"13px 16px",borderRadius:10,marginBottom:6,
+                            background: dragOverId===todo.id && dragId!==todo.id ? "#141a2a" : todo.done ? "#0a0c10" : "#0f1117",
+                            border:`1px solid ${dragOverId===todo.id && dragId!==todo.id ? "#818cf8" : dragId===todo.id ? "#2d3154" : todo.due && todo.due < today && !todo.done ? "#7f1d1d55" : "#1e2030"}`,
+                            opacity: dragId===todo.id ? 0.45 : todo.done ? 0.55 : 1,
+                            cursor: todo.done ? "default" : "grab",
+                            transition:"all 0.12s",
+                            boxShadow: dragOverId===todo.id && dragId!==todo.id ? "0 0 0 2px #818cf820" : "none",
+                            userSelect:"none"
+                        }}>
+                        {!todo.done && <span style={{fontSize:14,color:"#2a2e40",cursor:"grab",flexShrink:0,lineHeight:1,letterSpacing:-1}}>⠿</span>}
+                        <div onClick={()=>toggleDone(todo.id)} style={{
+                            width:18,height:18,borderRadius:"50%",flexShrink:0,
+                            border:`2px solid ${P_COLORS[todo.priority]}`,
+                            display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",
+                            background: todo.done ? P_COLORS[todo.priority] : "transparent",
+                            transition:"background 0.15s"
+                        }}>
+                            {todo.done && <span style={{color:"white",fontSize:9,lineHeight:1,fontWeight:700}}>✓</span>}
+                        </div>
+                        <div style={{flex:1,minWidth:0}}>
+                            {editId===todo.id
+                                ? <input autoFocus value={editText}
+                                    onChange={e=>setEditText(e.target.value)}
+                                    onKeyDown={e=>{if(e.key==="Enter")updateText(todo.id,editText);if(e.key==="Escape")setEditId(null);}}
+                                    onBlur={()=>updateText(todo.id,editText)}
+                                    style={{background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:13,fontFamily:"inherit",width:"100%"}}/>
+                                : <span onClick={()=>{if(!todo.done){setEditId(todo.id);setEditText(todo.text);}}}
+                                    style={{fontSize:13,color:todo.done?"#475569":todo.due&&todo.due<today?"#fca5a5":"#e2e8f0",textDecoration:todo.done?"line-through":"none",cursor:todo.done?"default":"text",display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                                    {todo.text}
+                                </span>
+                            }
+                            {todo.project && !view.startsWith(`p:${todo.project}`) && view !== "inbox" && view !== "overdue" &&
+                                <span style={{fontSize:10,color:"#475569",marginTop:1,display:"block"}}>{todo.project}</span>}
+                        </div>
+                        {todo.due && <span style={{
+                            fontSize:11,padding:"2px 8px",borderRadius:6,flexShrink:0,
+                            background: todo.due < today ? "#3b0a0a" : todo.due===today ? "#2d1f04" : "#13151f",
+                            color: todo.due < today ? "#f87171" : todo.due===today ? "#fbbf24" : "#64748b",
+                            border:`1px solid ${todo.due < today ? "#7f1d1d" : todo.due===today ? "#78450a" : "#1e2030"}`
+                        }}>{todo.due < today ? `⚠ ${todo.due}` : todo.due===today ? "Today" : todo.due}</span>}
+                        <span style={{fontSize:10,fontWeight:700,color:P_COLORS[todo.priority],flexShrink:0,minWidth:16,textAlign:"right"}}>P{todo.priority}</span>
+                        <span onClick={()=>deleteTodo(todo.id)}
+                            onMouseEnter={e=>e.currentTarget.style.opacity="1"}
+                            onMouseLeave={e=>e.currentTarget.style.opacity="0.25"}
+                            style={{color:"#ef4444",cursor:"pointer",fontSize:16,lineHeight:1,padding:"0 2px",flexShrink:0,opacity:0.25,transition:"opacity 0.15s"}}>×</span>
+                    </div>;
+
+                    if (viewedTodos.length === 0) return <div style={{textAlign:"center",padding:"60px 0"}}>
                         <div style={{fontSize:42,marginBottom:14}}>{view==="overdue" ? "🎉" : "✓"}</div>
                         <div style={{fontSize:14,color:"#334155"}}>{view==="overdue" ? "No overdue tasks! You're on track." : "All clear! Press + Add task to get started."}</div>
-                    </div>
-                    : <div>
-                        {viewedTodos.map(todo => <div key={todo.id}
-                            draggable={!todo.done}
-                            onDragStart={e=>handleDragStart(e, todo.id)}
-                            onDragEnd={handleDragEnd}
-                            onDragOver={e=>handleDragOverCard(e, todo.id)}
-                            onDrop={e=>handleDropOnCard(e, todo.id)}
-                            style={{
-                                display:"flex",alignItems:"center",gap:12,
-                                padding:"13px 16px",borderRadius:10,marginBottom:6,
-                                background: dragOverId===todo.id && dragId!==todo.id ? "#141a2a" : todo.done ? "#0a0c10" : "#0f1117",
-                                border:`1px solid ${dragOverId===todo.id && dragId!==todo.id ? "#818cf8" : dragId===todo.id ? "#2d3154" : todo.due && todo.due < today && !todo.done ? "#7f1d1d55" : "#1e2030"}`,
-                                opacity: dragId===todo.id ? 0.45 : todo.done ? 0.55 : 1,
-                                cursor: todo.done ? "default" : "grab",
-                                transition:"all 0.12s",
-                                boxShadow: dragOverId===todo.id && dragId!==todo.id ? "0 0 0 2px #818cf820" : "none",
-                                userSelect:"none"
-                            }}>
-                            {/* Drag handle dots */}
-                            {!todo.done && <span style={{fontSize:14,color:"#2a2e40",cursor:"grab",flexShrink:0,lineHeight:1,letterSpacing:-1}}>⠿</span>}
+                    </div>;
 
-                            {/* Priority circle checkbox */}
-                            <div onClick={()=>toggleDone(todo.id)} style={{
-                                width:18,height:18,borderRadius:"50%",flexShrink:0,
-                                border:`2px solid ${P_COLORS[todo.priority]}`,
-                                display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",
-                                background: todo.done ? P_COLORS[todo.priority] : "transparent",
-                                transition:"background 0.15s"
-                            }}>
-                                {todo.done && <span style={{color:"white",fontSize:9,lineHeight:1,fontWeight:700}}>✓</span>}
+                    if (isGrouped && overdueTasks.length > 0) return <div>
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8,marginTop:4}}>
+                            <span style={{fontSize:10,fontWeight:700,color:"#ef4444",textTransform:"uppercase",letterSpacing:"0.08em"}}>⚠ Overdue — {overdueTasks.length} task{overdueTasks.length!==1?"s":""}</span>
+                            <div style={{flex:1,height:1,background:"#7f1d1d44"}}/>
+                        </div>
+                        {overdueTasks.map(TaskCard)}
+                        {normalTasks.filter(t=>!t.done).length > 0 && <>
+                            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8,marginTop:16}}>
+                                <span style={{fontSize:10,fontWeight:700,color:"#475569",textTransform:"uppercase",letterSpacing:"0.08em"}}>{view==="today" ? "Today" : "Inbox"}</span>
+                                <div style={{flex:1,height:1,background:"#1e2030"}}/>
                             </div>
+                            {normalTasks.filter(t=>!t.done).map(TaskCard)}
+                        </>}
+                        {normalTasks.filter(t=>t.done).map(TaskCard)}
+                    </div>;
 
-                            {/* Task text — click to inline edit */}
-                            <div style={{flex:1,minWidth:0}}>
-                                {editId===todo.id
-                                    ? <input autoFocus value={editText}
-                                        onChange={e=>setEditText(e.target.value)}
-                                        onKeyDown={e=>{if(e.key==="Enter")updateText(todo.id,editText);if(e.key==="Escape")setEditId(null);}}
-                                        onBlur={()=>updateText(todo.id,editText)}
-                                        style={{background:"transparent",border:"none",outline:"none",color:"#e2e8f0",fontSize:13,fontFamily:"inherit",width:"100%"}}/>
-                                    : <span onClick={()=>{if(!todo.done){setEditId(todo.id);setEditText(todo.text);}}}
-                                        style={{fontSize:13,color:todo.done?"#475569":todo.due&&todo.due<today?"#fca5a5":"#e2e8f0",textDecoration:todo.done?"line-through":"none",cursor:todo.done?"default":"text",display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-                                        {todo.text}
-                                    </span>
-                                }
-                                {todo.project && !view.startsWith(`p:${todo.project}`) && view !== "inbox" && view !== "overdue" &&
-                                    <span style={{fontSize:10,color:"#475569",marginTop:1,display:"block"}}>{todo.project}</span>}
-                            </div>
-
-                            {/* Due date chip */}
-                            {todo.due && <span style={{
-                                fontSize:11,padding:"2px 8px",borderRadius:6,flexShrink:0,
-                                background: todo.due < today ? "#3b0a0a" : todo.due===today ? "#2d1f04" : "#13151f",
-                                color: todo.due < today ? "#f87171" : todo.due===today ? "#fbbf24" : "#64748b",
-                                border:`1px solid ${todo.due < today ? "#7f1d1d" : todo.due===today ? "#78450a" : "#1e2030"}`
-                            }}>{todo.due < today ? `⚠ ${todo.due}` : todo.due===today ? "Today" : todo.due}</span>}
-
-                            {/* Priority badge */}
-                            <span style={{fontSize:10,fontWeight:700,color:P_COLORS[todo.priority],flexShrink:0,minWidth:16,textAlign:"right"}}>P{todo.priority}</span>
-
-                            {/* Delete */}
-                            <span onClick={()=>deleteTodo(todo.id)}
-                                onMouseEnter={e=>e.currentTarget.style.opacity="1"}
-                                onMouseLeave={e=>e.currentTarget.style.opacity="0.25"}
-                                style={{color:"#ef4444",cursor:"pointer",fontSize:16,lineHeight:1,padding:"0 2px",flexShrink:0,opacity:0.25,transition:"opacity 0.15s"}}>×</span>
-                        </div>)}
-                    </div>
-                }
+                    return <div>{viewedTodos.map(TaskCard)}</div>;
+                })()}
             </div>
         </div>;
     }
