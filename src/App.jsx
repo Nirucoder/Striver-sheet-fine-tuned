@@ -1190,96 +1190,300 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
         <ActivityHeatmap activityLog={activityLog} />
 
-        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} />
+        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} solvedQuestions={solvedQuestions} activityLog={activityLog} dailyLog={dailyLog} />
     </div>;
     }
 
-    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems }) {
-        const suggestions = useMemo(() => {
-            const tips = [];
+    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems, solvedQuestions, activityLog, dailyLog }) {
+        const today = new Date().toISOString().slice(0,10);
+
+        const A = useMemo(() => {
+            const sq = solvedQuestions || {};
+            const al = activityLog || {};
             const dsaDone = dsaData.filter(d => d.status === "done").length;
             const dsaTotal = dsaData.length;
-            const pct = dsaTotal ? Math.round((dsaDone / dsaTotal) * 100) : 0;
 
-            // Find first incomplete DSA step
-            const allSteps = STRIVER_STEPS;
-            let currentStep = null;
-            for (const sg of allSteps) {
-                const stepDone = dsaData.filter(d => d.step === sg.step && d.status === "done").length;
-                const stepTotal = sg.subtopics.length;
-                if (stepDone < stepTotal) { currentStep = sg; break; }
+            // ── Current step & next subtopic ─────────────────────────────
+            let currentStep = null, currentStepDone = 0, currentStepTotal = 0;
+            for (const sg of STRIVER_STEPS) {
+                const sd = dsaData.filter(d => d.step === sg.step && d.status === "done").length;
+                const st = sg.subtopics.length;
+                if (sd < st) { currentStep = sg; currentStepDone = sd; currentStepTotal = st; break; }
             }
 
-            // Streak-based
-            if (streak === 0) {
-                tips.push({ icon:"🔥", color:"#f97316", title:"Start your streak today", body:"Log a session on the dashboard every day. Consistency compounds — even 30 mins daily beats 6-hour weekend crams." });
-            } else if (streak < 3) {
-                tips.push({ icon:"🔥", color:"#f97316", title:`${streak}-day streak — keep it alive!`, body:"You're building momentum. Log at least one problem or COA topic today to maintain it." });
-            } else {
-                tips.push({ icon:"🔥", color:"#34d399", title:`${streak}-day streak — impressive!`, body:"Great consistency. Challenge yourself: can you hit a 14-day streak? That's where habits solidify." });
-            }
-
-            // Current step recommendation
+            let nextSubtopic = null, nextSubtopicUnsolved = [];
             if (currentStep) {
-                const stepDone = dsaData.filter(d => d.step === currentStep.step && d.status === "done").length;
-                const stepTotal = currentStep.subtopics.length;
-                const remaining = stepTotal - stepDone;
-                const daysNeeded = Math.ceil(remaining / 2);
-                tips.push({ icon:"📌", color:"#818cf8", title:`Focus: ${currentStep.title}`, body:`You have ${remaining} subtopic${remaining!==1?"s":""} left in this step. At 2/day, you'll finish in ~${daysNeeded} day${daysNeeded!==1?"s":""}. Lock it down before moving on.` });
-            } else {
-                tips.push({ icon:"🏆", color:"#fbbf24", title:"DSA Sheet complete!", body:"All subtopics done! Focus on mock contests and revisiting Hard problems weekly to keep them fresh." });
+                for (let si = 0; si < currentStep.subtopics.length; si++) {
+                    const sub = currentStep.subtopics[si];
+                    const unsolved = sub.problems.filter((_, pi) => !sq[`s${currentStep.step}_${si}_${pi}`]);
+                    if (unsolved.length > 0) { nextSubtopic = sub; nextSubtopicUnsolved = unsolved; break; }
+                }
             }
 
-            // Difficulty balance
+            // ── Spotlight: first unsolved LeetCode problem in current step ──
+            let spotlight = null;
+            if (currentStep) {
+                outer: for (let si = 0; si < currentStep.subtopics.length; si++) {
+                    for (let pi = 0; pi < currentStep.subtopics[si].problems.length; pi++) {
+                        const p = currentStep.subtopics[si].problems[pi];
+                        if (!sq[`s${currentStep.step}_${si}_${pi}`] && p.practice?.includes("leetcode")) {
+                            spotlight = { ...p, subName: currentStep.subtopics[si].name };
+                            break outer;
+                        }
+                    }
+                }
+            }
+
+            // ── Velocity from activity log ────────────────────────────────
+            const logDates = Object.keys(al).filter(d => (al[d]||[]).length > 0).sort();
+            let subtopicsPerDay = 0, firstDate = null, daysTracked = 0;
+            if (logDates.length > 0) {
+                firstDate = logDates[0];
+                const ms = new Date(today) - new Date(firstDate);
+                daysTracked = Math.max(1, Math.round(ms / 86400000) + 1);
+                subtopicsPerDay = dsaDone > 0 ? parseFloat((dsaDone / daysTracked).toFixed(1)) : 0;
+            }
+            const effectiveRate = Math.max(subtopicsPerDay, 0.1);
+            const daysLeftCurrent = currentStep ? Math.ceil((currentStepTotal - currentStepDone) / 2) : 0;
+            const daysLeftAll = Math.ceil((dsaTotal - dsaDone) / effectiveRate);
+            const finishDateObj = new Date(); finishDateObj.setDate(finishDateObj.getDate() + daysLeftAll);
+            const finishDate = finishDateObj.toLocaleDateString("en-IN", { day:"numeric", month:"short" });
+
+            // ── This-week activity grid ───────────────────────────────────
+            const weekGrid = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const ds = d.toISOString().slice(0,10);
+                const dow = d.getDay();
+                weekGrid.push({ date: ds, count: (al[ds]||[]).length, label: ["S","M","T","W","T","F","S"][dow] });
+            }
+            const activeThisWeek = weekGrid.filter(d => d.count > 0).length;
+
+            // ── Difficulty pcts ───────────────────────────────────────────
             const easyPct = diffTotal.Easy ? Math.round(diffCounts.Easy / diffTotal.Easy * 100) : 0;
             const medPct  = diffTotal.Medium ? Math.round(diffCounts.Medium / diffTotal.Medium * 100) : 0;
             const hardPct = diffTotal.Hard ? Math.round(diffCounts.Hard / diffTotal.Hard * 100) : 0;
 
-            if (easyPct > 50 && medPct < 20) {
-                tips.push({ icon:"⚡", color:"#fbbf24", title:"Level up to Medium problems", body:`You've solved ${easyPct}% Easy but only ${medPct}% Medium. Interviews focus on Medium. Aim to solve 2 Mediums for every 1 Easy now.` });
-            } else if (medPct > 40 && hardPct < 10) {
-                tips.push({ icon:"💪", color:"#f87171", title:"Time to tackle Hard problems", body:`Strong Medium base (${medPct}% done). Spend 1 session/week on Hard problems — they sharpen your problem-solving instincts significantly.` });
-            } else if (solvedProblems < 30) {
-                tips.push({ icon:"🎯", color:"#60a5fa", title:"Build your problem-solving base", body:"Target solving at least 1 problem per day. Start with Easy problems in your current step to build confidence and pattern recognition." });
-            } else {
-                tips.push({ icon:"🎯", color:"#34d399", title:"Solid difficulty spread", body:`Easy ${easyPct}% · Medium ${medPct}% · Hard ${hardPct}%. Keep this balanced pace — add 1 Hard per week as a challenge.` });
-            }
-
-            // Weeks pacing
-            if (weeksDone === 0 && pct < 10) {
-                tips.push({ icon:"📅", color:"#60a5fa", title:"Recommended weekly target", body:"Plan for ~1–2 steps per week. Week 1 covers Basics + Sorting — aim to finish Step 1 this week with all subtopics marked done." });
-            } else if (weeksDone < 4 && pct < 40) {
-                tips.push({ icon:"📅", color:"#60a5fa", title:"Midpoint check-in", body:`${weeksDone}/8 weeks done. You should be around ${weeksDone * 12}% — you're at ${pct}%. ${pct < weeksDone*12 ? "Pick up the pace: try 3 subtopics/day." : "Ahead of schedule — great work!"}` });
-            } else if (weeksDone >= 6) {
-                tips.push({ icon:"📅", color:"#fb923c", title:"Final stretch — Graphs & DP", body:"You're in the home stretch! Graphs and DP are the hardest steps. Dedicate 90-min focused sessions and review patterns, not just problems." });
-            }
-
-            // COA
-            const coaDone = coaData.filter(d => d.status === "done").length;
+            // ── COA ───────────────────────────────────────────────────────
+            const nextCoa = coaData.find(c => c.status !== "done");
+            const coaDone = coaData.filter(c => c.status === "done").length;
             const coaTotal = coaData.length;
-            if (coaTotal > 0 && coaDone === 0) {
-                tips.push({ icon:"📖", color:"#a78bfa", title:"Don't neglect COA", body:"COA topics are 0% done. Interleave 1 COA topic every 2 days with your DSA practice — it keeps both fresh and avoids last-minute cramming." });
-            } else if (coaTotal > 0 && coaDone < coaTotal * 0.5) {
-                tips.push({ icon:"📖", color:"#a78bfa", title:"COA needs attention", body:`COA is ${Math.round(coaDone/coaTotal*100)}% done. Aim to finish 2 topics/week alongside DSA. Don't let it pile up near exams.` });
-            }
 
-            return tips.slice(0, 4);
-        }, [dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems]);
+            // ── Difficulty strategy advice ────────────────────────────────
+            let diffAdvice = "";
+            if (solvedProblems < 15) diffAdvice = "Solve 1 Easy per day first — build pattern recognition before jumping to harder problems.";
+            else if (easyPct > 60 && medPct < 25) diffAdvice = `You've cleared ${diffCounts.Easy} Easy but only ${diffCounts.Medium} Medium. Shift to 2 Mediums per 1 Easy — interviews live here.`;
+            else if (medPct > 45 && hardPct < 12) diffAdvice = `Solid Medium base (${diffCounts.Medium} solved). Add 1 Hard/week — they compound your pattern range fast.`;
+            else if (hardPct > 20) diffAdvice = "Strong across all tiers. Focus on speed now — practice solving each problem in under 25 minutes.";
+            else diffAdvice = `Balanced: ${diffCounts.Easy}E · ${diffCounts.Medium}M · ${diffCounts.Hard}H. Keep this ratio and aim for 2 new problems daily.`;
+
+            // ── Streak advice ─────────────────────────────────────────────
+            let streakAdvice = "";
+            if (streak === 0) streakAdvice = "No active streak. Solving even 1 problem today starts it — 15 minutes is enough.";
+            else if (streak < 5) streakAdvice = `${streak}-day streak. Don't break it — ${5 - streak} more days to your first milestone.`;
+            else if (streak < 14) streakAdvice = `${streak}-day streak! ${14 - streak} more days → 2-week habit lock-in. That's when consistency becomes automatic.`;
+            else streakAdvice = `${streak}-day streak — exceptional. You're building a skill that compounds for years.`;
+
+            return { currentStep, currentStepDone, currentStepTotal, nextSubtopic, nextSubtopicUnsolved,
+                     spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
+                     weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
+                     diffAdvice, streakAdvice, dsaDone, dsaTotal };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [dsaData, coaData, solvedQuestions, activityLog, diffCounts, diffTotal, solvedProblems, today]);
+
+        const { currentStep, currentStepDone, currentStepTotal, nextSubtopic, nextSubtopicUnsolved,
+                spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
+                weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
+                diffAdvice, streakAdvice, dsaDone, dsaTotal } = A;
 
         return <div style={{...S.card, marginTop:16}}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-                <span style={{fontSize:20}}>🤖</span>
-                <div style={S.sectionTitle}>AI Coach — Personalized Suggestions</div>
-                <span style={{marginLeft:"auto",fontSize:10,color:"#334155",background:"#13151f",padding:"3px 10px",borderRadius:20,border:"1px solid #1e2030"}}>Based on your progress</span>
+
+            {/* Header */}
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
+                <span style={{fontSize:18}}>🤖</span>
+                <span style={S.sectionTitle}>AI Coach</span>
+                <span style={{fontSize:11,color:"#475569"}}>— Personalized to your progress</span>
+                <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5}}>
+                    <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 6px #34d399"}}/>
+                    <span style={{fontSize:10,color:"#475569"}}>Live analysis</span>
+                </div>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12}}>
-                {suggestions.map((s,i) => <div key={i} style={{background:"#0a0b0d",border:`1px solid ${s.color}22`,borderLeft:`3px solid ${s.color}`,borderRadius:8,padding:"12px 14px"}}>
-                    <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:5}}>
-                        <span style={{fontSize:16}}>{s.icon}</span>
-                        <span style={{fontSize:12,fontWeight:700,color:s.color}}>{s.title}</span>
+
+            {/* TODAY'S ACTION PLAN banner */}
+            <div style={{background:"#060e1a",border:"1px solid #1e3a5f",borderLeft:"3px solid #60a5fa",borderRadius:10,padding:"14px 18px",marginBottom:14}}>
+                <div style={{fontSize:10,color:"#60a5fa",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:10}}>📋 Today's Action Plan</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16}}>
+                    <div>
+                        <div style={{fontSize:10,color:"#475569",marginBottom:4}}>DSA — do this now</div>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:3,lineHeight:1.35}}>
+                            {nextSubtopic ? nextSubtopic.name : currentStep ? `Finish Step ${currentStep.step}` : "🎉 All steps done!"}
+                        </div>
+                        {nextSubtopicUnsolved.length > 0 && <div style={{fontSize:10,color:"#64748b",lineHeight:1.5}}>
+                            Solve: <span style={{color:"#94a3b8"}}>{nextSubtopicUnsolved.slice(0,2).map(p=>p.title).join(", ")}</span>
+                            {nextSubtopicUnsolved.length > 2 && <span style={{color:"#475569"}}> +{nextSubtopicUnsolved.length-2} more</span>}
+                        </div>}
                     </div>
-                    <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.55}}>{s.body}</div>
-                </div>)}
+                    <div>
+                        <div style={{fontSize:10,color:"#475569",marginBottom:4}}>COA — study next</div>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:3,lineHeight:1.35}}>
+                            {nextCoa ? nextCoa.topic : "COA Complete ✓"}
+                        </div>
+                        {nextCoa && <div style={{fontSize:10,color:"#64748b",lineHeight:1.5}}>{nextCoa.subtopics?.slice(0,55)}{nextCoa.subtopics?.length>55?"…":""}</div>}
+                    </div>
+                    <div>
+                        <div style={{fontSize:10,color:"#475569",marginBottom:4}}>Suggested time split</div>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:3}}>2 h DSA · 45 min COA</div>
+                        <div style={{fontSize:10,color:"#64748b"}}>
+                            {currentStep ? `${currentStepTotal - currentStepDone} subtopics left in Step ${currentStep.step}` : "Move to revision mode"}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 6-card grid */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+
+                {/* 1 – Current Step */}
+                <div style={{background:"#0a0b0d",border:"1px solid #818cf828",borderLeft:"3px solid #818cf8",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>📌</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.07em"}}>Current Step</span>
+                    </div>
+                    {currentStep ? <>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:2,lineHeight:1.35}}>Step {currentStep.step}: {currentStep.title}</div>
+                        <div style={{fontSize:10,color:"#64748b",marginBottom:6}}>{currentStepDone}/{currentStepTotal} subtopics done</div>
+                        <PBar pct={currentStepTotal ? Math.round(currentStepDone/currentStepTotal*100) : 0} color="#818cf8" height={4}/>
+                        <div style={{marginTop:8,fontSize:10,color:"#94a3b8"}}>
+                            ~<span style={{color:"#818cf8",fontWeight:700}}>{daysLeftCurrent} day{daysLeftCurrent!==1?"s":""}</span> to finish at 2/day
+                        </div>
+                        {nextSubtopic && <div style={{marginTop:6,padding:"5px 8px",background:"#0d0e20",borderRadius:6,fontSize:10,color:"#a78bfa",lineHeight:1.4}}>
+                            Next up: <strong>{nextSubtopic.name}</strong>
+                        </div>}
+                    </> : <div style={{fontSize:12,color:"#34d399",fontWeight:700,lineHeight:1.6}}>All {dsaTotal} subtopics complete! 🏆<br/><span style={{fontSize:10,color:"#475569",fontWeight:400}}>Focus on contests and revision.</span></div>}
+                </div>
+
+                {/* 2 – Pace & ETA */}
+                <div style={{background:"#0a0b0d",border:"1px solid #34d39928",borderLeft:"3px solid #34d399",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>⚡</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#34d399",textTransform:"uppercase",letterSpacing:"0.07em"}}>Your Pace</span>
+                    </div>
+                    {firstDate ? <>
+                        <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:2}}>
+                            <span style={{fontSize:26,fontWeight:800,color:"#e2e8f0",lineHeight:1}}>{subtopicsPerDay}</span>
+                            <span style={{fontSize:10,color:"#475569"}}>subtopics/day avg</span>
+                        </div>
+                        <div style={{fontSize:10,color:"#475569",marginBottom:8}}>tracked since {firstDate} · {dsaDone} done total</div>
+                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:6}}>
+                            Sheet finish: <span style={{color:"#34d399",fontWeight:700}}>{finishDate}</span>
+                            <span style={{color:"#475569"}}> ({daysLeftAll}d left)</span>
+                        </div>
+                        <div style={{fontSize:10,padding:"4px 8px",borderRadius:6,
+                            background: subtopicsPerDay >= 2 ? "#052e1a" : subtopicsPerDay >= 1 ? "#2d1f04" : "#3b0a0a",
+                            color: subtopicsPerDay >= 2 ? "#34d399" : subtopicsPerDay >= 1 ? "#fbbf24" : "#f87171",
+                            border: `1px solid ${subtopicsPerDay >= 2 ? "#16533a" : subtopicsPerDay >= 1 ? "#78450a" : "#7f1d1d"}`
+                        }}>
+                            {subtopicsPerDay >= 2 ? "✓ On track for 8-week plan" : subtopicsPerDay >= 1 ? "⚠ Slightly behind — push to 2/day" : "⚠ Speed up to hit your deadline"}
+                        </div>
+                    </> : <>
+                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:6}}>No sessions logged yet</div>
+                        <div style={{fontSize:10,color:"#64748b",marginBottom:8}}>At 2/day → finish in ~{Math.ceil(dsaTotal/2)} days ({new Date(Date.now()+Math.ceil(dsaTotal/2)*86400000).toLocaleDateString("en-IN",{day:"numeric",month:"short"})})</div>
+                        <div style={{fontSize:10,color:"#60a5fa"}}>↑ Log your first session above to track real pace</div>
+                    </>}
+                </div>
+
+                {/* 3 – This Week */}
+                <div style={{background:"#0a0b0d",border:"1px solid #f9731628",borderLeft:"3px solid #f97316",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>🔥</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#f97316",textTransform:"uppercase",letterSpacing:"0.07em"}}>This Week</span>
+                    </div>
+                    <div style={{display:"flex",gap:3,marginBottom:8}}>
+                        {weekGrid.map((d,i) => {
+                            const isToday = d.date === today;
+                            const intensity = d.count === 0 ? 0 : d.count < 3 ? 1 : d.count < 6 ? 2 : 3;
+                            const bg = ["#0f1117","#431407","#7c2d12","#c2410c"][intensity];
+                            return <div key={i} style={{flex:1,textAlign:"center"}}>
+                                <div style={{fontSize:8,color:isToday?"#f97316":"#334155",marginBottom:3,fontWeight:isToday?700:400}}>{d.label}</div>
+                                <div style={{height:22,borderRadius:4,background:bg,border:`1px solid ${isToday?"#f97316":"#1e2030"}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                    {d.count > 0 && <span style={{fontSize:7,color:"#fed7aa",fontWeight:700}}>{d.count}</span>}
+                                </div>
+                            </div>;
+                        })}
+                    </div>
+                    <div style={{fontSize:11,color:"#94a3b8",marginBottom:4}}>
+                        <span style={{color:"#f97316",fontWeight:700}}>{activeThisWeek}/7</span> active days · <span style={{color:streak>5?"#34d399":streak>0?"#f97316":"#ef4444",fontWeight:700}}>{streak}🔥</span>
+                    </div>
+                    <div style={{fontSize:10,color:"#64748b",lineHeight:1.5}}>{streakAdvice}</div>
+                </div>
+
+                {/* 4 – Problem Spotlight */}
+                <div style={{background:"#0a0b0d",border:"1px solid #60a5fa28",borderLeft:"3px solid #60a5fa",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>🎯</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#60a5fa",textTransform:"uppercase",letterSpacing:"0.07em"}}>Solve Next</span>
+                    </div>
+                    {spotlight ? <>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:2,lineHeight:1.35}}>{spotlight.title}</div>
+                        <div style={{fontSize:10,color:"#475569",marginBottom:6}}>{spotlight.subName} · Step {currentStep?.step}</div>
+                        {spotlight.difficulty && <span style={{
+                            fontSize:9,fontWeight:700,padding:"2px 7px",borderRadius:4,marginBottom:8,display:"inline-block",
+                            background:spotlight.difficulty==="Easy"?"#052e1a":spotlight.difficulty==="Medium"?"#2d1f04":"#3b0a0a",
+                            color:spotlight.difficulty==="Easy"?"#34d399":spotlight.difficulty==="Medium"?"#fbbf24":"#f87171",
+                        }}>{spotlight.difficulty}</span>}
+                        <div style={{display:"flex",gap:6,marginTop:8}}>
+                            {spotlight.practice && <a href={spotlight.practice} target="_blank" rel="noreferrer"
+                                style={{fontSize:10,color:"#60a5fa",textDecoration:"none",padding:"3px 10px",borderRadius:5,border:"1px solid #1e3a5f",background:"#060e1a"}}>LeetCode ↗</a>}
+                            {spotlight.yt && <a href={spotlight.yt} target="_blank" rel="noreferrer"
+                                style={{fontSize:10,color:"#ef4444",textDecoration:"none",padding:"3px 10px",borderRadius:5,border:"1px solid #3b0a0a",background:"#0a0405"}}>YouTube ↗</a>}
+                        </div>
+                    </> : <div style={{fontSize:12,color:"#34d399",fontWeight:600}}>All tracked LeetCode problems done! 🎉</div>}
+                </div>
+
+                {/* 5 – Difficulty Strategy */}
+                <div style={{background:"#0a0b0d",border:"1px solid #fbbf2428",borderLeft:"3px solid #fbbf24",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>📊</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#fbbf24",textTransform:"uppercase",letterSpacing:"0.07em"}}>Difficulty Mix</span>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
+                        {[
+                            {label:"Easy",   pct:easyPct, done:diffCounts.Easy,   total:diffTotal.Easy,   color:"#34d399"},
+                            {label:"Medium", pct:medPct,  done:diffCounts.Medium, total:diffTotal.Medium, color:"#fbbf24"},
+                            {label:"Hard",   pct:hardPct, done:diffCounts.Hard,   total:diffTotal.Hard,   color:"#f87171"},
+                        ].map(r => <div key={r.label}>
+                            <div style={{display:"flex",justifyContent:"space-between",fontSize:10,marginBottom:2}}>
+                                <span style={{color:r.color,fontWeight:600}}>{r.label}</span>
+                                <span style={{color:"#475569"}}>{r.done}/{r.total} — {r.pct}%</span>
+                            </div>
+                            <PBar pct={r.pct} color={r.color} height={4}/>
+                        </div>)}
+                    </div>
+                    <div style={{fontSize:10,color:"#94a3b8",lineHeight:1.5}}>{diffAdvice}</div>
+                </div>
+
+                {/* 6 – COA Focus */}
+                <div style={{background:"#0a0b0d",border:"1px solid #a78bfa28",borderLeft:"3px solid #a78bfa",borderRadius:8,padding:"12px 14px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                        <span style={{fontSize:13}}>📖</span>
+                        <span style={{fontSize:10,fontWeight:700,color:"#a78bfa",textTransform:"uppercase",letterSpacing:"0.07em"}}>COA Next Up</span>
+                    </div>
+                    {nextCoa ? <>
+                        <div style={{fontSize:12,fontWeight:700,color:"#e2e8f0",marginBottom:3,lineHeight:1.35}}>{nextCoa.topic}</div>
+                        <div style={{fontSize:10,color:"#64748b",marginBottom:8,lineHeight:1.5}}>{nextCoa.subtopics}</div>
+                        <div style={{marginBottom:6}}>
+                            <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#475569",marginBottom:3}}>
+                                <span>Overall COA</span>
+                                <span style={{color:"#a78bfa"}}>{coaDone}/{coaTotal} done</span>
+                            </div>
+                            <PBar pct={coaTotal ? Math.round(coaDone/coaTotal*100) : 0} color="#a78bfa" height={4}/>
+                        </div>
+                        <div style={{fontSize:10,padding:"4px 8px",borderRadius:6,background:"#160d2a",color:"#c4b5fd",border:"1px solid #3b1f6b"}}>
+                            Week {nextCoa.week} · Target: {nextCoa.practiceTarget} practice problems
+                        </div>
+                    </> : <div style={{fontSize:12,color:"#34d399",fontWeight:700,lineHeight:1.6}}>All COA topics complete! 🎓<br/><span style={{fontSize:10,color:"#475569",fontWeight:400}}>Review past papers for exam prep.</span></div>}
+                </div>
+
             </div>
         </div>;
     }
