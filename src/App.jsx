@@ -1063,7 +1063,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
@@ -1190,11 +1190,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
         <ActivityHeatmap activityLog={activityLog} />
 
-        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} solvedQuestions={solvedQuestions} activityLog={activityLog} dailyLog={dailyLog} />
+        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} solvedQuestions={solvedQuestions} activityLog={activityLog} dailyLog={dailyLog} todos={todos||[]} />
     </div>;
     }
 
-    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems, solvedQuestions, activityLog, dailyLog }) {
+    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems, solvedQuestions, activityLog, dailyLog, todos }) {
         const today = new Date().toISOString().slice(0,10);
 
         const A = useMemo(() => {
@@ -1284,17 +1284,36 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             else if (streak < 14) streakAdvice = `${streak}-day streak! ${14 - streak} more days → 2-week habit lock-in. That's when consistency becomes automatic.`;
             else streakAdvice = `${streak}-day streak — exceptional. You're building a skill that compounds for years.`;
 
+            // ── To-Do stats (reactive to task completion) ─────────────────
+            const td = todos || [];
+            const todoDoneToday  = td.filter(t => t.done && t.due === today);
+            const todoDoneTotal  = td.filter(t => t.done);
+            const todoOpenTotal  = td.filter(t => !t.done);
+            const todoDueToday   = td.filter(t => !t.done && t.due === today);
+            const todoOverdue    = td.filter(t => !t.done && t.due && t.due < today);
+            const recentDone     = [...todoDoneTotal]
+                .sort((a,b) => (b.createdAt||0) - (a.createdAt||0))
+                .slice(0, 3);
+            let todoAdvice = "";
+            if (todoOverdue.length > 0) todoAdvice = `${todoOverdue.length} overdue task${todoOverdue.length!==1?"s":""} need attention — reschedule or complete them first.`;
+            else if (todoDueToday.length > 0) todoAdvice = `${todoDueToday.length} task${todoDueToday.length!==1?"s":""} due today — knock them out before your DSA session.`;
+            else if (todoOpenTotal.length === 0 && todoDoneTotal.length > 0) todoAdvice = "All tasks done! Add new study goals to keep momentum going.";
+            else if (todoDoneToday.length > 0) todoAdvice = `${todoDoneToday.length} task${todoDoneToday.length!==1?"s":""} completed today — great execution. Keep the energy up.`;
+            else todoAdvice = "No tasks completed today yet. Even one small task builds momentum.";
+
             return { currentStep, currentStepDone, currentStepTotal, nextSubtopic, nextSubtopicUnsolved,
                      spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
                      weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
-                     diffAdvice, streakAdvice, dsaDone, dsaTotal };
+                     diffAdvice, streakAdvice, dsaDone, dsaTotal,
+                     todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [dsaData, coaData, solvedQuestions, activityLog, diffCounts, diffTotal, solvedProblems, today]);
+        }, [dsaData, coaData, solvedQuestions, activityLog, diffCounts, diffTotal, solvedProblems, todos, today]);
 
         const { currentStep, currentStepDone, currentStepTotal, nextSubtopic, nextSubtopicUnsolved,
                 spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
                 weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
-                diffAdvice, streakAdvice, dsaDone, dsaTotal } = A;
+                diffAdvice, streakAdvice, dsaDone, dsaTotal,
+                todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice } = A;
 
         return <div style={{...S.card, marginTop:16}}>
 
@@ -1482,6 +1501,51 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             Week {nextCoa.week} · Target: {nextCoa.practiceTarget} practice problems
                         </div>
                     </> : <div style={{fontSize:12,color:"#34d399",fontWeight:700,lineHeight:1.6}}>All COA topics complete! 🎓<br/><span style={{fontSize:10,color:"#475569",fontWeight:400}}>Review past papers for exam prep.</span></div>}
+                </div>
+
+                {/* 7 – To-Do Progress (live, updates on every task completion) */}
+                <div style={{background:"#0a0b0d",border:`1px solid ${todoOverdue.length>0?"#ef444428":todoDoneToday.length>0?"#34d39928":"#fb923c28"}`,borderLeft:`3px solid ${todoOverdue.length>0?"#ef4444":todoDoneToday.length>0?"#34d399":"#fb923c"}`,borderRadius:8,padding:"12px 14px",gridColumn:"1 / -1"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+                        <span style={{fontSize:13}}>✅</span>
+                        <span style={{fontSize:10,fontWeight:700,color:todoOverdue.length>0?"#ef4444":todoDoneToday.length>0?"#34d399":"#fb923c",textTransform:"uppercase",letterSpacing:"0.07em"}}>To-Do Progress</span>
+                        <span style={{fontSize:10,color:"#334155",background:"#0d0f18",padding:"1px 8px",borderRadius:10,border:"1px solid #1e2030",marginLeft:4}}>updates live as you complete tasks</span>
+                    </div>
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,alignItems:"start"}}>
+                        {/* Stats column */}
+                        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                            {[
+                                {label:"Done today",  val:todoDoneToday.length,  color:"#34d399"},
+                                {label:"Open tasks",  val:todoOpenTotal.length,  color:"#60a5fa"},
+                                {label:"Overdue",     val:todoOverdue.length,    color: todoOverdue.length>0?"#ef4444":"#475569"},
+                                {label:"Total done",  val:todoDoneTotal.length,  color:"#818cf8"},
+                            ].map(s => <div key={s.label} style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                                <span style={{fontSize:10,color:"#475569"}}>{s.label}</span>
+                                <span style={{fontSize:14,fontWeight:700,color:s.color}}>{s.val}</span>
+                            </div>)}
+                        </div>
+                        {/* Today's due tasks */}
+                        <div>
+                            <div style={{fontSize:10,color:"#475569",marginBottom:6,fontWeight:600}}>Due today</div>
+                            {todoDueToday.length > 0
+                                ? todoDueToday.slice(0,4).map((t,i) => <div key={i} style={{fontSize:10,color:"#fbbf24",padding:"3px 0",borderBottom:"1px solid #1e2030",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.text}</div>)
+                                : <div style={{fontSize:10,color:"#334155",fontStyle:"italic"}}>None due today</div>}
+                        </div>
+                        {/* Recently completed */}
+                        <div>
+                            <div style={{fontSize:10,color:"#475569",marginBottom:6,fontWeight:600}}>Recently completed</div>
+                            {recentDone.length > 0
+                                ? recentDone.map((t,i) => <div key={i} style={{fontSize:10,color:"#34d399",padding:"3px 0",borderBottom:"1px solid #1e2030",display:"flex",alignItems:"center",gap:5}}>
+                                    <span style={{color:"#16a34a",fontSize:9}}>✓</span>
+                                    <span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1}}>{t.text}</span>
+                                  </div>)
+                                : <div style={{fontSize:10,color:"#334155",fontStyle:"italic"}}>No tasks completed yet</div>}
+                        </div>
+                        {/* Coach advice */}
+                        <div style={{padding:"10px 12px",background:"#060e1a",borderRadius:8,border:`1px solid ${todoOverdue.length>0?"#7f1d1d":todoDoneToday.length>0?"#16533a":"#78450a"}`}}>
+                            <div style={{fontSize:10,color:"#475569",marginBottom:5,fontWeight:600}}>Coach says</div>
+                            <div style={{fontSize:11,color:"#94a3b8",lineHeight:1.55}}>{todoAdvice}</div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -2832,7 +2896,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
-                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} />}
+                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions} />}
