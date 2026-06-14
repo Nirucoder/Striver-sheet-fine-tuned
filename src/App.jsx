@@ -1846,10 +1846,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         <tbody>
                             {sg.subtopics.map((sub, si) => {
                                 const filteredProbs = sub.problems.filter(p =>
-                                    diffFilter === "All" || p.difficulty === diffFilter
+                                    p && (diffFilter === "All" || p.difficulty === diffFilter)
                                 );
                                 if (filteredProbs.length === 0) return null;
-                                const subSolved = sub.problems.filter(p=>solvedQuestions[`s${sg.step}_${si}_${p._origIdx}`]).length;
+                                const subSolved = sub.problems.filter(p=> p && solvedQuestions[`s${sg.step}_${si}_${p._origIdx}`]).length;
                                 return [
                                     <tr key={`sub-${si}`} style={{background:"#0c0e18"}}>
                                         <td colSpan={7} style={{padding:"7px 14px"}}>
