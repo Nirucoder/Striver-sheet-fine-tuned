@@ -1063,7 +1063,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, revData }) {
     const [logNote, setLogNote] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
@@ -1190,11 +1190,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
         <ActivityHeatmap activityLog={activityLog} />
 
-        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} solvedQuestions={solvedQuestions} activityLog={activityLog} dailyLog={dailyLog} todos={todos||[]} />
+        <AISuggestions dsaData={dsaData} coaData={coaData} streak={streak} diffCounts={diffCounts} diffTotal={diffTotal} weeksDone={weeksDone} solvedProblems={solvedProblems} totalProblems={totalProblems} solvedQuestions={solvedQuestions} activityLog={activityLog} dailyLog={dailyLog} todos={todos||[]} revData={revData} />
     </div>;
     }
 
-    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems, solvedQuestions, activityLog, dailyLog, todos }) {
+    function AISuggestions({ dsaData, coaData, streak, diffCounts, diffTotal, weeksDone, solvedProblems, totalProblems, solvedQuestions, activityLog, dailyLog, todos, revData }) {
         const today = new Date().toISOString().slice(0,10);
 
         const A = useMemo(() => {
@@ -1269,6 +1269,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             const coaDone = coaData.filter(c => c.status === "done").length;
             const coaTotal = coaData.length;
 
+            // ── Revision cadence gaps ─────────────────────────────────────
+            const pendingWeekReview  = (revData || []).filter(d => d.day && !d.week1);
+            const pendingMonthReview = (revData || []).filter(d => d.week1 && !d.month);
+            const pendingDayReview   = (revData || []).filter(d => !d.day);
+
             // ── Difficulty strategy advice ────────────────────────────────
             let diffAdvice = "";
             if (solvedProblems < 15) diffAdvice = "Solve 1 Easy per day first — build pattern recognition before jumping to harder problems.";
@@ -1305,15 +1310,19 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                      spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
                      weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
                      diffAdvice, streakAdvice, dsaDone, dsaTotal,
-                     todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice };
+                     todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice,
+                     pendingWeekReview, pendingMonthReview, pendingDayReview };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [dsaData, coaData, solvedQuestions, activityLog, diffCounts, diffTotal, solvedProblems, todos, today]);
+        }, [dsaData, coaData, solvedQuestions, activityLog, diffCounts, diffTotal, solvedProblems, todos, today, revData]);
 
         const { currentStep, currentStepDone, currentStepTotal, nextSubtopic, nextSubtopicUnsolved,
                 spotlight, subtopicsPerDay, firstDate, daysLeftCurrent, daysLeftAll, finishDate,
                 weekGrid, activeThisWeek, easyPct, medPct, hardPct, nextCoa, coaDone, coaTotal,
                 diffAdvice, streakAdvice, dsaDone, dsaTotal,
-                todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice } = A;
+                todoDoneToday, todoDoneTotal, todoOpenTotal, todoDueToday, todoOverdue, recentDone, todoAdvice,
+                pendingWeekReview, pendingMonthReview, pendingDayReview } = A;
+
+        const recentCount = ((activityLog || {})[today] || []).filter(e => e.type === "dsa").length;
 
         return <div style={{...S.card, marginTop:16}}>
 
@@ -1323,6 +1332,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <span style={S.sectionTitle}>AI Coach</span>
                 <span style={{fontSize:11,color:"#475569"}}>— Personalized to your progress</span>
                 <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5}}>
+                    {recentCount > 0 && <span style={{fontSize:10,color:"#34d399",background:"#052e1a",padding:"2px 8px",borderRadius:10,border:"1px solid #16533a",marginRight:6}}>{recentCount} solved today</span>}
                     <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 6px #34d399"}}/>
                     <span style={{fontSize:10,color:"#475569"}}>Live analysis</span>
                 </div>
@@ -2896,7 +2906,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
-                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} />}
+                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} revData={revData} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions} />}
