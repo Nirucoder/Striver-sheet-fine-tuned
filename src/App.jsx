@@ -2809,6 +2809,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [solvedQuestions, setSolvedQuestions] = useLocalStorage("a2z_solved", {});
     const [todos, setTodos] = useLocalStorage("studyos_todos_v1", []);
     const [confetti, setConfetti] = useState(false);
+    const [showResetModal, setShowResetModal] = useState(false);
 
     // Compute Easy/Medium/Hard solved & total counts for donut widget
     const { diffCounts, diffTotal } = useMemo(() => {
@@ -2843,10 +2844,19 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     a.click();
     }
     function handleReset() {
-    if(window.confirm("Reset ALL progress? This cannot be undone.")) {
-    setDsaData(DSA_TABLE); setCoaData(COA_TABLE); setRevData(ALL_REV_TOPICS);
-    setWeekStatus(Array(8).fill(false)); setStreak(0); setDailyLog([]);
-    }
+        setDsaData(DSA_TABLE);
+        setCoaData(COA_TABLE);
+        setRevData(ALL_REV_TOPICS);
+        setWeekStatus(Array(8).fill(false));
+        setStreak(0);
+        setDailyLog([]);
+        setLastLogDate("");
+        setActivityLog({});
+        setSolvedQuestions({});
+        setTodos([]);
+        try { localStorage.removeItem("dsa_notes_v1"); } catch {}
+        try { localStorage.removeItem("dsa_rev_stars_v1"); } catch {}
+        setShowResetModal(false);
     }
 
     return (
@@ -2886,6 +2896,24 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             }
         </style>
         <Confetti active={confetti} onDone={()=>setConfetti(false)}/>
+        {showResetModal && (
+            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:14,padding:"28px 32px",maxWidth:380,width:"90%",boxShadow:"0 24px 60px rgba(0,0,0,0.6)"}}>
+                    <div style={{fontSize:20,fontWeight:700,color:"#f1f5f9",marginBottom:8}}>Reset all progress?</div>
+                    <div style={{fontSize:13,color:"#64748b",marginBottom:24,lineHeight:1.6}}>
+                        This will permanently erase <span style={{color:"#f87171",fontWeight:600}}>all</span> your DSA, COA, revision, activity, streak, notes, and to-do data. This cannot be undone.
+                    </div>
+                    <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
+                        <button onClick={()=>setShowResetModal(false)} style={{...S.btn(),padding:"8px 18px",fontSize:13}}>
+                            Cancel
+                        </button>
+                        <button onClick={handleReset} style={{...S.btn(),padding:"8px 18px",fontSize:13,background:"#7f1d1d",color:"#fca5a5",border:"1px solid #991b1b"}}>
+                            Yes, reset everything
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
             <div style={S.sidebar}>
                 <div style={S.sidebarTop}>
                     <div style={S.logo}>StudyOS</div>
@@ -2899,6 +2927,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
                     <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
                         <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
+                    </div>
+                    <div onClick={()=>setShowResetModal(true)} style={{...S.navItem(false),color:"#f87171"}}>
+                        <span style={{fontSize:13}}>↺</span><span style={{fontSize:12}}>Reset Progress</span>
                     </div>
                 </div>
             </div>
