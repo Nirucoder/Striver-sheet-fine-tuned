@@ -2886,6 +2886,7 @@ const OS_UNITS = [
     const [syncStatus, setSyncStatus] = useState("");
     const [autoSyncStatus, setAutoSyncStatus] = useState(""); // "saving" | "saved" | "error" | ""
     const [lastSynced, setLastSynced] = useLocalStorage("studyos_last_synced", "");
+    const [cloudLoadedAt, setCloudLoadedAt] = useState("");
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
 
@@ -2928,6 +2929,7 @@ const OS_UNITS = [
                 if (data.revStars)        setRevStars(data.revStars);
                 if (data.mathsProgress)   setMathsProgress(data.mathsProgress);
                 if (data.osProgress)      setOsProgress(data.osProgress);
+                setCloudLoadedAt(new Date().toISOString());
             } else {
                 // First sign-in — no cloud data yet. Migrate whatever is in localStorage
                 // to Supabase so existing progress is never lost.
@@ -3199,6 +3201,17 @@ const OS_UNITS = [
                         {!autoSyncStatus && !session?.sub && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
                         {!autoSyncStatus && (session?.sub || syncCode) && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
                     </div>
+                    {cloudLoadedAt && (
+                        <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>
+                            <span style={{fontSize:9,color:"#34d399",opacity:0.6}}>⬇</span>
+                            <span style={{fontSize:9,color:"#475569",lineHeight:1.4}}>
+                                Loaded from cloud<br/>
+                                <span style={{color:"#64748b"}}>
+                                    {new Date(cloudLoadedAt).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+                                </span>
+                            </span>
+                        </div>
+                    )}
                     <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
                         <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
                     </div>
