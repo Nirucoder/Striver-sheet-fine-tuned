@@ -2976,30 +2976,45 @@ const OS_UNITS = [
     }
     }, [dailyLog]);
 
-    // Auto-sync: debounce 4s after any data change — only if user has set up a sync code
+    // Auto-sync: debounce 4s after any data change
+    // — Supabase save always fires when user is signed in (primary)
+    // — Legacy sync-code save fires only if user has a syncCode set (secondary, optional)
     useEffect(() => {
         if (isFirstRender.current) { isFirstRender.current = false; return; }
-        if (!syncCode) return;
+        if (!session?.sub && !syncCode) return; // nothing to sync to
 
-        const code = syncCode;
         if (autoSyncTimer.current) clearTimeout(autoSyncTimer.current);
         setAutoSyncStatus("saving");
         autoSyncTimer.current = setTimeout(async () => {
-            try {
-                const payload = { dsaData, coaData, revData, weekStatus, streak, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-                // Save to Supabase (if configured) keyed by Google user ID
-                if (session?.sub) await saveUserProgress(session.sub, payload);
-                // Also save to legacy sync-code endpoint if user has one
-                if (code) {
-                    const res = await fetch(`/api/sync/${code}`, {
+            const payload = { dsaData, coaData, revData, weekStatus, streak, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
+            let supabaseOk = !session?.sub; // if not signed in, treat as not needed
+            let legacyOk   = !syncCode;    // if no syncCode, treat as not needed
+
+            // Primary: save to Supabase keyed by Google user ID
+            if (session?.sub) {
+                try {
+                    await saveUserProgress(session.sub, payload);
+                    supabaseOk = true;
+                } catch(e) { console.error("Supabase save error:", e); }
+            }
+
+            // Secondary: save to legacy sync-code endpoint (skipped on Vercel if not available)
+            if (syncCode) {
+                try {
+                    const res = await fetch(`/api/sync/${syncCode}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ data: payload }),
                     });
-                    if (!res.ok) throw new Error("sync failed");
-                }
-                setLastSynced(new Date().toISOString()); setAutoSyncStatus("saved"); setTimeout(() => setAutoSyncStatus(""), 3000);
-            } catch {
+                    legacyOk = res.ok;
+                } catch { legacyOk = false; }
+            }
+
+            if (supabaseOk || legacyOk) {
+                setLastSynced(new Date().toISOString());
+                setAutoSyncStatus("saved");
+                setTimeout(() => setAutoSyncStatus(""), 3000);
+            } else {
                 setAutoSyncStatus("error");
             }
         }, 4000);
@@ -3181,7 +3196,8 @@ const OS_UNITS = [
                         {autoSyncStatus==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
                         {autoSyncStatus==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
                         {autoSyncStatus==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
-                        {!syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
+                        {!autoSyncStatus && !session?.sub && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
+                        {!autoSyncStatus && (session?.sub || syncCode) && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
                     </div>
                     <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
                         <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
