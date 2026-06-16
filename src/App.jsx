@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
 import CalendarTab from "./CalendarTab.jsx";
+import { supabase, loadUserProgress, saveUserProgress } from "./supabase.js";
+import AuthPage from "./AuthPage.jsx";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
