@@ -2908,6 +2908,28 @@ const OS_UNITS = [
         return { diffCounts: solved, diffTotal: total };
     }, [solvedQuestions]);
 
+    // ── Supabase: load user progress on first sign-in ─────────────────────────
+    useEffect(() => {
+        if (!session?.sub) return;
+        loadUserProgress(session.sub).then(data => {
+            if (!data) return;
+            if (data.dsaData)        setDsaData(mergeDsaData(data.dsaData));
+            if (data.coaData)        setCoaData(mergeCoaData(data.coaData));
+            if (data.revData)        setRevData(mergeRevData(data.revData));
+            if (data.weekStatus)     setWeekStatus(data.weekStatus);
+            if (data.streak !== undefined) setStreak(data.streak);
+            if (data.dailyLog)       setDailyLog(data.dailyLog);
+            if (data.lastLogDate)    setLastLogDate(data.lastLogDate);
+            if (data.activityLog)    setActivityLog(data.activityLog);
+            if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
+            if (data.todos)          setTodos(data.todos);
+            if (data.probNotes)      setProbNotes(data.probNotes);
+            if (data.revStars)       setRevStars(data.revStars);
+            if (data.mathsProgress)  setMathsProgress(data.mathsProgress);
+            if (data.osProgress)     setOsProgress(data.osProgress);
+        });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     // Break streak on load if the user missed a day (lastLogDate is not today or yesterday)
     useEffect(() => {
         if (!lastLogDate || streak === 0) return;
@@ -2937,13 +2959,18 @@ const OS_UNITS = [
         autoSyncTimer.current = setTimeout(async () => {
             try {
                 const payload = { dsaData, coaData, revData, weekStatus, streak, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-                const res = await fetch(`/api/sync/${code}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ data: payload }),
-                });
-                if (res.ok) { setLastSynced(new Date().toISOString()); setAutoSyncStatus("saved"); setTimeout(() => setAutoSyncStatus(""), 3000); }
-                else setAutoSyncStatus("error");
+                // Save to Supabase (if configured) keyed by Google user ID
+                if (session?.sub) await saveUserProgress(session.sub, payload);
+                // Also save to legacy sync-code endpoint if user has one
+                if (code) {
+                    const res = await fetch(`/api/sync/${code}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ data: payload }),
+                    });
+                    if (!res.ok) throw new Error("sync failed");
+                }
+                setLastSynced(new Date().toISOString()); setAutoSyncStatus("saved"); setTimeout(() => setAutoSyncStatus(""), 3000);
             } catch {
                 setAutoSyncStatus("error");
             }
