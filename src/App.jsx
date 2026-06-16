@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
+import CalendarTab from "./CalendarTab.jsx";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
@@ -2779,7 +2780,7 @@ const OS_UNITS = [
 
     // ─── MAIN APP ─────────────────────────────────────────────────────────────────
     const NAV = [
-    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"Weekly Planner", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },
+    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"Weekly Planner", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
     function SyncModal({ syncCode, syncStatus, setSyncStatus, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
@@ -3140,6 +3141,7 @@ const OS_UNITS = [
                     {page==="analytics" &&
                     <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} />}
                     {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} setActivityLog={setActivityLog} />}
+                    {page==="calendar" && <CalendarTab todos={todos} weekStatus={weekStatus} />}
             </main>
     </div>
     );
