@@ -2908,25 +2908,53 @@ const OS_UNITS = [
         return { diffCounts: solved, diffTotal: total };
     }, [solvedQuestions]);
 
-    // ── Supabase: load user progress on first sign-in ─────────────────────────
+    // ── Supabase: load or migrate user progress on sign-in ────────────────────
     useEffect(() => {
         if (!session?.sub) return;
         loadUserProgress(session.sub).then(data => {
-            if (!data) return;
-            if (data.dsaData)        setDsaData(mergeDsaData(data.dsaData));
-            if (data.coaData)        setCoaData(mergeCoaData(data.coaData));
-            if (data.revData)        setRevData(mergeRevData(data.revData));
-            if (data.weekStatus)     setWeekStatus(data.weekStatus);
-            if (data.streak !== undefined) setStreak(data.streak);
-            if (data.dailyLog)       setDailyLog(data.dailyLog);
-            if (data.lastLogDate)    setLastLogDate(data.lastLogDate);
-            if (data.activityLog)    setActivityLog(data.activityLog);
-            if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
-            if (data.todos)          setTodos(data.todos);
-            if (data.probNotes)      setProbNotes(data.probNotes);
-            if (data.revStars)       setRevStars(data.revStars);
-            if (data.mathsProgress)  setMathsProgress(data.mathsProgress);
-            if (data.osProgress)     setOsProgress(data.osProgress);
+            if (data) {
+                // Cloud data exists — restore it (cloud wins)
+                if (data.dsaData)         setDsaData(mergeDsaData(data.dsaData));
+                if (data.coaData)         setCoaData(mergeCoaData(data.coaData));
+                if (data.revData)         setRevData(mergeRevData(data.revData));
+                if (data.weekStatus)      setWeekStatus(data.weekStatus);
+                if (data.streak !== undefined) setStreak(data.streak);
+                if (data.dailyLog)        setDailyLog(data.dailyLog);
+                if (data.lastLogDate)     setLastLogDate(data.lastLogDate);
+                if (data.activityLog)     setActivityLog(data.activityLog);
+                if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
+                if (data.todos)           setTodos(data.todos);
+                if (data.probNotes)       setProbNotes(data.probNotes);
+                if (data.revStars)        setRevStars(data.revStars);
+                if (data.mathsProgress)   setMathsProgress(data.mathsProgress);
+                if (data.osProgress)      setOsProgress(data.osProgress);
+            } else {
+                // First sign-in — no cloud data yet. Migrate whatever is in localStorage
+                // to Supabase so existing progress is never lost.
+                try {
+                    const existing = {
+                        dsaData:        JSON.parse(localStorage.getItem("srm_dsa_v3")   || "null"),
+                        coaData:        JSON.parse(localStorage.getItem("srm_coa_v3")   || "null"),
+                        revData:        JSON.parse(localStorage.getItem("srm_rev_v3")   || "null"),
+                        weekStatus:     JSON.parse(localStorage.getItem("srm_weeks_v3") || "null"),
+                        streak:         JSON.parse(localStorage.getItem("srm_streak_v3")|| "0"),
+                        dailyLog:       JSON.parse(localStorage.getItem("srm_log_v3")   || "[]"),
+                        lastLogDate:    JSON.parse(localStorage.getItem("srm_lastlog_v3")|| '""'),
+                        activityLog:    JSON.parse(localStorage.getItem("srm_activity_v1")|| "{}"),
+                        solvedQuestions:JSON.parse(localStorage.getItem("a2z_solved")   || "{}"),
+                        todos:          JSON.parse(localStorage.getItem("studyos_todos_v1")|| "[]"),
+                        probNotes:      JSON.parse(localStorage.getItem("dsa_notes_v1") || "{}"),
+                        revStars:       JSON.parse(localStorage.getItem("dsa_rev_stars_v1")|| "{}"),
+                        mathsProgress:  JSON.parse(localStorage.getItem("maths_progress_v1")|| "{}"),
+                        osProgress:     JSON.parse(localStorage.getItem("os_progress_v1")|| "{}"),
+                    };
+                    // Only migrate if there's actually something to save
+                    const hasSomeProgress = existing.solvedQuestions && Object.keys(existing.solvedQuestions).length > 0
+                        || existing.todos?.length > 0
+                        || existing.streak > 0;
+                    if (hasSomeProgress) saveUserProgress(session.sub, existing);
+                } catch(e) { console.error("Migration error:", e); }
+            }
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
