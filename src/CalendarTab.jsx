@@ -42,9 +42,10 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   const [newEv, setNewEv]               = useState({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
   const [localEvents, setLocalEvents]   = useLocalStorageState("studyos_cal_v1", []);
   const [syncedTodos, setSyncedTodos]   = useLocalStorageState("studyos_cal_synced_v1", {});
-  const tokenClientRef = useRef(null);
-  const pollRef        = useRef(null);
-  const gisReady       = useRef(false);
+  const tokenClientRef    = useRef(null);
+  const pollRef           = useRef(null);
+  const gisReady          = useRef(false);
+  const autoGCalSyncTimer = useRef(null);
 
   useEffect(() => {
     if (!CLIENT_ID) return;
@@ -117,6 +118,38 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     }
     return () => clearInterval(pollRef.current);
   }, [accessToken, currentDate, isValid, fetchEvents]);
+
+  // Auto-push todos to GCal whenever todos change (or GCal first connects)
+  useEffect(() => {
+    if (!isValid()) return;
+    const hasNew = todos.some(td => td.due && !syncedTodos[td.id]);
+    if (!hasNew) return;
+    clearTimeout(autoGCalSyncTimer.current);
+    autoGCalSyncTimer.current = setTimeout(async () => {
+      const tok = sessionStorage.getItem("gcal_token");
+      if (!tok) return;
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const newSynced = { ...syncedTodos }; let count = 0;
+      for (const td of todos) {
+        if (!td.due || newSynced[td.id]) continue;
+        try {
+          const body = { summary:`[StudyOS] ${td.text}`,
+            description:`Project: ${td.project} | Priority: ${td.priority}`,
+            start:{ date: td.due }, end:{ date: td.due } };
+          const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",
+            { method:"POST", headers:{ Authorization:`Bearer ${tok}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
+          if (res.ok) { const ev = await res.json(); if (ev?.id) { newSynced[td.id] = ev.id; count++; } }
+        } catch(e) { console.error("Auto GCal sync failed:", e); }
+      }
+      if (count > 0) {
+        setSyncedTodos(newSynced);
+        setSyncMsg(`✓ Auto-synced ${count} to-do(s) → Google Calendar`);
+        setTimeout(() => setSyncMsg(""), 4000);
+        fetchEvents(tok);
+      }
+    }, 2500);
+    return () => clearTimeout(autoGCalSyncTimer.current);
+  }, [todos, accessToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function createGCalEvent(ev) {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -266,8 +299,13 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
 
       {/* Sync bar */}
       <div style={{ display:"flex", gap:10, marginBottom:20, alignItems:"center", flexWrap:"wrap" }}>
+        {isValid() && (
+          <span style={{ fontSize:11, color:"#34d399", display:"flex", alignItems:"center", gap:5 }}>
+            <span style={{ fontSize:8 }}>●</span> To-dos auto-sync to GCal
+          </span>
+        )}
         <button onClick={syncTodosToGCal} disabled={syncing} style={S.btn("#0f2918","#166534","#34d399")}>
-          {syncing ? "Syncing…" : "↑ Push To-Do due dates → GCal"}
+          {syncing ? "Syncing…" : "↻ Sync now"}
         </button>
         {syncMsg && <span style={{ fontSize:12, color: syncMsg.startsWith("✓") ? "#34d399" : "#f87171" }}>{syncMsg}</span>}
         <span style={{ fontSize:11, color:"#334155", marginLeft:"auto" }}>Click any date to add an event</span>
