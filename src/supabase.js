@@ -18,9 +18,8 @@ export async function loadUserProgress(userId) {
 
 export async function saveUserProgress(userId, payload) {
   if (!supabase) return;
-  const { error } = await supabase
+  await supabase
     .from("user_progress")
     .upsert({ user_id: userId, data: payload, updated_at: new Date().toISOString() },
              { onConflict: "user_id" });
-  if (error) console.error("Save error:", error);
 }

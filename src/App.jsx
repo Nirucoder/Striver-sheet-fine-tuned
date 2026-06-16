@@ -2862,7 +2862,7 @@ const OS_UNITS = [
     TodoApp         = memo(TodoApp);
     SyncModal       = memo(SyncModal);
 
-    export default function App() {
+    export default function App({ session, setSession }) {
     const [page, setPage] = useState("dashboard");
     const [dsaData, setDsaData] = useLocalStorage("srm_dsa_v3", DSA_TABLE, mergeDsaData);
     const [coaData, setCoaData] = useLocalStorage("srm_coa_v3", COA_TABLE, mergeCoaData);
@@ -3099,6 +3099,19 @@ const OS_UNITS = [
                 <div style={S.sidebarTop}>
                     <div style={S.logo}>StudyOS</div>
                     <div style={S.logoSub}>SRM KTR · Sem Break</div>
+                    {session && (
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,padding:"8px 10px",background:"#0a0b0d",borderRadius:8,border:"1px solid #1e2030"}}>
+                            {session.picture && <img src={session.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
+                            <div style={{flex:1,minWidth:0}}>
+                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.name?.split(" ")[0] || "User"}</div>
+                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.email}</div>
+                            </div>
+                            <div onClick={()=>{localStorage.removeItem("studyos_user");setSession(null);}} title="Sign out"
+                                style={{cursor:"pointer",color:"#475569",fontSize:14,flexShrink:0,padding:2,borderRadius:4}}
+                                onMouseEnter={e=>e.currentTarget.style.color="#f87171"}
+                                onMouseLeave={e=>e.currentTarget.style.color="#475569"}>⏻</div>
+                        </div>
+                    )}
                 </div>
                 <nav style={S.nav}>
                     {NAV.map(n=><div key={n.id} onClick={()=>setPage(n.id)} style={S.navItem(page===n.id)}>
