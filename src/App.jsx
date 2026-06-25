@@ -437,7 +437,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     // ─── DASHBOARD ────────────────────────────────────────────────────────────────
-    function ActivityHeatmap({ activityLog }) {
+    function ActivityHeatmap({ activityLog, activeDates }) {
     const [selectedDay, setSelectedDay] = useState(null);
     const [showOther, setShowOther] = useState(false);
     const [otherTab, setOtherTab] = useState("study");
@@ -448,11 +448,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     const GREEN_COLORS = ["#161b22","#0e4429","#006d32","#26a641","#39d353"];
     const GREEN_ACCENT = "#39d353";
+    const BLUE_COLORS  = ["#161b22","#0a1829","#1e3a5f","#1d4ed8","#60a5fa"];
+    const BLUE_ACCENT  = "#60a5fa";
 
     const OTHER_TABS = [
         { id:"study", label:"Study Sessions", colors:["#161b22","#0a3d3a","#0f766e","#0d9488","#2dd4bf"], accent:"#2dd4bf" },
         { id:"todo",  label:"To-Do Done",     colors:["#161b22","#2e1065","#5b21b6","#7c3aed","#a78bfa"], accent:"#a78bfa" },
     ];
+
+    const activeDatesSet = useMemo(() => new Set(activeDates || []), [activeDates]);
 
     function filterDSA(entries) {
         if (!Array.isArray(entries)) return [];
@@ -469,7 +473,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().slice(0,10);
         const cnt = filterDSA(safeLog[dateStr] || []).length;
-        cells.push({ date: dateStr, count: cnt, dow: d.getDay() });
+        const source = cnt > 0 ? (activeDatesSet.has(dateStr) ? "lc" : "manual") : "none";
+        cells.push({ date: dateStr, count: cnt, dow: d.getDay(), source });
     }
     const firstDow = cells[0].dow;
     const weeks = [];
@@ -477,15 +482,20 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     cells.forEach(cell => { cur.push(cell); if (cur.length === 7) { weeks.push(cur); cur = []; } });
     if (cur.length > 0) { while(cur.length < 7) cur.push(null); weeks.push(cur); }
 
-    const getColor = c => {
-        if (!c) return GREEN_COLORS[0]; if (c===1) return GREEN_COLORS[1]; if (c<=3) return GREEN_COLORS[2]; if (c<=6) return GREEN_COLORS[3]; return GREEN_COLORS[4];
+    // Source-aware coloring: LeetCode-confirmed → green, manual checkbox only → blue
+    const getCellColorSourced = cell => {
+        if (!cell || !cell.count) return GREEN_COLORS[0];
+        const pal = cell.source === "lc" ? GREEN_COLORS : BLUE_COLORS;
+        if (cell.count === 1) return pal[1]; if (cell.count <= 3) return pal[2]; if (cell.count <= 6) return pal[3]; return pal[4];
     };
-    const monthLabels = {};
-    weeks.forEach((week,wi) => { const first=week.find(c=>c); if(first){const d=new Date(first.date);if(d.getDate()<=7)monthLabels[wi]=d.toLocaleString("default",{month:"short"});} });
+    const accentFor = cell => cell?.source === "lc" ? GREEN_ACCENT : BLUE_ACCENT;
 
     const totalSolved = Object.values(safeLog).reduce((a,v)=>a+filterDSA(v).length, 0);
     const activeDays  = Object.values(safeLog).filter(v=>filterDSA(v).length>0).length;
+    const lcDays      = cells.filter(c => c.source === "lc").length;
+    const manualDays  = cells.filter(c => c.source === "manual").length;
     const selectedEntries = selectedDay ? filterDSA(safeLog[selectedDay]||[]) : [];
+    const selectedSource  = selectedDay ? cells.find(c=>c.date===selectedDay)?.source : null;
 
     const curOther = OTHER_TABS.find(t=>t.id===otherTab) || OTHER_TABS[0];
     const otherCells = [];
@@ -494,7 +504,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().slice(0,10);
         const cnt = filterOther(safeLog[dateStr] || [], otherTab).length;
-        otherCells.push({ date: dateStr, count: cnt, dow: d.getDay() });
+        otherCells.push({ date: dateStr, count: cnt, dow: d.getDay(), source: "other" });
     }
     const otherFirstDow = otherCells[0].dow;
     const otherWeeks = [];
@@ -508,7 +518,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const otherTotal = Object.values(safeLog).reduce((a,v)=>a+filterOther(v,otherTab).length, 0);
     const otherSelectedEntries = otherSelectedDay ? filterOther(safeLog[otherSelectedDay]||[], otherTab) : [];
 
-    const HeatGrid = ({wks, colorFn, accent, selDay, onSelect, label}) => (
+    // Generic heat grid; getCellColor(cell) → color string
+    const HeatGrid = ({wks, getCellColor, getAccent, legendPalette, accent, selDay, onSelect, label}) => (
         <div style={{overflowX:"auto"}}>
             <div style={{display:"flex",gap:3,marginBottom:3,paddingLeft:20}}>
                 {wks.map((_,wi)=>{
@@ -526,8 +537,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         {week.map((cell,di)=>cell?(
                             <div key={di}
                                 onClick={()=>cell.count>0&&onSelect(selDay===cell.date?null:cell.date)}
-                                title={`${cell.date}: ${cell.count} ${label}${cell.count!==1?"s":""}`}
-                                style={{width:12,height:12,borderRadius:2,background:colorFn(cell.count),cursor:cell.count>0?"pointer":"default",border:selDay===cell.date?`1.5px solid ${accent}`:"1px solid transparent",boxSizing:"border-box"}}
+                                title={`${cell.date}: ${cell.count} ${label}${cell.count!==1?"s":""}${cell.source==="lc"?" · LeetCode API":cell.source==="manual"?" · manual only":""}`}
+                                style={{width:12,height:12,borderRadius:2,background:getCellColor(cell),cursor:cell.count>0?"pointer":"default",border:selDay===cell.date?`1.5px solid ${getAccent?getAccent(cell):accent}`:"1px solid transparent",boxSizing:"border-box"}}
                             />
                         ):<div key={di} style={{width:12,height:12}}/>)}
                     </div>
@@ -535,7 +546,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
             <div style={{display:"flex",alignItems:"center",gap:4,marginTop:6,paddingLeft:20}}>
                 <span style={{fontSize:10,color:"#475569"}}>Less</span>
-                {[0,1,3,5,8].map(c=><div key={c} style={{width:10,height:10,borderRadius:2,background:colorFn(c)}}/>)}
+                {(legendPalette||[GREEN_COLORS[0],GREEN_COLORS[1],GREEN_COLORS[2],GREEN_COLORS[3],GREEN_COLORS[4]]).map((c,i)=><div key={i} style={{width:10,height:10,borderRadius:2,background:c}}/>)}
                 <span style={{fontSize:10,color:"#475569"}}>More</span>
             </div>
         </div>
@@ -544,10 +555,22 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     return <div style={{...S.card, marginTop:16}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
             <div style={S.sectionTitle}>Activity Calendar</div>
-            <div style={{fontSize:11,color:"#475569"}}>{totalSolved} problems solved · {activeDays} active days</div>
+            <div style={{fontSize:11,color:"#475569"}}>{totalSolved} problems · {activeDays} active days</div>
         </div>
 
-        <HeatGrid wks={weeks} colorFn={getColor} accent={GREEN_ACCENT} selDay={selectedDay} onSelect={setSelectedDay} label="problem" />
+        <HeatGrid wks={weeks} getCellColor={getCellColorSourced} getAccent={accentFor} legendPalette={GREEN_COLORS} accent={GREEN_ACCENT} selDay={selectedDay} onSelect={setSelectedDay} label="problem" />
+
+        {/* Source legend */}
+        <div style={{display:"flex",alignItems:"center",gap:14,marginTop:8,paddingLeft:20,flexWrap:"wrap"}}>
+            <div style={{display:"flex",alignItems:"center",gap:5}}>
+                <div style={{width:10,height:10,borderRadius:2,background:GREEN_COLORS[3]}}/>
+                <span style={{fontSize:10,color:"#64748b"}}>LeetCode API confirmed ({lcDays} days)</span>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:5}}>
+                <div style={{width:10,height:10,borderRadius:2,background:BLUE_COLORS[3]}}/>
+                <span style={{fontSize:10,color:"#64748b"}}>Manual checkbox only ({manualDays} days)</span>
+            </div>
+        </div>
 
         {selectedDay && (
             <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid #006d3244`}}>
