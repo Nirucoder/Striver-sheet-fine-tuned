@@ -828,7 +828,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
         </div>
 
-        <div style={S.grid4}>
+        <div style={S.grid4} className="rg4">
             <StatCard label="DSA Subtopics" value={`${dsaDone}/${dsaData.length}`}
                 pct={Math.round(dsaDone/dsaData.length*100)} color="#818cf8" icon="◈" />
             <StatCard label="Problems Solved" value={`${solvedProblems}/${totalProblems}`}
@@ -849,7 +849,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
         <ActivityHeatmap activityLog={activityLog} />
 
-        <div style={S.grid2}>
+        <div style={S.grid2} className="rg2">
             <div style={S.card}>
                 <div style={S.sectionTitle}>Weekly Progress</div>
                 <ResponsiveContainer width="100%" height={180}>
@@ -877,7 +877,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
         </div>
 
-        <div style={{...S.grid2, gridTemplateColumns:"2fr 1fr"}}>
+        <div style={{...S.grid2, gridTemplateColumns:"2fr 1fr"}} className="rg2">
             <div style={S.card}>
                 <div style={S.sectionTitle}>8-Week Roadmap</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
@@ -2451,7 +2451,7 @@ const OS_UNITS = [
     return <div>
         <div style={S.pageTitle}>Revision Tracker</div>
         <div style={S.pageSub}>Spaced Repetition System · 1-day → 1-week → 1-month reviews</div>
-        <div style={S.grid3}>
+        <div style={S.grid3} className="rg3">
             <StatCard label="1-Day Done" value={`${dayDone}/${revData.length}`}
                 pct={Math.round(dayDone/revData.length*100)} color="#818cf8" />
             <StatCard label="1-Week Done" value={`${weekDone}/${revData.length}`}
@@ -2542,7 +2542,7 @@ const OS_UNITS = [
         <div style={S.pageTitle}>Analytics</div>
         <div style={S.pageSub}>Visual breakdown of your progress across all tracks</div>
 
-        <div style={S.grid4}>
+        <div style={S.grid4} className="rg4">
             <StatCard label="DSA Subtopics" value={`${Math.round(dsaDone/dsaData.length*100)}%`}
                 pct={Math.round(dsaDone/dsaData.length*100)} color="#818cf8" />
             <StatCard label="Problems Solved" value={`${Math.round(solvedP/totalP*100)}%`} sub={`${solvedP}/${totalP}`}
@@ -2552,7 +2552,7 @@ const OS_UNITS = [
             <StatCard label="LeetCode Links" value={totalLC} sub="across 17 steps" color="#f97316" icon="🔗" />
         </div>
 
-        <div style={S.grid2}>
+        <div style={S.grid2} className="rg2">
             <div style={S.card}>
                 <div style={S.sectionTitle}>Striver Step-by-Step Progress</div>
                 <ResponsiveContainer width="100%" height={220}>
@@ -2584,7 +2584,7 @@ const OS_UNITS = [
             </div>
         </div>
 
-        <div style={S.grid2}>
+        <div style={S.grid2} className="rg2">
             <div style={S.card}>
                 <div style={S.sectionTitle}>Confidence Distribution</div>
                 <ResponsiveContainer width="100%" height={200}>
@@ -3378,8 +3378,14 @@ const OS_UNITS = [
         setShowResetModal(false);
     }
 
+    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+    const isMobileNavPage = ["dashboard","dsa","coa","maths","os","weekly","revision","analytics","todo","calendar"];
+    // Bottom nav shows first 5 items; rest accessible via sidebar drawer
+    const BOTTOM_NAV = NAV.slice(0, 5);
+    const DRAWER_NAV = NAV.slice(5);
+
     return (
-    <div style={S.app}>
+    <div style={S.app} className="studyos-app-mobile">
         <style>
             {
                 ` @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
@@ -3411,6 +3417,142 @@ const OS_UNITS = [
                     background: rgba(255, 255, 255, 0.01)
                 }
 
+                /* ── MOBILE RESPONSIVE ─────────────────────────────── */
+                .studyos-desktop-sidebar { display: flex; }
+                .studyos-mobile-header { display: none; }
+                .studyos-mobile-nav { display: none; }
+                .studyos-sidebar-overlay { display: none; }
+
+                @media (max-width: 768px) {
+                    .studyos-desktop-sidebar { display: none !important; }
+
+                    .studyos-mobile-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 10px 16px;
+                        background: #0f1117;
+                        border-bottom: 1px solid #1e2030;
+                        position: sticky;
+                        top: 0;
+                        z-index: 100;
+                        flex-shrink: 0;
+                    }
+
+                    .studyos-mobile-nav {
+                        display: flex;
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background: #0f1117;
+                        border-top: 1px solid #1e2030;
+                        z-index: 200;
+                        padding: 4px 0 env(safe-area-inset-bottom, 4px);
+                        justify-content: space-around;
+                        align-items: center;
+                    }
+
+                    .studyos-mobile-nav-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 2px;
+                        padding: 6px 4px;
+                        cursor: pointer;
+                        min-width: 44px;
+                        border-radius: 8px;
+                        transition: all 0.15s;
+                    }
+
+                    .studyos-mobile-nav-item.active {
+                        color: #818cf8;
+                    }
+
+                    .studyos-mobile-nav-item span.nav-icon {
+                        font-size: 18px;
+                        line-height: 1;
+                    }
+
+                    .studyos-mobile-nav-item span.nav-label {
+                        font-size: 9px;
+                        font-weight: 500;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 48px;
+                        text-align: center;
+                    }
+
+                    .studyos-sidebar-overlay {
+                        display: block;
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0,0,0,0.7);
+                        z-index: 300;
+                    }
+
+                    .studyos-sidebar-overlay.hidden { display: none; }
+
+                    .studyos-mobile-sidebar {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        width: 260px;
+                        background: #0f1117;
+                        border-right: 1px solid #1e2030;
+                        z-index: 400;
+                        display: flex;
+                        flex-direction: column;
+                        transform: translateX(-100%);
+                        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+
+                    .studyos-mobile-sidebar.open {
+                        transform: translateX(0);
+                    }
+
+                    /* Main content padding on mobile */
+                    .studyos-main-mobile {
+                        padding: 16px 14px 80px !important;
+                    }
+
+                    /* App becomes column on mobile */
+                    .studyos-app-mobile {
+                        flex-direction: column;
+                    }
+
+                    /* Grid columns on mobile */
+                    .studyos-grid2-mobile > * {
+                        grid-column: span 2;
+                    }
+
+                    /* Responsive grids */
+                    .rg2 { grid-template-columns: 1fr !important; }
+                    .rg3 { grid-template-columns: 1fr !important; }
+                    .rg4 { grid-template-columns: 1fr 1fr !important; }
+
+                    /* Smaller stat values on mobile */
+                    .studyos-stat-value-mobile { font-size: 20px !important; }
+
+                    /* Smaller page title */
+                    .studyos-page-title-mobile { font-size: 17px !important; }
+
+                    /* Prevent horizontal scroll on tables */
+                    .studyos-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+                    /* Filter bar stacks on mobile */
+                    .studyos-filter-bar-mobile { flex-direction: column; align-items: stretch !important; }
+                    .studyos-filter-bar-mobile > * { width: 100%; }
+
+                    /* Streak box on mobile */
+                    .studyos-streak-mobile { flex-direction: column; align-items: flex-start !important; }
+                }
+
+                @media (max-width: 480px) {
+                    .rg4 { grid-template-columns: 1fr !important; }
+                }
                 `
             }
         </style>
@@ -3444,7 +3586,70 @@ const OS_UNITS = [
                 </div>
             </div>
         )}
-            <div style={S.sidebar}>
+            {/* ── MOBILE HEADER ──────────────────────────────────────── */}
+                <div className="studyos-mobile-header">
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <img src="/pwa-512x512.png" alt="Logo" style={{width:24,height:24}} />
+                        <div style={{fontSize:14,fontWeight:700,color:"#e2e8f0",letterSpacing:"0.05em",textTransform:"uppercase"}}>StudyOS</div>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); }}
+                            style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:14,color:"#818cf8"}}>
+                            ☁
+                        </div>
+                        <div onClick={()=>setMobileSidebarOpen(true)}
+                            style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:16,color:"#94a3b8"}}>
+                            ☰
+                        </div>
+                    </div>
+                </div>
+
+                {/* ── MOBILE SIDEBAR OVERLAY ─────────────────────────── */}
+                <div className={`studyos-sidebar-overlay${mobileSidebarOpen ? "" : " hidden"}`}
+                    onClick={()=>setMobileSidebarOpen(false)} />
+                <div className={`studyos-mobile-sidebar${mobileSidebarOpen ? " open" : ""}`}>
+                    <div style={{padding:"20px 16px 12px",borderBottom:"1px solid #1e2030",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <div>
+                            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                                <img src="/pwa-512x512.png" alt="Logo" style={{width:22,height:22}} />
+                                <div style={{fontSize:14,fontWeight:700,color:"#e2e8f0",letterSpacing:"0.05em",textTransform:"uppercase"}}>StudyOS</div>
+                            </div>
+                            <div style={{fontSize:11,color:"#4a5568"}}>SRM KTR · Sem Break</div>
+                        </div>
+                        <button onClick={()=>setMobileSidebarOpen(false)}
+                            style={{background:"none",border:"none",color:"#64748b",fontSize:22,cursor:"pointer",lineHeight:1}}>✕</button>
+                    </div>
+                    {session && (
+                        <div style={{margin:"10px 12px",padding:"8px 10px",background:"#0a0b0d",borderRadius:8,border:"1px solid #1e2030",display:"flex",alignItems:"center",gap:8}}>
+                            {session.picture && <img src={session.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
+                            <div style={{flex:1,minWidth:0}}>
+                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.name?.split(" ")[0] || "User"}</div>
+                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.email}</div>
+                            </div>
+                            <div onClick={()=>{localStorage.removeItem("studyos_user");setSession(null);setMobileSidebarOpen(false);}} title="Sign out"
+                                style={{cursor:"pointer",color:"#475569",fontSize:14,flexShrink:0}}>⏻</div>
+                        </div>
+                    )}
+                    <nav style={{padding:"8px",flex:1,overflowY:"auto"}}>
+                        {NAV.map(n=><div key={n.id} onClick={()=>{setPage(n.id);setMobileSidebarOpen(false);}} style={S.navItem(page===n.id)}>
+                            <span style={{fontSize:14}}>{n.icon}</span><span>{n.label}</span>
+                        </div>)}
+                    </nav>
+                    <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
+                        <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); setMobileSidebarOpen(false); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8"}}>
+                            <span style={{fontSize:13}}>☁</span><span style={{fontSize:12}}>Cloud Sync</span>
+                        </div>
+                        <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
+                            <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
+                        </div>
+                        <div onClick={()=>{setShowResetModal(true);setMobileSidebarOpen(false);}} style={{...S.navItem(false),color:"#f87171"}}>
+                            <span style={{fontSize:13}}>↺</span><span style={{fontSize:12}}>Reset Progress</span>
+                        </div>
+                    </div>
+                </div>
+
+        {/* ── DESKTOP SIDEBAR ────────────────────────────────────── */}
+                <div style={S.sidebar} className="studyos-desktop-sidebar">
                 <div style={S.sidebarTop}>
                     <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 4}}>
                         <img src="/pwa-512x512.png" alt="Logo" style={{width: 22, height: 22}} />
@@ -3500,7 +3705,7 @@ const OS_UNITS = [
                     </div>
                 </div>
             </div>
-            <main style={S.main}>
+            <main style={S.main} className="studyos-main-mobile">
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     streakData={streakData} streakFreezes={streakFreezes} onApplyFreeze={applyFreeze}
@@ -3523,6 +3728,27 @@ const OS_UNITS = [
                     {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} setActivityLog={setActivityLog} />}
                     {page==="calendar" && <CalendarTab todos={todos} weekStatus={weekStatus} />}
             </main>
+
+            {/* ── MOBILE BOTTOM NAV ──────────────────────────────── */}
+            <nav className="studyos-mobile-nav">
+                {BOTTOM_NAV.map(n=>(
+                    <div key={n.id}
+                        className={`studyos-mobile-nav-item${page===n.id ? " active" : ""}`}
+                        onClick={()=>setPage(n.id)}
+                        style={{color: page===n.id ? "#818cf8" : "#475569"}}>
+                        <span className="nav-icon">{n.icon}</span>
+                        <span className="nav-label">{n.label}</span>
+                    </div>
+                ))}
+                {/* More button to open drawer */}
+                <div
+                    className={`studyos-mobile-nav-item${DRAWER_NAV.some(n=>n.id===page) ? " active" : ""}`}
+                    onClick={()=>setMobileSidebarOpen(true)}
+                    style={{color: DRAWER_NAV.some(n=>n.id===page) ? "#818cf8" : "#475569"}}>
+                    <span className="nav-icon">☰</span>
+                    <span className="nav-label">More</span>
+                </div>
+            </nav>
     </div>
     );
     }
