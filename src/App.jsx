@@ -1284,7 +1284,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars, markDateActive }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
@@ -3735,7 +3735,7 @@ const OS_UNITS = [
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
-                    probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} />}
+                    probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} markDateActive={markDateActive} />}
                 {page==="coa" &&
                 <COATracker coaGsProgress={coaGsProgress} setCoaGsProgress={setCoaGsProgress} />}
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
