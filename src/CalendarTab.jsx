@@ -40,8 +40,6 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   });
   const [gcalEvents, setGcalEvents]     = useState([]);
   const [loading, setLoading]           = useState(false);
-  const [syncing, setSyncing]           = useState(false);
-  const [syncMsg, setSyncMsg]           = useState("");
   const [error, setError]               = useState(null);
   const [currentDate, setCurrentDate]   = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -49,11 +47,9 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   const [showDetail, setShowDetail]     = useState(null);
   const [newEv, setNewEv]               = useState({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
   const [localEvents, setLocalEvents]   = useLocalStorageState("studyos_cal_v1", []);
-  const [syncedTodos, setSyncedTodos]   = useLocalStorageState("studyos_cal_synced_v1", {});
   const tokenClientRef    = useRef(null);
   const pollRef           = useRef(null);
   const gisReady          = useRef(false);
-  const autoGCalSyncTimer = useRef(null);
 
   useEffect(() => {
     if (!CLIENT_ID) return;
@@ -127,37 +123,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     return () => clearInterval(pollRef.current);
   }, [accessToken, currentDate, isValid, fetchEvents]);
 
-  // Auto-push todos to GCal whenever todos change (or GCal first connects)
-  useEffect(() => {
-    if (!isValid()) return;
-    const hasNew = todos.some(td => td.due && !syncedTodos[td.id]);
-    if (!hasNew) return;
-    clearTimeout(autoGCalSyncTimer.current);
-    autoGCalSyncTimer.current = setTimeout(async () => {
-      const tok = localStorage.getItem("gcal_token");
-      if (!tok) return;
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const newSynced = { ...syncedTodos }; let count = 0;
-      for (const td of todos) {
-        if (!td.due || newSynced[td.id]) continue;
-        try {
-          const body = { summary:`[StudyOS] ${td.text}`,
-            description:`Project: ${td.project} | Priority: ${td.priority}`,
-            start:{ date: td.due }, end:{ date: td.due } };
-          const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",
-            { method:"POST", headers:{ Authorization:`Bearer ${tok}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
-          if (res.ok) { const ev = await res.json(); if (ev?.id) { newSynced[td.id] = ev.id; count++; } }
-        } catch(e) { console.error("Auto GCal sync failed:", e); }
-      }
-      if (count > 0) {
-        setSyncedTodos(newSynced);
-        setSyncMsg(`✓ Auto-synced ${count} to-do(s) → Google Calendar`);
-        setTimeout(() => setSyncMsg(""), 4000);
-        fetchEvents(tok);
-      }
-    }, 2500);
-    return () => clearTimeout(autoGCalSyncTimer.current);
-  }, [todos, accessToken]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   async function createGCalEvent(ev) {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -180,27 +146,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       { method:"DELETE", headers:{ Authorization:`Bearer ${accessToken}` } });
   }
 
-  async function syncTodosToGCal() {
-    if (!isValid()) { signIn(); return; }
-    setSyncing(true); setSyncMsg("");
-    const newSynced = { ...syncedTodos }; let count = 0;
-    for (const td of todos) {
-      if (!td.due || newSynced[td.id]) continue;
-      try {
-        const gcalEv = await createGCalEvent({
-          title:`[StudyOS] ${td.text}`,
-          description:`Project: ${td.project} | Priority: ${td.priority}`,
-          date: td.due, allDay:true
-        });
-        if (gcalEv?.id) { newSynced[td.id] = gcalEv.id; count++; }
-      } catch(e) { console.error("Sync todo failed:", e); }
-    }
-    setSyncedTodos(newSynced);
-    await fetchEvents(accessToken);
-    setSyncing(false);
-    setSyncMsg(count > 0 ? `✓ Synced ${count} To-Do item(s) to Google Calendar` : "✓ All To-Do items already synced");
-    setTimeout(() => setSyncMsg(""), 4000);
-  }
+
 
   async function handleAddEvent() {
     if (!newEv.title.trim() || !selectedDate) return;
@@ -235,11 +181,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     localEvents.forEach(ev => {
       if (ev.date === dateStr) out.push({ ...ev, _src:"local", _color:COLORS.local, _label:ev.title });
     });
-    todos.forEach(td => {
-      if (td.due === dateStr)
-        out.push({ id:`todo_${td.id}`, _src:"todo", _color:td.done ? "#475569" : COLORS.todo,
-          _label: (td.done?"✓ ":"○ ")+td.text, _todo:td, description:`Project: ${td.project}` });
-    });
+
     return out;
   }
 
@@ -305,17 +247,8 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
         </div>
       )}
 
-      {/* Sync bar */}
+      {/* Sync info text */}
       <div style={{ display:"flex", gap:10, marginBottom:20, alignItems:"center", flexWrap:"wrap" }}>
-        {isValid() && (
-          <span style={{ fontSize:11, color:"#34d399", display:"flex", alignItems:"center", gap:5 }}>
-            <span style={{ fontSize:8 }}>●</span> To-dos auto-sync to GCal
-          </span>
-        )}
-        <button onClick={syncTodosToGCal} disabled={syncing} style={S.btn("#0f2918","#166534","#34d399")}>
-          {syncing ? "Syncing…" : "↻ Sync now"}
-        </button>
-        {syncMsg && <span style={{ fontSize:12, color: syncMsg.startsWith("✓") ? "#34d399" : "#f87171" }}>{syncMsg}</span>}
         <span style={{ fontSize:11, color:"#334155", marginLeft:"auto" }}>Click any date to add an event</span>
       </div>
 
@@ -358,7 +291,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
 
       {/* Legend */}
       <div style={{ display:"flex", gap:20, marginTop:18, flexWrap:"wrap" }}>
-        {[["gcal","Google Calendar"],["local","Added here"],["todo","To-Do items"]].map(([k,lbl]) => (
+        {[["gcal","Google Calendar"],["local","Added here"]].map(([k,lbl]) => (
           <div key={k} style={{ display:"flex", alignItems:"center", gap:6 }}>
             <div style={{ width:10, height:10, borderRadius:2, background:COLORS[k] }} />
             <span style={{ fontSize:11, color:"#475569" }}>{lbl}</span>
