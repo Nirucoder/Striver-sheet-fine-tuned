@@ -47,6 +47,50 @@ app.post("/api/sync/:code", async (req, res) => {
   }
 });
 
+app.get("/api/leetcode/:username", async (req, res) => {
+  const { username } = req.params;
+  if (!username) return res.status(400).json({ error: "username required" });
+
+  const query = `
+    query recentAcSubmissions($username: String!, $limit: Int!) {
+      recentAcSubmissionList(username: $username, limit: $limit) {
+        id
+        title
+        titleSlug
+        timestamp
+      }
+    }
+  `;
+
+  try {
+    const lcRes = await fetch("https://leetcode.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Referer": "https://leetcode.com",
+        "User-Agent": "Mozilla/5.0 (compatible; StudyOS/1.0)",
+      },
+      body: JSON.stringify({ query, variables: { username, limit: 100 } }),
+    });
+
+    if (!lcRes.ok) {
+      return res.status(502).json({ error: `LeetCode responded with ${lcRes.status}` });
+    }
+
+    const json = await lcRes.json();
+
+    if (json.errors) {
+      return res.status(422).json({ error: json.errors[0]?.message || "LeetCode GraphQL error" });
+    }
+
+    const submissions = json?.data?.recentAcSubmissionList ?? [];
+    return res.json({ submissions });
+  } catch (e) {
+    console.error("[leetcode proxy]", e.message);
+    return res.status(500).json({ error: e.message });
+  }
+});
+
 // Serve built frontend in production
 if (existsSync(distDir)) {
   app.use(express.static(distDir));
