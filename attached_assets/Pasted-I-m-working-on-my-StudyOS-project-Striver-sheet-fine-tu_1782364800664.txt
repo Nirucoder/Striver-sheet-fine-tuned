@@ -1,0 +1,90 @@
+I'm working on my StudyOS project (Striver-sheet-fine-tuned). I need the streak system completely reworked. Read the existing streak code carefully before changing anything.
+
+---
+
+## FEATURE: Rework the Streak System
+
+### Current problem
+The streak currently counts "days worked in a week" which is not a real streak. It needs to be replaced with a proper continuous streak like GitHub/LeetCode — a count of consecutive days with activity that breaks after one day of no activity.
+
+---
+
+### New streak rules — implement ALL of these exactly:
+
+**1. What counts as an active day:**
+A day is counted as active ONLY IF the LeetCode API confirms the user solved at least 1 problem on that calendar date. Do NOT count a day as active based on any other activity (manual input, DSA tracker checkboxes, etc.) — LeetCode API data is the only source of truth for streak calculation.
+
+**2. How the streak works:**
+- Streak = number of consecutive calendar days (ending today or yesterday) where LeetCode API shows ≥1 problem solved
+- Streak INCREASES by 1 when today's LeetCode data shows ≥1 problem solved and yesterday was also active (or streak was 0 and today is first active day)
+- Streak BREAKS (resets to 0) if the user had NO problems solved on the previous calendar day AND no streak freeze was applied for that day
+- The streak does NOT reset mid-day — it only evaluates at day boundaries
+
+**3. The 5AM rule — CRITICAL:**
+The day boundary for streak calculation must be 5:00 AM, NOT midnight.
+- "Today" = current date if current time is ≥ 5:00 AM
+- "Today" = previous calendar date if current time is < 5:00 AM (i.e. if it's 3 AM on June 26, the system treats it as still June 25)
+- All streak evaluation (should today break my streak? is today active?) must use this 5AM-adjusted date, not `new Date()` directly
+
+Implement a helper function:
+```js
+function getStreakDate() {
+  const now = new Date();
+  if (now.getHours() < 5) {
+    now.setDate(now.getDate() - 1);
+  }
+  return now.toISOString().split('T')[0]; // returns "YYYY-MM-DD"
+}
+```
+Use `getStreakDate()` everywhere dates are compared for streak logic. Never use raw `new Date().toISOString().split('T')[0]` for streak.
+
+**4. Streak Freeze — 3 per month:**
+- User gets exactly 3 streak freezes per calendar month
+- Unused freezes do NOT carry over to the next month — they reset to 3 on the 1st of each month
+- When a freeze is applied to a day, that day is treated as "active" for streak purposes even if LeetCode shows 0 problems solved
+- The user can apply a freeze either:
+  a. Preemptively (before the day ends) — marks today as frozen
+  b. Retroactively (for yesterday only, within the same day before 5AM) — can save yesterday's streak if the user forgot
+- Show the freeze button only when streak is at risk (previous day had no LeetCode activity and no freeze was already used)
+- Show remaining freezes this month (e.g. "❄️ 2 freezes left this month")
+- Store freeze usage in localStorage under key `streak_freezes`: `{ month: "2026-06", used: ["2026-06-20", "2026-06-24"], count: 2 }`
+- On month change, reset: `{ month: "2026-07", used: [], count: 0 }`
+
+**5. localStorage schema — use these exact keys:**
+```js
+// Main streak data
+localStorage.setItem('streak_data', JSON.stringify({
+  currentStreak: 5,           // consecutive active days
+  longestStreak: 12,          // all-time best
+  lastActiveDate: "2026-06-24", // last date LeetCode confirmed activity
+  activeDates: ["2026-06-20", "2026-06-21", ...], // all confirmed active dates
+}));
+
+// Freeze data (resets monthly)
+localStorage.setItem('streak_freezes', JSON.stringify({
+  month: "2026-06",           // current month key
+  used: ["2026-06-15"],       // dates freezes were applied
+  count: 1,                   // freezes used this month
+}));
+```
+
+**6. LeetCode API integration:**
+- The app already has LeetCode API sync — hook into wherever the existing LeetCode fetch/sync happens
+- When the API returns data for today (using `getStreakDate()`), check if `solvedToday > 0`
+- If yes → mark today as active in `activeDates`, update `lastActiveDate`, recalculate streak
+- If no → do NOT update streak (streak stays as-is until day boundary evaluation)
+- Day boundary evaluation: on app load (or first render after 5AM), check if `lastActiveDate` is yesterday (5AM-adjusted). If not, and no freeze covers that day → streak = 0
+
+**7. Display:**
+- Show current streak with a flame icon 🔥
+- Show longest streak
+- Show ❄️ freeze button when applicable + remaining freezes this month
+- Do NOT show "days worked this week" anywhere — remove that metric entirely
+- Keep any existing streak UI card, just replace all the logic and displayed values
+
+**8. Do NOT break:**
+- Existing LeetCode username input / API fetch
+- Existing display of LeetCode problem counts (easy/medium/hard solved)
+- Any other dashboard cards
+
+After changes, confirm: which files were modified, what was the old logic, what is the new logic.

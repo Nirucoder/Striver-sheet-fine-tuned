@@ -664,7 +664,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData }) {
     const [logNote, setLogNote] = useState("");
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
@@ -763,14 +763,45 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
         <div style={S.streakBox}>
             <span style={{fontSize:28}}>🔥</span>
-            <div>
+            <div style={{flex:1}}>
                 <div style={{fontSize:20,fontWeight:700,color:"#fb923c"}}>{streak} day streak</div>
-                <div style={{fontSize:12,color:"#64748b"}}>Consistency beats intensity. Keep coding daily!</div>
+                <div style={{fontSize:12,color:"#64748b"}}>
+                    Best: {streakData?.longestStreak ?? 0}🔥 &nbsp;·&nbsp; LeetCode API is the only source of truth
+                </div>
             </div>
-            <div style={{marginLeft:"auto",display:"flex",gap:8}}>
-                <input value={logNote} onChange={e=>setLogNote(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addLog()}
-                placeholder="Log today's session…" style={{...S.searchInput,width:260,marginBottom:0}}/>
-                <button onClick={addLog} style={S.btn("primary")}>Log</button>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}>
+                {(() => {
+                    const today    = getStreakDate();
+                    const yesterday = prevDateStr(today);
+                    const monthKey = today.slice(0, 7);
+                    const validFreezes = (streakFreezes?.month === monthKey ? streakFreezes.used : []);
+                    const allActive = new Set([...(streakData?.activeDates || []), ...validFreezes]);
+                    const freezesUsed = streakFreezes?.month === monthKey ? (streakFreezes.count || 0) : 0;
+                    const freezesLeft = 3 - freezesUsed;
+                    // At-risk: yesterday has no activity and no freeze, and streak > 0
+                    const yesterdayAtRisk = !allActive.has(yesterday) && streak > 0;
+                    // Can retroactively freeze yesterday if we're still before 5AM (i.e. getStreakDate() returned yesterday)
+                    const canFreezeYesterday = !allActive.has(yesterday) && !validFreezes.includes(yesterday) && freezesLeft > 0;
+                    const canFreezeToday    = !allActive.has(today)     && !validFreezes.includes(today)     && freezesLeft > 0;
+                    const showFreeze = (yesterdayAtRisk || canFreezeToday) && freezesLeft > 0;
+                    const freezeTarget = !allActive.has(yesterday) && streak > 0 ? yesterday : today;
+                    return <>
+                        {showFreeze && (
+                            <button onClick={() => onApplyFreeze(freezeTarget)}
+                                style={{padding:"5px 12px",background:"#0c2233",border:"1px solid #0ea5e9",borderRadius:7,color:"#38bdf8",fontSize:12,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                ❄️ Use Freeze ({freezesLeft} left)
+                            </button>
+                        )}
+                        {!showFreeze && (
+                            <span style={{fontSize:11,color:"#334155"}}>❄️ {freezesLeft}/3 freezes this month</span>
+                        )}
+                    </>;
+                })()}
+                <div style={{display:"flex",gap:8}}>
+                    <input value={logNote} onChange={e=>setLogNote(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addLog()}
+                        placeholder="Log today's session…" style={{...S.searchInput,width:200,marginBottom:0}}/>
+                    <button onClick={addLog} style={S.btn("primary")}>Log</button>
+                </div>
             </div>
         </div>
 
@@ -1099,7 +1130,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         })}
                     </div>
                     <div style={{fontSize:11,color:"#94a3b8",marginBottom:4}}>
-                        <span style={{color:"#f97316",fontWeight:700}}>{activeThisWeek}/7</span> active days · <span style={{color:streak>5?"#34d399":streak>0?"#f97316":"#ef4444",fontWeight:700}}>{streak}🔥</span>
+                        <span style={{color:streak>5?"#34d399":streak>0?"#f97316":"#ef4444",fontWeight:700}}>{streak}🔥 streak</span>
                     </div>
                     <div style={{fontSize:10,color:"#64748b",lineHeight:1.5}}>{streakAdvice}</div>
                 </div>
@@ -1362,6 +1393,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     });
                 }
             }
+            // ── Streak: mark today active if LeetCode confirms any submission today ──
+            const streakToday = getStreakDate();
+            const solvedOnToday = Object.values(slugToDate).some(d => d === streakToday);
+            if (solvedOnToday) markDateActive(streakToday);
+
             setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!`);
         } catch {
             setLcSyncMsg("⚠ Could not fetch LeetCode data. Try again.");
@@ -3024,13 +3060,37 @@ const OS_UNITS = [
     TodoApp         = memo(TodoApp);
     SyncModal       = memo(SyncModal);
 
+    // ─── STREAK HELPERS ────────────────────────────────────────────────────────
+    function getStreakDate() {
+        const now = new Date();
+        if (now.getHours() < 5) now.setDate(now.getDate() - 1);
+        return now.toISOString().split('T')[0];
+    }
+    function prevDateStr(dateStr) {
+        const d = new Date(dateStr + 'T12:00:00Z');
+        d.setDate(d.getDate() - 1);
+        return d.toISOString().split('T')[0];
+    }
+    function computeStreak(activeDatesArr, freezeUsedArr) {
+        const allActive = new Set([...activeDatesArr, ...freezeUsedArr]);
+        const today     = getStreakDate();
+        const yesterday = prevDateStr(today);
+        let checkDate   = allActive.has(today) ? today : allActive.has(yesterday) ? yesterday : null;
+        if (!checkDate) return 0;
+        let count = 0, cur = checkDate;
+        while (allActive.has(cur)) { count++; cur = prevDateStr(cur); }
+        return count;
+    }
+
     export default function App({ session, setSession }) {
     const [page, setPage] = useState("dashboard");
     const [dsaData, setDsaData] = useLocalStorage("srm_dsa_v3", DSA_TABLE, mergeDsaData);
     const [coaData, setCoaData] = useLocalStorage("srm_coa_v3", COA_TABLE, mergeCoaData);
     const [revData, setRevData] = useLocalStorage("srm_rev_v3", ALL_REV_TOPICS, mergeRevData);
     const [weekStatus, setWeekStatus] = useLocalStorage("srm_weeks_v3", Array(8).fill(false));
-    const [streak, setStreak] = useLocalStorage("srm_streak_v3", 0);
+    const [streakData, setStreakData] = useLocalStorage("streak_data", { currentStreak:0, longestStreak:0, lastActiveDate:"", activeDates:[] });
+    const [streakFreezes, setStreakFreezes] = useLocalStorage("streak_freezes", { month:"", used:[], count:0 });
+    const streak = streakData.currentStreak; // compat alias for props
     const [dailyLog, setDailyLog] = useLocalStorage("srm_log_v3", []);
     const [lastLogDate, setLastLogDate] = useLocalStorage("srm_lastlog_v3", "");
     const [activityLog, setActivityLog] = useLocalStorage("srm_activity_v1", {});
@@ -3082,7 +3142,9 @@ const OS_UNITS = [
                 if (data.coaData)         setCoaData(mergeCoaData(data.coaData));
                 if (data.revData)         setRevData(mergeRevData(data.revData));
                 if (data.weekStatus)      setWeekStatus(data.weekStatus);
-                if (data.streak !== undefined) setStreak(data.streak);
+                if (data.streakData)           setStreakData(data.streakData);
+                else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
+                if (data.streakFreezes)        setStreakFreezes(data.streakFreezes);
                 if (data.dailyLog)        setDailyLog(data.dailyLog);
                 if (data.lastLogDate)     setLastLogDate(data.lastLogDate);
                 if (data.activityLog)     setActivityLog(data.activityLog);
@@ -3103,6 +3165,8 @@ const OS_UNITS = [
                         revData:        JSON.parse(localStorage.getItem("srm_rev_v3")   || "null"),
                         weekStatus:     JSON.parse(localStorage.getItem("srm_weeks_v3") || "null"),
                         streak:         JSON.parse(localStorage.getItem("srm_streak_v3")|| "0"),
+                        streakData:     JSON.parse(localStorage.getItem("streak_data")   || "null"),
+                        streakFreezes:  JSON.parse(localStorage.getItem("streak_freezes")|| "null"),
                         dailyLog:       JSON.parse(localStorage.getItem("srm_log_v3")   || "[]"),
                         lastLogDate:    JSON.parse(localStorage.getItem("srm_lastlog_v3")|| '""'),
                         activityLog:    JSON.parse(localStorage.getItem("srm_activity_v1")|| "{}"),
@@ -3123,23 +3187,47 @@ const OS_UNITS = [
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Break streak on load if the user missed a day (lastLogDate is not today or yesterday)
+    // ── Streak: mark a date as LeetCode-active and recalculate ─────────────
+    function markDateActive(date) {
+        const monthKey    = date.slice(0, 7);
+        const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
+        setStreakData(prev => {
+            const activeDates  = [...new Set([...(prev.activeDates || []), date])];
+            const newStreak    = computeStreak(activeDates, validFreezes);
+            const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
+            return { ...prev, activeDates, lastActiveDate: date, currentStreak: newStreak, longestStreak };
+        });
+    }
+
+    // ── Streak freeze: spend one freeze on targetDate ─────────────────────
+    function applyFreeze(targetDate) {
+        const monthKey = targetDate.slice(0, 7);
+        setStreakFreezes(prev => {
+            const cur = prev.month === monthKey ? prev : { month: monthKey, used: [], count: 0 };
+            if (cur.count >= 3 || cur.used.includes(targetDate)) return prev;
+            const used = [...cur.used, targetDate];
+            setStreakData(s => {
+                const newStreak = computeStreak(s.activeDates || [], used);
+                return { ...s, currentStreak: Math.max(s.currentStreak, newStreak), longestStreak: Math.max(s.longestStreak, newStreak) };
+            });
+            return { month: monthKey, used, count: used.length };
+        });
+    }
+
+    // ── On load: check if streak should break (5AM-aware), reset month freezes ─
     useEffect(() => {
-        if (!lastLogDate || streak === 0) return;
-        const today = new Date().toISOString().slice(0, 10);
-        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-        if (lastLogDate !== today && lastLogDate !== yesterday) {
-            setStreak(0);
+        const today    = getStreakDate();
+        const yesterday = prevDateStr(today);
+        const monthKey = today.slice(0, 7);
+        if (streakFreezes.month && streakFreezes.month !== monthKey) {
+            setStreakFreezes({ month: monthKey, used: [], count: 0 });
+        }
+        const validFreezes = (streakFreezes.month === monthKey ? streakFreezes.used : []);
+        const allActive    = new Set([...(streakData.activeDates || []), ...validFreezes]);
+        if (!allActive.has(today) && !allActive.has(yesterday) && streakData.currentStreak > 0) {
+            setStreakData(prev => ({ ...prev, currentStreak: 0 }));
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    // Increment streak when today's first log entry is added
-    useEffect(() => {
-    const today = new Date().toISOString().slice(0,10);
-    if (dailyLog.length>0 && dailyLog[0].date===today && lastLogDate!==today) {
-    setLastLogDate(today); setStreak(s=>s+1);
-    }
-    }, [dailyLog]);
 
     // Auto-sync: debounce 4s after any data change
     // — Supabase save always fires when user is signed in (primary)
@@ -3151,7 +3239,7 @@ const OS_UNITS = [
         if (autoSyncTimer.current) clearTimeout(autoSyncTimer.current);
         setAutoSyncStatus("saving");
         autoSyncTimer.current = setTimeout(async () => {
-            const payload = { dsaData, coaData, revData, weekStatus, streak, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
+            const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
             let supabaseOk = !session?.sub; // if not signed in, treat as not needed
             let legacyOk   = !syncCode;    // if no syncCode, treat as not needed
 
@@ -3201,7 +3289,7 @@ const OS_UNITS = [
         if (!code) { code = generateCode(); setSyncCode(code); }
         setSyncStatus("saving...");
         try {
-            const payload = { dsaData, coaData, revData, weekStatus, streak, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
+            const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
             const res = await fetch(`/api/sync/${code}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -3229,7 +3317,9 @@ const OS_UNITS = [
             if (data.coaData) setCoaData(mergeCoaData(data.coaData));
             if (data.revData) setRevData(mergeRevData(data.revData));
             if (data.weekStatus) setWeekStatus(data.weekStatus);
-            if (data.streak !== undefined) setStreak(data.streak);
+            if (data.streakData) setStreakData(data.streakData);
+            else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
+            if (data.streakFreezes) setStreakFreezes(data.streakFreezes);
             if (data.dailyLog) setDailyLog(data.dailyLog);
             if (data.lastLogDate) setLastLogDate(data.lastLogDate);
             if (data.activityLog) setActivityLog(data.activityLog);
@@ -3251,7 +3341,8 @@ const OS_UNITS = [
         setCoaData(COA_TABLE);
         setRevData(ALL_REV_TOPICS);
         setWeekStatus(Array(8).fill(false));
-        setStreak(0);
+        setStreakData({ currentStreak:0, longestStreak:0, lastActiveDate:"", activeDates:[] });
+        setStreakFreezes({ month:"", used:[], count:0 });
         setDailyLog([]);
         setLastLogDate("");
         setActivityLog({});
@@ -3386,6 +3477,7 @@ const OS_UNITS = [
             <main style={S.main}>
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
+                    streakData={streakData} streakFreezes={streakFreezes} onApplyFreeze={applyFreeze}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
                     diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData} />}
                 {page==="dsa" &&
