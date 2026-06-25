@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables (never commit secrets)
+.env
+.env.*
+
+# Google OAuth client secret
+client_secret*.json
