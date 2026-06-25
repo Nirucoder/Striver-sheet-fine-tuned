@@ -3422,6 +3422,7 @@ const OS_UNITS = [
                 .studyos-mobile-header { display: none; }
                 .studyos-mobile-nav { display: none; }
                 .studyos-sidebar-overlay { display: none; }
+                .studyos-mobile-sidebar { display: none; }
 
                 @media (max-width: 768px) {
                     .studyos-desktop-sidebar { display: none !important; }
@@ -3495,6 +3496,7 @@ const OS_UNITS = [
                     .studyos-sidebar-overlay.hidden { display: none; }
 
                     .studyos-mobile-sidebar {
+                        display: flex;
                         position: fixed;
                         top: 0;
                         left: 0;
@@ -3503,7 +3505,6 @@ const OS_UNITS = [
                         background: #0f1117;
                         border-right: 1px solid #1e2030;
                         z-index: 400;
-                        display: flex;
                         flex-direction: column;
                         transform: translateX(-100%);
                         transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
