@@ -3446,7 +3446,10 @@ const OS_UNITS = [
         )}
             <div style={S.sidebar}>
                 <div style={S.sidebarTop}>
-                    <div style={S.logo}>StudyOS</div>
+                    <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 4}}>
+                        <img src="/favicon.svg" alt="Logo" style={{width: 22, height: 22}} />
+                        <div style={{...S.logo, marginBottom: 0}}>StudyOS</div>
+                    </div>
                     <div style={S.logoSub}>SRM KTR · Sem Break</div>
                     {session && (
                         <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,padding:"8px 10px",background:"#0a0b0d",borderRadius:8,border:"1px solid #1e2030"}}>
