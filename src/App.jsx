@@ -448,8 +448,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     const GREEN_COLORS = ["#161b22","#0e4429","#006d32","#26a641","#39d353"];
     const GREEN_ACCENT = "#39d353";
-    const BLUE_COLORS  = ["#161b22","#0a1829","#1e3a5f","#1d4ed8","#60a5fa"];
-    const BLUE_ACCENT  = "#60a5fa";
+    const BLUE_COLORS  = ["#161b22","#2d2000","#6b4800","#b45309","#fbbf24"];
+    const BLUE_ACCENT  = "#fbbf24";
 
     const OTHER_TABS = [
         { id:"study", label:"Study Sessions", colors:["#161b22","#0a3d3a","#0f766e","#0d9488","#2dd4bf"], accent:"#2dd4bf" },
@@ -612,7 +612,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <div style={{display:"flex",justifyContent:"flex-end",marginBottom:6}}>
                     <span style={{fontSize:11,color:"#475569"}}>{otherTotal} {otherTab==="study"?"sessions":"tasks"} logged</span>
                 </div>
-                <HeatGrid wks={otherWeeks} colorFn={getOtherColor} accent={curOther.accent} selDay={otherSelectedDay} onSelect={setOtherSelectedDay} label={otherTab==="study"?"session":"task"} />
+                <HeatGrid wks={otherWeeks} getCellColor={c => { if (!c) return curOther.colors[0]; return getOtherColor(c.count); }} getAccent={()=>curOther.accent} legendPalette={curOther.colors} accent={curOther.accent} selDay={otherSelectedDay} onSelect={setOtherSelectedDay} label={otherTab==="study"?"session":"task"} />
                 {otherSelectedDay && (
                     <div style={{marginTop:10,padding:"10px 14px",background:"#0d1117",borderRadius:8,border:`1px solid ${curOther.colors[2]}44`}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
