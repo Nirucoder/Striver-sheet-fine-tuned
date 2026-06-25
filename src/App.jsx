@@ -3447,7 +3447,7 @@ const OS_UNITS = [
             <div style={S.sidebar}>
                 <div style={S.sidebarTop}>
                     <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 4}}>
-                        <img src="/favicon.svg" alt="Logo" style={{width: 22, height: 22}} />
+                        <img src="/pwa-512x512.png" alt="Logo" style={{width: 22, height: 22}} />
                         <div style={{...S.logo, marginBottom: 0}}>StudyOS</div>
                     </div>
                     <div style={S.logoSub}>SRM KTR · Sem Break</div>
