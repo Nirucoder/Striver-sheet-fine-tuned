@@ -31,13 +31,13 @@ export default async function handler(req, res) {
       headers: {
         "Content-Type": "application/json",
         "Referer": "https://leetcode.com",
-        "User-Agent": "Mozilla/5.0 (compatible; StudyOS/1.0)",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
       body: JSON.stringify({ query, variables: { username, limit: 100 } }),
     });
 
     if (!lcRes.ok) {
-      return res.status(502).json({ error: `LeetCode responded with ${lcRes.status}` });
+      return res.status(502).json({ error: `LeetCode API failed with status ${lcRes.status}` });
     }
 
     const json = await lcRes.json();

@@ -68,7 +68,7 @@ app.get("/api/leetcode/:username", async (req, res) => {
       headers: {
         "Content-Type": "application/json",
         "Referer": "https://leetcode.com",
-        "User-Agent": "Mozilla/5.0 (compatible; StudyOS/1.0)",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
       body: JSON.stringify({ query, variables: { username, limit: 100 } }),
     });
