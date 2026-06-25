@@ -28,8 +28,16 @@ function fmtDate(date) {
 }
 
 export default function CalendarTab({ todos = [], weekStatus = [] }) {
-  const [accessToken, setAccessToken]   = useState(() => sessionStorage.getItem("gcal_token") || null);
-  const [tokenExpiry, setTokenExpiry]   = useState(() => { const e = sessionStorage.getItem("gcal_token_exp"); return e ? parseInt(e) : null; });
+  const [accessToken, setAccessToken]   = useState(() => {
+    const tok = localStorage.getItem("gcal_token");
+    const exp = localStorage.getItem("gcal_token_exp");
+    if (tok && exp && parseInt(exp) > Date.now() + 60000) return tok;
+    return null;
+  });
+  const [tokenExpiry, setTokenExpiry]   = useState(() => {
+    const e = localStorage.getItem("gcal_token_exp");
+    return e ? parseInt(e) : null;
+  });
   const [gcalEvents, setGcalEvents]     = useState([]);
   const [loading, setLoading]           = useState(false);
   const [syncing, setSyncing]           = useState(false);
@@ -69,8 +77,8 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
         const exp = Date.now() + resp.expires_in * 1000;
         setAccessToken(resp.access_token);
         setTokenExpiry(exp);
-        sessionStorage.setItem("gcal_token", resp.access_token);
-        sessionStorage.setItem("gcal_token_exp", String(exp));
+        localStorage.setItem("gcal_token", resp.access_token);
+        localStorage.setItem("gcal_token_exp", String(exp));
         setError(null);
       }
     });
@@ -89,7 +97,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   const signOut = () => {
     if (accessToken && window.google?.accounts?.oauth2) window.google.accounts.oauth2.revoke(accessToken);
     setAccessToken(null); setTokenExpiry(null); setGcalEvents([]);
-    sessionStorage.removeItem("gcal_token"); sessionStorage.removeItem("gcal_token_exp");
+    localStorage.removeItem("gcal_token"); localStorage.removeItem("gcal_token_exp");
   };
 
   const fetchEvents = useCallback(async (token) => {
@@ -102,7 +110,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       const params = new URLSearchParams({ timeMin:tMin, timeMax:tMax, singleEvents:"true", orderBy:"startTime", maxResults:"500" });
       const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
         { headers: { Authorization:`Bearer ${token}` } });
-      if (res.status === 401) { setAccessToken(null); sessionStorage.removeItem("gcal_token"); setError("Session expired — please reconnect."); return; }
+      if (res.status === 401) { setAccessToken(null); localStorage.removeItem("gcal_token"); localStorage.removeItem("gcal_token_exp"); setError("Session expired — please reconnect."); return; }
       if (!res.ok) throw new Error(`GCal error ${res.status}`);
       const data = await res.json();
       setGcalEvents(data.items || []);
@@ -126,7 +134,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     if (!hasNew) return;
     clearTimeout(autoGCalSyncTimer.current);
     autoGCalSyncTimer.current = setTimeout(async () => {
-      const tok = sessionStorage.getItem("gcal_token");
+      const tok = localStorage.getItem("gcal_token");
       if (!tok) return;
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const newSynced = { ...syncedTodos }; let count = 0;

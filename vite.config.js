@@ -14,4 +14,9 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['express', 'cors', 'pg', 'fs', 'path', 'crypto', 'net', 'tls', 'http', 'https', 'stream', 'os', 'url', 'zlib'],
+    },
+  },
 })

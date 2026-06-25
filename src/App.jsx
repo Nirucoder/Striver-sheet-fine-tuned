@@ -173,6 +173,83 @@ const COA_TABLE = [
   { id:"coa_01", topic:"Introduction to Computer Organization", week:1, subtopics:"Overview, Von Neumann architecture, basic components", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_02", topic:"Number Systems & Data Representation", week:1, subtopics:"Binary, Octal, Hex, BCD, IEEE 754 floating point", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_03", topic:"Boolean Algebra & Logic Gates", week:1, subtopics:"AND, OR, NOT, NAND, NOR, XOR, truth tables, simplification", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_04", topic:"Combinational Circuits", week:2, subtopics:"Adders, subtractors, multiplexers, demultiplexers, encoders, decoders", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_05", topic:"Sequential Circuits", week:2, subtopics:"Flip-flops (SR, JK, D, T), registers, counters", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_06", topic:"CPU Organisation & Instruction Set", week:3, subtopics:"ALU, control unit, registers, instruction formats, addressing modes", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_07", topic:"Instruction Cycle & Microprogramming", week:3, subtopics:"Fetch-decode-execute, micro-operations, hardwired vs microprogrammed control", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_08", topic:"Pipelining", week:4, subtopics:"Pipeline stages, hazards (structural, data, control), solutions", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_09", topic:"Memory Organisation", week:4, subtopics:"Hierarchy, cache (direct, associative, set-associative), virtual memory, paging", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_10", topic:"Input / Output Organisation", week:5, subtopics:"I/O interfaces, programmed I/O, interrupt-driven I/O, DMA", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_11", topic:"Buses & Interconnects", week:5, subtopics:"Bus structure, synchronous vs asynchronous, arbitration, PCI/PCIe basics", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_12", topic:"Arithmetic Operations in Hardware", week:6, subtopics:"Integer addition/subtraction, multiplication (Booth's), division, floating-point ops", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_13", topic:"RISC vs CISC", week:6, subtopics:"Design philosophy, pipeline friendliness, examples (x86 vs ARM)", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_14", topic:"Parallel Processing", week:7, subtopics:"Flynn's taxonomy, SIMD/MIMD, multiprocessors, cache coherence", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_15", topic:"Performance Metrics & Optimisation", week:7, subtopics:"CPI, MIPS, Amdahl's law, branch prediction, out-of-order execution", practiceTarget:2, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_16", topic:"Assembly Language Basics", week:8, subtopics:"Registers, MOV/ADD/SUB/JMP, stack operations, calling conventions", practiceTarget:3, confidence:0, revisionRequired:false, status:"pending" },{ id:"coa_17", topic:"Revision & Past Papers", week:8, subtopics:"Previous year questions, formula sheet, Nesa model papers", practiceTarget:4, confidence:0, revisionRequired:false, status:"pending" },
 ];
 
+// ─── COA GATE SMASHERS UNITS ──────────────────────────────────────────────────
+const COA_GS_PLAYLIST = "PLxCzCOWd7aiHMonh3G6QNKq53C6oNXGrX";
+function coaUrl(id, search) {
+  if (id) return `https://www.youtube.com/watch?v=${id}&list=${COA_GS_PLAYLIST}`;
+  return `https://www.youtube.com/results?search_query=Gate+Smashers+COA+${encodeURIComponent(search)}`;
+}
+const COA_GS_UNITS = [
+  { unit:1, title:"Basic Structure of Computers", videos:[
+    { label:"L-1.1",  title:"COA Syllabus Discussion for GATE and UGC NTA NET",       id:"L9X7XXfHYdU" },
+    { label:"L-1.2",  title:"Von Neumann's Architecture | Stored Memory Concept",      search:"Von Neumann Architecture Stored Memory Concept" },
+    { label:"L-1.3",  title:"Various General Purpose Registers",                       search:"Various General Purpose Registers COA" },
+    { label:"L-1.4",  title:"Types of Buses (Address, Data and Control)",              search:"Types of Buses Address Data Control COA" },
+    { label:"L-1.5",  title:"Instruction Cycle in Computer Organisation",              search:"Instruction Cycle L1.5 COA" },
+    { label:"L-1.6",  title:"Fetch Decode Execute Cycle",                              search:"Fetch Decode Execute Cycle COA" },
+    { label:"L-1.7",  title:"Types of Instructions in General Purpose Computer",       id:"r6PChksvxp8" },
+    { label:"L-1.8",  title:"Instruction Format (Zero, One, Two, Three Address)",      search:"Instruction Format Zero One Two Three Address COA" },
+    { label:"L-1.9",  title:"Addressing Modes Introduction",                           search:"Addressing Modes Introduction COA" },
+    { label:"L-1.10", title:"Immediate and Register Addressing Mode",                  search:"Immediate Register Addressing Mode COA" },
+    { label:"L-1.11", title:"Memory Reference Instructions",                           search:"Memory Reference Instructions COA" },
+    { label:"L-1.12", title:"Program Control Instructions (Types of Control Instructions)", search:"Program Control Instructions Types COA" },
+    { label:"L-1.13", title:"Subroutine Call and Return",                              search:"Subroutine Call Return COA" },
+  ]},
+  { unit:2, title:"Addressing Modes", videos:[
+    { label:"L-2.1",  title:"Register Indirect Addressing Mode",    search:"Register Indirect Addressing Mode COA" },
+    { label:"L-2.2",  title:"Displacement / Base Addressing Mode",  search:"Displacement Base Addressing Mode COA" },
+    { label:"L-2.3",  title:"Stack Addressing Mode",                search:"Stack Addressing Mode COA" },
+    { label:"L-2.4",  title:"Auto Increment Addressing Mode",       search:"Auto Increment Addressing Mode COA" },
+    { label:"L-2.5",  title:"Auto Decrement Addressing Mode",       search:"Auto Decrement Addressing Mode COA" },
+    { label:"L-2.6",  title:"Auto Increment and Decrement Addressing Modes", search:"Auto Increment Decrement Addressing Modes COA" },
+    { label:"L-2.7",  title:"Direct Addressing Mode",               search:"Direct Addressing Mode COA" },
+    { label:"L-2.8",  title:"Indirect Addressing Mode",             search:"Indirect Addressing Mode COA" },
+    { label:"L-2.9",  title:"Relative Addressing Mode",             search:"Relative Addressing Mode COA" },
+    { label:"L-2.10", title:"Base Register Addressing Mode",        search:"Base Register Addressing Mode COA" },
+    { label:"L-2.11", title:"Indexed Addressing Mode",              search:"Indexed Addressing Mode COA" },
+    { label:"L-2.12", title:"Question on Addressing Modes (UGC NTA NET 2021)", search:"Question Addressing Modes UGC NTA NET 2021 COA" },
+  ]},
+  { unit:3, title:"Memory Organization", videos:[
+    { label:"L-3.1",  title:"Memory Hierarchy — Access time, Speed, Size, Cost",      search:"Memory Hierarchy Access Time Speed Size Cost COA" },
+    { label:"L-3.2",  title:"Independent vs Hierarchical Memory Organisation | 2-Level", search:"Independent Hierarchical Memory Organisation 2-Level COA" },
+    { label:"L-3.3",  title:"3-Level Memory Organisation",                             search:"3-Level Memory Organisation COA" },
+    { label:"L-3.4",  title:"GATE 2004 Question on 3-Level Memory Organisation",       search:"GATE 2004 3-Level Memory Organisation COA" },
+    { label:"L-3.5",  title:"Cache Memory Introduction",                               search:"Cache Memory Introduction COA" },
+    { label:"L-3.6",  title:"Direct Mapping with Example",                             search:"Direct Mapping Cache Example COA" },
+    { label:"L-3.7",  title:"Direct Mapping — Numerical",                              search:"Direct Mapping Numerical COA" },
+    { label:"L-3.8",  title:"Fully Associative Mapping with Examples",                 search:"Fully Associative Mapping Examples COA" },
+    { label:"L-3.9",  title:"Advantages and Disadvantages of Direct Mapping",          search:"Advantages Disadvantages Direct Mapping COA" },
+    { label:"L-3.10", title:"Set Associative Mapping with Examples",                   search:"Set Associative Mapping Examples COA" },
+    { label:"L-3.11", title:"Locality of Reference in Cache Memory | Spatial vs Temporal", search:"Locality of Reference Cache Spatial Temporal COA" },
+    { label:"L-3.12", title:"Cache Replacement Algorithms",                            search:"Cache Replacement Algorithms COA" },
+    { label:"L-3.13", title:"LRU (Least Recently Used) Cache Replacement Algorithm",   search:"LRU Least Recently Used Cache Replacement COA" },
+    { label:"L-3.14", title:"GATE 2014 Question on Set Associative Cache Mapping",     search:"GATE 2014 Set Associative Cache Mapping COA" },
+    { label:"L-3.15", title:"FIFO Cache Replacement Policy",                           search:"FIFO Cache Replacement Policy COA" },
+    { label:"L-3.16", title:"LRU Cache Replacement Policy (detailed)",                 search:"LRU Cache Replacement Policy detailed COA" },
+  ]},
+  { unit:4, title:"Pipelining", videos:[
+    { label:"L-4.1",  title:"Pipelining with Real Life Example | Need of Pipelining",  search:"Pipelining Real Life Example Need COA" },
+    { label:"L-4.2",  title:"Pipelining Introduction and Structure",                   search:"Pipelining Introduction Structure COA" },
+    { label:"L-4.3",  title:"Pipelining vs Non-Pipelining | Speedup, Efficiency, Utilization", search:"Pipelining vs Non-Pipelining Speedup Efficiency COA" },
+    { label:"L-4.4",  title:"Stage Delay in Pipeline | Previous Year GATE Question",   search:"Stage Delay Pipeline GATE Question COA" },
+    { label:"L-4.5",  title:"Numerical Question on Pipelining | Previous Year GATE",   search:"Numerical Pipelining GATE COA" },
+    { label:"L-4.6",  title:"What is Hazard in Pipelining | Types of Hazards",         search:"Hazard Pipelining Types COA" },
+    { label:"L-4.7",  title:"Structural Hazards in Pipelining",                        search:"Structural Hazards Pipelining COA" },
+    { label:"L-4.8",  title:"Control Hazards in Pipelining",                           search:"Control Hazards Pipelining COA" },
+    { label:"L-4.9",  title:"Read After Write (RAW) Hazard | Data Hazard in Pipelining", search:"Read After Write RAW Hazard Data Hazard Pipelining COA" },
+    { label:"L-4.10", title:"Write After Read (WAR) Hazard | Data Hazards",            search:"Write After Read WAR Hazard Data Hazards COA" },
+    { label:"L-4.11", title:"Write After Write (WAW) Hazard | Data Hazards",           search:"Write After Write WAW Hazard Data Hazards COA" },
+  ]},
+  { unit:5, title:"I/O Organization & Misc", videos:[
+    { label:"",       title:"I/O Interface in Computer Organization",                  search:"IO Interface Computer Organization Gate Smashers" },
+    { label:"",       title:"Daisy Chaining in Priority Interrupt",                    search:"Daisy Chaining Priority Interrupt Gate Smashers COA" },
+    { label:"",       title:"Parallel Priority Interrupt | I/O Organization",          search:"Parallel Priority Interrupt IO Organization Gate Smashers" },
+    { label:"",       title:"Question on Interrupt Handling | UGC NTA NET June 2021",  search:"Interrupt Handling UGC NTA NET June 2021 Gate Smashers" },
+    { label:"",       title:"Question on DMA (Direct Memory Access) | UGC NTA NET June 2021", search:"DMA Direct Memory Access UGC NTA NET June 2021 Gate Smashers" },
+    { label:"",       title:"RISC vs CISC | Computer Organization & Architecture",     search:"RISC vs CISC Computer Organization Architecture Gate Smashers" },
+  ]},
+];
+
 // ─── WEEK PLAN (8-week roadmap mapping DSA steps to COA weeks) ───────────────
 const WEEK_PLAN = [
   { week:1, title:"Basics, Sorting & Arrays (Easy)", dsaSteps:[1,2], coaWeek:1 },{ week:2, title:"Arrays (Medium/Hard) & Strings", dsaSteps:[3], coaWeek:2 },{ week:3, title:"Searching, Recursion & Backtracking", dsaSteps:[4,5], coaWeek:3 },{ week:4, title:"Binary Trees & BST", dsaSteps:[6,7], coaWeek:4 },{ week:5, title:"Linked Lists & Stacks/Queues", dsaSteps:[8,9], coaWeek:5 },{ week:6, title:"Greedy, Binary Search & Heaps", dsaSteps:[10,11], coaWeek:6 },{ week:7, title:"Graphs & Dynamic Programming", dsaSteps:[12,13,14], coaWeek:7 },{ week:8, title:"Advanced DP, Tries & Revision", dsaSteps:[15,16,17], coaWeek:8 },
@@ -587,9 +664,25 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, revData }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData }) {
     const [logNote, setLogNote] = useState("");
+    const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
+
+    function addTodayTask() {
+        const text = todayInput.trim();
+        if (!text) return;
+        setTodos(prev => [{ id: Date.now(), text, priority:4, due:today, project:"Inbox", done:false, createdAt:Date.now() }, ...prev]);
+        setTodayInput("");
+    }
+    function toggleTodayTask(id) {
+        setTodos(prev => prev.map(t => t.id===id ? { ...t, done:!t.done } : t));
+    }
+    function removeTodayTask(id) {
+        setTodos(prev => prev.filter(t => t.id!==id));
+    }
+
+    const todayTasks = (todos||[]).filter(t => t.due === today);
 
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
@@ -627,6 +720,46 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     return <div>
         <div style={S.pageTitle}>Good morning, Engineer 👋</div>
         <div style={{...S.pageSub, marginBottom:16}}>SRM KTR · Semester Break · Striver A2Z Sheet ({STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0)} problems) + Nesa COA</div>
+
+        {/* ── Today's Work quick-glance card ── */}
+        <div style={{background:"#0f1117", border:"1px solid #1e2030", borderRadius:12, padding:"14px 18px", marginBottom:16}}>
+            <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10}}>
+                <div style={{fontSize:13, fontWeight:700, color:"#e2e8f0", display:"flex", alignItems:"center", gap:7}}>
+                    <span>📋</span> Today's Work
+                    <span style={{fontSize:11, color:"#475569", fontWeight:400}}>
+                        {todayTasks.filter(t=>t.done).length}/{todayTasks.length} done
+                    </span>
+                </div>
+            </div>
+            <div style={{display:"flex", gap:8, marginBottom:todayTasks.length>0?10:0}}>
+                <input value={todayInput} onChange={e=>setTodayInput(e.target.value)}
+                    onKeyDown={e=>e.key==="Enter"&&addTodayTask()}
+                    placeholder="Add a task for today…"
+                    style={{flex:1, padding:"7px 12px", background:"#1a1d2e", border:"1px solid #2d3154", borderRadius:8, color:"#e2e8f0", fontSize:12, outline:"none", fontFamily:"inherit"}} />
+                <button onClick={addTodayTask}
+                    style={{padding:"7px 14px", background:"#1e1b4b", border:"1px solid #4338ca", borderRadius:8, color:"#a5b4fc", fontSize:12, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap"}}>
+                    + Add
+                </button>
+            </div>
+            {todayTasks.length > 0 && (
+                <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
+                    {todayTasks.map(t => (
+                        <div key={t.id} style={{display:"flex", alignItems:"center", gap:6, padding:"4px 10px", borderRadius:20, background:t.done?"#0d2a1a":"#1a1d2e", border:`1px solid ${t.done?"#065f46":"#2d3154"}`, transition:"all 0.15s"}}>
+                            <div onClick={()=>toggleTodayTask(t.id)} style={{width:14, height:14, borderRadius:3, border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
+                                {t.done && <span style={{color:"#000", fontSize:9, fontWeight:900, lineHeight:1}}>✓</span>}
+                            </div>
+                            <span style={{fontSize:12, color:t.done?"#34d399":"#cbd5e1", textDecoration:t.done?"line-through":"none", cursor:"pointer", userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
+                                {t.text}
+                            </span>
+                            <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1, marginLeft:2}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {todayTasks.length === 0 && (
+                <div style={{fontSize:12, color:"#334155", fontStyle:"italic"}}>No tasks yet — add something above.</div>
+            )}
+        </div>
 
         <div style={S.streakBox}>
             <span style={{fontSize:28}}>🔥</span>
@@ -2002,86 +2135,115 @@ const OS_UNITS = [
         );
     }
 
-    // ─── COA TRACKER ─────────────────────────────────────────────────────────────
-    function COATracker({ coaData, setCoaData }) {
-    const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState("all");
-    const [weekFilter, setWeekFilter] = useState("all");
+    // ─── COA TRACKER (Gate Smashers · rebuilt as OS Tracker template) ────────────
+    function COATracker({ coaGsProgress, setCoaGsProgress }) {
+        const [openUnit, setOpenUnit] = useState(1);
 
-    function update(id, field, val) { setCoaData(prev=>prev.map(d=>d.id===id?{...d,[field]:val}:d)); }
+        function toggle(unit, idx, field) {
+            setCoaGsProgress(prev => {
+                const key = `${unit}-${idx}`;
+                const cur = prev[key] || {};
+                return { ...prev, [key]: { ...cur, [field]: !cur[field] } };
+            });
+        }
 
-    const filtered = coaData.filter(d => {
-    const q = search.toLowerCase();
-    return (!q||d.topic.toLowerCase().includes(q)||d.subtopics.toLowerCase().includes(q))
-    && (filter==="all"||d.status===filter)
-    && (weekFilter==="all"||String(d.week)===weekFilter);
-    });
-    const done = coaData.filter(d=>d.status==="done").length;
+        function getKey(unit, idx) { return coaGsProgress[`${unit}-${idx}`] || {}; }
 
-    return <div>
-        <div style={S.pageTitle}>COA Tracker</div>
-        <div style={{...S.pageSub,marginBottom:12}}>Nesa Academy · Computer Organization & Architecture ·
-            {done}/{coaData.length} topics done</div>
-        <PBar pct={Math.round(done/coaData.length*100)} color="#34d399" height={5} />
-        <div style={{marginBottom:16}} />
+        const totalVideos   = COA_GS_UNITS.reduce((a, u) => a + u.videos.length, 0);
+        const watchedCount  = COA_GS_UNITS.reduce((a, u) =>
+            a + u.videos.filter((_, i) => getKey(u.unit, i).watched).length, 0);
 
-        <div style={S.filterBar}>
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search COA topics…"
-            style={S.searchInput}/>
-            <select value={filter} onChange={e=>setFilter(e.target.value)} style={S.select}>
-                <option value="all">All Status</option>
-                <option value="done">Done ✓</option>
-                <option value="inprogress">In Progress</option>
-                <option value="pending">Pending</option>
-            </select>
-            <select value={weekFilter} onChange={e=>setWeekFilter(e.target.value)} style={S.select}>
-                <option value="all">All Weeks</option>
-                {[1,2,3,4,5,6,7,8].map(w=><option key={w} value={w}>Week {w}</option>)}
-            </select>
-        </div>
-
-        <div style={{background:"#0f1117",border:"1px solid #1e2030",borderRadius:12,overflow:"hidden"}}>
-            <table style={S.table}>
-                <thead>
-                    <tr>
-                        {["Topic","Week","Subtopics Covered","Practice                         Target","Confidence","Revision?","Status"].map(h=>
-                        <th key={h} style={S.th}>{h}</th>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.map(d => <tr key={d.id} style={{background:d.status==="done"
-                        ?"#0d1a0d":d.status==="inprogress" ?"#0d0d1a":"transparent"}}>
-                        <td style={{...S.td,color:"#e2e8f0",fontWeight:600}}>{d.topic}</td>
-                        <td style={S.td}><span style={S.badge("green")}>W{d.week}</span></td>
-                        <td style={{...S.td,fontSize:11,maxWidth:240}}>{d.subtopics}</td>
-                        <td style={S.td}>{d.practiceTarget} sessions</td>
-                        <td style={S.td}>
-                            <div style={{display:"flex",alignItems:"center",gap:5}}>
-                                <input type="range" min={0} max={10} value={d.confidence}
-                                    onChange={e=>update(d.id,"confidence",Number(e.target.value))}
-                                style={{width:65,accentColor:"#34d399"}}/>
-                                <span
-                                    style={{fontSize:11,color:"#34d399",fontWeight:700,minWidth:14}}>{d.confidence}</span>
+        return (
+            <div style={{padding:"28px 32px", maxWidth:960, margin:"0 auto"}}>
+                <div style={{marginBottom:6, fontSize:22, fontWeight:700, color:"#f1f5f9"}}>COA Tracker</div>
+                <div style={{marginBottom:16, fontSize:13, color:"#64748b"}}>
+                    Gate Smashers · Computer Organization & Architecture · {watchedCount}/{totalVideos} watched
+                </div>
+                <div style={{marginBottom:24, background:"#1e2030", borderRadius:8, height:6, overflow:"hidden"}}>
+                    <div style={{height:"100%", width:`${totalVideos ? Math.round(watchedCount/totalVideos*100) : 0}%`, background:"linear-gradient(90deg,#34d399,#6ee7b7)", borderRadius:8, transition:"width 0.4s"}} />
+                </div>
+                <div style={{display:"flex", flexDirection:"column", gap:12}}>
+                {COA_GS_UNITS.map(u => {
+                    const isOpen      = openUnit === u.unit;
+                    const unitWatched = u.videos.filter((_, i) => getKey(u.unit, i).watched).length;
+                    const unitTotal   = u.videos.length;
+                    const unitPct     = unitTotal ? Math.round(unitWatched / unitTotal * 100) : 0;
+                    return (
+                    <div key={u.unit} style={{background:"#0d0f18", border:"1px solid #1e2030", borderRadius:12, overflow:"hidden"}}>
+                        <div onClick={() => setOpenUnit(isOpen ? null : u.unit)}
+                            style={{display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 18px", cursor:"pointer", background:isOpen?"#131625":"#0d0f18", transition:"background 0.15s"}}>
+                            <div style={{display:"flex", alignItems:"center", gap:12}}>
+                                <div style={{width:32, height:32, borderRadius:8, background:"#0f291e", border:"1px solid #065f46", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, color:"#34d399", flexShrink:0}}>
+                                    U{u.unit}
+                                </div>
+                                <div>
+                                    <div style={{fontSize:14, fontWeight:600, color:"#e2e8f0"}}>{u.title}</div>
+                                    <div style={{fontSize:11, color:"#475569", marginTop:2}}>{unitTotal} videos · {unitWatched} watched · {unitPct}%</div>
+                                </div>
                             </div>
-                        </td>
-                        <td style={S.td}><input type="checkbox" checked={d.revisionRequired}
-                                onChange={e=>update(d.id,"revisionRequired",e.target.checked)} style={S.check}/></td>
-                        <td style={S.td}>
-                            <select value={d.status} onChange={e=>update(d.id,"status",e.target.value)}
-                                style={{...S.select,background:d.status==="done"?"#14532d":d.status==="inprogress"?"#1e1b4b":"#1a1d2e",color:d.status==="done"?"#86efac":d.status==="inprogress"?"#a5b4fc":"#94a3b8"}}>
-                                <option value="pending">Pending</option>
-                                <option value="inprogress">In Progress</option>
-                                <option value="done">Done ✓</option>
-                            </select>
-                        </td>
-                    </tr>)}
-                </tbody>
-            </table>
-            {filtered.length===0 && <div style={{padding:"32px",textAlign:"center",color:"#475569"}}>No topics found.
-            </div>}
-        </div>
-    </div>;
+                            <div style={{display:"flex", alignItems:"center", gap:10}}>
+                                <div style={{width:80, height:4, background:"#1e2030", borderRadius:4, overflow:"hidden"}}>
+                                    <div style={{height:"100%", width:`${unitPct}%`, background:"#34d399", borderRadius:4, transition:"width 0.3s"}} />
+                                </div>
+                                <span style={{color:"#475569", fontSize:13, transform:isOpen?"rotate(180deg)":"none", transition:"transform 0.2s", display:"inline-block"}}>▼</span>
+                            </div>
+                        </div>
+                        {isOpen && (
+                        <div style={{overflowX:"auto"}}>
+                            <table style={{width:"100%", borderCollapse:"collapse", minWidth:600}}>
+                                <thead>
+                                    <tr style={{background:"#0a0b0d", borderBottom:"1px solid #1e2030"}}>
+                                        <th style={{padding:"8px 12px", textAlign:"left", fontSize:11, color:"#374151", fontWeight:600, width:56}}>Label</th>
+                                        <th style={{padding:"8px 12px", textAlign:"left", fontSize:11, color:"#374151", fontWeight:600}}>Topic</th>
+                                        <th style={{padding:"8px 12px", textAlign:"center", fontSize:11, color:"#374151", fontWeight:600, width:60}}>Watch</th>
+                                        <th style={{padding:"8px 12px", textAlign:"center", fontSize:11, color:"#374151", fontWeight:600, width:90}}>Watched</th>
+                                        <th style={{padding:"8px 12px", textAlign:"center", fontSize:11, color:"#374151", fontWeight:600, width:90}}>Revised</th>
+                                        <th style={{padding:"8px 16px", textAlign:"center", fontSize:11, color:"#374151", fontWeight:600, width:100}}>Practiced</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {u.videos.map((v, i) => {
+                                        const s    = getKey(u.unit, i);
+                                        const done = s.watched && s.revised && s.practiced;
+                                        const href = coaUrl(v.id, v.search);
+                                        return (
+                                        <tr key={i} style={{borderBottom:"1px solid #0f1117", background:done?"#0a1a0a":"transparent", transition:"background 0.15s"}}
+                                            onMouseEnter={e=>e.currentTarget.style.background=done?"#0a1a0a":"#0d0f18"}
+                                            onMouseLeave={e=>e.currentTarget.style.background=done?"#0a1a0a":"transparent"}>
+                                            <td style={{padding:"9px 12px", fontSize:11, color:"#34d399", fontWeight:700, whiteSpace:"nowrap"}}>{v.label || "—"}</td>
+                                            <td style={{padding:"9px 12px", fontSize:13, color:done?"#4ade80":"#cbd5e1", fontWeight:done?400:500, textDecoration:done?"line-through":"none"}}>{v.title}</td>
+                                            <td style={{padding:"9px 12px", textAlign:"center"}}>
+                                                <a href={href} target="_blank" rel="noreferrer"
+                                                   title="Watch on YouTube"
+                                                   style={{display:"inline-flex", alignItems:"center", justifyContent:"center", textDecoration:"none"}}>
+                                                    <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect width="32" height="22" rx="5" fill="#FF0000"/>
+                                                        <polygon points="13,6 13,16 22,11" fill="white"/>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                            <td style={{padding:"9px 12px", textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.watched}  color="#ef4444" label="Watched"   onClick={()=>toggle(u.unit,i,"watched")}   />
+                                            </td>
+                                            <td style={{padding:"9px 12px", textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.revised}  color="#f59e0b" label="Revised"   onClick={()=>toggle(u.unit,i,"revised")}   />
+                                            </td>
+                                            <td style={{padding:"9px 16px", textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.practiced} color="#34d399" label="Practiced" onClick={()=>toggle(u.unit,i,"practiced")} />
+                                            </td>
+                                        </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                        )}
+                    </div>
+                    );
+                })}
+                </div>
+            </div>
+        );
     }
 
     // ─── WEEKLY PLANNER ───────────────────────────────────────────────────────────
@@ -2878,6 +3040,7 @@ const OS_UNITS = [
     const [revStars, setRevStars] = useLocalStorage("dsa_rev_stars_v1", {});
     const [mathsProgress, setMathsProgress] = useLocalStorage("maths_progress_v1", {});
     const [osProgress, setOsProgress] = useLocalStorage("os_progress_v1", {});
+    const [coaGsProgress, setCoaGsProgress] = useLocalStorage("coa_tracker_gs", {});
     const [confetti, setConfetti] = useState(false);
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
@@ -3224,13 +3387,13 @@ const OS_UNITS = [
                 {page==="dashboard" &&
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
-                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} revData={revData} />}
+                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
                     probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} />}
                 {page==="coa" &&
-                <COATracker coaData={coaData} setCoaData={setCoaData} />}
+                <COATracker coaGsProgress={coaGsProgress} setCoaGsProgress={setCoaGsProgress} />}
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
                 {page==="os" && <OSTracker osProgress={osProgress} setOsProgress={setOsProgress} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}

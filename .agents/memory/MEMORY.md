@@ -1,0 +1,1 @@
+- [StudyOS architecture](studyos-arch.md) — key state keys, component boundaries, and compat rules for this project.
