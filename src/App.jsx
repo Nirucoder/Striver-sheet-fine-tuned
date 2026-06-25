@@ -1307,6 +1307,25 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         }));
     }
 
+    const syncRef = useRef();
+    useEffect(() => {
+        syncRef.current = syncFromLeetCode;
+    });
+
+    useEffect(() => {
+        if (!lcUsername || !lcUsername.trim()) return;
+        
+        // Initial sync when DSATracker opens
+        syncRef.current();
+
+        // Sync every 1 hour (3600000 ms)
+        const intervalId = setInterval(() => {
+            syncRef.current();
+        }, 3600000);
+
+        return () => clearInterval(intervalId);
+    }, [lcUsername]);
+
     async function syncFromLeetCode() {
         if (!lcUsername || !lcUsername.trim()) {
             setLcSyncMsg("⚠ Please enter your LeetCode username.");
