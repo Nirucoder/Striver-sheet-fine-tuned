@@ -1,0 +1,149 @@
+I'm working on my StudyOS project (Striver-sheet-fine-tuned). I need 4 things done. Read ALL existing code carefully before changing anything.
+
+---
+
+## FEATURE 1: REBUILD COA Tracker from scratch using Gate Smashers playlist
+
+COMPLETELY REPLACE the existing COA tracker data. Delete all old COA topic data/state. Rebuild the entire component using the OS Tracker as the exact template — same UI, same card structure, same unit/topic layout, same YouTube link button style, same progress tracking, same localStorage key pattern.
+
+The new data comes from this Gate Smashers playlist:
+https://youtube.com/playlist?list=PLxCzCOWd7aiHMonh3G6QNKq53C6oNXGrX
+
+Structure it into 4 units based on the lecture numbering (L-1.x, L-2.x, L-3.x, L-4.x) plus a 5th unit for extra/standalone videos.
+
+Use EXACTLY this data — these are the real lecture titles and must be hardcoded:
+
+---
+
+UNIT 1 — Basic Structure of Computers (L-1.x)
+L-1.1 | COA Syllabus Discussion for GATE and UGC NTA NET | https://www.youtube.com/watch?v=L9X7XXfHYdU
+L-1.2 | Von Neumann's Architecture | Stored Memory Concept
+L-1.3 | Various General Purpose Registers
+L-1.4 | Types of Buses (Address, Data and Control)
+L-1.5 | [search for this: Gate Smashers L-1.5 COA instruction cycle]
+L-1.6 | [search for this: Gate Smashers L-1.6 COA fetch decode execute]
+L-1.7 | Types of Instructions in General Purpose Computer | https://www.youtube.com/watch?v=r6PChksvxp8
+L-1.8 | Instruction Format (Zero, One, Two, Three Address)
+L-1.9 | Addressing Modes Introduction
+L-1.10 | Immediate and Register Addressing Mode
+L-1.11 | Memory Reference Instructions
+L-1.12 | Program Control Instructions (Types of Control Instructions)
+L-1.13 | Subroutine Call and Return
+
+UNIT 2 — Addressing Modes (L-2.x)
+L-2.1 | Register Indirect Addressing Mode
+L-2.2 | Displacement / Base Addressing Mode
+L-2.3 | Stack Addressing Mode
+L-2.4 | Auto Increment Addressing Mode
+L-2.5 | Auto Decrement Addressing Mode
+L-2.6 | Auto Increment and Decrement Addressing Modes
+L-2.7 | Direct Addressing Mode
+L-2.8 | Indirect Addressing Mode
+L-2.9 | Relative Addressing Mode
+L-2.10 | Base Register Addressing Mode
+L-2.11 | Indexed Addressing Mode
+L-2.12 | Question on Addressing Modes (UGC NTA NET 2021)
+
+UNIT 3 — Memory Organization (L-3.x)
+L-3.1 | Memory Hierarchy — Access time, Speed, Size, Cost
+L-3.2 | Independent vs Hierarchical Memory Organisation | 2-Level Memory
+L-3.3 | 3-Level Memory Organisation
+L-3.4 | GATE 2004 Question on 3-Level Memory Organisation
+L-3.5 | Cache Memory Introduction
+L-3.6 | Direct Mapping with Example
+L-3.7 | Direct Mapping — Numerical
+L-3.8 | Fully Associative Mapping with Examples
+L-3.9 | Advantages and Disadvantages of Direct Mapping
+L-3.10 | Set Associative Mapping with Examples
+L-3.11 | Locality of Reference in Cache Memory | Spatial vs Temporal
+L-3.12 | Cache Replacement Algorithms
+L-3.13 | LRU (Least Recently Used) Cache Replacement Algorithm
+L-3.14 | GATE 2014 Question on Set Associative Cache Mapping
+L-3.15 | FIFO Cache Replacement Policy
+L-3.16 | LRU Cache Replacement Policy (detailed)
+
+UNIT 4 — Pipelining (L-4.x)
+L-4.1 | Pipelining with Real Life Example | Need of Pipelining
+L-4.2 | Pipelining Introduction and Structure
+L-4.3 | Pipelining vs Non-Pipelining | Speedup, Efficiency, Utilization
+L-4.4 | Stage Delay in Pipeline | Previous Year GATE Question
+L-4.5 | Numerical Question on Pipelining | Previous Year GATE
+L-4.6 | What is Hazard in Pipelining | Types of Hazards
+L-4.7 | Structural Hazards in Pipelining
+L-4.8 | Control Hazards in Pipelining
+L-4.9 | Read After Write (RAW) Hazard | Data Hazard in Pipelining
+L-4.10 | Write After Read (WAR) Hazard | Data Hazards
+L-4.11 | Write After Write (WAW) Hazard | Data Hazards
+
+UNIT 5 — I/O Organization & Misc
+| I/O Interface in Computer Organization
+| Daisy Chaining in Priority Interrupt
+| Parallel Priority Interrupt | I/O Organization
+| Question on Interrupt Handling | UGC NTA NET June 2021
+| Question on DMA (Direct Memory Access) | UGC NTA NET June 2021
+| RISC vs CISC | Computer Organization & Architecture
+
+---
+
+For videos where I gave a real URL above, use that URL. For all others, construct the YouTube search URL like:
+https://www.youtube.com/results?search_query=Gate+Smashers+[lecture+title+keywords]
+
+OR better — search YouTube at build time in code to find the real watch URLs by fetching:
+https://www.youtube.com/results?search_query=Gate+Smashers+COA+[encoded title]
+and parsing the first result's video ID. If you can't do that, use the playlist URL with the video index as fallback:
+https://www.youtube.com/playlist?list=PLxCzCOWd7aiHMonh3G6QNKq53C6oNXGrX
+
+Each topic row must have:
+- Lecture number/label (e.g. L-1.3)
+- Topic title
+- Checkbox / completion toggle (same as OS tracker)
+- YouTube button that opens the video in a new tab (same red YouTube icon style as OS tracker)
+
+Progress bar per unit + overall COA progress bar — exactly like OS tracker.
+localStorage key: use a new key like `coa_tracker_gs` (do NOT reuse the old COA key to avoid conflicts with stale data).
+
+---
+
+## FEATURE 2: "Today's Work" Card at the Top of the Dashboard
+
+Add a compact "Today's Work" card at the very top of the Dashboard page, above all other cards:
+- Shows today's to-do items in a quick-glance card
+- Text input + Add button to add tasks inline
+- Remove/check-off button per task
+- MUST share exact same data source (same localStorage key, same state) as the main To-Do card for today — no duplicate store
+- Changes here reflect instantly in the main To-Do card and vice versa
+- Keep it compact — quick glance widget, not a full list
+
+---
+
+## FEATURE 3: Fix Google Calendar Auth Persistence
+
+Currently Google Calendar logs out on every page reload. Fix:
+1. After successful OAuth login, persist token (access_token + expiry) to localStorage
+2. On app load, check localStorage for a valid non-expired token — if found, restore session silently
+3. If expired, clear and show login button again
+4. On explicit logout, clear token from localStorage
+5. Don't break existing calendar display
+
+Detect if the app uses `gapi.auth2` or `google.accounts.oauth2` and patch in-place.
+
+---
+
+## FEATURE 4: Fix All Vercel Deployment Errors
+
+This is Vite + React 19, deployed to Vercel. vercel.json already exists with correct rewrites.
+
+**Critical fixes:**
+- `express`, `cors`, `pg` are in `dependencies` — Vite will try to bundle these server packages for the browser and FAIL. Move them to `devDependencies` OR add them to `build.rollupOptions.external` in vite.config.js
+- Remove or guard any `import` of Node.js built-ins (fs, path, crypto, net, etc.) inside files that get bundled by Vite
+- Any `process.env.VAR` used in client-side code → replace with `import.meta.env.VITE_VAR` (Vite only exposes VITE_ prefixed vars to browser)
+- Rename all frontend env variables to have `VITE_` prefix in the code (e.g. VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
+- Fix any ESLint errors that would fail the build
+- Verify `npm run build` succeeds end-to-end without errors or warnings that break the build
+- Confirm vercel.json outputDirectory "dist" matches actual Vite output
+
+After all fixes, list every file changed and what was wrong.
+
+---
+
+Do all 4 features in order. After each one, confirm: files changed + what was done.
