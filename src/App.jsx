@@ -1441,8 +1441,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             if (solvedOnToday) markDateActive(streakToday);
 
             setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!`);
-        } catch {
-            setLcSyncMsg("⚠ Could not fetch LeetCode data. Try again.");
+        } catch (err) {
+            console.error("LeetCode Sync Error:", err);
+            setLcSyncMsg(`⚠ ${err.message || "Could not fetch LeetCode data. Try again."}`);
         }
         setLcSyncing(false);
     }
