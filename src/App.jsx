@@ -1435,10 +1435,18 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     });
                 }
             }
-            // ── Streak: mark today active if LeetCode confirms any submission today ──
-            const streakToday = getStreakDate();
-            const solvedOnToday = Object.values(slugToDate).some(d => d === streakToday);
-            if (solvedOnToday) markDateActive(streakToday);
+            // ── Streak: mark ALL dates with LeetCode submissions as active ──
+            const solvedDates = Object.values(slugToDate);
+            if (solvedDates.length > 0) {
+                const monthKey = getStreakDate().slice(0, 7);
+                const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
+                setStreakData(prev => {
+                    const activeDates = [...new Set([...(prev.activeDates || []), ...solvedDates])];
+                    const newStreak = computeStreak(activeDates, validFreezes);
+                    const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
+                    return { ...prev, activeDates, currentStreak: newStreak, longestStreak };
+                });
+            }
 
             setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!`);
         } catch (err) {
