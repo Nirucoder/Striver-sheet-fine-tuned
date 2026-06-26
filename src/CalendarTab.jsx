@@ -38,6 +38,13 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     const e = localStorage.getItem("gcal_token_exp");
     return e ? parseInt(e) : null;
   });
+  // True when user previously connected but token has since expired
+  const [hadPreviousSession, setHadPreviousSession] = useState(() => {
+    const tok = localStorage.getItem("gcal_token");
+    const exp = localStorage.getItem("gcal_token_exp");
+    if (!tok || !exp) return false;
+    return parseInt(exp) <= Date.now() + 60000; // token exists but expired
+  });
   const [gcalEvents, setGcalEvents]     = useState([]);
   const [loading, setLoading]           = useState(false);
   const [error, setError]               = useState(null);
@@ -83,15 +90,8 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
         setError(null);
       }
     });
-    // Auto silent re-auth: if user previously connected and token is cached, get a new one silently
-    const cachedExp = localStorage.getItem("gcal_token_exp");
-    const hasCachedSession = localStorage.getItem("gcal_token") && cachedExp;
-    if (hasCachedSession) {
-      // Small delay to ensure tokenClientRef is fully ready
-      setTimeout(() => {
-        tokenClientRef.current?.requestAccessToken({ prompt: "" });
-      }, 300);
-    }
+    // Do NOT auto-trigger sign-in — let the user click Connect/Reconnect explicitly
+    // (silent requestAccessToken still shows the Google account chooser popup in GIS token model)
   }
 
   const isValid = useCallback(() =>
@@ -268,9 +268,25 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
         <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
           {loading && <span style={{ fontSize:11, color:"#64748b" }}>↻ Syncing…</span>}
           {!isValid() ? (
-            <button onClick={signIn} style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
-              Connect Google Calendar
-            </button>
+            hadPreviousSession ? (
+              // Token expired but user was connected before — show reconnect (not auto-sign-in)
+              <>
+                <span style={{ fontSize:11, color:"#fbbf24" }}>Session expired</span>
+                <button onClick={() => { setHadPreviousSession(false); signIn(false); }}
+                  style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
+                  Reconnect Google Calendar
+                </button>
+                <button onClick={() => {
+                  localStorage.removeItem("gcal_token");
+                  localStorage.removeItem("gcal_token_exp");
+                  setHadPreviousSession(false);
+                }} style={S.btn("#0f1117","#2d3154","#475569")}>Dismiss</button>
+              </>
+            ) : (
+              <button onClick={() => signIn(false)} style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
+                Connect Google Calendar
+              </button>
+            )
           ) : (
             <>
               <span style={{ fontSize:11, color:"#34d399", display:"flex", alignItems:"center", gap:4 }}>
