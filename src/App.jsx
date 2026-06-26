@@ -3395,7 +3395,7 @@ const OS_UNITS = [
                 cloudReady.current = true;
             }
         });
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [session?.sub]);
 
     // ── Streak: mark dates as LeetCode-active and recalculate ─────────────
     function markDateActive(datesArr) {
