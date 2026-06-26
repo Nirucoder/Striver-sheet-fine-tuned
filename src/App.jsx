@@ -704,12 +704,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     function removeTodayTask(id) {
         setTodos(prev => prev.filter(t => t.id!==id));
     }
-    function moveToToday(id) {
-        setTodos(prev => prev.map(t => t.id === id ? { ...t, due: today } : t));
-    }
 
     const todayTasks = (todos||[]).filter(t => t.due === today);
-    const overdueTasks = (todos||[]).filter(t => !t.done && t.due && t.due < today);
 
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
@@ -785,29 +781,6 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             )}
             {todayTasks.length === 0 && (
                 <div style={{fontSize:12, color:"#334155", fontStyle:"italic"}}>No tasks yet — add something above.</div>
-            )}
-            {overdueTasks.length > 0 && (
-                <div style={{marginTop:14, paddingTop:12, borderTop:"1px solid #1e2030"}}>
-                    <div style={{fontSize:11, fontWeight:700, color:"#ef4444", marginBottom:8, display:"flex", alignItems:"center", gap:6}}>
-                        <span>⚠</span> Overdue ({overdueTasks.length})
-                    </div>
-                    <div style={{display:"flex", flexDirection:"column", gap:6}}>
-                        {overdueTasks.map(t => (
-                            <div key={t.id} style={{display:"flex", alignItems:"center", gap:8, padding:"6px 10px", borderRadius:8, background:"#200a0a", border:"1px solid #7f1d1d55"}}>
-                                <div onClick={()=>toggleTodayTask(t.id)} style={{width:14, height:14, borderRadius:3, border:"1.5px solid #374151", background:"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}} />
-                                <span style={{fontSize:12, color:"#fca5a5", flex:1, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{t.text}</span>
-                                <span style={{fontSize:10, color:"#f87171", background:"#3b0a0a", padding:"2px 7px", borderRadius:5, border:"1px solid #7f1d1d", flexShrink:0}}>⚠ {t.due}</span>
-                                <span onClick={()=>moveToToday(t.id)}
-                                    onMouseEnter={e=>{e.currentTarget.style.background="#2d1f04";e.currentTarget.style.borderColor="#78450a";e.currentTarget.style.color="#fbbf24";}}
-                                    onMouseLeave={e=>{e.currentTarget.style.background="#13151f";e.currentTarget.style.borderColor="#1e2030";e.currentTarget.style.color="#64748b";}}
-                                    style={{fontSize:11, padding:"2px 8px", borderRadius:6, cursor:"pointer", background:"#13151f", color:"#64748b", border:"1px solid #1e2030", flexShrink:0, transition:"all 0.12s", userSelect:"none"}}>
-                                    Today
-                                </span>
-                                <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1, flexShrink:0}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             )}
         </div>
 
