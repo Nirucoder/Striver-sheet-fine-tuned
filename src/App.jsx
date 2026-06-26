@@ -1465,14 +1465,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             }
 
             if (allSolvedDates.size > 0) {
-                const monthKey = getStreakDate().slice(0, 7);
-                const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
-                setStreakData(prev => {
-                    const activeDates = [...new Set([...(prev.activeDates || []), ...allSolvedDates])];
-                    const newStreak = computeStreak(activeDates, validFreezes);
-                    const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
-                    return { ...prev, activeDates, currentStreak: newStreak, longestStreak };
-                });
+                markDateActive(Array.from(allSolvedDates));
             }
 
             setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!`);
@@ -3359,15 +3352,16 @@ const OS_UNITS = [
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // ── Streak: mark a date as LeetCode-active and recalculate ─────────────
-    function markDateActive(date) {
-        const monthKey    = date.slice(0, 7);
+    // ── Streak: mark dates as LeetCode-active and recalculate ─────────────
+    function markDateActive(datesArr) {
+        if (!datesArr || datesArr.length === 0) return;
+        const monthKey = getStreakDate().slice(0, 7);
         const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
         setStreakData(prev => {
-            const activeDates  = [...new Set([...(prev.activeDates || []), date])];
+            const activeDates  = [...new Set([...(prev.activeDates || []), ...datesArr])];
             const newStreak    = computeStreak(activeDates, validFreezes);
             const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
-            return { ...prev, activeDates, lastActiveDate: date, currentStreak: newStreak, longestStreak };
+            return { ...prev, activeDates, currentStreak: newStreak, longestStreak };
         });
     }
 
