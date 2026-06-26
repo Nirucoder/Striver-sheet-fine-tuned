@@ -69,7 +69,12 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       client_id: CLIENT_ID,
       scope: SCOPES,
       callback: (resp) => {
-        if (resp.error) { setError(`Auth error: ${resp.error}`); return; }
+        if (resp.error) {
+          // silent re-auth failed (user not logged in) — don't show error, just wait for manual connect
+          if (resp.error === "interaction_required" || resp.error === "access_denied") return;
+          setError(`Auth error: ${resp.error}`);
+          return;
+        }
         const exp = Date.now() + resp.expires_in * 1000;
         setAccessToken(resp.access_token);
         setTokenExpiry(exp);
@@ -78,6 +83,15 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
         setError(null);
       }
     });
+    // Auto silent re-auth: if user previously connected and token is cached, get a new one silently
+    const cachedExp = localStorage.getItem("gcal_token_exp");
+    const hasCachedSession = localStorage.getItem("gcal_token") && cachedExp;
+    if (hasCachedSession) {
+      // Small delay to ensure tokenClientRef is fully ready
+      setTimeout(() => {
+        tokenClientRef.current?.requestAccessToken({ prompt: "" });
+      }, 300);
+    }
   }
 
   const isValid = useCallback(() =>
@@ -118,12 +132,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     finally { setLoading(false); }
   }, [currentDate]);
 
-  // Auto-reconnect silently if we have a cached (non-expired) token
-  useEffect(() => {
-    if (!accessToken && localStorage.getItem("gcal_token") && gisReady.current) {
-      signIn(true);
-    }
-  }, [gisReady.current]); // eslint-disable-line
+
 
   useEffect(() => {
     if (isValid()) {
