@@ -448,8 +448,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     const GREEN_COLORS = ["#161b22","#0e4429","#006d32","#26a641","#39d353"];
     const GREEN_ACCENT = "#39d353";
-    const BLUE_COLORS  = ["#161b22","#2d2000","#6b4800","#b45309","#fbbf24"];
-    const BLUE_ACCENT  = "#fbbf24";
+    const MANUAL_COLORS = ["#161b22","#0a3320","#0d5c36","#1a7f4b","#34d399"];
+    const MANUAL_ACCENT  = "#34d399";
 
     const OTHER_TABS = [
         { id:"study", label:"Study Sessions", colors:["#161b22","#0a3d3a","#0f766e","#0d9488","#2dd4bf"], accent:"#2dd4bf" },
@@ -485,10 +485,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     // Source-aware coloring: LeetCode-confirmed → green, manual checkbox only → blue
     const getCellColorSourced = cell => {
         if (!cell || !cell.count) return GREEN_COLORS[0];
-        const pal = cell.source === "lc" ? GREEN_COLORS : BLUE_COLORS;
+        const pal = cell.source === "lc" ? GREEN_COLORS : MANUAL_COLORS;
         if (cell.count === 1) return pal[1]; if (cell.count <= 3) return pal[2]; if (cell.count <= 6) return pal[3]; return pal[4];
     };
-    const accentFor = cell => cell?.source === "lc" ? GREEN_ACCENT : BLUE_ACCENT;
+    const accentFor = cell => cell?.source === "lc" ? GREEN_ACCENT : MANUAL_ACCENT;
 
     const totalSolved = Object.values(safeLog).reduce((a,v)=>a+filterDSA(v).length, 0);
     const activeDays  = Object.values(safeLog).filter(v=>filterDSA(v).length>0).length;
@@ -567,7 +567,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <span style={{fontSize:10,color:"#64748b"}}>LeetCode API confirmed ({lcDays} days)</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:5}}>
-                <div style={{width:10,height:10,borderRadius:2,background:BLUE_COLORS[3]}}/>
+                <div style={{width:10,height:10,borderRadius:2,background:MANUAL_COLORS[3]}}/>
                 <span style={{fontSize:10,color:"#64748b"}}>Manual checkbox only ({manualDays} days)</span>
             </div>
         </div>
@@ -704,8 +704,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     function removeTodayTask(id) {
         setTodos(prev => prev.filter(t => t.id!==id));
     }
+    function moveToToday(id) {
+        setTodos(prev => prev.map(t => t.id === id ? { ...t, due: today } : t));
+    }
 
     const todayTasks = (todos||[]).filter(t => t.due === today);
+    const overdueTasks = (todos||[]).filter(t => !t.done && t.due && t.due < today);
 
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
@@ -781,6 +785,29 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             )}
             {todayTasks.length === 0 && (
                 <div style={{fontSize:12, color:"#334155", fontStyle:"italic"}}>No tasks yet — add something above.</div>
+            )}
+            {overdueTasks.length > 0 && (
+                <div style={{marginTop:14, paddingTop:12, borderTop:"1px solid #1e2030"}}>
+                    <div style={{fontSize:11, fontWeight:700, color:"#ef4444", marginBottom:8, display:"flex", alignItems:"center", gap:6}}>
+                        <span>⚠</span> Overdue ({overdueTasks.length})
+                    </div>
+                    <div style={{display:"flex", flexDirection:"column", gap:6}}>
+                        {overdueTasks.map(t => (
+                            <div key={t.id} style={{display:"flex", alignItems:"center", gap:8, padding:"6px 10px", borderRadius:8, background:"#200a0a", border:"1px solid #7f1d1d55"}}>
+                                <div onClick={()=>toggleTodayTask(t.id)} style={{width:14, height:14, borderRadius:3, border:"1.5px solid #374151", background:"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}} />
+                                <span style={{fontSize:12, color:"#fca5a5", flex:1, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{t.text}</span>
+                                <span style={{fontSize:10, color:"#f87171", background:"#3b0a0a", padding:"2px 7px", borderRadius:5, border:"1px solid #7f1d1d", flexShrink:0}}>⚠ {t.due}</span>
+                                <span onClick={()=>moveToToday(t.id)}
+                                    onMouseEnter={e=>{e.currentTarget.style.background="#2d1f04";e.currentTarget.style.borderColor="#78450a";e.currentTarget.style.color="#fbbf24";}}
+                                    onMouseLeave={e=>{e.currentTarget.style.background="#13151f";e.currentTarget.style.borderColor="#1e2030";e.currentTarget.style.color="#64748b";}}
+                                    style={{fontSize:11, padding:"2px 8px", borderRadius:6, cursor:"pointer", background:"#13151f", color:"#64748b", border:"1px solid #1e2030", flexShrink:0, transition:"all 0.12s", userSelect:"none"}}>
+                                    Today
+                                </span>
+                                <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1, flexShrink:0}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
         </div>
 
@@ -2662,6 +2689,27 @@ const OS_UNITS = [
         const [dragId, setDragId] = useState(null);
         const [dragOverId, setDragOverId] = useState(null);
         const [dragOverSidebar, setDragOverSidebar] = useState(null);
+        const [contextMenu, setContextMenu] = useState(null);
+
+        function offsetDate(days) {
+            const d = new Date();
+            d.setDate(d.getDate() + days);
+            return d.toISOString().slice(0, 10);
+        }
+
+        useEffect(() => {
+            if (!contextMenu) return;
+            const close = () => setContextMenu(null);
+            const onKey = e => { if (e.key === "Escape") close(); };
+            window.addEventListener("mousedown", close);
+            window.addEventListener("scroll", close, true);
+            window.addEventListener("keydown", onKey);
+            return () => {
+                window.removeEventListener("mousedown", close);
+                window.removeEventListener("scroll", close, true);
+                window.removeEventListener("keydown", onKey);
+            };
+        }, [contextMenu]);
 
         function openAddTask() {
             setAddingTask(true);
@@ -2711,6 +2759,44 @@ const OS_UNITS = [
             if (text.trim()) setTodos(prev => prev.map(t => t.id===id ? { ...t, text:text.trim() } : t));
             setEditId(null);
         }
+
+        function moveToToday(id) {
+            setTodos(prev => prev.map(t => t.id === id ? { ...t, due: today } : t));
+        }
+
+        function applyQuickAction(id, action) {
+            setContextMenu(null);
+            if (action === "delete") {
+                deleteTodo(id);
+                return;
+            }
+            setTodos(prev => prev.map(t => {
+                if (t.id !== id) return t;
+                if (action === "today")    return { ...t, due: today };
+                if (action === "tomorrow") return { ...t, due: offsetDate(1) };
+                if (action === "nextweek") return { ...t, due: offsetDate(7) };
+                if (action === "nodate")   return { ...t, due: null, project: "Inbox" };
+                if (action.startsWith("p:")) return { ...t, priority: parseInt(action.slice(2), 10) };
+                if (action.startsWith("proj:")) return { ...t, project: action.slice(5) };
+                return t;
+            }));
+        }
+
+        const QUICK_ACTIONS = [
+            { id:"today",    label:"Today",      icon:"📅" },
+            { id:"tomorrow", label:"Tomorrow",   icon:"📆" },
+            { id:"nextweek", label:"Next week",  icon:"🗓" },
+            { id:"nodate",   label:"Remove date", icon:"📥" },
+            { sep:true },
+            { id:"p:1", label:"Priority P1", color:"#ef4444" },
+            { id:"p:2", label:"Priority P2", color:"#f97316" },
+            { id:"p:3", label:"Priority P3", color:"#3b82f6" },
+            { id:"p:4", label:"Priority P4", color:"#64748b" },
+            { sep:true },
+            ...PROJECTS.map(p => ({ id:`proj:${p}`, label:`Move to ${p}`, icon:"📁" })),
+            { sep:true },
+            { id:"delete", label:"Delete", icon:"🗑", color:"#ef4444" },
+        ];
 
         function handleDragStart(e, id) {
             setDragId(id);
@@ -2945,6 +3031,7 @@ const OS_UNITS = [
                         onDragEnd={handleDragEnd}
                         onDragOver={e=>handleDragOverCard(e, todo.id)}
                         onDrop={e=>handleDropOnCard(e, todo.id)}
+                        onContextMenu={e=>{ e.preventDefault(); setContextMenu({ id: todo.id, x: e.clientX, y: e.clientY }); }}
                         style={{
                             display:"flex",alignItems:"center",gap:12,
                             padding:"13px 16px",borderRadius:10,marginBottom:6,
@@ -2987,6 +3074,16 @@ const OS_UNITS = [
                             color: todo.due < today ? "#f87171" : todo.due===today ? "#fbbf24" : "#64748b",
                             border:`1px solid ${todo.due < today ? "#7f1d1d" : todo.due===today ? "#78450a" : "#1e2030"}`
                         }}>{todo.due < today ? `⚠ ${todo.due}` : todo.due===today ? "Today" : todo.due}</span>}
+                        {!todo.done && todo.due && todo.due < today && <span
+                            onClick={e=>{e.stopPropagation();moveToToday(todo.id);}}
+                            onMouseEnter={e=>{e.currentTarget.style.background="#2d1f04";e.currentTarget.style.borderColor="#78450a";e.currentTarget.style.color="#fbbf24";}}
+                            onMouseLeave={e=>{e.currentTarget.style.background="#13151f";e.currentTarget.style.borderColor="#1e2030";e.currentTarget.style.color="#64748b";}}
+                            title="Move to Today"
+                            style={{
+                                fontSize:11,padding:"2px 8px",borderRadius:6,flexShrink:0,cursor:"pointer",
+                                background:"#13151f",color:"#64748b",border:"1px solid #1e2030",
+                                transition:"all 0.12s",userSelect:"none"
+                            }}>Today</span>}
                         <span style={{fontSize:10,fontWeight:700,color:P_COLORS[todo.priority],flexShrink:0,minWidth:16,textAlign:"right"}}>P{todo.priority}</span>
                         <span onClick={()=>deleteTodo(todo.id)}
                             onMouseEnter={e=>e.currentTarget.style.opacity="1"}
@@ -3018,6 +3115,30 @@ const OS_UNITS = [
                     return <div>{viewedTodos.map(TaskCard)}</div>;
                 })()}
             </div>
+
+            {contextMenu && <div
+                onMouseDown={e=>e.stopPropagation()}
+                style={{
+                    position:"fixed", left:Math.min(contextMenu.x, window.innerWidth - 190), top:Math.min(contextMenu.y, window.innerHeight - 320),
+                    zIndex:9999, background:"#0f1117", border:"1px solid #2d3154", borderRadius:10,
+                    padding:"6px 0", minWidth:170, boxShadow:"0 12px 40px rgba(0,0,0,0.55)"
+                }}>
+                <div style={{fontSize:10, color:"#475569", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em", padding:"4px 14px 8px"}}>Quick actions</div>
+                {QUICK_ACTIONS.map((item, i) => item.sep
+                    ? <div key={`sep-${i}`} style={{height:1, background:"#1e2030", margin:"4px 0"}}/>
+                    : <div key={item.id}
+                        onClick={()=>applyQuickAction(contextMenu.id, item.id)}
+                        onMouseEnter={e=>{ e.currentTarget.style.background="#1a1d2e"; }}
+                        onMouseLeave={e=>{ e.currentTarget.style.background="transparent"; }}
+                        style={{
+                            display:"flex", alignItems:"center", gap:8, padding:"7px 14px", cursor:"pointer",
+                            fontSize:12, color: item.color || "#cbd5e1", transition:"background 0.1s", userSelect:"none"
+                        }}>
+                        {item.icon && <span style={{fontSize:13, width:16, textAlign:"center"}}>{item.icon}</span>}
+                        <span>{item.label}</span>
+                    </div>
+                )}
+            </div>}
         </div>;
     }
 
