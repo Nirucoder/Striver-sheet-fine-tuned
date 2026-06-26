@@ -690,7 +690,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData, mathsProgress, osProgress }) {
     const [logNote, setLogNote] = useState("");
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
@@ -716,6 +716,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const solvedProblems = Object.keys(solvedQuestions||{}).length;
     const overallPct = Math.round((dsaDone+coaDone)/(dsaData.length+coaData.length)*100);
     const weeksDone = weekStatus.filter(Boolean).length;
+    
+    const dsaPct = Math.round(dsaDone / dsaData.length * 100) || 0;
+    const coaPct = Math.round(coaDone / coaData.length * 100) || 0;
+    const mathsTotal = useMemo(()=>MATHS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
+    const mathsDone = Object.values(mathsProgress||{}).filter(v=>v.done).length;
+    const mathsPct = Math.round(mathsDone / mathsTotal * 100) || 0;
+    const osTotal = useMemo(()=>OS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
+    const osDone = Object.values(osProgress||{}).filter(v=>v.done).length;
+    const osPct = Math.round(osDone / osTotal * 100) || 0;
 
     function addLog() {
     if (!logNote.trim()) return;
@@ -832,14 +841,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
 
         <div style={S.grid4} className="rg4">
-            <StatCard label="DSA Subtopics" value={`${dsaDone}/${dsaData.length}`}
-                pct={Math.round(dsaDone/dsaData.length*100)} color="#818cf8" icon="◈" />
-            <StatCard label="Problems Solved" value={`${solvedProblems}/${totalProblems}`}
-                pct={Math.round(solvedProblems/totalProblems*100)} color="#60a5fa" icon="✦" />
-            <StatCard label="COA Topics" value={`${coaDone}/${coaData.length}`}
-                pct={Math.round(coaDone/coaData.length*100)} color="#34d399" icon="◉" />
-            <StatCard label="Overall Progress" value={`${overallPct}%`} sub={`${weeksDone}/8 weeks done`}
-                pct={overallPct} color="#fb923c" icon="★" />
+            <StatCard label="DSA Progress" value={`${dsaPct}%`} sub={`${dsaDone}/${dsaData.length} subtopics`}
+                pct={dsaPct} color="#818cf8" icon="◈" />
+            <StatCard label="COA Progress" value={`${coaPct}%`} sub={`${coaDone}/${coaData.length} topics`}
+                pct={coaPct} color="#34d399" icon="◉" />
+            <StatCard label="Maths Progress" value={`${mathsPct}%`} sub={`${mathsDone}/${mathsTotal} videos`}
+                pct={mathsPct} color="#f472b6" icon="Σ" />
+            <StatCard label="OS Progress" value={`${osPct}%`} sub={`${osDone}/${osTotal} videos`}
+                pct={osPct} color="#fb923c" icon="⚙" />
         </div>
 
         <div style={{...S.card, marginBottom:16}}>
@@ -3854,7 +3863,8 @@ const OS_UNITS = [
                 <Dashboard dsaData={dsaData} coaData={coaData} weekStatus={weekStatus} streak={streak}
                     streakData={streakData} streakFreezes={streakFreezes} onApplyFreeze={applyFreeze}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
-                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData} />}
+                    diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData}
+                    mathsProgress={mathsProgress} osProgress={osProgress} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
