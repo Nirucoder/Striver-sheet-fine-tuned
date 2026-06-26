@@ -1436,12 +1436,24 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 }
             }
             // ── Streak: mark ALL dates with LeetCode submissions as active ──
-            const solvedDates = Object.values(slugToDate);
-            if (solvedDates.length > 0) {
+            const allSolvedDates = new Set(Object.values(slugToDate));
+            try {
+                if (data.submissionCalendar) {
+                    const cal = JSON.parse(data.submissionCalendar);
+                    Object.keys(cal).forEach(ts => {
+                        const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
+                        allSolvedDates.add(dateStr);
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to parse submission calendar", e);
+            }
+
+            if (allSolvedDates.size > 0) {
                 const monthKey = getStreakDate().slice(0, 7);
                 const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
                 setStreakData(prev => {
-                    const activeDates = [...new Set([...(prev.activeDates || []), ...solvedDates])];
+                    const activeDates = [...new Set([...(prev.activeDates || []), ...allSolvedDates])];
                     const newStreak = computeStreak(activeDates, validFreezes);
                     const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
                     return { ...prev, activeDates, currentStreak: newStreak, longestStreak };

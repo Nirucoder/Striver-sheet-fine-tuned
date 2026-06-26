@@ -22,6 +22,9 @@ export default async function handler(req, res) {
         titleSlug
         timestamp
       }
+      matchedUser(username: $username) {
+        submissionCalendar
+      }
     }
   `;
 
@@ -47,7 +50,8 @@ export default async function handler(req, res) {
     }
 
     const submissions = json?.data?.recentAcSubmissionList ?? [];
-    return res.json({ submissions });
+    const submissionCalendar = json?.data?.matchedUser?.submissionCalendar ?? "{}";
+    return res.json({ submissions, submissionCalendar });
   } catch (e) {
     console.error("[leetcode proxy]", e.message);
     return res.status(500).json({ error: e.message });
