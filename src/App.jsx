@@ -3286,6 +3286,10 @@ const OS_UNITS = [
     const [cloudLoadedAt, setCloudLoadedAt] = useState("");
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
+    // cloudReady: prevents auto-save from firing before Supabase data is loaded.
+    // On a new device, localStorage is empty. Without this guard, the debounced
+    // auto-save would run before loadUserProgress() resolves and wipe Supabase.
+    const cloudReady = useRef(!session?.sub); // if not signed in, no cloud load is needed
 
     // Compute Easy/Medium/Hard solved & total counts for donut widget
     const { diffCounts, diffTotal } = useMemo(() => {
@@ -3329,6 +3333,7 @@ const OS_UNITS = [
                 if (data.mathsProgress)   setMathsProgress(data.mathsProgress);
                 if (data.osProgress)      setOsProgress(data.osProgress);
                 setCloudLoadedAt(new Date().toISOString());
+                cloudReady.current = true;
             } else {
                 // First sign-in — no cloud data yet. Migrate whatever is in localStorage
                 // to Supabase so existing progress is never lost.
@@ -3357,6 +3362,8 @@ const OS_UNITS = [
                         || existing.streak > 0;
                     if (hasSomeProgress) saveUserProgress(session.sub, existing);
                 } catch(e) { console.error("Migration error:", e); }
+                // Even if there's no cloud data, we're ready to auto-save local data
+                cloudReady.current = true;
             }
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -3410,6 +3417,7 @@ const OS_UNITS = [
     useEffect(() => {
         if (isFirstRender.current) { isFirstRender.current = false; return; }
         if (!session?.sub && !syncCode) return; // nothing to sync to
+        if (!cloudReady.current) return;        // wait until cloud data is loaded first
 
         if (autoSyncTimer.current) clearTimeout(autoSyncTimer.current);
         setAutoSyncStatus("saving");
