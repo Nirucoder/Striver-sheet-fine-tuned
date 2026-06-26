@@ -720,10 +720,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const dsaPct = Math.round(dsaDone / dsaData.length * 100) || 0;
     const coaPct = Math.round(coaDone / coaData.length * 100) || 0;
     const mathsTotal = useMemo(()=>MATHS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
-    const mathsDone = Object.values(mathsProgress||{}).filter(v=>v.done).length;
+    const mathsDone = Object.values(mathsProgress||{}).filter(v=>v.watched).length;
     const mathsPct = Math.round(mathsDone / mathsTotal * 100) || 0;
     const osTotal = useMemo(()=>OS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
-    const osDone = Object.values(osProgress||{}).filter(v=>v.done).length;
+    const osDone = Object.values(osProgress||{}).filter(v=>v.watched).length;
     const osPct = Math.round(osDone / osTotal * 100) || 0;
 
     function addLog() {
