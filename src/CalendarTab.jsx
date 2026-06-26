@@ -194,6 +194,14 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   }
 
   async function handleDeleteEvent(ev) {
+    if (ev._src === "gcal" && isValid()) {
+      // Delete directly from Google Calendar using the event's own id
+      await deleteGCalEvent(ev.id).catch(console.error);
+      setShowDetail(null);
+      fetchEvents(accessToken);
+      return;
+    }
+    // Local event: also remove from GCal if it was synced
     if (ev.gcalId && isValid()) await deleteGCalEvent(ev.gcalId).catch(console.error);
     setLocalEvents(p => p.filter(e => e.id !== ev.id));
     setShowDetail(null);
@@ -427,10 +435,10 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
             )}
 
             <div style={{ display:"flex", gap:10, justifyContent:"flex-end" }}>
-              {showDetail._src === "local" && (
+              {(showDetail._src === "local" || (showDetail._src === "gcal" && isValid())) && (
                 <button onClick={() => handleDeleteEvent(showDetail)}
                   style={{ padding:"8px 16px", background:"rgba(248,113,113,0.08)", border:"1px solid #7f1d1d", borderRadius:8, color:"#f87171", cursor:"pointer", fontSize:12 }}>
-                  Delete
+                  🗑 Delete
                 </button>
               )}
               {showDetail._src === "gcal" && showDetail.htmlLink && (
