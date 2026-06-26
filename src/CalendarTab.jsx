@@ -85,9 +85,13 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     [accessToken, tokenExpiry]
   );
 
-  const signIn = () => {
-    if (!tokenClientRef.current) { initTokenClient(); setTimeout(() => tokenClientRef.current?.requestAccessToken({ prompt:"" }), 500); return; }
-    tokenClientRef.current.requestAccessToken({ prompt:"" });
+  const signIn = (silent = false) => {
+    if (!tokenClientRef.current) {
+      initTokenClient();
+      setTimeout(() => tokenClientRef.current?.requestAccessToken({ prompt: silent ? "" : "consent" }), 500);
+      return;
+    }
+    tokenClientRef.current.requestAccessToken({ prompt: silent ? "" : "consent" });
   };
 
   const signOut = () => {
@@ -113,6 +117,13 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
     } catch(e) { setError(e.message); }
     finally { setLoading(false); }
   }, [currentDate]);
+
+  // Auto-reconnect silently if we have a cached (non-expired) token
+  useEffect(() => {
+    if (!accessToken && localStorage.getItem("gcal_token") && gisReady.current) {
+      signIn(true);
+    }
+  }, [gisReady.current]); // eslint-disable-line
 
   useEffect(() => {
     if (isValid()) {
@@ -157,12 +168,20 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       try {
         const gcalEv = await createGCalEvent({ ...localEv });
         localEv.gcalId = gcalEv?.id;
-      } catch(e) { console.error("GCal create failed:", e); }
+        // Event successfully synced to GCal — don't also store in localEvents
+        // (GCal fetch will return it, so storing locally causes duplicates)
+        setShowAddModal(false);
+        setNewEv({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
+        fetchEvents(accessToken);
+        return;
+      } catch(e) {
+        console.error("GCal create failed, saving locally:", e);
+      }
     }
+    // Only save locally if not synced to GCal
     setLocalEvents(p => [...p, localEv]);
     setShowAddModal(false);
     setNewEv({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
-    if (isValid()) fetchEvents(accessToken);
   }
 
   async function handleDeleteEvent(ev) {
