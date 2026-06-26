@@ -584,6 +584,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<selectedEntries.length-1?"1px solid #21262d":"none"}}>
                         <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
                         <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
+                        {e.lcConfirmed && (
+                            <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                        )}
                         <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
                     </div>
                 ))}
@@ -1372,12 +1375,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                     newSolved[key] = true;
                                     const date = realDate || new Date().toISOString().slice(0, 10);
                                     if (!newlySolvedByDate[date]) newlySolvedByDate[date] = [];
-                                    newlySolvedByDate[date].push({ title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa" });
+                                    newlySolvedByDate[date].push({ title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true });
                                 } else if (realDate) {
                                     // If already solved, move it to the correct date from LeetCode
                                     updateActivityDates[p.title + "|" + sub.name] = {
                                         realDate,
-                                        prob: { title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa" }
+                                        prob: { title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true }
                                     };
                                 }
                             }
@@ -1408,21 +1411,33 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         if (filtered.length > 0) updated[date] = filtered;
                     }
 
-                    // Add newly solved problems
+                    // Add newly solved problems and mark existing ones as lcConfirmed
                     Object.entries(newlySolvedByDate).forEach(([date, problems]) => {
-                        const dayProbs = updated[date] || [];
-                        const existing = new Set(dayProbs.map(p => p.title + "|" + p.subName));
-                        const toAdd = problems.filter(p => !existing.has(p.title + "|" + p.subName));
-                        if (toAdd.length > 0) updated[date] = [...dayProbs, ...toAdd];
+                        let dayProbs = updated[date] || [];
+                        const existingMap = new Map();
+                        dayProbs.forEach((p, idx) => existingMap.set(p.title + "|" + p.subName, idx));
+                        
+                        problems.forEach(p => {
+                            const key = p.title + "|" + p.subName;
+                            if (existingMap.has(key)) {
+                                dayProbs[existingMap.get(key)].lcConfirmed = true;
+                            } else {
+                                dayProbs.push(p);
+                            }
+                        });
+                        updated[date] = dayProbs;
                     });
 
                     // Add moved problems to their correct realDate
                     for (const { realDate, prob } of Object.values(updateActivityDates)) {
-                        const dayProbs = updated[realDate] || [];
-                        const existing = new Set(dayProbs.map(p => p.title + "|" + p.subName));
-                        if (!existing.has(prob.title + "|" + prob.subName)) {
-                            updated[realDate] = [...dayProbs, prob];
+                        let dayProbs = updated[realDate] || [];
+                        const existingIdx = dayProbs.findIndex(p => p.title === prob.title && p.subName === prob.subName);
+                        if (existingIdx !== -1) {
+                            dayProbs[existingIdx].lcConfirmed = true;
+                        } else {
+                            dayProbs.push(prob);
                         }
+                        updated[realDate] = dayProbs;
                     }
 
                     return updated;
@@ -3221,7 +3236,10 @@ const OS_UNITS = [
     function getStreakDate() {
         const now = new Date();
         if (now.getHours() < 5) now.setDate(now.getDate() - 1);
-        return now.toISOString().split('T')[0];
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
     }
     function prevDateStr(dateStr) {
         const d = new Date(dateStr + 'T12:00:00Z');
