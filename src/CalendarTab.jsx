@@ -193,16 +193,24 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
 
   function getEventsForDate(dateStr) {
     const out = [];
+    const gcalIds = new Set();
     gcalEvents.forEach(ev => {
       const s = ev.start?.date || ev.start?.dateTime?.slice(0,10);
-      if (s === dateStr) out.push({ ...ev, _src:"gcal", _color:COLORS.gcal, _label: ev.summary || "Untitled" });
+      if (s === dateStr) {
+        out.push({ ...ev, _src:"gcal", _color:COLORS.gcal, _label: ev.summary || "Untitled" });
+        gcalIds.add(ev.id);
+      }
     });
     localEvents.forEach(ev => {
-      if (ev.date === dateStr) out.push({ ...ev, _src:"local", _color:COLORS.local, _label:ev.title });
+      if (ev.date === dateStr) {
+        // Skip if this event was synced to GCal — it already shows via gcalEvents
+        if (ev.gcalId) return;
+        out.push({ ...ev, _src:"local", _color:COLORS.local, _label:ev.title });
+      }
     });
-
     return out;
   }
+
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
