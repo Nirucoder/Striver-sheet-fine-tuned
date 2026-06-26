@@ -12,14 +12,21 @@ export async function loadUserProgress(userId) {
     .select("data")
     .eq("user_id", userId)
     .single();
-  if (error && error.code !== "PGRST116") console.error("Load error:", error);
+  if (error && error.code !== "PGRST116") {
+    console.error("Load error:", error);
+    throw error;
+  }
   return data?.data ?? null;
 }
 
 export async function saveUserProgress(userId, payload) {
   if (!supabase) return;
-  await supabase
+  const { error } = await supabase
     .from("user_progress")
     .upsert({ user_id: userId, data: payload, updated_at: new Date().toISOString() },
              { onConflict: "user_id" });
+  if (error) {
+    console.error("Save error:", error);
+    throw error;
+  }
 }
