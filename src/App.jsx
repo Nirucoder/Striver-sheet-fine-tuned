@@ -319,17 +319,17 @@ const STEP_COLORS =
 const S = {
 app: { display:"flex", height:"100vh", background:"#0a0b0d", color:"#e2e8f0", fontFamily:"'DM Sans','Inter',sans-serif",
 overflow:"hidden" },
-sidebar: { width:220, background:"#0f1117", borderRight:"1px solid #1e2030", display:"flex", flexDirection:"column",
+sidebar: { width:230, background:"#0f1117", borderRight:"1px solid #1e2030", display:"flex", flexDirection:"column",
 flexShrink:0 },
 sidebarTop: { padding:"20px 16px 12px", borderBottom:"1px solid #1e2030" },
-logo: { fontSize:14, fontWeight:700, color:"#e2e8f0", letterSpacing:"0.05em", textTransform:"uppercase" },
+logo: { fontSize:15, fontWeight:700, color:"#e2e8f0", letterSpacing:"0.05em", textTransform:"uppercase" },
 logoSub: { fontSize:11, color:"#4a5568", marginTop:2 },
 nav: { padding:"8px 8px", flex:1, overflowY:"auto" },
-navItem: (active) => ({ display:"flex", alignItems:"center", gap:10, padding:"8px 10px", borderRadius:8,
+navItem: (active) => ({ display:"flex", alignItems:"center", gap:10, padding:"9px 12px", borderRadius:8,
 cursor:"pointer", marginBottom:2, background: active?"#1a1d2e":"transparent", color: active?"#818cf8":"#64748b",
-fontSize:13, fontWeight: active?600:400, transition:"all 0.15s", border: active?"1px solid #2d3154":"1px solid transparent" }),
-main: { flex:1, overflowY:"auto", padding:"24px 28px", background:"#0a0b0d" },
-pageTitle: { fontSize:22, fontWeight:700, color:"#f1f5f9", marginBottom:4 },
+fontSize:14, fontWeight: active?600:400, transition:"all 0.15s", border: active?"1px solid #2d3154":"1px solid transparent" }),
+main: { flex:1, overflowY:"auto", padding:"26px 30px", background:"#0a0b0d" },
+pageTitle: { fontSize:24, fontWeight:700, color:"#f1f5f9", marginBottom:4 },
 pageSub: { fontSize:13, color:"#475569", marginBottom:24 },
 grid2: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 },
 grid3: { display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:16, marginBottom:20 },
@@ -344,27 +344,27 @@ letterSpacing:"0.06em" },
 badge: (color) => ({ display:"inline-flex", alignItems:"center", padding:"2px 8px", borderRadius:20, fontSize:11,
 fontWeight:600, background: color==="green"?"#0d2a1a":color==="blue"?"#0d1a2a":color==="amber"?"#2a1a0d":"#1a1a2a",
 color: color==="green"?"#34d399":color==="blue"?"#60a5fa":color==="amber"?"#fbbf24":"#a78bfa" }),
-table: { width:"100%", borderCollapse:"collapse", fontSize:12 },
-th: { padding:"10px 12px", textAlign:"left", color:"#475569", fontWeight:600, fontSize:10, textTransform:"uppercase",
+table: { width:"100%", borderCollapse:"collapse", fontSize:13 },
+th: { padding:"10px 12px", textAlign:"left", color:"#475569", fontWeight:600, fontSize:11, textTransform:"uppercase",
 letterSpacing:"0.06em", borderBottom:"1px solid #1e2030" },
-td: { padding:"9px 12px", borderBottom:"1px solid #0f1117", color:"#94a3b8", verticalAlign:"middle" },
+td: { padding:"10px 12px", borderBottom:"1px solid #0f1117", color:"#94a3b8", verticalAlign:"middle" },
 input: { background:"#1a1d2e", border:"1px solid #2d3154", borderRadius:6, color:"#e2e8f0", padding:"3px 7px",
-fontSize:12, width:55, outline:"none" },
+fontSize:13, width:55, outline:"none" },
 select: { background:"#1a1d2e", border:"1px solid #2d3154", borderRadius:6, color:"#e2e8f0", padding:"4px 8px",
-fontSize:12, outline:"none", cursor:"pointer" },
+fontSize:13, outline:"none", cursor:"pointer" },
 btn: (variant="default") => ({ display:"inline-flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8,
 fontSize:13, fontWeight:600, cursor:"pointer", border:"none", transition:"all 0.15s", background:
 variant==="primary"?"#4f46e5":variant==="success"?"#14532d":"#1e2030", color:
 variant==="primary"?"#fff":variant==="success"?"#86efac":"#94a3b8" }),
 filterBar: { display:"flex", alignItems:"center", gap:10, marginBottom:16, flexWrap:"wrap" },
 searchInput: { background:"#0f1117", border:"1px solid #1e2030", borderRadius:8, color:"#e2e8f0", padding:"8px 14px",
-fontSize:13, outline:"none", flex:1, minWidth:200 },
+fontSize:14, outline:"none", flex:1, minWidth:200 },
 check: { width:15, height:15, cursor:"pointer", accentColor:"#818cf8" },
 streakBox: { background:"linear-gradient(135deg,#1a1d2e,#13162a)", border:"1px solid #2d3154", borderRadius:12,
 padding:"16px 18px", display:"flex", alignItems:"center", gap:12, marginBottom:20 },
 confetti: { position:"fixed", inset:0, pointerEvents:"none", zIndex:9999 },
-lcLink: { display:"inline-flex", alignItems:"center", gap:4, color:"#f97316", fontSize:11, fontWeight:600,
-textDecoration:"none", background:"#1c1108", border:"1px solid #431407", borderRadius:5, padding:"2px 7px",
+lcLink: { display:"inline-flex", alignItems:"center", gap:4, color:"#f97316", fontSize:12, fontWeight:600,
+textDecoration:"none", background:"#1c1108", border:"1px solid #431407", borderRadius:5, padding:"3px 8px",
 marginRight:4, marginBottom:3, transition:"background 0.15s", whiteSpace:"nowrap" },
 lcPanel: { background:"#0d0e12", border:"1px solid #1e2030", borderRadius:"0 0 10px 10px", padding:"12px 16px" },
 };
@@ -2528,7 +2528,7 @@ const OS_UNITS = [
     }
 
     // ─── WEEKLY PLANNER ───────────────────────────────────────────────────────────
-    function WeeklyPlanner({ dsaData, coaData, weekStatus, setWeekStatus, onCelebrate }) {
+    function WeeklyPlanner({ dsaData, coaData, weekStatus, setWeekStatus, onCelebrate, solvedQuestions }) {
     const [expanded, setExpanded] = useState(null);
     const [lcExpanded, setLcExpanded] = useState(null);
 
@@ -2560,9 +2560,10 @@ const OS_UNITS = [
         });
         const lcByStep = w.dsaSteps.map(step => {
             const stepInfo = STRIVER_STEPS.find(s=>s.step===step);
-            const subs = (stepInfo?.subtopics||[]).map(sub => ({
+            const subs = (stepInfo?.subtopics||[]).map((sub, si) => ({
                 subName: sub.name,
-                problems: (sub.problems||[]).filter(p => p.practice && p.practice.includes("leetcode.com/problems/"))
+                problems: (sub.problems||[]).map((p, pi) => ({...p, _si: si, _pi: pi}))
+                    .filter(p => p.practice && p.practice.includes("leetcode.com/problems/"))
             })).filter(s => s.problems.length > 0);
             return {step, stepTitle:stepInfo?.title, subs};
         }).filter(s => s.subs.length > 0);
@@ -2594,46 +2595,54 @@ const OS_UNITS = [
                 </div>
             </div>
 
-            {lcExp && <div style={{background:"#080c12",border:"1px solid #1e2030",borderTop:"1px solid #1e3a5f",borderRadius:"0 0 10px 10px",padding:"18px 18px 14px"}}>
+            {lcExp && <div style={{background:"#080c12",border:"1px solid #1e2030",borderTop:"1px solid #1e3a5f",borderRadius:"0 0 10px 10px",padding:"22px 22px 18px"}}>
                 {/* Header */}
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#f97316"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
-                        <span style={{fontSize:13,fontWeight:700,color:"#f97316"}}>LeetCode Problems</span>
-                        <span style={{fontSize:11,color:"#475569"}}>Week {w.week} — {w.title}</span>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,paddingBottom:14,borderBottom:"1px solid #151b28"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                        <LCIcon size={20} />
+                        <div>
+                            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0"}}>LeetCode Problems</div>
+                            <div style={{fontSize:12,color:"#475569",marginTop:1}}>Week {w.week} — {w.title}</div>
+                        </div>
                     </div>
-                    <div style={{display:"flex",gap:8}}>
+                    <div style={{display:"flex",gap:6,alignItems:"center"}}>
                         {["Easy","Medium","Hard"].map(d => {
                             const cnt = weekLCProblems.filter(p=>p.difficulty===d).length;
-                            return cnt > 0 ? <span key={d} style={{fontSize:10,fontWeight:700,color:DIFF_COLOR[d],background:DIFF_BG[d],border:`1px solid ${DIFF_COLOR[d]}33`,borderRadius:4,padding:"2px 7px"}}>{d} {cnt}</span> : null;
+                            return cnt > 0 ? <span key={d} style={{fontSize:11,fontWeight:700,color:DIFF_COLOR[d],background:DIFF_BG[d],border:`1px solid ${DIFF_COLOR[d]}44`,borderRadius:5,padding:"3px 9px"}}>{d} {cnt}</span> : null;
                         })}
-                        <span style={{fontSize:10,color:"#334155",background:"#0f1117",border:"1px solid #1e2030",borderRadius:4,padding:"2px 7px",fontWeight:600}}>{weekLCProblems.length} total</span>
+                        <span style={{fontSize:11,color:"#475569",background:"#0f1117",border:"1px solid #1e2030",borderRadius:5,padding:"3px 9px",fontWeight:600}}>{weekLCProblems.length} total</span>
                     </div>
                 </div>
 
                 {/* Step-by-step grouped list */}
                 {lcByStep.map(({step, stepTitle, subs}) => (
-                    <div key={step} style={{marginBottom:16}}>
-                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,paddingBottom:6,borderBottom:"1px solid #1a1f2e"}}>
-                            <span style={{fontSize:11,fontWeight:700,color:STEP_COLORS[step],background:STEP_COLORS[step]+"18",border:`1px solid ${STEP_COLORS[step]}30`,borderRadius:4,padding:"2px 8px",flexShrink:0}}>Step {step}</span>
-                            <span style={{fontSize:12,fontWeight:600,color:"#94a3b8"}}>{stepTitle}</span>
-                            <span style={{fontSize:10,color:"#334155",marginLeft:"auto"}}>{subs.reduce((a,s)=>a+s.problems.length,0)} problems</span>
+                    <div key={step} style={{marginBottom:20}}>
+                        {/* Step header */}
+                        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,paddingBottom:8,borderBottom:"1px solid #1a1f2e"}}>
+                            <span style={{fontSize:12,fontWeight:700,color:STEP_COLORS[step],background:STEP_COLORS[step]+"1a",border:`1px solid ${STEP_COLORS[step]}35`,borderRadius:5,padding:"3px 10px",flexShrink:0}}>Step {step}</span>
+                            <span style={{fontSize:13,fontWeight:600,color:"#94a3b8"}}>{stepTitle}</span>
+                            <span style={{fontSize:11,color:"#334155",marginLeft:"auto",background:"#0f1117",border:"1px solid #1e2030",borderRadius:4,padding:"2px 7px"}}>{subs.reduce((a,s)=>a+s.problems.length,0)} problems</span>
                         </div>
                         {subs.map(({subName, problems}) => (
-                            <div key={subName} style={{marginBottom:12,paddingLeft:8}}>
-                                <div style={{fontSize:10,fontWeight:600,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:6}}>{subName}</div>
-                                <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                            <div key={subName} style={{marginBottom:14,paddingLeft:4}}>
+                                {/* Subtopic label */}
+                                <div style={{fontSize:11,fontWeight:700,color:"#475569",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8,display:"flex",alignItems:"center",gap:6}}>
+                                    <span style={{width:3,height:12,background:"#1e3a5f",borderRadius:2,display:"inline-block",flexShrink:0}}></span>
+                                    {subName}
+                                </div>
+                                {/* Problem rows */}
+                                <div style={{display:"flex",flexDirection:"column",gap:4}}>
                                     {problems.map((p,pi) => {
-                                        const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
-                                        const lcNum = p.title.match(/^(\d+)\./)?.[1];
+                                        const isDone = solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`];
                                         return (
                                         <a key={pi} href={p.practice} target="_blank" rel="noopener noreferrer"
-                                            style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:6,background:"#0d1117",border:"1px solid #1a1f2e",textDecoration:"none",transition:"border-color 0.15s, background 0.15s",cursor:"pointer",minWidth:0}}
-                                            onMouseEnter={e=>{e.currentTarget.style.background="#0f1829";e.currentTarget.style.borderColor="#1e3a5f";}}
-                                            onMouseLeave={e=>{e.currentTarget.style.background="#0d1117";e.currentTarget.style.borderColor="#1a1f2e";}}>
-                                            <svg viewBox="0 0 24 24" width="12" height="12" fill="#f97316" style={{flexShrink:0}}><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
-                                            <span style={{fontSize:12,color:"#e2e8f0",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.title}</span>
-                                            {p.difficulty && <span style={{fontSize:10,fontWeight:700,color:DIFF_COLOR[p.difficulty]||"#94a3b8",background:(DIFF_BG[p.difficulty]||"#0f1117"),border:`1px solid ${(DIFF_COLOR[p.difficulty]||"#334155")}33`,borderRadius:3,padding:"1px 5px",flexShrink:0}}>{p.difficulty}</span>}
+                                            style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",borderRadius:7,background:isDone?"#0a0c14":"#0d1117",border:"1px solid #1a1f2e",textDecoration:"none",transition:"all 0.15s",cursor:"pointer",minWidth:0,borderLeft:"3px solid transparent",opacity:isDone?0.5:1}}
+                                            onMouseEnter={e=>{e.currentTarget.style.background="#0e1828";e.currentTarget.style.borderColor="#1e3a5f";e.currentTarget.style.borderLeftColor=DIFF_COLOR[p.difficulty]||"#f97316";}}
+                                            onMouseLeave={e=>{e.currentTarget.style.background=isDone?"#0a0c14":"#0d1117";e.currentTarget.style.borderColor="#1a1f2e";e.currentTarget.style.borderLeftColor="transparent";}}>
+                                            <LCIcon size={14} style={{filter:isDone?"grayscale(1)":""}}/>
+                                            <span style={{fontSize:14,color:isDone?"#64748b":"#e2e8f0",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500,textDecoration:isDone?"line-through":"none"}}>{p.title}</span>
+                                            {p.difficulty && <span style={{fontSize:11,fontWeight:700,color:DIFF_COLOR[p.difficulty]||"#94a3b8",background:(DIFF_BG[p.difficulty]||"#0f1117"),border:`1px solid ${(DIFF_COLOR[p.difficulty]||"#334155")}44`,borderRadius:4,padding:"2px 8px",flexShrink:0}}>{p.difficulty}</span>}
+                                            {isDone && <span style={{fontSize:12,color:"#34d399",marginLeft:8}}>✓</span>}
                                         </a>
                                         );
                                     })}
@@ -4206,7 +4215,7 @@ const OS_UNITS = [
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
                 {page==="os" && <OSTracker osProgress={osProgress} setOsProgress={setOsProgress} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
-                    setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate}/>}
+                    setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}/>}
                     {page==="revision" &&
                     <RevisionTracker revData={revData} setRevData={setRevData} />}
                     {page==="analytics" &&
