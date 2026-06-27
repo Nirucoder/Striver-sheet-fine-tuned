@@ -460,22 +460,32 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     function filterDSA(entries) {
         if (!Array.isArray(entries)) return [];
+        return entries.filter(e => (!e.type || e.type === "dsa") && e.subName !== "LeetCode Sync");
+    }
+    function filterAllDSAIncludingDummies(entries) {
+        if (!Array.isArray(entries)) return [];
         return entries.filter(e => !e.type || e.type === "dsa");
     }
     function filterOther(entries, type) {
         if (!Array.isArray(entries)) return [];
-        return entries.filter(e => e.type === type);
+        return entries.filter(e => e.type === type && e.subName !== "LeetCode Sync");
     }
     const getSlugFromDsaData = useCallback((title, subName) => {
         if (!dsaData || !title) return null;
-        for (const step of dsaData) {
-            for (const sub of step.subtopics) {
-                if (subName && sub.name !== subName) continue;
-                const prob = sub.problems.find(p => p.title === title);
-                if (prob && prob.practice && prob.practice.includes("leetcode.com/problems/")) {
-                    return prob.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+        try {
+            for (const step of dsaData) {
+                if (!step.subtopics) continue;
+                for (const sub of step.subtopics) {
+                    if (subName && sub.name !== subName) continue;
+                    const prob = sub.problems?.find(p => p.title === title);
+                    if (prob && prob.practice && prob.practice.includes("leetcode.com/problems/")) {
+                        const parts = prob.practice.replace(/\/$/, "").split("/problems/");
+                        return parts[1] ? parts[1].split("/")[0] : null;
+                    }
                 }
             }
+        } catch(e) {
+            console.error("Error in getSlugFromDsaData:", e);
         }
         return null;
     }, [dsaData]);
@@ -485,7 +495,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         const d = new Date(todayDate);
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().slice(0,10);
-        const cnt = filterDSA(safeLog[dateStr] || []).length;
+        const cnt = filterAllDSAIncludingDummies(safeLog[dateStr] || []).length;
         const source = cnt > 0 ? (activeDatesSet.has(dateStr) ? "lc" : "manual") : "none";
         cells.push({ date: dateStr, count: cnt, dow: d.getDay(), source });
     }
@@ -507,7 +517,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const activeDays  = Object.values(safeLog).filter(v=>filterDSA(v).length>0).length;
     const lcDays      = cells.filter(c => c.source === "lc").length;
     const manualDays  = cells.filter(c => c.source === "manual").length;
-    const selectedEntries = selectedDay ? filterDSA(safeLog[selectedDay]||[]) : [];
+    const selectedEntries = selectedDay ? filterAllDSAIncludingDummies(safeLog[selectedDay]||[]) : [];
     const selectedSource  = selectedDay ? cells.find(c=>c.date===selectedDay)?.source : null;
 
     const curOther = OTHER_TABS.find(t=>t.id===otherTab) || OTHER_TABS[0];
@@ -571,7 +581,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <div style={{fontSize:11,color:"#475569"}}>{totalSolved} problems · {activeDays} active days</div>
         </div>
 
-        <HeatGrid wks={weeks} getCellColor={getCellColorSourced} getAccent={accentFor} legendPalette={GREEN_COLORS} accent={GREEN_ACCENT} selDay={selectedDay} onSelect={setSelectedDay} label="problem" />
+        <HeatGrid wks={weeks} getCellColor={getCellColorSourced} getAccent={accentFor} legendPalette={GREEN_COLORS} accent={GREEN_ACCENT} selDay={selectedDay} onSelect={setSelectedDay} label="activity" />
 
         {/* Source legend */}
         <div style={{display:"flex",alignItems:"center",gap:14,marginTop:8,paddingLeft:20,flexWrap:"wrap"}}>
@@ -611,7 +621,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             {totalAttempts > 0 && (
                                 <span style={{fontSize:11,color:"#8b949e"}}>
                                     {totalAttempts} submission{totalAttempts!==1?"s":""}
-                                    {failedAttempts > 0 && <span style={{color:"#f87171"}}> · {failedAttempts} failed</span>}
+                                    {failedAttempts > 0 && <span style={{color:"#f87171"}}> · {failedAttempts} unsuccessful</span>}
                                 </span>
                             )}
                         </div>
@@ -668,7 +678,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         <div style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderTop:"1px solid #21262d",marginTop:2}}>
                             <span style={{fontSize:14,flexShrink:0}}>🔁</span>
                             <span style={{fontSize:12,color:"#64748b",flex:1,fontStyle:"italic"}}>
-                                +{failedAttempts} failed attempt{failedAttempts!==1?"s":""} before solving
+                                +{failedAttempts} unsuccessful attempt{failedAttempts!==1?"s":""} before solving
                             </span>
                         </div>
                     )}
