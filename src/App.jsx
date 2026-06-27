@@ -586,7 +586,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid #006d3244`}}>
                     {/* Header row */}
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                        <span style={{fontSize:12,fontWeight:700,color:GREEN_ACCENT}}>{selectedDay}</span>
+                        <span style={{fontSize:12,fontWeight:700,color:GREEN_ACCENT}}>
+                            {new Date(selectedDay).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'})}
+                        </span>
                         <div style={{display:"flex",gap:12,alignItems:"center"}}>
                             {realEntries.length > 0 && (
                                 <span style={{fontSize:11,color:"#34d399",fontWeight:600}}>
@@ -669,7 +671,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 {otherSelectedDay && (
                     <div style={{marginTop:10,padding:"10px 14px",background:"#0d1117",borderRadius:8,border:`1px solid ${curOther.colors[2]}44`}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                            <span style={{fontSize:12,fontWeight:700,color:curOther.accent}}>{otherSelectedDay}</span>
+                            <span style={{fontSize:12,fontWeight:700,color:curOther.accent}}>
+                                {new Date(otherSelectedDay).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'})}
+                            </span>
                             <span style={{fontSize:11,color:"#8b949e"}}>{otherSelectedEntries.length} {otherTab==="study"?"session":"task"}{otherSelectedEntries.length!==1?"s":""}</span>
                         </div>
                         {otherSelectedEntries.length===0 ? (
