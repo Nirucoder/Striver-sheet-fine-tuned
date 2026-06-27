@@ -519,7 +519,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const accentFor = cell => cell?.source === "lc" ? GREEN_ACCENT : MANUAL_ACCENT;
 
     const totalSolved = Object.values(safeLog).reduce((a,v)=>a+filterDSA(v).length, 0);
-    const activeDays  = Object.values(safeLog).filter(v=>filterDSA(v).length>0).length;
+    // Active days should match the colored boxes on the calendar (including attempt-only days)
+    const activeDays  = Object.values(safeLog).filter(v=>filterAllDSAIncludingDummies(v).length>0).length;
     const lcDays      = cells.filter(c => c.source === "lc").length;
     const manualDays  = cells.filter(c => c.source === "manual").length;
     const selectedEntries = selectedDay ? filterAllDSAIncludingDummies(safeLog[selectedDay]||[]) : [];
@@ -583,7 +584,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     return <div style={{...S.card, marginTop:16}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
             <div style={S.sectionTitle}>Activity Calendar</div>
-            <div style={{fontSize:11,color:"#475569"}}>{totalSolved} problems · {activeDays} active days</div>
+            <div style={{fontSize:11,color:"#475569"}}>{totalSolved} problems solved · {activeDays} active days</div>
         </div>
 
         <HeatGrid wks={weeks} getCellColor={getCellColorSourced} getAccent={accentFor} legendPalette={GREEN_COLORS} accent={GREEN_ACCENT} selDay={selectedDay} onSelect={setSelectedDay} label="activity" />
