@@ -824,8 +824,24 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             {/* LeetScore */}
             <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",gap:3}}>
                 <div style={{fontSize:11,color:"#737373",fontWeight:600,letterSpacing:"1px",textTransform:"uppercase"}}>LeetScore</div>
-                <div style={{fontSize:9,color:"#525252",lineHeight:1.6,textAlign:"right"}}>
-                    <span style={{color:"#2cbb5d"}}>Easy×1</span> + <span style={{color:"#ffb700"}}>Med×2</span> + <span style={{color:"#ef4743"}}>Hard×3</span>
+                {/* Contribution breakdown: show actual values per difficulty */}
+                <div style={{fontSize:10,color:"#525252",lineHeight:1.8,textAlign:"right",display:"flex",alignItems:"center",gap:4}}>
+                    <span style={{color:"#2cbb5d",fontWeight:600}}>{parsedSolved.Easy||0}</span>
+                    <span style={{color:"#737373",fontSize:9}}>x1</span>
+                    <span style={{color:"#525252"}}>+</span>
+                    <span style={{color:"#ffb700",fontWeight:600}}>{parsedSolved.Medium||0}</span>
+                    <span style={{color:"#737373",fontSize:9}}>x2</span>
+                    <span style={{color:"#525252"}}>+</span>
+                    <span style={{color:"#ef4743",fontWeight:600}}>{parsedSolved.Hard||0}</span>
+                    <span style={{color:"#737373",fontSize:9}}>x3</span>
+                </div>
+                {/* Per-difficulty score contribution */}
+                <div style={{fontSize:9,color:"#525252",lineHeight:1.6,textAlign:"right",display:"flex",alignItems:"center",gap:4}}>
+                    <span style={{color:"#2cbb5d88"}}>={parsedSolved.Easy||0}</span>
+                    <span style={{color:"#525252"}}>+</span>
+                    <span style={{color:"#ffb70088"}}>={(parsedSolved.Medium||0)*2}</span>
+                    <span style={{color:"#525252"}}>+</span>
+                    <span style={{color:"#ef474388"}}>={(parsedSolved.Hard||0)*3}</span>
                 </div>
                 <div style={{fontSize:38,fontWeight:800,color:"#fb923c",textShadow:"0 0 18px rgba(251,146,60,0.35)",lineHeight:1}}>{leetScore}</div>
                 <div style={{fontSize:11,color:"#525252",marginTop:2}}>/ {maxScore} Max</div>
