@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95 115" fill="none">
+  <!-- Left white arc (top arm) -->
+  <path d="M47 5 C25 5 8 22 8 44 L8 52" stroke="white" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <!-- Left orange arc (bottom arm) -->
+  <path d="M8 62 L8 70 C8 92 25 109 47 109" stroke="#FFA116" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <!-- Top right white curve -->
+  <path d="M47 5 L55 5" stroke="white" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <!-- Bottom right orange curve -->
+  <path d="M47 109 L55 109" stroke="#FFA116" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <!-- Gray horizontal bar (middle dash) -->
+  <rect x="30" y="48" width="55" height="17" rx="8.5" fill="#B3B3B3"/>
+</svg>

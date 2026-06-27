@@ -370,6 +370,11 @@ lcPanel: { background:"#0d0e12", border:"1px solid #1e2030", borderRadius:"0 0 1
 };
 
 // ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
+// LeetCode logo icon — uses the official logo image from /lc-logo.svg
+function LCIcon({ size = 14, style = {} }) {
+    return <img src="/lc-logo.svg" width={size} height={size} alt="LeetCode" style={{ flexShrink:0, display:"block", ...style }} />;
+}
+
 function Confetti({ active, onDone }) {
 const ref = useRef(null);
 useEffect(() => {
@@ -644,12 +649,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             </div>
                             {e.lcConfirmed ? (
                                 effectiveSlug ? (
-                                    <a href={`https://leetcode.com/problems/${effectiveSlug}/`} target="_blank" rel="noreferrer" title="View on LeetCode" style={{textDecoration:"none",color:"#34d399",background:"#064e3b",padding:"4px",borderRadius:4,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
+                                    <a href={`https://leetcode.com/problems/${effectiveSlug}/`} target="_blank" rel="noreferrer" title="View on LeetCode" style={{textDecoration:"none",background:"#064e3b",padding:"4px",borderRadius:4,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                        <LCIcon size={14} />
                                     </a>
                                 ) : (
-                                    <span title="LeetCode API" style={{color:"#34d399",background:"#064e3b",padding:"4px",borderRadius:4,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
+                                    <span title="LeetCode API" style={{background:"#064e3b",padding:"4px",borderRadius:4,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                        <LCIcon size={14} />
                                     </span>
                                 )
                             ) : (
@@ -892,7 +897,6 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     return <div>
         <div style={S.pageTitle}>Good morning, Engineer 👋</div>
-        <div style={{...S.pageSub, marginBottom:16}}>SRM KTR · Semester Break · Striver A2Z Sheet ({STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0)} problems) + Nesa COA</div>
 
         {/* ── Today's Work quick-glance card ── */}
         <div style={{background:"#0f1117", border:"1px solid #1e2030", borderRadius:12, padding:"14px 18px", marginBottom:16}}>
@@ -2546,64 +2550,98 @@ const OS_UNITS = [
         const exp = expanded === i;
         const lcExp = lcExpanded === i;
         const stepsInWeek = STRIVER_STEPS.filter(s=>w.dsaSteps.includes(s.step));
-        // Gather all LC links for this week's steps
-        const weekLCLinks = w.dsaSteps.flatMap(step => (STEP_LEETCODE[step]||[]).map(l=>({...l,step})));
+        // Gather only real LeetCode links (filter out takeuforward/spoj/interviewbit)
+        const weekLCProblems = w.dsaSteps.flatMap(step => {
+            const stepInfo = STRIVER_STEPS.find(s=>s.step===step);
+            return (stepInfo?.subtopics||[]).flatMap(sub =>
+                (sub.problems||[]).filter(p => p.practice && p.practice.includes("leetcode.com/problems/"))
+                .map(p => ({...p, stepNum:step, stepTitle:stepInfo.title, subName:sub.name}))
+            );
+        });
+        const lcByStep = w.dsaSteps.map(step => {
+            const stepInfo = STRIVER_STEPS.find(s=>s.step===step);
+            const subs = (stepInfo?.subtopics||[]).map(sub => ({
+                subName: sub.name,
+                problems: (sub.problems||[]).filter(p => p.practice && p.practice.includes("leetcode.com/problems/"))
+            })).filter(s => s.problems.length > 0);
+            return {step, stepTitle:stepInfo?.title, subs};
+        }).filter(s => s.subs.length > 0);
+        const DIFF_COLOR = {Easy:"#2cbb5d", Medium:"#f59e0b", Hard:"#ef4743"};
+        const DIFF_BG   = {Easy:"#0a1f14", Medium:"#1c1500", Hard:"#1a0808"};
 
         return <div key={i} style={{marginBottom:10}}>
-            <div style={{background:weekStatus[i]?"#0d1a0d":"#0f1117",border:`1px solid
-                ${weekStatus[i]?"#1a3a3a":exp?"#2d3154":"#1e2030"}`,borderRadius: (exp||lcExp)?"10px 10px 0                 0":10,padding:"14px                 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={()=>
-                setExpanded(exp?null:i)}>
+            <div style={{background:weekStatus[i]?"#0d1a0d":"#0f1117",border:`1px solid ${weekStatus[i]?"#1a3a3a":exp?"#2d3154":"#1e2030"}`,borderRadius:(exp||lcExp)?"10px 10px 0 0":10,padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={()=>setExpanded(exp?null:i)}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    <div
-                        style={{width:34,height:34,borderRadius:8,background:WEEK_COLORS[i]+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:WEEK_COLORS[i]}}>
+                    <div style={{width:34,height:34,borderRadius:8,background:WEEK_COLORS[i]+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:WEEK_COLORS[i]}}>
                         W{w.week}</div>
                     <div>
                         <div style={{fontSize:14,fontWeight:600,color:"#e2e8f0"}}>{w.title}</div>
-                        <div style={{fontSize:11,color:"#475569"}}>Steps {w.dsaSteps.join(", ")} · {ds.length} subtopics
-                            · {cs.length} COA topics</div>
+                        <div style={{fontSize:11,color:"#475569"}}>Steps {w.dsaSteps.join(", ")} · {ds.length} subtopics · {cs.length} COA topics</div>
                     </div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                     <button onClick={e=>{e.stopPropagation();setLcExpanded(lcExp?null:i);}}
-                        style={{...S.btn("default"),padding:"3px                         9px",fontSize:11,background:lcExp?"#2c1a08":"#1e2030",color:lcExp?"#f97316":"#64748b",border:lcExp?"1px                         solid #431407":"none"}}>
-                        🔗 LeetCode ({weekLCLinks.length})
+                        style={{...S.btn("default"),padding:"3px 9px",fontSize:11,background:lcExp?"#0a1828":"#1e2030",color:lcExp?"#f97316":"#64748b",border:lcExp?"1px solid #1e3a5f":"none",display:"flex",alignItems:"center",gap:5}}>
+                        <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style={{flexShrink:0}}><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
+                        LeetCode ({weekLCProblems.length})
                     </button>
-                    <div style={{width:100}}>
-                        <PBar pct={pct} color={WEEK_COLORS[i]} />
-                    </div>
+                    <div style={{width:100}}><PBar pct={pct} color={WEEK_COLORS[i]} /></div>
                     <span style={{fontSize:13,fontWeight:700,color:WEEK_COLORS[i]}}>{pct}%</span>
-                    <button onClick={e=>{e.stopPropagation();toggleWeek(i);}}
-                        style={{...S.btn(weekStatus[i]?"success":"default"),padding:"4px 10px",fontSize:12}}>
+                    <button onClick={e=>{e.stopPropagation();toggleWeek(i);}} style={{...S.btn(weekStatus[i]?"success":"default"),padding:"4px 10px",fontSize:12}}>
                         {weekStatus[i]?"✓ Done":"Mark Done"}
                     </button>
-                    <span style={{color:"#475569"}}
-                        onClick={e=>{e.stopPropagation();setExpanded(exp?null:i);}}>{exp?"▲":"▼"}</span>
+                    <span style={{color:"#475569"}} onClick={e=>{e.stopPropagation();setExpanded(exp?null:i);}}>{exp?"▲":"▼"}</span>
                 </div>
             </div>
 
-            {lcExp && <div style={{background:"#0d0e12",border:"1px solid #1e2030",borderTop:"1px solid                 #2c1a08",padding:"14px 16px"}}>
-                <div
-                    style={{fontSize:10,fontWeight:700,color:"#f97316",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:10}}>
-                    🔗 LeetCode Problems for Week {w.week} — {w.title}
+            {lcExp && <div style={{background:"#080c12",border:"1px solid #1e2030",borderTop:"1px solid #1e3a5f",borderRadius:"0 0 10px 10px",padding:"18px 18px 14px"}}>
+                {/* Header */}
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#f97316"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
+                        <span style={{fontSize:13,fontWeight:700,color:"#f97316"}}>LeetCode Problems</span>
+                        <span style={{fontSize:11,color:"#475569"}}>Week {w.week} — {w.title}</span>
+                    </div>
+                    <div style={{display:"flex",gap:8}}>
+                        {["Easy","Medium","Hard"].map(d => {
+                            const cnt = weekLCProblems.filter(p=>p.difficulty===d).length;
+                            return cnt > 0 ? <span key={d} style={{fontSize:10,fontWeight:700,color:DIFF_COLOR[d],background:DIFF_BG[d],border:`1px solid ${DIFF_COLOR[d]}33`,borderRadius:4,padding:"2px 7px"}}>{d} {cnt}</span> : null;
+                        })}
+                        <span style={{fontSize:10,color:"#334155",background:"#0f1117",border:"1px solid #1e2030",borderRadius:4,padding:"2px 7px",fontWeight:600}}>{weekLCProblems.length} total</span>
+                    </div>
                 </div>
-                {w.dsaSteps.map(step => {
-                const links = STEP_LEETCODE[step]||[];
-                if (!links.length) return null;
-                const stepInfo = STRIVER_STEPS.find(s=>s.step===step);
-                return <div key={step} style={{marginBottom:10}}>
-                    <div style={{fontSize:11,fontWeight:600,color:STEP_COLORS[step],marginBottom:5}}>Step {step}:
-                        {stepInfo?.title}</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                        {links.map((l,li)=>(
-                        <a key={li} href={l.url} target="_blank" rel="noopener noreferrer" style={S.lcLink}
-                            onMouseEnter={e=>e.currentTarget.style.background="#2c1a08"}
-                            onMouseLeave={e=>e.currentTarget.style.background="#1c1108"}>
-                            ↗ {l.title}
-                        </a>
+
+                {/* Step-by-step grouped list */}
+                {lcByStep.map(({step, stepTitle, subs}) => (
+                    <div key={step} style={{marginBottom:16}}>
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,paddingBottom:6,borderBottom:"1px solid #1a1f2e"}}>
+                            <span style={{fontSize:11,fontWeight:700,color:STEP_COLORS[step],background:STEP_COLORS[step]+"18",border:`1px solid ${STEP_COLORS[step]}30`,borderRadius:4,padding:"2px 8px",flexShrink:0}}>Step {step}</span>
+                            <span style={{fontSize:12,fontWeight:600,color:"#94a3b8"}}>{stepTitle}</span>
+                            <span style={{fontSize:10,color:"#334155",marginLeft:"auto"}}>{subs.reduce((a,s)=>a+s.problems.length,0)} problems</span>
+                        </div>
+                        {subs.map(({subName, problems}) => (
+                            <div key={subName} style={{marginBottom:12,paddingLeft:8}}>
+                                <div style={{fontSize:10,fontWeight:600,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:6}}>{subName}</div>
+                                <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                                    {problems.map((p,pi) => {
+                                        const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+                                        const lcNum = p.title.match(/^(\d+)\./)?.[1];
+                                        return (
+                                        <a key={pi} href={p.practice} target="_blank" rel="noopener noreferrer"
+                                            style={{display:"flex",alignItems:"center",gap:8,padding:"6px 10px",borderRadius:6,background:"#0d1117",border:"1px solid #1a1f2e",textDecoration:"none",transition:"border-color 0.15s, background 0.15s",cursor:"pointer",minWidth:0}}
+                                            onMouseEnter={e=>{e.currentTarget.style.background="#0f1829";e.currentTarget.style.borderColor="#1e3a5f";}}
+                                            onMouseLeave={e=>{e.currentTarget.style.background="#0d1117";e.currentTarget.style.borderColor="#1a1f2e";}}>
+                                            <svg viewBox="0 0 24 24" width="12" height="12" fill="#f97316" style={{flexShrink:0}}><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
+                                            <span style={{fontSize:12,color:"#e2e8f0",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.title}</span>
+                                            {p.difficulty && <span style={{fontSize:10,fontWeight:700,color:DIFF_COLOR[p.difficulty]||"#94a3b8",background:(DIFF_BG[p.difficulty]||"#0f1117"),border:`1px solid ${(DIFF_COLOR[p.difficulty]||"#334155")}33`,borderRadius:3,padding:"1px 5px",flexShrink:0}}>{p.difficulty}</span>}
+                                        </a>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         ))}
                     </div>
-                </div>;
-                })}
+                ))}
             </div>}
 
             {exp && <div style={{background:"#090a0f",border:"1px solid #1e2030",borderTop:"none",borderRadius:"0 0 10px                 10px",padding:"16px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
@@ -3447,7 +3485,8 @@ const OS_UNITS = [
     }
 
     export default function App({ session, setSession }) {
-    const [page, setPage] = useState("dashboard");
+    const [page, setPageRaw] = useState(() => localStorage.getItem("studyos_activepage") || "dashboard");
+    const setPage = (p) => { setPageRaw(p); localStorage.setItem("studyos_activepage", p); };
     const [dsaData, setDsaData] = useLocalStorage("srm_dsa_v3", DSA_TABLE, mergeDsaData);
     const [coaData, setCoaData] = useLocalStorage("srm_coa_v3", COA_TABLE, mergeCoaData);
     const [revData, setRevData] = useLocalStorage("srm_rev_v3", ALL_REV_TOPICS, mergeRevData);
