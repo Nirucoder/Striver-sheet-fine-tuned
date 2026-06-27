@@ -580,16 +580,29 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 </div>
                 {selectedEntries.length===0 ? (
                     <div style={{fontSize:12,color:"#475569"}}>No LeetCode problems solved here.</div>
-                ) : selectedEntries.map((e,i)=>(
-                    <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<selectedEntries.length-1?"1px solid #21262d":"none"}}>
-                        <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
-                        <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
-                        {e.lcConfirmed && (
-                            <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                ) : (() => {
+                    const realEntries = selectedEntries.filter(e => e.subName !== "LeetCode Sync");
+                    const lcSyncCount = selectedEntries.filter(e => e.subName === "LeetCode Sync").length;
+                    return <>
+                        {realEntries.map((e,i) => (
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:(i < realEntries.length - 1 || lcSyncCount > 0) ? "1px solid #21262d" : "none"}}>
+                                <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
+                                <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
+                                {e.lcConfirmed && (
+                                    <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                                )}
+                                <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
+                            </div>
+                        ))}
+                        {lcSyncCount > 0 && (
+                            <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0"}}>
+                                <span style={{fontSize:14,flexShrink:0}}>🟡</span>
+                                <span style={{fontSize:13,color:"#94a3b8",flex:1,fontStyle:"italic"}}>{lcSyncCount} LeetCode submission{lcSyncCount !== 1 ? "s" : ""} on this day</span>
+                                <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                            </div>
                         )}
-                        <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
-                    </div>
-                ))}
+                    </>;
+                })()}
             </div>
         )}
 
@@ -700,6 +713,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
             <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center"}}>
                 <div style={{fontSize:11,color:"#94a3b8",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",marginBottom:2}}>LeetScore</div>
+                <div style={{fontSize:9,color:"#475569",marginBottom:6,textAlign:"right",lineHeight:1.5}}>
+                    <span style={{color:"#34d399"}}>Easy×1</span> + <span style={{color:"#fbbf24"}}>Med×2</span> + <span style={{color:"#f87171"}}>Hard×3</span>
+                </div>
                 <div style={{fontSize:36,fontWeight:800,color:"#fb923c",textShadow:"0 0 16px rgba(251,146,60,0.3)",lineHeight:1}}>
                     {((parsedSolved.Easy||0)*1) + ((parsedSolved.Medium||0)*2) + ((parsedSolved.Hard||0)*3)}
                 </div>
