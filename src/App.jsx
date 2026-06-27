@@ -2530,7 +2530,6 @@ const OS_UNITS = [
     // ─── WEEKLY PLANNER ───────────────────────────────────────────────────────────
     function WeeklyPlanner({ dsaData, coaData, weekStatus, setWeekStatus, onCelebrate, solvedQuestions }) {
     const [expanded, setExpanded] = useState(null);
-    const [lcExpanded, setLcExpanded] = useState(null);
 
     function toggleWeek(i) {
     const next = [...weekStatus]; next[i]=!next[i];
@@ -2539,8 +2538,7 @@ const OS_UNITS = [
     }
 
     return <div>
-        <div style={S.pageTitle}>Weekly Planner</div>
-        <div style={S.pageSub}>8-Week Study Roadmap · Striver A2Z (17 Steps) + Nesa COA · Click to expand</div>
+        <div style={S.pageTitle}>LeetCode Problems</div>
         {WEEK_PLAN.map((w,i) => {
         const ds = dsaData.filter(d=>w.dsaSteps.includes(d.step));
         const cs = coaData.filter(d=>d.week===w.coaWeek);
@@ -2548,7 +2546,6 @@ const OS_UNITS = [
         const tot = ds.length + cs.length;
         const pct = tot ? Math.round(done/tot*100) : 0;
         const exp = expanded === i;
-        const lcExp = lcExpanded === i;
         const stepsInWeek = STRIVER_STEPS.filter(s=>w.dsaSteps.includes(s.step));
         // Gather only real LeetCode links (filter out takeuforward/spoj/interviewbit)
         const weekLCProblems = w.dsaSteps.flatMap(step => {
@@ -2571,7 +2568,7 @@ const OS_UNITS = [
         const DIFF_BG   = {Easy:"#0a1f14", Medium:"#1c1500", Hard:"#1a0808"};
 
         return <div key={i} style={{marginBottom:10}}>
-            <div style={{background:weekStatus[i]?"#0d1a0d":"#0f1117",border:`1px solid ${weekStatus[i]?"#1a3a3a":exp?"#2d3154":"#1e2030"}`,borderRadius:(exp||lcExp)?"10px 10px 0 0":10,padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={()=>setExpanded(exp?null:i)}>
+            <div style={{background:weekStatus[i]?"#0d1a0d":"#0f1117",border:`1px solid ${weekStatus[i]?"#1a3a3a":exp?"#2d3154":"#1e2030"}`,borderRadius:exp?"10px 10px 0 0":10,padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={()=>setExpanded(exp?null:i)}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                     <div style={{width:34,height:34,borderRadius:8,background:WEEK_COLORS[i]+"22",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:WEEK_COLORS[i]}}>
                         W{w.week}</div>
@@ -2581,11 +2578,6 @@ const OS_UNITS = [
                     </div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    <button onClick={e=>{e.stopPropagation();setLcExpanded(lcExp?null:i);}}
-                        style={{...S.btn("default"),padding:"3px 9px",fontSize:11,background:lcExp?"#0a1828":"#1e2030",color:lcExp?"#f97316":"#64748b",border:lcExp?"1px solid #1e3a5f":"none",display:"flex",alignItems:"center",gap:5}}>
-                        <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style={{flexShrink:0}}><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg>
-                        LeetCode ({weekLCProblems.length})
-                    </button>
                     <div style={{width:100}}><PBar pct={pct} color={WEEK_COLORS[i]} /></div>
                     <span style={{fontSize:13,fontWeight:700,color:WEEK_COLORS[i]}}>{pct}%</span>
                     <button onClick={e=>{e.stopPropagation();toggleWeek(i);}} style={{...S.btn(weekStatus[i]?"success":"default"),padding:"4px 10px",fontSize:12}}>
@@ -2595,7 +2587,7 @@ const OS_UNITS = [
                 </div>
             </div>
 
-            {lcExp && <div style={{background:"#080c12",border:"1px solid #1e2030",borderTop:"1px solid #1e3a5f",borderRadius:"0 0 10px 10px",padding:"22px 22px 18px"}}>
+            {exp && <div style={{background:"#080c12",border:"1px solid #1e2030",borderTop:"1px solid #1e3a5f",borderRadius:"0 0 10px 10px",padding:"22px 22px 18px"}}>
                 {/* Header */}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,paddingBottom:14,borderBottom:"1px solid #151b28"}}>
                     <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -2653,45 +2645,6 @@ const OS_UNITS = [
                 ))}
             </div>}
 
-            {exp && <div style={{background:"#090a0f",border:"1px solid #1e2030",borderTop:"none",borderRadius:"0 0 10px                 10px",padding:"16px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
-                <div>
-                    <div
-                        style={{fontSize:11,fontWeight:700,color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:10}}>
-                        DSA – Striver A2Z</div>
-                    {stepsInWeek.map(s => {
-                    const items = dsaData.filter(d=>d.step===s.step);
-                    const sDone = items.filter(d=>d.status==="done").length;
-                    return <div key={s.step} style={{marginBottom:10}}>
-                        <div style={{fontSize:12,fontWeight:600,color:STEP_COLORS[s.step],marginBottom:4}}>Step
-                            {s.step}: {s.title} ({sDone}/{items.length})</div>
-                        {items.map(d => <div key={d.id}
-                            style={{display:"flex",alignItems:"flex-start",gap:6,padding:"2px 0"}}>
-                            <span style={{fontSize:11,color:d.status==="done" ?"#34d399":d.status==="inprogress"
-                                ?"#818cf8":"#475569",marginTop:1,flexShrink:0}}>{d.status==="done"?"✓":d.status==="inprogress"?"◑":"○"}</span>
-                            <span style={{fontSize:11,color:d.status==="done"
-                                ?"#64748b":"#475569",textDecoration:d.status==="done"
-                                ?"line-through":"none",lineHeight:1.4}}>{d.topic} <span
-                                    style={{color:"#374151"}}>({d.problems}p)</span></span>
-                        </div>)}
-                    </div>;
-                    })}
-                </div>
-                <div>
-                    <div
-                        style={{fontSize:11,fontWeight:700,color:"#34d399",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:10}}>
-                        COA – Nesa Academy (Week {w.coaWeek})</div>
-                    {cs.map(d => <div key={d.id} style={{display:"flex",alignItems:"flex-start",gap:6,padding:"4px                         0",borderBottom:"1px solid #1e2030"}}>
-                        <span style={{fontSize:11,color:d.status==="done"
-                            ?"#34d399":"#475569",marginTop:1,flexShrink:0}}>{d.status==="done"?"✓":"○"}</span>
-                        <div>
-                            <div style={{fontSize:12,color:d.status==="done"
-                                ?"#64748b":"#94a3b8",fontWeight:500,textDecoration:d.status==="done"
-                                ?"line-through":"none"}}>{d.topic}</div>
-                            <div style={{fontSize:10,color:"#374151"}}>{d.subtopics}</div>
-                        </div>
-                    </div>)}
-                </div>
-            </div>}
         </div>;
         })}
     </div>;
@@ -3362,7 +3315,7 @@ const OS_UNITS = [
 
     // ─── MAIN APP ─────────────────────────────────────────────────────────────────
     const NAV = [
-    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"Weekly Planner", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
+    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
     function SyncModal({ session, syncCode, syncStatus, setSyncStatus, onForcePush, onForcePull, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
