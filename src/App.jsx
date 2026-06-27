@@ -2598,7 +2598,7 @@ const OS_UNITS = [
                     <div style={{display:"flex",alignItems:"center",gap:10}}>
                         <LCIcon size={20} />
                         <div>
-                            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0"}}>LeetCode Problems</div>
+                            <div style={{fontSize:17,fontWeight:700,color:"#e2e8f0"}}>LeetCode Problems</div>
                             <div style={{fontSize:12,color:"#475569",marginTop:1}}>Week {w.week} — {w.title}</div>
                         </div>
                     </div>
