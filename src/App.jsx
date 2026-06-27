@@ -609,20 +609,28 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         <div style={{fontSize:12,color:"#475569"}}>No activity recorded here.</div>
                     )}
 
-                    {realEntries.map((e,i) => (
+                    {realEntries.map((e,i) => {
+                        const lcTitle = e.lcSlug ? e.lcSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : null;
+                        return (
                         <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<realEntries.length-1?"1px solid #21262d":"none"}}>
                             <span style={{fontSize:11,color:e.lcConfirmed ? GREEN_ACCENT : "#f87171",fontWeight:700,flexShrink:0}}>◈</span>
-                            <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
+                            <div style={{flex:1, display:"flex", flexDirection:"column", gap:2}}>
+                                <span style={{fontSize:13,color:"#e6edf3"}}>{e.title}</span>
+                                {lcTitle && <span style={{fontSize:10,color:"#8b949e"}}>↳ {lcTitle}</span>}
+                            </div>
                             {e.lcConfirmed ? (
-                                <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                                <a href={`https://leetcode.com/problems/${e.lcSlug}/`} target="_blank" rel="noreferrer" style={{textDecoration:"none",fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600,display:"flex",alignItems:"center",gap:4}}>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.939 5.939 0 0 0 1.271 1.543l5.096 5.107c.28.28.736.28 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-3.048-3.048a.718.718 0 0 1 0-1.016.718.718 0 0 1 1.016 0l3.048 3.048a.718.718 0 0 0 1.016 0l2.032-2.032a.718.718 0 0 0 0-1.016l-5.096-5.107a4.502 4.502 0 0 1-.964-1.168 4.636 4.636 0 0 1-.264-.77 4.793 4.793 0 0 1-.047-1.787 4.965 4.965 0 0 1 .912-1.583l3.854-4.126 5.406-5.788a1.374 1.374 0 0 0-.961-2.342zm-5.462 13.92a2.012 2.012 0 0 0-.61.34 2.13 2.13 0 0 0-.482.593 2.22 2.22 0 0 0-.256.786 2.316 2.316 0 0 0 .025.882 2.454 2.454 0 0 0 .239.697 2.538 2.538 0 0 0 .867 1.054l4.246 4.256c.28.28.736.28 1.016 0 .28-.28.28-.736 0-1.016l-3.23-3.24a1.09 1.09 0 0 1 0-1.54l3.23-3.24c.28-.28.28-.736 0-1.016-.28-.28-.736-.28-1.016 0l-4.246 4.256a2.01 2.01 0 0 0-.34.61z"/></svg> LeetCode
+                                </a>
                             ) : (
-                                <span style={{fontSize:10,color:"#fca5a5",background:"#450a0a",border:"1px solid #7f1d1d",padding:"1px 5px",borderRadius:4,flexShrink:0,fontWeight:600,display:"flex",alignItems:"center",gap:4}}>
-                                    <span style={{color:"#ef4444"}}>▶</span> YouTube
+                                <span style={{fontSize:10,color:"#fca5a5",background:"#450a0a",border:"1px solid #7f1d1d",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600,display:"flex",alignItems:"center",gap:4}}>
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YouTube
                                 </span>
                             )}
                             <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
                         </div>
-                    ))}
+                        );
+                    })}
 
                     {/* Failed / unsolved attempts row — only when there are attempts but nothing solved from Striver */}
                     {realEntries.length === 0 && totalAttempts > 0 && (
@@ -959,7 +967,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions}/>
         </div>
 
-        <ActivityHeatmap activityLog={activityLog} />
+        <ActivityHeatmap activityLog={activityLog} activeDates={streakData?.activeDates} />
 
         <div style={S.grid2} className="rg2">
             <div style={S.card}>
@@ -1483,12 +1491,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                     newSolved[key] = true;
                                     const date = realDate || new Date().toISOString().slice(0, 10);
                                     if (!newlySolvedByDate[date]) newlySolvedByDate[date] = [];
-                                    newlySolvedByDate[date].push({ title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true });
+                                    newlySolvedByDate[date].push({ title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true, lcSlug: slug });
                                 } else if (realDate) {
                                     // If already solved, move it to the correct date from LeetCode
                                     updateActivityDates[p.title + "|" + sub.name] = {
                                         realDate,
-                                        prob: { title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true }
+                                        prob: { title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true, lcSlug: slug }
                                     };
                                 }
                             }
