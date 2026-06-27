@@ -611,10 +611,14 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
                     {realEntries.map((e,i) => (
                         <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<realEntries.length-1?"1px solid #21262d":"none"}}>
-                            <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
+                            <span style={{fontSize:11,color:e.lcConfirmed ? GREEN_ACCENT : "#f87171",fontWeight:700,flexShrink:0}}>◈</span>
                             <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
-                            {e.lcConfirmed && (
+                            {e.lcConfirmed ? (
                                 <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                            ) : (
+                                <span style={{fontSize:10,color:"#fca5a5",background:"#450a0a",border:"1px solid #7f1d1d",padding:"1px 5px",borderRadius:4,flexShrink:0,fontWeight:600,display:"flex",alignItems:"center",gap:4}}>
+                                    <span style={{color:"#ef4444"}}>▶</span> YouTube
+                                </span>
                             )}
                             <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
                         </div>
