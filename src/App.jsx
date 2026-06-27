@@ -2564,8 +2564,13 @@ const OS_UNITS = [
             })).filter(s => s.problems.length > 0);
             return {step, stepTitle:stepInfo?.title, subs};
         }).filter(s => s.subs.length > 0);
-        const DIFF_COLOR = {Easy:"#2cbb5d", Medium:"#f59e0b", Hard:"#ef4743"};
-        const DIFF_BG   = {Easy:"#0a1f14", Medium:"#1c1500", Hard:"#1a0808"};
+        const TH = {padding:"9px 14px", color:"#475569", fontWeight:600, fontSize:11, textTransform:"uppercase", letterSpacing:"0.06em", textAlign:"center", borderBottom:"1px solid #1e2030", whiteSpace:"nowrap"};
+        const TD = {padding:"11px 14px", borderBottom:"1px solid #13151f", verticalAlign:"middle"};
+        const DIFF_BADGE = {
+            Easy:   { background:"#052e1a", color:"#34d399", border:"1px solid #16533a" },
+            Medium: { background:"#2d1f04", color:"#fbbf24", border:"1px solid #78450a" },
+            Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
+        };
 
         return <div key={i} style={{marginBottom:10}}>
             <div style={{background:weekStatus[i]?"#0d1a0d":"#0f1117",border:`1px solid ${weekStatus[i]?"#1a3a3a":exp?"#2d3154":"#1e2030"}`,borderRadius:exp?"10px 10px 0 0":10,padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={()=>setExpanded(exp?null:i)}>
@@ -2600,7 +2605,7 @@ const OS_UNITS = [
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
                         {["Easy","Medium","Hard"].map(d => {
                             const cnt = weekLCProblems.filter(p=>p.difficulty===d).length;
-                            return cnt > 0 ? <span key={d} style={{fontSize:11,fontWeight:700,color:DIFF_COLOR[d],background:DIFF_BG[d],border:`1px solid ${DIFF_COLOR[d]}44`,borderRadius:5,padding:"3px 9px"}}>{d} {cnt}</span> : null;
+                            return cnt > 0 ? <span key={d} style={{fontSize:11,fontWeight:700,...DIFF_BADGE[d], borderRadius:5,padding:"3px 9px"}}>{d} {cnt}</span> : null;
                         })}
                         <span style={{fontSize:11,color:"#475569",background:"#0f1117",border:"1px solid #1e2030",borderRadius:5,padding:"3px 9px",fontWeight:600}}>{weekLCProblems.length} total</span>
                     </div>
@@ -2615,32 +2620,97 @@ const OS_UNITS = [
                             <span style={{fontSize:13,fontWeight:600,color:"#94a3b8"}}>{stepTitle}</span>
                             <span style={{fontSize:11,color:"#334155",marginLeft:"auto",background:"#0f1117",border:"1px solid #1e2030",borderRadius:4,padding:"2px 7px"}}>{subs.reduce((a,s)=>a+s.problems.length,0)} problems</span>
                         </div>
-                        {subs.map(({subName, problems}) => (
-                            <div key={subName} style={{marginBottom:14,paddingLeft:4}}>
-                                {/* Subtopic label */}
-                                <div style={{fontSize:11,fontWeight:700,color:"#475569",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8,display:"flex",alignItems:"center",gap:6}}>
-                                    <span style={{width:3,height:12,background:"#1e3a5f",borderRadius:2,display:"inline-block",flexShrink:0}}></span>
-                                    {subName}
-                                </div>
-                                {/* Problem rows */}
-                                <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                                    {problems.map((p,pi) => {
-                                        const isDone = solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`];
-                                        return (
-                                        <a key={pi} href={p.practice} target="_blank" rel="noopener noreferrer"
-                                            style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",borderRadius:7,background:isDone?"#0a0c14":"#0d1117",border:"1px solid #1a1f2e",textDecoration:"none",transition:"all 0.15s",cursor:"pointer",minWidth:0,borderLeft:"3px solid transparent",opacity:isDone?0.5:1}}
-                                            onMouseEnter={e=>{e.currentTarget.style.background="#0e1828";e.currentTarget.style.borderColor="#1e3a5f";e.currentTarget.style.borderLeftColor=DIFF_COLOR[p.difficulty]||"#f97316";}}
-                                            onMouseLeave={e=>{e.currentTarget.style.background=isDone?"#0a0c14":"#0d1117";e.currentTarget.style.borderColor="#1a1f2e";e.currentTarget.style.borderLeftColor="transparent";}}>
-                                            <LCIcon size={14} style={{filter:isDone?"grayscale(1)":""}}/>
-                                            <span style={{fontSize:14,color:isDone?"#64748b":"#e2e8f0",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500,textDecoration:isDone?"line-through":"none"}}>{p.title}</span>
-                                            {p.difficulty && <span style={{fontSize:11,fontWeight:700,color:DIFF_COLOR[p.difficulty]||"#94a3b8",background:(DIFF_BG[p.difficulty]||"#0f1117"),border:`1px solid ${(DIFF_COLOR[p.difficulty]||"#334155")}44`,borderRadius:4,padding:"2px 8px",flexShrink:0}}>{p.difficulty}</span>}
-                                            {isDone && <span style={{fontSize:12,color:"#34d399",marginLeft:8}}>✓</span>}
-                                        </a>
-                                        );
+                        
+                        <div style={{border:"1px solid #1e2030",borderRadius:"10px",overflow:"hidden"}}>
+                            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13,textAlign:"left"}}>
+                                <thead>
+                                    <tr style={{background:"#0a0c14"}}>
+                                        <th style={{...TH, width:44, textAlign:"center"}}>Status</th>
+                                        <th style={{...TH, textAlign:"left", paddingLeft:14}}>Problem</th>
+                                        <th style={{...TH, width:90}}>Difficulty</th>
+                                        <th style={{...TH, width:64}}>Video</th>
+                                        <th style={{...TH, width:64}}>Article</th>
+                                        <th style={{...TH, width:80}}>Practice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {subs.map(({subName, problems}) => {
+                                        const subSolved = problems.filter(p => solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`]).length;
+                                        return [
+                                            <tr key={`sub-${subName}`} style={{background:"#0c0e18"}}>
+                                                <td colSpan={6} style={{padding:"7px 14px"}}>
+                                                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                                                        <span style={{fontSize:11,fontWeight:700,color:STEP_COLORS[step],textTransform:"uppercase",letterSpacing:"0.06em"}}>
+                                                            {step}.{problems[0]._si+1} · {subName}
+                                                        </span>
+                                                        <span style={{fontSize:11,color:subSolved===problems.length&&problems.length>0?"#34d399":"#475569",fontWeight:600}}>
+                                                            {subSolved}/{problems.length} solved
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>,
+                                            ...problems.map((p,pi) => {
+                                                const isDone = solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`];
+                                                const hasArticle = p.article && !p.article.includes("takeuforward.org/plus");
+                                                const hasYT = p.yt && (p.yt.includes("youtu.be") || p.yt.includes("youtube.com"));
+                                                const hasPractice = p.practice && !p.practice.includes("takeuforward.org");
+                                                const diff = p.difficulty;
+                                                return <tr key={`${p._si}-${p._pi}`} style={{background:isDone?"#071a1020":"#0a0b0d",borderBottom:"1px solid #13151f",transition:"background 0.15s"}}
+                                                    onMouseEnter={e=>e.currentTarget.style.background=isDone?"#071a1035":"#0f1117"}
+                                                    onMouseLeave={e=>e.currentTarget.style.background=isDone?"#071a1020":"#0a0b0d"}>
+                                                    <td style={{...TD, textAlign:"center"}}>
+                                                        <input type="checkbox" checked={!!isDone} readOnly style={{width:15,height:15,accentColor:"#34d399",pointerEvents:"none"}}/>
+                                                    </td>
+                                                    <td style={{...TD, fontWeight:isDone?400:500, fontSize:13}}>
+                                                        <div style={{display:"flex",alignItems:"center",gap:8}}>
+                                                            <span style={{flex:1, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none"}}>{p.title}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td style={{...TD, textAlign:"center"}}>
+                                                        {diff
+                                                            ? <span style={{...DIFF_BADGE[diff], padding:"2px 9px", borderRadius:10, fontSize:10, fontWeight:700, whiteSpace:"nowrap", display:"inline-block"}}>
+                                                                {diff}
+                                                            </span>
+                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
+                                                    </td>
+                                                    <td style={{...TD, textAlign:"center"}}>
+                                                        {hasYT
+                                                            ? <a href={p.yt} target="_blank" rel="noreferrer" title="Watch on YouTube" style={{display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
+                                                                <svg width="22" height="15" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">
+                                                                    <rect width="20" height="14" rx="3" fill="#FF0000"/>
+                                                                    <polygon points="8,3.5 8,10.5 14,7" fill="white"/>
+                                                                </svg>
+                                                            </a>
+                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
+                                                    </td>
+                                                    <td style={{...TD, textAlign:"center"}}>
+                                                        {hasArticle
+                                                            ? <a href={p.article} target="_blank" rel="noreferrer" title="Read Article" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",color:"#60a5fa",textDecoration:"none"}}>
+                                                                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                                                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                                                    <polyline points="14 2 14 8 20 8"/>
+                                                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                                                    <polyline points="10 9 9 9 8 9"/>
+                                                                </svg>
+                                                            </a>
+                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
+                                                    </td>
+                                                    <td style={{...TD, textAlign:"center"}}>
+                                                        {hasPractice
+                                                            ? <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode"
+                                                                style={{color:"#f97316",fontWeight:700,fontSize:12,textDecoration:"none",letterSpacing:"0.02em"}}>
+                                                                Solve
+                                                            </a>
+                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
+                                                    </td>
+                                                </tr>;
+                                            })
+                                        ];
                                     })}
-                                </div>
-                            </div>
-                        ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 ))}
             </div>}
