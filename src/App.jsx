@@ -637,17 +637,28 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     </div>;
     }
 
-    function DifficultyDonut({ solvedCounts, totalCounts }) {
+    function DifficultyDonut({ solvedCounts, totalCounts, lcGlobalStats, lcAllQuestions }) {
+        const parsedSolved = lcGlobalStats ? {
+            Easy: lcGlobalStats.find(x => x.difficulty === "Easy")?.count || 0,
+            Medium: lcGlobalStats.find(x => x.difficulty === "Medium")?.count || 0,
+            Hard: lcGlobalStats.find(x => x.difficulty === "Hard")?.count || 0,
+        } : solvedCounts;
+        const parsedTotal = lcAllQuestions ? {
+            Easy: lcAllQuestions.find(x => x.difficulty === "Easy")?.count || 0,
+            Medium: lcAllQuestions.find(x => x.difficulty === "Medium")?.count || 0,
+            Hard: lcAllQuestions.find(x => x.difficulty === "Hard")?.count || 0,
+        } : totalCounts;
+
         const R = 44, CX = 56, CY = 56, SW = 8;
         const C = 2 * Math.PI * R;
-        const totalSolved = (solvedCounts.Easy||0) + (solvedCounts.Medium||0) + (solvedCounts.Hard||0);
-        const totalAvail  = (totalCounts.Easy||0)  + (totalCounts.Medium||0)  + (totalCounts.Hard||0);
-        const eT = totalAvail > 0 ? C * (totalCounts.Easy||0)   / totalAvail : 0;
-        const mT = totalAvail > 0 ? C * (totalCounts.Medium||0) / totalAvail : 0;
-        const hT = totalAvail > 0 ? C * (totalCounts.Hard||0)   / totalAvail : 0;
-        const eF = totalCounts.Easy   > 0 ? (solvedCounts.Easy||0)   / totalCounts.Easy   * eT : 0;
-        const mF = totalCounts.Medium > 0 ? (solvedCounts.Medium||0) / totalCounts.Medium * mT : 0;
-        const hF = totalCounts.Hard   > 0 ? (solvedCounts.Hard||0)   / totalCounts.Hard   * hT : 0;
+        const totalSolved = (parsedSolved.Easy||0) + (parsedSolved.Medium||0) + (parsedSolved.Hard||0);
+        const totalAvail  = (parsedTotal.Easy||0)  + (parsedTotal.Medium||0)  + (parsedTotal.Hard||0);
+        const eT = totalAvail > 0 ? C * (parsedTotal.Easy||0)   / totalAvail : 0;
+        const mT = totalAvail > 0 ? C * (parsedTotal.Medium||0) / totalAvail : 0;
+        const hT = totalAvail > 0 ? C * (parsedTotal.Hard||0)   / totalAvail : 0;
+        const eF = parsedTotal.Easy   > 0 ? (parsedSolved.Easy||0)   / parsedTotal.Easy   * eT : 0;
+        const mF = parsedTotal.Medium > 0 ? (parsedSolved.Medium||0) / parsedTotal.Medium * mT : 0;
+        const hF = parsedTotal.Hard   > 0 ? (parsedSolved.Hard||0)   / parsedTotal.Hard   * hT : 0;
         const seg = (len, start, fillColor, bgColor) => [
             <circle key={bgColor} cx={CX} cy={CY} r={R} fill="none" stroke={bgColor} strokeWidth={SW}
                 strokeDasharray={`${len} ${C-len}`} strokeDashoffset={-start}
@@ -678,11 +689,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
                 {[
-                    {label:"Easy",   color:"#34d399",bg:"#052e1a",border:"#16533a",s:solvedCounts.Easy||0,  t:totalCounts.Easy||0},{label:"Medium", color:"#fbbf24",bg:"#2d1f04",border:"#78450a",s:solvedCounts.Medium||0,t:totalCounts.Medium||0},{label:"Hard",   color:"#f87171",bg:"#3b0a0a",border:"#7f1d1d",s:solvedCounts.Hard||0,  t:totalCounts.Hard||0},
+                    {label:"Easy",   color:"#34d399",bg:"#052e1a",border:"#16533a",s:parsedSolved.Easy||0,  t:parsedTotal.Easy||0},{label:"Medium", color:"#fbbf24",bg:"#2d1f04",border:"#78450a",s:parsedSolved.Medium||0,t:parsedTotal.Medium||0},{label:"Hard",   color:"#f87171",bg:"#3b0a0a",border:"#7f1d1d",s:parsedSolved.Hard||0,  t:parsedTotal.Hard||0},
                 ].map(({label,color,bg,border,s,t})=>(
                     <div key={label} style={{display:"flex",alignItems:"center",gap:10}}>
                         <span style={{background:bg,color,border:`1px solid ${border}`,padding:"2px 10px",borderRadius:10,fontSize:10,fontWeight:700,minWidth:52,textAlign:"center",display:"inline-block"}}>{label}</span>
-                        <span style={{fontSize:15,fontWeight:700,color:"#e2e8f0",minWidth:24,textAlign:"right"}}>{s}</span>
+                        <span style={{fontSize:15,fontWeight:700,color:"#e2e8f0",minWidth:36,textAlign:"right"}}>{s}</span>
                         <span style={{fontSize:11,color:"#475569"}}>/ {t}</span>
                     </div>
                 ))}
@@ -690,13 +701,16 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center"}}>
                 <div style={{fontSize:11,color:"#94a3b8",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",marginBottom:2}}>LeetScore</div>
                 <div style={{fontSize:36,fontWeight:800,color:"#fb923c",textShadow:"0 0 16px rgba(251,146,60,0.3)",lineHeight:1}}>
-                    {((solvedCounts.Easy||0)*1) + ((solvedCounts.Medium||0)*2) + ((solvedCounts.Hard||0)*3)}
+                    {((parsedSolved.Easy||0)*1) + ((parsedSolved.Medium||0)*2) + ((parsedSolved.Hard||0)*3)}
+                </div>
+                <div style={{fontSize:11,color:"#475569",marginTop:4}}>
+                    / {((parsedTotal.Easy||0)*1) + ((parsedTotal.Medium||0)*2) + ((parsedTotal.Hard||0)*3)} Max
                 </div>
             </div>
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData, mathsProgress, osProgress }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData, mathsProgress, osProgress, lcGlobalStats, lcAllQuestions }) {
     const [logNote, setLogNote] = useState("");
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
@@ -862,7 +876,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <div style={S.sectionTitle}>Difficulty Breakdown</div>
                 <div style={{fontSize:11,color:"#475569"}}>LeetCode-style progress</div>
             </div>
-            <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal}/>
+            <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions}/>
         </div>
 
         <ActivityHeatmap activityLog={activityLog} />
@@ -1302,7 +1316,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars, markDateActive }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars, markDateActive, setLcGlobalStats, setLcAllQuestions }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
@@ -1418,6 +1432,13 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 }
             } catch (e) {
                 console.error("Failed to parse submission calendar", e);
+            }
+
+            if (data.submitStatsGlobal?.acSubmissionNum) {
+                setLcGlobalStats(data.submitStatsGlobal.acSubmissionNum);
+            }
+            if (data.allQuestionsCount) {
+                setLcAllQuestions(data.allQuestionsCount);
             }
 
             const count = Object.values(newlySolvedByDate).reduce((a, v) => a + v.length, 0);
@@ -3335,6 +3356,8 @@ const OS_UNITS = [
     const [syncStatus, setSyncStatus] = useState("");
     const [autoSyncStatus, setAutoSyncStatus] = useState(""); // "saving" | "saved" | "error" | ""
     const [lastSynced, setLastSynced] = useLocalStorage("studyos_last_synced", "");
+    const [lcGlobalStats, setLcGlobalStats] = useLocalStorage("studyos_lc_global", null);
+    const [lcAllQuestions, setLcAllQuestions] = useLocalStorage("studyos_lc_all", null);
     const [cloudLoadedAt, setCloudLoadedAt] = useState("");
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
@@ -3972,11 +3995,12 @@ const OS_UNITS = [
                     streakData={streakData} streakFreezes={streakFreezes} onApplyFreeze={applyFreeze}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
                     diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData}
-                    mathsProgress={mathsProgress} osProgress={osProgress} />}
+                    mathsProgress={mathsProgress} osProgress={osProgress} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
-                    probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} markDateActive={markDateActive} />}
+                    probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} markDateActive={markDateActive}
+                    setLcGlobalStats={setLcGlobalStats} setLcAllQuestions={setLcAllQuestions} />}
                 {page==="coa" &&
                 <COATracker coaGsProgress={coaGsProgress} setCoaGsProgress={setCoaGsProgress} />}
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}

@@ -22,8 +22,18 @@ export default async function handler(req, res) {
         titleSlug
         timestamp
       }
+      allQuestionsCount {
+        difficulty
+        count
+      }
       matchedUser(username: $username) {
         submissionCalendar
+        submitStatsGlobal {
+          acSubmissionNum {
+            difficulty
+            count
+          }
+        }
       }
     }
   `;
@@ -51,7 +61,9 @@ export default async function handler(req, res) {
 
     const submissions = json?.data?.recentAcSubmissionList ?? [];
     const submissionCalendar = json?.data?.matchedUser?.submissionCalendar ?? "{}";
-    return res.json({ submissions, submissionCalendar });
+    const submitStatsGlobal = json?.data?.matchedUser?.submitStatsGlobal ?? null;
+    const allQuestionsCount = json?.data?.allQuestionsCount ?? null;
+    return res.json({ submissions, submissionCalendar, submitStatsGlobal, allQuestionsCount });
   } catch (e) {
     console.error("[leetcode proxy]", e.message);
     return res.status(500).json({ error: e.message });
