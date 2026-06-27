@@ -1316,7 +1316,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         Hard:   { background:"#3b0a0a", color:"#f87171", border:"1px solid #7f1d1d" },
     };
 
-    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars, markDateActive, setLcGlobalStats, setLcAllQuestions }) {
+    function DSATracker({ dsaData, setDsaData, setDailyLog, lastLogDate, setActivityLog, solvedQuestions, setSolvedQuestions, probNotes, setProbNotes, revStars, setRevStars, markDateActive, setLcGlobalStats, setLcAllQuestions, lcUsername, setLcUsername }) {
     const [search, setSearch] = useState("");
     const [expandedStep, setExpandedStep] = useState(null);
     const [expandedSub, setExpandedSub] = useState(null);
@@ -1326,7 +1326,6 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [noteIsEditing, setNoteIsEditing] = useState(false);
     const [lcSyncing, setLcSyncing] = useState(false);
     const [lcSyncMsg, setLcSyncMsg] = useState("");
-    const [lcUsername, setLcUsername] = useLocalStorage("lc_username", "");
 
     function recomputeDsaData(solved) {
         setDsaData(curr => curr.map(d => {
@@ -3358,6 +3357,7 @@ const OS_UNITS = [
     const [lastSynced, setLastSynced] = useLocalStorage("studyos_last_synced", "");
     const [lcGlobalStats, setLcGlobalStats] = useLocalStorage("studyos_lc_global", null);
     const [lcAllQuestions, setLcAllQuestions] = useLocalStorage("studyos_lc_all", null);
+    const [lcUsername, setLcUsername] = useLocalStorage("lc_username", "");
     const [cloudLoadedAt, setCloudLoadedAt] = useState("");
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
@@ -3384,6 +3384,48 @@ const OS_UNITS = [
         });
         return { diffCounts: solved, diffTotal: total };
     }, [solvedQuestions]);
+
+    // ── Auto-fetch LeetCode stats on app load whenever a username is saved ──────
+    useEffect(() => {
+        if (!lcUsername || !lcUsername.trim()) return;
+        const uname = lcUsername.trim();
+        fetch(`/api/leetcode/${encodeURIComponent(uname)}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!data) return;
+                if (data.submitStatsGlobal?.acSubmissionNum) {
+                    setLcGlobalStats(data.submitStatsGlobal.acSubmissionNum);
+                }
+                if (data.allQuestionsCount) {
+                    setLcAllQuestions(data.allQuestionsCount);
+                }
+                // Also inject submissionCalendar into activityLog so history is never empty
+                if (data.submissionCalendar) {
+                    try {
+                        const cal = JSON.parse(data.submissionCalendar);
+                        setActivityLog(prev => {
+                            const updated = { ...prev };
+                            Object.keys(cal).forEach(ts => {
+                                const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
+                                const calCount = cal[ts];
+                                const dayProbs = updated[dateStr] || [];
+                                const existingCount = dayProbs.length;
+                                if (calCount > existingCount) {
+                                    const extras = [];
+                                    for (let i = 0; i < calCount - existingCount; i++) {
+                                        extras.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
+                                    }
+                                    updated[dateStr] = [...dayProbs, ...extras];
+                                }
+                            });
+                            return updated;
+                        });
+                    } catch (e) { /* ignore */ }
+                }
+            })
+            .catch(() => { /* silently fail */ });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lcUsername]);
 
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
     useEffect(() => {
@@ -4000,7 +4042,8 @@ const OS_UNITS = [
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
                     probNotes={probNotes} setProbNotes={setProbNotes} revStars={revStars} setRevStars={setRevStars} markDateActive={markDateActive}
-                    setLcGlobalStats={setLcGlobalStats} setLcAllQuestions={setLcAllQuestions} />}
+                    setLcGlobalStats={setLcGlobalStats} setLcAllQuestions={setLcAllQuestions}
+                    lcUsername={lcUsername} setLcUsername={setLcUsername} />}
                 {page==="coa" &&
                 <COATracker coaGsProgress={coaGsProgress} setCoaGsProgress={setCoaGsProgress} />}
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
