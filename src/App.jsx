@@ -2628,9 +2628,6 @@ const OS_UNITS = [
                                         <th style={{...TH, width:44, textAlign:"center"}}>Status</th>
                                         <th style={{...TH, textAlign:"left", paddingLeft:14}}>Problem</th>
                                         <th style={{...TH, width:90}}>Difficulty</th>
-                                        <th style={{...TH, width:64}}>Video</th>
-                                        <th style={{...TH, width:64}}>Article</th>
-                                        <th style={{...TH, width:80}}>Practice</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2638,7 +2635,7 @@ const OS_UNITS = [
                                         const subSolved = problems.filter(p => solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`]).length;
                                         return [
                                             <tr key={`sub-${subName}`} style={{background:"#0c0e18"}}>
-                                                <td colSpan={6} style={{padding:"7px 14px"}}>
+                                                <td colSpan={3} style={{padding:"7px 14px"}}>
                                                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                                                         <span style={{fontSize:11,fontWeight:700,color:STEP_COLORS[step],textTransform:"uppercase",letterSpacing:"0.06em"}}>
                                                             {step}.{problems[0]._si+1} · {subName}
@@ -2651,19 +2648,17 @@ const OS_UNITS = [
                                             </tr>,
                                             ...problems.map((p,pi) => {
                                                 const isDone = solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`];
-                                                const hasArticle = p.article && !p.article.includes("takeuforward.org/plus");
-                                                const hasYT = p.yt && (p.yt.includes("youtu.be") || p.yt.includes("youtube.com"));
-                                                const hasPractice = p.practice && !p.practice.includes("takeuforward.org");
                                                 const diff = p.difficulty;
                                                 return <tr key={`${p._si}-${p._pi}`} style={{background:isDone?"#071a1020":"#0a0b0d",borderBottom:"1px solid #13151f",transition:"background 0.15s"}}
                                                     onMouseEnter={e=>e.currentTarget.style.background=isDone?"#071a1035":"#0f1117"}
                                                     onMouseLeave={e=>e.currentTarget.style.background=isDone?"#071a1020":"#0a0b0d"}>
                                                     <td style={{...TD, textAlign:"center"}}>
-                                                        <input type="checkbox" checked={!!isDone} readOnly style={{width:15,height:15,accentColor:"#34d399",pointerEvents:"none"}}/>
+                                                        {isDone ? <span style={{fontSize:14,color:"#34d399",fontWeight:700}}>✓</span> : <span style={{color:"#2a2e40"}}>—</span>}
                                                     </td>
                                                     <td style={{...TD, fontWeight:isDone?400:500, fontSize:13}}>
                                                         <div style={{display:"flex",alignItems:"center",gap:8}}>
-                                                            <span style={{flex:1, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none"}}>{p.title}</span>
+                                                            <LCIcon size={14} style={{filter:isDone?"grayscale(1)":""}}/>
+                                                            <a href={p.practice} target="_blank" rel="noopener noreferrer" style={{flex:1, color:isDone?"#475569":"#e2e8f0", textDecoration:isDone?"line-through":"none", cursor:"pointer"}}>{p.title}</a>
                                                         </div>
                                                     </td>
                                                     <td style={{...TD, textAlign:"center"}}>
@@ -2671,37 +2666,6 @@ const OS_UNITS = [
                                                             ? <span style={{...DIFF_BADGE[diff], padding:"2px 9px", borderRadius:10, fontSize:10, fontWeight:700, whiteSpace:"nowrap", display:"inline-block"}}>
                                                                 {diff}
                                                             </span>
-                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
-                                                    </td>
-                                                    <td style={{...TD, textAlign:"center"}}>
-                                                        {hasYT
-                                                            ? <a href={p.yt} target="_blank" rel="noreferrer" title="Watch on YouTube" style={{display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
-                                                                <svg width="22" height="15" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">
-                                                                    <rect width="20" height="14" rx="3" fill="#FF0000"/>
-                                                                    <polygon points="8,3.5 8,10.5 14,7" fill="white"/>
-                                                                </svg>
-                                                            </a>
-                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
-                                                    </td>
-                                                    <td style={{...TD, textAlign:"center"}}>
-                                                        {hasArticle
-                                                            ? <a href={p.article} target="_blank" rel="noreferrer" title="Read Article" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",color:"#60a5fa",textDecoration:"none"}}>
-                                                                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                                                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                                                                    <polyline points="14 2 14 8 20 8"/>
-                                                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                                                    <polyline points="10 9 9 9 8 9"/>
-                                                                </svg>
-                                                            </a>
-                                                            : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
-                                                    </td>
-                                                    <td style={{...TD, textAlign:"center"}}>
-                                                        {hasPractice
-                                                            ? <a href={p.practice} target="_blank" rel="noreferrer" title="Solve on LeetCode"
-                                                                style={{color:"#f97316",fontWeight:700,fontSize:12,textDecoration:"none",letterSpacing:"0.02em"}}>
-                                                                Solve
-                                                            </a>
                                                             : <span style={{color:"#2a2e40",fontSize:13}}>—</span>}
                                                     </td>
                                                 </tr>;
