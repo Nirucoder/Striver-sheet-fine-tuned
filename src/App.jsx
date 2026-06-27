@@ -601,15 +601,18 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
 
         {selectedDay && (() => {
-            const realEntries  = selectedEntries.filter(e => e.subName !== "LeetCode Sync");
-            const totalSubmissions = selectedEntries.filter(e => e.subName === "LeetCode Sync").length + realEntries.filter(e => e.lcConfirmed).length;
-            // total submissions from calendar = real accepted + extra dummy count
+            // Striver sheet problems solved (DSA tracker entries)
+            const striverEntries = selectedEntries.filter(e => e.subName !== "LeetCode Sync" && e.subName !== "LeetCode AC");
+            // Non-Striver LeetCode AC problems (solved but not on Striver sheet)
+            const nonStriverAcEntries = selectedEntries.filter(e => e.subName === "LeetCode AC");
+            // Unknown/failed submission dummies (calendar count minus all known AC)
             const lcSyncDummies = selectedEntries.filter(e => e.subName === "LeetCode Sync").length;
-            // accepted = real Striver entries confirmed via LC API
-            const acceptedCount = realEntries.filter(e => e.lcConfirmed).length;
-            // total attempts = lcSyncDummies (which already stores calCount - existingCount) + acceptedCount
-            const totalAttempts = lcSyncDummies + acceptedCount;
-            const failedAttempts = Math.max(0, totalAttempts - acceptedCount);
+            // Total known AC = Striver + non-Striver
+            const totalKnownAc = striverEntries.filter(e => e.lcConfirmed).length + nonStriverAcEntries.length;
+            // Total submissions on this day (AC + unknown/failed)
+            const totalAttempts = totalKnownAc + lcSyncDummies;
+            // Failed = only the pure unknowns (calendar padding that couldn't be matched to any AC)
+            const failedAttempts = lcSyncDummies;
             return (
                 <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid #006d3244`}}>
                     {/* Header row */}
@@ -618,9 +621,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             {new Date(selectedDay).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'})}
                         </span>
                         <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                            {realEntries.length > 0 && (
+                            {totalKnownAc > 0 && (
                                 <span style={{fontSize:11,color:"#34d399",fontWeight:600}}>
-                                    ✓ {realEntries.length} solved
+                                    ✓ {totalKnownAc} solved
                                 </span>
                             )}
                             {totalAttempts > 0 && (
@@ -632,16 +635,17 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         </div>
                     </div>
 
-                    {/* Solved problems list */}
-                    {realEntries.length === 0 && totalAttempts === 0 && (
+                    {/* No activity */}
+                    {striverEntries.length === 0 && nonStriverAcEntries.length === 0 && lcSyncDummies === 0 && (
                         <div style={{fontSize:12,color:"#475569"}}>No activity recorded here.</div>
                     )}
 
-                    {realEntries.map((e,i) => {
+                    {/* Striver sheet problems */}
+                    {striverEntries.map((e,i) => {
                         const effectiveSlug = e.lcSlug || getSlugFromDsaData(e.title, e.subName);
                         const lcTitle = effectiveSlug ? effectiveSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : null;
                         return (
-                        <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<realEntries.length-1?"1px solid #21262d":"none"}}>
+                        <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<striverEntries.length-1?"1px solid #21262d":"none"}}>
                             <span style={{fontSize:11,color:e.lcConfirmed ? GREEN_ACCENT : "#f87171",fontWeight:700,flexShrink:0}}>◈</span>
                             <div style={{flex:1, display:"flex", flexDirection:"column", gap:2}}>
                                 <span style={{fontSize:13,color:"#e6edf3"}}>{e.title}</span>
@@ -667,23 +671,41 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         );
                     })}
 
-                    {/* Failed / unsolved attempts row — only when there are attempts but nothing solved from Striver */}
-                    {realEntries.length === 0 && totalAttempts > 0 && (
+                    {/* Non-Striver LeetCode AC problems */}
+                    {nonStriverAcEntries.length > 0 && (
+                        <div style={{borderTop: striverEntries.length > 0 ? "1px solid #21262d" : "none", marginTop: striverEntries.length > 0 ? 6 : 0, paddingTop: striverEntries.length > 0 ? 6 : 0}}>
+                            <div style={{fontSize:10,color:"#475569",marginBottom:5,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.06em"}}>LeetCode AC · Not on Striver Sheet</div>
+                            {nonStriverAcEntries.map((e,i) => (
+                                <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"4px 0"}}>
+                                    <span style={{fontSize:11,color:"#34d399",fontWeight:700,flexShrink:0}}>✓</span>
+                                    <span style={{fontSize:12,color:"#94a3b8",flex:1}}>{e.title}</span>
+                                    {e.lcSlug && (
+                                        <a href={`https://leetcode.com/problems/${e.lcSlug}/`} target="_blank" rel="noreferrer" title="View on LeetCode" style={{textDecoration:"none",background:"#064e3b",padding:"4px",borderRadius:4,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                            <LCIcon size={12} />
+                                        </a>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Only truly unknown/failed submissions (pure calendar padding that couldn't be matched) */}
+                    {striverEntries.length === 0 && nonStriverAcEntries.length === 0 && failedAttempts > 0 && (
                         <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0"}}>
                             <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
                             <span style={{fontSize:13,color:"#f87171",flex:1,fontStyle:"italic"}}>
-                                {totalAttempts} unsuccessful submission{totalAttempts!==1?"s":""} — no accepted solutions
+                                {failedAttempts} unsuccessful submission{failedAttempts!==1?"s":""} — no accepted solutions
                             </span>
                             <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
                         </div>
                     )}
 
-                    {/* When some solved but also had failed attempts beyond what's shown */}
-                    {realEntries.length > 0 && failedAttempts > 0 && (
+                    {/* Failed attempts alongside known solutions */}
+                    {(striverEntries.length > 0 || nonStriverAcEntries.length > 0) && failedAttempts > 0 && (
                         <div style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderTop:"1px solid #21262d",marginTop:2}}>
                             <span style={{fontSize:14,flexShrink:0}}>🔁</span>
                             <span style={{fontSize:12,color:"#64748b",flex:1,fontStyle:"italic"}}>
-                                +{failedAttempts} unsuccessful attempt{failedAttempts!==1?"s":""} before solving
+                                +{failedAttempts} other submission{failedAttempts!==1?"s":""} (unsuccessful or unknown)
                             </span>
                         </div>
                     )}
@@ -1527,12 +1549,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             // Group newly solved problems by their real submission date
             const newlySolvedByDate = {};
             const updateActivityDates = {};
+            // Track which slugs matched Striver so we know non-Striver AC later
+            const striverSlugs = new Set();
 
             STRIVER_STEPS.forEach(sg => {
                 sg.subtopics.forEach((sub, si) => {
                     sub.problems.forEach((p, pi) => {
                         if (p.practice && p.practice.includes("leetcode.com/problems/")) {
                             const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+                            if (slug) striverSlugs.add(slug);
                             if (slug && accepted.has(slug)) {
                                 const realDate = slugToDate[slug];
                                 const key = `s${sg.step}_${si}_${pi}`;
@@ -1543,7 +1568,6 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                     if (!newlySolvedByDate[date]) newlySolvedByDate[date] = [];
                                     newlySolvedByDate[date].push({ title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true, lcSlug: slug });
                                 } else if (realDate) {
-                                    // If already solved, move it to the correct date from LeetCode
                                     updateActivityDates[p.title + "|" + sub.name] = {
                                         realDate,
                                         prob: { title: p.title, stepTitle: sg.title, subName: sub.name, type: "dsa", lcConfirmed: true, lcSlug: slug }
@@ -1553,6 +1577,15 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         }
                     });
                 });
+            });
+
+            // Build non-Striver AC entries by date (accepted LeetCode problems NOT on the sheet)
+            const nonStriverAcByDate = {};
+            Object.entries(slugToDate).forEach(([slug, date]) => {
+                if (!striverSlugs.has(slug)) {
+                    if (!nonStriverAcByDate[date]) nonStriverAcByDate[date] = [];
+                    nonStriverAcByDate[date].push(slug);
+                }
             });
 
             // ── Streak: mark ALL dates with LeetCode submissions as active ──
@@ -1631,14 +1664,29 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         updated[realDate] = dayProbs;
                     }
 
-                    // Inject dummy entries for LeetCode submission counts so calendar doesn't start from 0
+                    // Inject non-Striver AC entries so they show as solved (not as failed)
+                    Object.entries(nonStriverAcByDate).forEach(([date, slugs]) => {
+                        let dayProbs = updated[date] || [];
+                        slugs.forEach(slug => {
+                            const alreadyThere = dayProbs.some(p => p.lcSlug === slug && p.subName === "LeetCode AC");
+                            if (!alreadyThere) {
+                                const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                                dayProbs.push({ title, subName: "LeetCode AC", type: "dsa", lcConfirmed: true, lcSlug: slug });
+                            }
+                        });
+                        updated[date] = dayProbs;
+                    });
+
+                    // Inject dummy entries ONLY for remaining unknown submissions (calCount minus all known AC)
                     for (const [date, calCount] of Object.entries(calCounts)) {
                         let dayProbs = updated[date] || [];
-                        const existingCount = dayProbs.length;
-                        if (calCount > existingCount) {
-                            for (let i = 0; i < calCount - existingCount; i++) {
-                                dayProbs.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
-                            }
+                        // Count all confirmed AC entries on this day (Striver + non-Striver)
+                        const knownAcCount = dayProbs.filter(p => p.lcConfirmed && p.subName !== "LeetCode Sync").length;
+                        const dummiesNeeded = Math.max(0, calCount - knownAcCount);
+                        // Remove old dummies first to avoid duplication
+                        dayProbs = dayProbs.filter(p => p.subName !== "LeetCode Sync");
+                        for (let i = 0; i < dummiesNeeded; i++) {
+                            dayProbs.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
                         }
                         updated[date] = dayProbs;
                     }
@@ -3568,25 +3616,59 @@ const OS_UNITS = [
                 if (data.allQuestionsCount) {
                     setLcAllQuestions(data.allQuestionsCount);
                 }
-                // Also inject submissionCalendar into activityLog so history is never empty
-                if (data.submissionCalendar) {
+                // Also inject submissionCalendar + non-Striver AC into activityLog
+                if (data.submissionCalendar || data.submissions) {
                     try {
-                        const cal = JSON.parse(data.submissionCalendar);
+                        // Build Striver slug set for comparison
+                        const striverSlugsAuto = new Set();
+                        STRIVER_STEPS.forEach(sg => sg.subtopics.forEach(sub => sub.problems.forEach(p => {
+                            if (p.practice && p.practice.includes("leetcode.com/problems/")) {
+                                const slug = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+                                if (slug) striverSlugsAuto.add(slug);
+                            }
+                        })));
+
+                        // Build non-Striver AC by date from recentAcSubmissionList
+                        const nsAcByDate = {};
+                        (data.submissions || []).forEach(s => {
+                            if (!s.titleSlug || !s.timestamp) return;
+                            if (striverSlugsAuto.has(s.titleSlug)) return;
+                            const dateStr = new Date(parseInt(s.timestamp) * 1000).toISOString().slice(0, 10);
+                            if (!nsAcByDate[dateStr]) nsAcByDate[dateStr] = new Set();
+                            nsAcByDate[dateStr].add(s.titleSlug);
+                        });
+
+                        const cal = data.submissionCalendar ? JSON.parse(data.submissionCalendar) : {};
                         setActivityLog(prev => {
                             const updated = { ...prev };
+
+                            // Inject non-Striver AC entries (so they don't count as failures)
+                            Object.entries(nsAcByDate).forEach(([dateStr, slugSet]) => {
+                                let dayProbs = [...(updated[dateStr] || [])];
+                                slugSet.forEach(slug => {
+                                    const alreadyThere = dayProbs.some(p => p.lcSlug === slug && p.subName === "LeetCode AC");
+                                    if (!alreadyThere) {
+                                        const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                                        dayProbs.push({ title, subName: "LeetCode AC", type: "dsa", lcConfirmed: true, lcSlug: slug });
+                                    }
+                                });
+                                updated[dateStr] = dayProbs;
+                            });
+
+                            // Pad with dummies only for submissions not accounted for by any AC entry
                             Object.keys(cal).forEach(ts => {
                                 const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
                                 const calCount = cal[ts];
-                                const dayProbs = updated[dateStr] || [];
-                                const existingCount = dayProbs.length;
-                                if (calCount > existingCount) {
-                                    const extras = [];
-                                    for (let i = 0; i < calCount - existingCount; i++) {
-                                        extras.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
-                                    }
-                                    updated[dateStr] = [...dayProbs, ...extras];
+                                let dayProbs = updated[dateStr] || [];
+                                const knownAcCount = dayProbs.filter(p => p.lcConfirmed && p.subName !== "LeetCode Sync").length;
+                                const dummiesNeeded = Math.max(0, calCount - knownAcCount);
+                                dayProbs = dayProbs.filter(p => p.subName !== "LeetCode Sync");
+                                for (let i = 0; i < dummiesNeeded; i++) {
+                                    dayProbs.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
                                 }
+                                updated[dateStr] = dayProbs;
                             });
+
                             return updated;
                         });
                     } catch (e) { /* ignore */ }
