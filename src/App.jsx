@@ -572,39 +572,76 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
             </div>
         </div>
 
-        {selectedDay && (
-            <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid #006d3244`}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                    <span style={{fontSize:12,fontWeight:700,color:GREEN_ACCENT}}>{selectedDay}</span>
-                    <span style={{fontSize:11,color:"#8b949e"}}>{selectedEntries.length} problem{selectedEntries.length!==1?"s":""} solved</span>
-                </div>
-                {selectedEntries.length===0 ? (
-                    <div style={{fontSize:12,color:"#475569"}}>No LeetCode problems solved here.</div>
-                ) : (() => {
-                    const realEntries = selectedEntries.filter(e => e.subName !== "LeetCode Sync");
-                    const lcSyncCount = selectedEntries.filter(e => e.subName === "LeetCode Sync").length;
-                    return <>
-                        {realEntries.map((e,i) => (
-                            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:(i < realEntries.length - 1 || lcSyncCount > 0) ? "1px solid #21262d" : "none"}}>
-                                <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
-                                <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
-                                {e.lcConfirmed && (
-                                    <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
-                                )}
-                                <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
-                            </div>
-                        ))}
-                        {lcSyncCount > 0 && (
-                            <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0"}}>
-                                <span style={{fontSize:14,flexShrink:0}}>🟡</span>
-                                <span style={{fontSize:13,color:"#94a3b8",flex:1,fontStyle:"italic"}}>{lcSyncCount} LeetCode submission{lcSyncCount !== 1 ? "s" : ""} on this day</span>
+        {selectedDay && (() => {
+            const realEntries  = selectedEntries.filter(e => e.subName !== "LeetCode Sync");
+            const totalSubmissions = selectedEntries.filter(e => e.subName === "LeetCode Sync").length + realEntries.filter(e => e.lcConfirmed).length;
+            // total submissions from calendar = real accepted + extra dummy count
+            const lcSyncDummies = selectedEntries.filter(e => e.subName === "LeetCode Sync").length;
+            // accepted = real Striver entries confirmed via LC API
+            const acceptedCount = realEntries.filter(e => e.lcConfirmed).length;
+            // total attempts = lcSyncDummies (which already stores calCount - existingCount) + acceptedCount
+            const totalAttempts = lcSyncDummies + acceptedCount;
+            const failedAttempts = Math.max(0, totalAttempts - acceptedCount);
+            return (
+                <div style={{marginTop:12,padding:"12px 14px",background:"#0d1117",borderRadius:8,border:`1px solid #006d3244`}}>
+                    {/* Header row */}
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                        <span style={{fontSize:12,fontWeight:700,color:GREEN_ACCENT}}>{selectedDay}</span>
+                        <div style={{display:"flex",gap:12,alignItems:"center"}}>
+                            {realEntries.length > 0 && (
+                                <span style={{fontSize:11,color:"#34d399",fontWeight:600}}>
+                                    ✓ {realEntries.length} solved
+                                </span>
+                            )}
+                            {totalAttempts > 0 && (
+                                <span style={{fontSize:11,color:"#8b949e"}}>
+                                    {totalAttempts} submission{totalAttempts!==1?"s":""}
+                                    {failedAttempts > 0 && <span style={{color:"#f87171"}}> · {failedAttempts} failed</span>}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Solved problems list */}
+                    {realEntries.length === 0 && totalAttempts === 0 && (
+                        <div style={{fontSize:12,color:"#475569"}}>No activity recorded here.</div>
+                    )}
+
+                    {realEntries.map((e,i) => (
+                        <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:i<realEntries.length-1?"1px solid #21262d":"none"}}>
+                            <span style={{fontSize:11,color:GREEN_ACCENT,fontWeight:700,flexShrink:0}}>◈</span>
+                            <span style={{fontSize:13,color:"#e6edf3",flex:1}}>{e.title}</span>
+                            {e.lcConfirmed && (
                                 <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
-                            </div>
-                        )}
-                    </>;
-                })()}
-            </div>
-        )}
+                            )}
+                            <span style={{fontSize:10,color:"#8b949e",flexShrink:0}}>{e.subName||""}</span>
+                        </div>
+                    ))}
+
+                    {/* Failed / unsolved attempts row — only when there are attempts but nothing solved from Striver */}
+                    {realEntries.length === 0 && totalAttempts > 0 && (
+                        <div style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0"}}>
+                            <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
+                            <span style={{fontSize:13,color:"#f87171",flex:1,fontStyle:"italic"}}>
+                                {totalAttempts} unsuccessful submission{totalAttempts!==1?"s":""} — no accepted solutions
+                            </span>
+                            <span style={{fontSize:10,color:"#34d399",background:"#064e3b",padding:"2px 6px",borderRadius:4,flexShrink:0,fontWeight:600}}>LeetCode API</span>
+                        </div>
+                    )}
+
+                    {/* When some solved but also had failed attempts beyond what's shown */}
+                    {realEntries.length > 0 && failedAttempts > 0 && (
+                        <div style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderTop:"1px solid #21262d",marginTop:2}}>
+                            <span style={{fontSize:14,flexShrink:0}}>🔁</span>
+                            <span style={{fontSize:12,color:"#64748b",flex:1,fontStyle:"italic"}}>
+                                +{failedAttempts} failed attempt{failedAttempts!==1?"s":""} before solving
+                            </span>
+                        </div>
+                    )}
+                </div>
+            );
+        })()}
+
 
         <div style={{marginTop:14,borderTop:"1px solid #1e2030",paddingTop:10}}>
             <button onClick={()=>{setShowOther(p=>!p);setOtherSelectedDay(null);}} style={{
