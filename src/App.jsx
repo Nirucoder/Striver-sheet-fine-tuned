@@ -687,6 +687,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     </div>
                 ))}
             </div>
+            <div style={{marginLeft:"auto",display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center"}}>
+                <div style={{fontSize:11,color:"#94a3b8",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",marginBottom:2}}>LeetScore</div>
+                <div style={{fontSize:36,fontWeight:800,color:"#fb923c",textShadow:"0 0 16px rgba(251,146,60,0.3)",lineHeight:1}}>
+                    {((solvedCounts.Easy||0)*1) + ((solvedCounts.Medium||0)*2) + ((solvedCounts.Hard||0)*3)}
+                </div>
+            </div>
         </div>;
     }
 
@@ -1398,20 +1404,38 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 });
             });
 
+            // ── Streak: mark ALL dates with LeetCode submissions as active ──
+            const allSolvedDates = new Set(Object.values(slugToDate));
+            const calCounts = {};
+            try {
+                if (data.submissionCalendar) {
+                    const cal = JSON.parse(data.submissionCalendar);
+                    Object.keys(cal).forEach(ts => {
+                        const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
+                        allSolvedDates.add(dateStr);
+                        calCounts[dateStr] = cal[ts];
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to parse submission calendar", e);
+            }
+
             const count = Object.values(newlySolvedByDate).reduce((a, v) => a + v.length, 0);
             const moveCount = Object.keys(updateActivityDates).length;
             setSolvedQuestions(newSolved);
             recomputeDsaData(newSolved);
 
-            if (count > 0 || moveCount > 0) {
+            if (count > 0 || moveCount > 0 || Object.keys(calCounts).length > 0) {
                 const today = new Date().toISOString().slice(0, 10);
                 
                 setActivityLog(prev => {
                     const updated = {};
                     
                     // First pass: copy prev but remove items that need to be moved to a different date
+                    // and remove old dummy LeetCode entries
                     for (const [date, probs] of Object.entries(prev)) {
                         const filtered = probs.filter(p => {
+                            if (p.subName === "LeetCode Sync") return false;
                             const k = p.title + "|" + p.subName;
                             // Remove if it's scheduled to be moved to a NEW date
                             if (updateActivityDates[k] && updateActivityDates[k].realDate !== date) return false;
@@ -1449,6 +1473,18 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         updated[realDate] = dayProbs;
                     }
 
+                    // Inject dummy entries for LeetCode submission counts so calendar doesn't start from 0
+                    for (const [date, calCount] of Object.entries(calCounts)) {
+                        let dayProbs = updated[date] || [];
+                        const existingCount = dayProbs.length;
+                        if (calCount > existingCount) {
+                            for (let i = 0; i < calCount - existingCount; i++) {
+                                dayProbs.push({ title: "LeetCode Submission", subName: "LeetCode Sync", type: "dsa", lcConfirmed: true });
+                            }
+                        }
+                        updated[date] = dayProbs;
+                    }
+
                     return updated;
                 });
                 
@@ -1458,19 +1494,6 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         return [{ date: today, note: `Synced ${count} problem${count !== 1 ? "s" : ""} from LeetCode`, ts: Date.now() }, ...logs.slice(0, 19)];
                     });
                 }
-            }
-            // ── Streak: mark ALL dates with LeetCode submissions as active ──
-            const allSolvedDates = new Set(Object.values(slugToDate));
-            try {
-                if (data.submissionCalendar) {
-                    const cal = JSON.parse(data.submissionCalendar);
-                    Object.keys(cal).forEach(ts => {
-                        const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
-                        allSolvedDates.add(dateStr);
-                    });
-                }
-            } catch (e) {
-                console.error("Failed to parse submission calendar", e);
             }
 
             if (allSolvedDates.size > 0) {
