@@ -909,16 +909,11 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }));
 
     return <div>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24}}>
-            <div>
-                <div style={S.pageTitle}>Good morning, Engineer 👋</div>
-                <div style={{fontSize:13,color:"#64748b",marginTop:4}}>
-                    {new Date().toLocaleDateString("en-GB", {weekday:"long", day:"numeric", month:"long", year:"numeric"})} — keep the streak alive
-                </div>
+        <div style={{marginBottom:24}}>
+            <div style={S.pageTitle}>Good morning, Engineer 👋</div>
+            <div style={{fontSize:13,color:"#64748b",marginTop:4}}>
+                {new Date().toLocaleDateString("en-GB", {weekday:"long", day:"numeric", month:"long", year:"numeric"})} — keep the streak alive
             </div>
-            <button style={{padding:"8px 16px", background:"#6366f1", border:"none", borderRadius:8, color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer", display:"flex", alignItems:"center", gap:6}}>
-                <span>🔄</span> Sync LeetCode
-            </button>
         </div>
 
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
@@ -1198,10 +1193,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         // Initial sync when DSATracker opens
         syncRef.current();
 
-        // Sync every 1 hour (3600000 ms)
+        // Sync every 10 minutes (600000 ms)
         const intervalId = setInterval(() => {
             syncRef.current();
-        }, 3600000);
+        }, 600000);
 
         return () => clearInterval(intervalId);
     }, [lcUsername]);
