@@ -3424,8 +3424,20 @@ const OS_UNITS = [
     function markDateActive(datesArr) {
         if (!datesArr || datesArr.length === 0) return;
         const monthKey = getStreakDate().slice(0, 7);
-        const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used : [];
+
+        // ── Auto-refund freezes for dates the user actually solved on ──────
+        // If the user had frozen a date but later submits a real problem on it,
+        // we return the freeze token (remove it from used[]) so it can be reused.
+        setStreakFreezes(prev => {
+            if (prev.month !== monthKey) return prev;
+            const frozenOnSolvedDay = prev.used.filter(d => datesArr.includes(d));
+            if (frozenOnSolvedDay.length === 0) return prev; // nothing to refund
+            const newUsed = prev.used.filter(d => !frozenOnSolvedDay.includes(d));
+            return { ...prev, used: newUsed, count: newUsed.length };
+        });
+
         setStreakData(prev => {
+            const validFreezes = streakFreezes.month === monthKey ? streakFreezes.used.filter(d => !datesArr.includes(d)) : [];
             const activeDates  = [...new Set([...(prev.activeDates || []), ...datesArr])];
             const newStreak    = computeStreak(activeDates, validFreezes);
             const longestStreak = Math.max(prev.longestStreak || 0, newStreak);
