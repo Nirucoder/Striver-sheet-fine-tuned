@@ -4,6 +4,7 @@ import pg from "pg";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
+import { setupAuth, isAuthenticated } from "./auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
@@ -11,12 +12,53 @@ const distDir = join(__dirname, "../dist");
 const { Pool } = pg;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: process.env.DATABASE_URL?.includes("localhost") ? false : { rejectUnauthorized: false },
 });
-const app = express();
 
-app.use(cors());
+const app = express();
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "5mb" }));
+
+await setupAuth(app, pool);
+
+app.get("/api/progress/:userId", isAuthenticated, async (req, res) => {
+  try {
+    const sessionUserId = req.user?.claims?.sub;
+    if (sessionUserId !== req.params.userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+    const { rows } = await pool.query(
+      "SELECT data, updated_at FROM user_progress WHERE user_id = $1",
+      [req.params.userId]
+    );
+    if (rows.length === 0) return res.status(404).json({ error: "No data found" });
+    res.json({ data: rows[0].data, updatedAt: rows[0].updated_at });
+  } catch (e) {
+    console.error("[progress get]", e.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/api/progress/:userId", isAuthenticated, async (req, res) => {
+  try {
+    const sessionUserId = req.user?.claims?.sub;
+    if (sessionUserId !== req.params.userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+    const { data } = req.body;
+    if (!data) return res.status(400).json({ error: "No data provided" });
+    await pool.query(
+      `INSERT INTO user_progress (user_id, data, updated_at)
+       VALUES ($1, $2, NOW())
+       ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()`,
+      [req.params.userId, JSON.stringify(data)]
+    );
+    res.json({ success: true });
+  } catch (e) {
+    console.error("[progress post]", e.message);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 app.get("/api/sync/:code", async (req, res) => {
   try {
@@ -91,11 +133,19 @@ app.get("/api/leetcode/:username", async (req, res) => {
   }
 });
 
-// Serve built frontend in production
+app.get("/api/health", async (req, res) => {
+  try {
+    const { rows } = await pool.query("SELECT NOW() AS now");
+    res.json({ status: "ok", db: true, serverTime: rows[0].now });
+  } catch (e) {
+    res.status(500).json({ status: "error", db: false, message: e.message });
+  }
+});
+
 if (existsSync(distDir)) {
   app.use(express.static(distDir));
   app.get("/{*splat}", (_req, res) => res.sendFile(join(distDir, "index.html")));
 }
 
-const PORT = process.env.PORT || process.env.API_PORT || 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, "0.0.0.0", () => console.log(`Server running on port ${PORT}`));

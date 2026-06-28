@@ -1,32 +1,33 @@
-import { createClient } from "@supabase/supabase-js";
-
-const url = import.meta.env.VITE_SUPABASE_URL;
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = url && key ? createClient(url, key) : null;
+export const supabase = null;
 
 export async function loadUserProgress(userId) {
-  if (!supabase) return null;
-  const { data, error } = await supabase
-    .from("user_progress")
-    .select("data")
-    .eq("user_id", userId)
-    .single();
-  if (error && error.code !== "PGRST116") {
-    console.error("Load error:", error);
-    throw error;
+  if (!userId) return null;
+  try {
+    const res = await fetch(`/api/progress/${encodeURIComponent(userId)}`, {
+      credentials: "include",
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    const json = await res.json();
+    return json.data ?? null;
+  } catch (e) {
+    console.error("Load error:", e);
+    throw e;
   }
-  return data?.data ?? null;
 }
 
 export async function saveUserProgress(userId, payload) {
-  if (!supabase) return;
-  const { error } = await supabase
-    .from("user_progress")
-    .upsert({ user_id: userId, data: payload, updated_at: new Date().toISOString() },
-             { onConflict: "user_id" });
-  if (error) {
-    console.error("Save error:", error);
-    throw error;
+  if (!userId) return;
+  try {
+    const res = await fetch(`/api/progress/${encodeURIComponent(userId)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ data: payload }),
+    });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+  } catch (e) {
+    console.error("Save error:", e);
+    throw e;
   }
 }
