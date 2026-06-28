@@ -44,9 +44,10 @@ localPort = 23636
 externalPort = 3002
 
 [deployment]
-deploymentTarget = "static"
-build = ["npm", "run", "build"]
+deploymentTarget = "autoscale"
+build = ["npm", "install", "--include=dev", "&&", "vite", "build"]
 publicDir = "dist"
+run = ["node", "server/index.js"]
 
 [userenv]
 
