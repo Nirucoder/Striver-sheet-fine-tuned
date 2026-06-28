@@ -1021,12 +1021,64 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 pct={osPct} color="#fb923c" icon="⚙" />
         </div>
 
-        <div style={{...S.card, marginBottom:16}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-                <div style={S.sectionTitle}>Difficulty Breakdown</div>
-                <div style={{fontSize:11,color:"#475569"}}>LeetCode-style progress</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+            <div style={{...S.card, marginBottom:0}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+                    <div style={S.sectionTitle}>Difficulty Breakdown</div>
+                    <div style={{fontSize:11,color:"#475569"}}>LeetCode-style progress</div>
+                </div>
+                <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions}/>
             </div>
-            <DifficultyDonut solvedCounts={diffCounts} totalCounts={diffTotal} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions}/>
+
+            <div style={{...S.card, marginBottom:0}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+                    <div style={{...S.sectionTitle, display:"flex", alignItems:"center", gap:6}}>
+                        <span style={{fontSize:14,color:"#818cf8"}}>⚡</span> Recent Activity
+                    </div>
+                    <div style={{fontSize:11,color:"#818cf8",cursor:"pointer",fontWeight:500}}>View all</div>
+                </div>
+                
+                <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                    {(() => {
+                        const list = [];
+                        const dates = Object.keys(activityLog||{}).sort((a,b)=>new Date(b) - new Date(a));
+                        for (const d of dates) {
+                            for (const act of activityLog[d]) {
+                                if (act.type === "dsa" && act.title && act.title !== "LeetCode Sync" && act.title !== "LeetCode AC") {
+                                    let diff = act.difficulty || getDiffFromSubtopic(act.subName) || "Medium";
+                                    const todayDate = new Date(today);
+                                    const actDate = new Date(d);
+                                    const diffTime = todayDate - actDate;
+                                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                                    let timeStr = diffDays <= 0 ? "Today" : diffDays === 1 ? "Yesterday" : `${diffDays} days ago`;
+                                    let topic = (act.subName || "General").split(" - ")[0];
+                                    if(topic.length > 20) topic = topic.slice(0,20)+"...";
+                                    
+                                    list.push({ title: act.title, topic: topic, diff: diff, time: timeStr, lcConfirmed: act.lcConfirmed, date: d });
+                                }
+                            }
+                        }
+                        const recent = list.slice(0, 4);
+                        if (recent.length === 0) return <div style={{fontSize:12,color:"#475569"}}>No recent activity.</div>;
+                        
+                        return recent.map((item, i) => (
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",background:"#0a0b0d",border:"1px solid #1e2030",borderRadius:8}}>
+                                <div style={{width:24,height:24,borderRadius:"50%",background:item.lcConfirmed?"#052e1a":"#2d1f04",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                                    {item.lcConfirmed ? <span style={{color:"#34d399",fontSize:12}}>✓</span> : <span style={{color:"#fbbf24",fontSize:11}}>📖</span>}
+                                </div>
+                                <div style={{flex:1,overflow:"hidden"}}>
+                                    <div style={{fontSize:13,color:"#e2e8f0",fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.title}</div>
+                                    <div style={{fontSize:11,color:"#64748b"}}>{item.topic}</div>
+                                </div>
+                                <div style={{textAlign:"right",flexShrink:0}}>
+                                    <div style={{fontSize:11,fontWeight:700,color:item.diff==="Easy"?"#34d399":item.diff==="Medium"?"#fbbf24":"#f87171"}}>{item.diff}</div>
+                                    <div style={{fontSize:10,color:"#475569",marginTop:2}}>{item.time}</div>
+                                </div>
+                            </div>
+                        ));
+                    })()}
+                </div>
+            </div>
         </div>
 
         <ActivityHeatmap activityLog={activityLog} activeDates={streakData?.activeDates} dsaData={dsaData} />
