@@ -942,13 +942,13 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             <div style={{display:"flex", alignItems:"center", gap:8}}>
                                 {showFreeze && (
                                     <button onClick={() => onApplyFreeze(freezeTarget)}
-                                        style={{padding:"6px 12px",background:"#2d1f04",border:"1px solid #78450a",borderRadius:999,color:"#fbbf24",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
-                                        ❄️ {freezesLeft} freezes left
+                                        style={{padding:"6px 14px",background:"#2d1f04",border:"1px solid #78450a",borderRadius:999,color:"#fbbf24",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:6}}>
+                                        ❄️ Use a Freeze &nbsp;<span style={{opacity:0.7}}>{freezesLeft}/3</span>
                                     </button>
                                 )}
                                 {!showFreeze && (
                                     <div style={{fontSize:11, fontWeight:600, color:"#fbbf24", background:"#2d1f04", border:"1px solid #78450a", borderRadius:999, padding:"6px 12px", display:"flex", alignItems:"center", gap:6}}>
-                                        {freezesLeft} freezes left
+                                        ❄️ {freezesLeft}/3 freezes left
                                     </div>
                                 )}
                             </div>
