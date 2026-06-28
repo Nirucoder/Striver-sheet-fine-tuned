@@ -1013,10 +1013,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                     <div onClick={()=>toggleTodayTask(t.id)} style={{width:16, height:16, borderRadius:"50%", border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
                                         {t.done && <span style={{color:"#000", fontSize:10, fontWeight:900, lineHeight:1}}>✓</span>}
                                     </div>
-                                    <span style={{fontSize:13, color:t.done?"#475569":"#e2e8f0", textDecoration:t.done?"line-through":"none", cursor:"pointer", flex:1, userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
+                                    <span style={{fontSize:13, color:t.done?"#475569":"#e2e8f0", textDecoration:t.done?"line-through":"none", cursor:"text", flex:1, userSelect:"none"}} onClick={()=>setEditingTodo({ id: t.id, text: t.text })}>
                                         {t.text}
                                     </span>
-                                    <span onClick={() => setEditingTodo({ id: t.id, text: t.text })} style={{fontSize:12, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#818cf8"} onMouseLeave={e=>e.currentTarget.style.color="#334155"} title="Edit">✏</span>
                                     <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"} title="Delete">×</span>
                                 </>
                             )}
