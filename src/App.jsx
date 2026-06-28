@@ -1048,7 +1048,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         const dates = Object.keys(activityLog||{}).sort((a,b)=>new Date(b) - new Date(a));
                         for (const d of dates) {
                             for (const act of activityLog[d]) {
-                                if (act.type === "dsa" && act.title && act.title !== "LeetCode Sync" && act.title !== "LeetCode AC") {
+                                if (act.type === "dsa" && act.title && act.title !== "LeetCode Sync" && act.title !== "LeetCode AC" && act.subName !== "LeetCode Sync") {
                                     let diff = act.difficulty || getDiffFromSubtopic(act.subName) || "Medium";
                                     const todayDate = new Date(today);
                                     const actDate = new Date(d);
