@@ -909,64 +909,36 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }));
 
     return <div>
-        <div style={S.pageTitle}>Good morning, Engineer 👋</div>
-
-        {/* ── Today's Work quick-glance card ── */}
-        <div style={{background:"#0f1117", border:"1px solid #1e2030", borderRadius:12, padding:"14px 18px", marginBottom:16}}>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10}}>
-                <div style={{fontSize:13, fontWeight:700, color:"#e2e8f0", display:"flex", alignItems:"center", gap:7}}>
-                    <span>📋</span> Today's Work
-                    <span style={{fontSize:11, color:"#475569", fontWeight:400}}>
-                        {todayTasks.filter(t=>t.done).length}/{todayTasks.length} done
-                    </span>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24}}>
+            <div>
+                <div style={S.pageTitle}>Good morning, Engineer 👋</div>
+                <div style={{fontSize:13,color:"#64748b",marginTop:4}}>
+                    {new Date().toLocaleDateString("en-GB", {weekday:"long", day:"numeric", month:"long", year:"numeric"})} — keep the streak alive
                 </div>
             </div>
-            <div style={{display:"flex", gap:8, marginBottom:todayTasks.length>0?10:0}}>
-                <input value={todayInput} onChange={e=>setTodayInput(e.target.value)}
-                    onKeyDown={e=>e.key==="Enter"&&addTodayTask()}
-                    placeholder="Add a task for today…"
-                    style={{flex:1, padding:"7px 12px", background:"#1a1d2e", border:"1px solid #2d3154", borderRadius:8, color:"#e2e8f0", fontSize:12, outline:"none", fontFamily:"inherit"}} />
-                <button onClick={addTodayTask}
-                    style={{padding:"7px 14px", background:"#1e1b4b", border:"1px solid #4338ca", borderRadius:8, color:"#a5b4fc", fontSize:12, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap"}}>
-                    + Add
-                </button>
-            </div>
-            {todayTasks.length > 0 && (
-                <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
-                    {todayTasks.map(t => (
-                        <div key={t.id} style={{display:"flex", alignItems:"center", gap:6, padding:"4px 10px", borderRadius:20, background:t.done?"#0d2a1a":"#1a1d2e", border:`1px solid ${t.done?"#065f46":"#2d3154"}`, transition:"all 0.15s"}}>
-                            <div onClick={()=>toggleTodayTask(t.id)} style={{width:14, height:14, borderRadius:3, border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
-                                {t.done && <span style={{color:"#000", fontSize:9, fontWeight:900, lineHeight:1}}>✓</span>}
-                            </div>
-                            <span style={{fontSize:12, color:t.done?"#34d399":"#cbd5e1", textDecoration:t.done?"line-through":"none", cursor:"pointer", userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
-                                {t.text}
-                            </span>
-                            <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1, marginLeft:2}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {todayTasks.length === 0 && (
-                <div style={{fontSize:12, color:"#334155", fontStyle:"italic"}}>No tasks yet — add something above.</div>
-            )}
+            <button style={{padding:"8px 16px", background:"#6366f1", border:"none", borderRadius:8, color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer", display:"flex", alignItems:"center", gap:6}}>
+                <span>🔄</span> Sync LeetCode
+            </button>
         </div>
 
-        <div style={{background:"#0f1117", border:"1px solid #1e2030", borderRadius:12, padding:"24px", marginBottom:16}}>
-            {(() => {
-                const todayVal    = getStreakDate();
-                const yesterday = prevDateStr(todayVal);
-                const monthKey = todayVal.slice(0, 7);
-                const validFreezes = (streakFreezes?.month === monthKey ? streakFreezes.used : []);
-                const allActive = new Set([...(streakData?.activeDates || []), ...validFreezes]);
-                const freezesUsed = streakFreezes?.month === monthKey ? (streakFreezes.count || 0) : 0;
-                const freezesLeft = 3 - freezesUsed;
-                const yesterdayAtRisk = !allActive.has(yesterday) && streak > 0;
-                const canFreezeToday    = !allActive.has(todayVal)     && !validFreezes.includes(todayVal)     && freezesLeft > 0;
-                const showFreeze = (yesterdayAtRisk || canFreezeToday) && freezesLeft > 0;
-                const freezeTarget = !allActive.has(yesterday) && streak > 0 ? yesterday : todayVal;
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+            
+            {/* Streak Card */}
+            <div style={{...S.card, marginBottom:0, display:"flex", flexDirection:"column"}}>
+                {(() => {
+                    const todayVal    = getStreakDate();
+                    const yesterday = prevDateStr(todayVal);
+                    const monthKey = todayVal.slice(0, 7);
+                    const validFreezes = (streakFreezes?.month === monthKey ? streakFreezes.used : []);
+                    const allActive = new Set([...(streakData?.activeDates || []), ...validFreezes]);
+                    const freezesUsed = streakFreezes?.month === monthKey ? (streakFreezes.count || 0) : 0;
+                    const freezesLeft = 3 - freezesUsed;
+                    const yesterdayAtRisk = !allActive.has(yesterday) && streak > 0;
+                    const canFreezeToday    = !allActive.has(todayVal)     && !validFreezes.includes(todayVal)     && freezesLeft > 0;
+                    const showFreeze = (yesterdayAtRisk || canFreezeToday) && freezesLeft > 0;
+                    const freezeTarget = !allActive.has(yesterday) && streak > 0 ? yesterday : todayVal;
 
-                return (
-                    <>
+                    return (
                         <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20}}>
                             <div style={{display:"flex", alignItems:"center", gap:8}}>
                                 <span style={{fontSize:16}}>🔥</span>
@@ -975,36 +947,74 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                             <div style={{display:"flex", alignItems:"center", gap:8}}>
                                 {showFreeze && (
                                     <button onClick={() => onApplyFreeze(freezeTarget)}
-                                        style={{padding:"4px 12px",background:"#0c2233",border:"1px solid #0ea5e9",borderRadius:999,color:"#38bdf8",fontSize:11,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>
-                                        ❄️ Use Freeze ({freezesLeft} left)
+                                        style={{padding:"6px 12px",background:"#2d1f04",border:"1px solid #78450a",borderRadius:999,color:"#fbbf24",fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                        ❄️ {freezesLeft} freezes left
                                     </button>
                                 )}
                                 {!showFreeze && (
-                                    <div style={{fontSize:11, fontWeight:600, color:"#fb923c", background:"#2d1f04", border:"1px solid #78450a", borderRadius:999, padding:"4px 12px", display:"flex", alignItems:"center", gap:6}}>
-                                        <span>⚡</span> {freezesLeft} freezes left
+                                    <div style={{fontSize:11, fontWeight:600, color:"#fbbf24", background:"#2d1f04", border:"1px solid #78450a", borderRadius:999, padding:"6px 12px", display:"flex", alignItems:"center", gap:6}}>
+                                        {freezesLeft} freezes left
                                     </div>
                                 )}
                             </div>
                         </div>
-                    </>
-                );
-            })()}
-            
-            <div style={{display:"flex", alignItems:"baseline", gap:12, marginBottom:4}}>
-                <span style={{fontSize:56, fontWeight:800, color:"#fb923c", lineHeight:1}}>{streak}</span>
+                    );
+                })()}
+                
+                <div style={{display:"flex", alignItems:"baseline", gap:12, marginBottom:4}}>
+                    <span style={{fontSize:56, fontWeight:800, color:"#fb923c", lineHeight:1}}>{streak}</span>
+                </div>
+                <div style={{fontSize:14, color:"#64748b", marginBottom:24}}>consecutive days</div>
+                
+                <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:"auto", paddingTop:16}}>
+                    <div style={{fontSize:13, color:"#94a3b8"}}>
+                        Longest: <span style={{fontWeight:700, color:"#e2e8f0"}}>{streakData?.longestStreak ?? 0} days</span>
+                    </div>
+                    
+                    <button onClick={() => { setLogNote("Logged manually"); addLog(); setLogNote(""); }} style={{padding:"8px 16px", background:"#818cf8", border:"none", borderRadius:8, color:"#ffffff", fontSize:13, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap"}}>
+                        Log today's session
+                    </button>
+                </div>
             </div>
-            <div style={{fontSize:14, color:"#64748b", marginBottom:32}}>consecutive days</div>
-            
-            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:16, flexWrap:"wrap", gap:12}}>
-                <div style={{fontSize:13, color:"#94a3b8"}}>
-                    Longest: <span style={{fontWeight:700, color:"#e2e8f0"}}>{streakData?.longestStreak ?? 0} days</span>
+
+            {/* Today's Work Card */}
+            <div style={{...S.card, marginBottom:0, display:"flex", flexDirection:"column"}}>
+                <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16}}>
+                    <div style={{fontSize:14, fontWeight:600, color:"#e2e8f0", display:"flex", alignItems:"center", gap:7}}>
+                        <span style={{color:"#818cf8"}}>🎯</span> Today's Work
+                    </div>
+                    <div style={{fontSize:11, color:"#818cf8", fontWeight:600, background:"#1e1b4b", padding:"4px 10px", borderRadius:12}}>
+                        {todayTasks.filter(t=>t.done).length}/{todayTasks.length}
+                    </div>
                 </div>
                 
-                <div style={{display:"flex", alignItems:"center", gap:8}}>
-                    <input value={logNote} onChange={e=>setLogNote(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addLog()}
-                        placeholder="Log today's session…" style={{background:"#1a1d2e", border:"1px solid #2d3154", borderRadius:8, padding:"8px 12px", color:"#e2e8f0", fontSize:13, outline:"none", width:180}}/>
-                    <button onClick={addLog} style={{padding:"8px 16px", background:"#818cf8", border:"none", borderRadius:8, color:"#ffffff", fontSize:13, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap"}}>
-                        Log today's session
+                <div style={{display:"flex", flexDirection:"column", gap:8, marginBottom:16, flex:1, overflowY:"auto", maxHeight:200}}>
+                    {todayTasks.map(t => (
+                        <div key={t.id} style={{display:"flex", alignItems:"center", gap:12, padding:"10px 14px", borderRadius:8, background:"#0a0b0d", border:"1px solid #1e2030", transition:"all 0.15s"}}>
+                            <div onClick={()=>toggleTodayTask(t.id)} style={{width:16, height:16, borderRadius:"50%", border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
+                                {t.done && <span style={{color:"#000", fontSize:10, fontWeight:900, lineHeight:1}}>✓</span>}
+                            </div>
+                            <span style={{fontSize:13, color:t.done?"#475569":"#e2e8f0", textDecoration:t.done?"line-through":"none", cursor:"pointer", flex:1, userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
+                                {t.text}
+                            </span>
+                            <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
+                        </div>
+                    ))}
+                    {todayTasks.length === 0 && (
+                        <div style={{fontSize:13, color:"#475569", fontStyle:"italic", padding:"10px 14px", background:"#0a0b0d", borderRadius:8, border:"1px solid #1e2030"}}>
+                            No tasks yet — add something below.
+                        </div>
+                    )}
+                </div>
+                
+                <div style={{display:"flex", gap:8, marginTop:"auto"}}>
+                    <input value={todayInput} onChange={e=>setTodayInput(e.target.value)}
+                        onKeyDown={e=>e.key==="Enter"&&addTodayTask()}
+                        placeholder="Add a task for today…"
+                        style={{flex:1, padding:"10px 14px", background:"#0a0b0d", border:"1px solid #1e2030", borderRadius:8, color:"#e2e8f0", fontSize:13, outline:"none", fontFamily:"inherit"}} />
+                    <button onClick={addTodayTask}
+                        style={{width:38, height:38, background:"#1e1b4b", border:"none", borderRadius:"50%", color:"#a5b4fc", fontSize:18, fontWeight:400, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0}}>
+                        +
                     </button>
                 </div>
             </div>
@@ -1035,10 +1045,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                     <div style={{...S.sectionTitle, display:"flex", alignItems:"center", gap:6}}>
                         <span style={{fontSize:14,color:"#818cf8"}}>⚡</span> Recent Activity
                     </div>
-                    <div style={{fontSize:11,color:"#818cf8",cursor:"pointer",fontWeight:500}}>View all</div>
                 </div>
                 
-                <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                <div style={{display:"flex",flexDirection:"column",gap:8,maxHeight:250,overflowY:"auto",paddingRight:4}}>
                     {(() => {
                         const list = [];
                         const dates = Object.keys(activityLog||{}).sort((a,b)=>new Date(b) - new Date(a));
@@ -1058,7 +1067,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                                 }
                             }
                         }
-                        const recent = list.slice(0, 4);
+                        const recent = list.slice(0, 50);
                         if (recent.length === 0) return <div style={{fontSize:12,color:"#475569"}}>No recent activity.</div>;
                         
                         return recent.map((item, i) => (
