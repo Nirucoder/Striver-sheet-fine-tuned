@@ -3264,6 +3264,7 @@ const OS_UNITS = [
     const [streakData, setStreakData] = useLocalStorage("streak_data", { currentStreak:0, longestStreak:0, lastActiveDate:"", activeDates:[] });
     const [streakFreezes, setStreakFreezes] = useLocalStorage("streak_freezes", { month:"", used:[], count:0 });
     const streak = streakData.currentStreak; // compat alias for props
+    const [mobileFreezeConfirm, setMobileFreezeConfirm] = useState(false);
     const [dailyLog, setDailyLog] = useLocalStorage("srm_log_v3", []);
     const [lastLogDate, setLastLogDate] = useLocalStorage("srm_lastlog_v3", "");
     const [activityLog, setActivityLog] = useLocalStorage("srm_activity_v1", {});
@@ -3724,15 +3725,16 @@ const OS_UNITS = [
 
                     .studyos-mobile-header {
                         display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        padding: 10px 16px;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        padding: 10px 14px 12px;
                         background: #0f1117;
                         border-bottom: 1px solid #1e2030;
                         position: sticky;
                         top: 0;
                         z-index: 100;
                         flex-shrink: 0;
+                        gap: 0;
                     }
 
                     .studyos-mobile-nav {
@@ -3885,22 +3887,106 @@ const OS_UNITS = [
                 </div>
             </div>
         )}
+            {/* ── MOBILE FREEZE CONFIRM MODAL ──────────────────────── */}
+            {mobileFreezeConfirm && (() => {
+                const tomorrowStr = new Date(Date.now()+86400000).toISOString().split("T")[0];
+                const freezesUsed = (streakFreezes.used||[]).length;
+                const freezesLeft = 3 - freezesUsed;
+                return (
+                <div style={{position:"fixed",inset:0,zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",background:"rgba(0,0,0,0.75)",backdropFilter:"blur(4px)"}}>
+                    <div style={{width:"100%",maxWidth:390,background:"#1a1d27",borderRadius:"24px 24px 0 0",padding:"24px 20px 36px",border:"1px solid #2a2d3e"}}>
+                        <div style={{textAlign:"center",marginBottom:20}}>
+                            <div style={{fontSize:36,marginBottom:10}}>❄️</div>
+                            <div style={{fontSize:18,fontWeight:800,color:"#f1f5f9",marginBottom:8}}>Use Streak Freeze?</div>
+                            <div style={{fontSize:13,color:"#9ca3af",lineHeight:1.6}}>
+                                This protects your <strong style={{color:"#fbbf24"}}>{streak}-day streak</strong> if you miss a day.<br/>
+                                You have <strong style={{color:"#60a5fa"}}>{freezesLeft} freeze{freezesLeft!==1?"s":""}</strong> remaining this month.
+                            </div>
+                        </div>
+                        <div style={{display:"flex",gap:10}}>
+                            <button onClick={()=>setMobileFreezeConfirm(false)}
+                                style={{flex:1,padding:"13px",borderRadius:12,background:"#1e2130",color:"#9ca3af",border:"1px solid #2a2d3e",fontSize:14,fontWeight:600,cursor:"pointer"}}>
+                                Cancel
+                            </button>
+                            <button onClick={()=>{applyFreeze(tomorrowStr);setMobileFreezeConfirm(false);}}
+                                style={{flex:1,padding:"13px",borderRadius:12,background:"linear-gradient(135deg,#1d4ed8,#3b82f6)",color:"white",border:"none",fontSize:14,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px #3b82f644"}}>
+                                ❄️ Activate Freeze
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                );
+            })()}
+
             {/* ── MOBILE HEADER ──────────────────────────────────────── */}
                 <div className="studyos-mobile-header">
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <img src="/pwa-512x512.png" alt="Logo" style={{width:24,height:24}} />
-                        <div style={{fontSize:14,fontWeight:700,color:"#e2e8f0",letterSpacing:"0.05em",textTransform:"uppercase"}}>StudyOS</div>
-                    </div>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); }}
-                            style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:14,color:"#818cf8"}}>
-                            ☁
+                    {/* Top bar */}
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",marginBottom:10}}>
+                        <div style={{display:"flex",alignItems:"center",gap:8}}>
+                            <img src="/pwa-512x512.png" alt="Logo" style={{width:22,height:22}} />
+                            <span style={{fontSize:14,fontWeight:800,background:"linear-gradient(90deg,#818cf8,#c084fc)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>StudyOS</span>
                         </div>
-                        <div onClick={()=>setMobileSidebarOpen(true)}
-                            style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:16,color:"#94a3b8"}}>
-                            ☰
+                        <div style={{display:"flex",alignItems:"center",gap:8}}>
+                            <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); }}
+                                style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:14,color:"#818cf8"}}>
+                                ☁
+                            </div>
+                            <div onClick={()=>setMobileSidebarOpen(true)}
+                                style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:16,color:"#94a3b8"}}>
+                                ☰
+                            </div>
                         </div>
                     </div>
+                    {/* Stats row: Solved + Streak + Freeze */}
+                    {(()=>{
+                        const totalDone = dsaData.filter(d=>d.status==="done").length + coaData.filter(d=>d.status==="done").length;
+                        const freezesUsed = (streakFreezes.used||[]).length;
+                        const freezesLeft = 3 - freezesUsed;
+                        const freezeAlreadyUsedToday = (streakFreezes.used||[]).includes(new Date(Date.now()+86400000).toISOString().split("T")[0]);
+                        return (
+                        <div style={{display:"flex",gap:8,width:"100%"}}>
+                            {/* Solved */}
+                            <div style={{flex:1,background:"#1e2130",borderRadius:12,padding:"10px 12px",border:"1px solid #2a2d3e"}}>
+                                <div style={{fontSize:22,fontWeight:900,color:"#818cf8",letterSpacing:-1,lineHeight:1}}>{totalDone}</div>
+                                <div style={{fontSize:9,color:"#6b7280",marginTop:3}}>Problems Solved</div>
+                            </div>
+                            {/* Streak */}
+                            <div style={{flex:1,background:"#1e2130",borderRadius:12,padding:"10px 12px",border:"1px solid #2a2d3e",display:"flex",alignItems:"flex-start",justifyContent:"space-between"}}>
+                                <div>
+                                    <div style={{fontSize:22,fontWeight:900,color:"#fbbf24",letterSpacing:-1,lineHeight:1,display:"flex",alignItems:"center",gap:4}}>
+                                        {streak}<span style={{fontSize:16}}>🔥</span>
+                                    </div>
+                                    <div style={{fontSize:9,color:"#6b7280",marginTop:3}}>Day Streak</div>
+                                </div>
+                                {/* Freeze button */}
+                                {freezesLeft > 0 && !freezeAlreadyUsedToday ? (
+                                    <button onClick={()=>setMobileFreezeConfirm(true)}
+                                        style={{display:"flex",flexDirection:"column",alignItems:"center",gap:1,background:"#0c1a2e",border:"1px solid #3b82f6",borderRadius:8,padding:"5px 7px",cursor:"pointer"}}>
+                                        <span style={{fontSize:13}}>❄️</span>
+                                        <span style={{fontSize:8,fontWeight:700,color:"#60a5fa"}}>{freezesLeft}x</span>
+                                    </button>
+                                ) : (
+                                    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:1,background:"#1a1d27",border:"1px solid #2a2d3e",borderRadius:8,padding:"5px 7px",opacity:0.5}}>
+                                        <span style={{fontSize:13}}>🔒</span>
+                                        <span style={{fontSize:8,fontWeight:700,color:"#6b7280"}}>Used</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        );
+                    })()}
+                    {/* Freeze info banner */}
+                    {(()=>{
+                        const freezesLeft = 3 - (streakFreezes.used||[]).length;
+                        if (freezesLeft <= 0) return null;
+                        return (
+                        <div style={{width:"100%",marginTop:8,background:"#0c1a2e",borderRadius:8,padding:"6px 10px",display:"flex",alignItems:"center",gap:7,border:"1px solid #1d4ed833"}}>
+                            <span style={{fontSize:12}}>🛡️</span>
+                            <span style={{fontSize:10,color:"#93c5fd",flex:1}}>Streak Freeze protects you for 1 missed day</span>
+                            <span style={{fontSize:9,color:"#6b7280"}}>{freezesLeft}/3 left</span>
+                        </div>
+                        );
+                    })()}
                 </div>
 
                 {/* ── MOBILE SIDEBAR OVERLAY ─────────────────────────── */}
