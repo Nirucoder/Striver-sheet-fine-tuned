@@ -851,6 +851,8 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
+    const [editingTodo, setEditingTodo] = useState(null); // { id, text }
+
     function addTodayTask() {
         const text = todayInput.trim();
         if (!text) return;
@@ -862,6 +864,12 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
     function removeTodayTask(id) {
         setTodos(prev => prev.filter(t => t.id!==id));
+    }
+    function saveEditTodo() {
+        if (!editingTodo) return;
+        const text = editingTodo.text.trim();
+        if (text) setTodos(prev => prev.map(t => t.id===editingTodo.id ? { ...t, text } : t));
+        setEditingTodo(null);
     }
 
     const todayTasks = (todos||[]).filter(t => t.due === today);
@@ -986,13 +994,32 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 <div style={{display:"flex", flexDirection:"column", gap:8, marginBottom:16, flex:1, overflowY:"auto", maxHeight:200}}>
                     {todayTasks.map(t => (
                         <div key={t.id} style={{display:"flex", alignItems:"center", gap:12, padding:"10px 14px", borderRadius:8, background:"#0a0b0d", border:"1px solid #1e2030", transition:"all 0.15s"}}>
-                            <div onClick={()=>toggleTodayTask(t.id)} style={{width:16, height:16, borderRadius:"50%", border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
-                                {t.done && <span style={{color:"#000", fontSize:10, fontWeight:900, lineHeight:1}}>✓</span>}
-                            </div>
-                            <span style={{fontSize:13, color:t.done?"#475569":"#e2e8f0", textDecoration:t.done?"line-through":"none", cursor:"pointer", flex:1, userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
-                                {t.text}
-                            </span>
-                            <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"}>×</span>
+                            {editingTodo?.id === t.id ? (
+                                // ── Inline edit mode ──
+                                <>
+                                    <input
+                                        autoFocus
+                                        value={editingTodo.text}
+                                        onChange={e => setEditingTodo(prev => ({ ...prev, text: e.target.value }))}
+                                        onKeyDown={e => { if (e.key === "Enter") saveEditTodo(); if (e.key === "Escape") setEditingTodo(null); }}
+                                        style={{flex:1, background:"transparent", border:"none", borderBottom:"1px solid #818cf8", color:"#e2e8f0", fontSize:13, outline:"none", fontFamily:"inherit", padding:"2px 0"}}
+                                    />
+                                    <span onClick={saveEditTodo} style={{fontSize:13, color:"#34d399", cursor:"pointer", fontWeight:700}} title="Save">✓</span>
+                                    <span onClick={() => setEditingTodo(null)} style={{fontSize:14, color:"#f87171", cursor:"pointer", lineHeight:1}} title="Cancel">✕</span>
+                                </>
+                            ) : (
+                                // ── Normal display mode ──
+                                <>
+                                    <div onClick={()=>toggleTodayTask(t.id)} style={{width:16, height:16, borderRadius:"50%", border:`1.5px solid ${t.done?"#34d399":"#374151"}`, background:t.done?"#34d399":"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0}}>
+                                        {t.done && <span style={{color:"#000", fontSize:10, fontWeight:900, lineHeight:1}}>✓</span>}
+                                    </div>
+                                    <span style={{fontSize:13, color:t.done?"#475569":"#e2e8f0", textDecoration:t.done?"line-through":"none", cursor:"pointer", flex:1, userSelect:"none"}} onClick={()=>toggleTodayTask(t.id)}>
+                                        {t.text}
+                                    </span>
+                                    <span onClick={() => setEditingTodo({ id: t.id, text: t.text })} style={{fontSize:12, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#818cf8"} onMouseLeave={e=>e.currentTarget.style.color="#334155"} title="Edit">✏</span>
+                                    <span onClick={()=>removeTodayTask(t.id)} style={{fontSize:14, color:"#334155", cursor:"pointer", lineHeight:1}} onMouseEnter={e=>e.currentTarget.style.color="#f87171"} onMouseLeave={e=>e.currentTarget.style.color="#334155"} title="Delete">×</span>
+                                </>
+                            )}
                         </div>
                     ))}
                     {todayTasks.length === 0 && (
