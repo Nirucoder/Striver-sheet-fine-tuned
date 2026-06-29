@@ -1,10 +1,7 @@
-import session from "express-session";
-import connectPg from "connect-pg-simple";
 import pg from "pg";
 
 const { Pool } = pg;
 
-// --- Pool singleton ---
 let pool;
 export function getPool() {
   if (!pool) {
@@ -16,43 +13,27 @@ export function getPool() {
   return pool;
 }
 
-// --- Session middleware singleton ---
-let sessionMiddleware;
-export function getSessionMiddleware() {
-  if (!sessionMiddleware) {
-    const PgStore = connectPg(session);
-    sessionMiddleware = session({
-      secret: process.env.SESSION_SECRET,
-      store: new PgStore({
-        conString: process.env.DATABASE_URL,
-        createTableIfMissing: false,
-        ttl: 7 * 24 * 60 * 60,
-        tableName: "sessions",
-      }),
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      },
-    });
+export async function verifyGoogleIdToken(authHeader) {
+  const clientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
+  if (!clientId || !authHeader?.startsWith("Bearer ")) return null;
+
+  const token = authHeader.slice(7);
+  try {
+    const res = await fetch(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(token)}`
+    );
+    if (!res.ok) return null;
+
+    const payload = await res.json();
+    if (payload.aud !== clientId) return null;
+    if (payload.exp && Number(payload.exp) * 1000 < Date.now()) return null;
+    return payload;
+  } catch {
+    return null;
   }
-  return sessionMiddleware;
 }
 
-// --- Middleware runner ---
-export function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (err) => (err ? reject(err) : resolve()));
-  });
-}
-
-/**
- * Reads the session and returns the authenticated userId, or null.
- * Sessions are written by the Replit dev server's Passport-based auth;
- * on Vercel the session cookie is read from the same PostgreSQL store.
- */
-export function getSessionUserId(req) {
-  return req.session?.passport?.user?.claims?.sub ?? null;
+export async function getGoogleUserId(req) {
+  const payload = await verifyGoogleIdToken(req.headers.authorization);
+  return payload?.sub ?? null;
 }

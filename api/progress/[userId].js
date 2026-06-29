@@ -1,9 +1,4 @@
-import {
-  getPool,
-  getSessionMiddleware,
-  getSessionUserId,
-  runMiddleware,
-} from "../_lib/auth.js";
+import { getPool, getGoogleUserId } from "../_lib/auth.js";
 
 export const config = {
   api: {
@@ -16,15 +11,16 @@ export const config = {
 export default async function handler(req, res) {
   const origin = req.headers.origin || "";
   res.setHeader("Access-Control-Allow-Origin", origin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
-  await runMiddleware(req, res, getSessionMiddleware());
+  if (!process.env.DATABASE_URL) {
+    return res.status(503).json({ error: "DATABASE_URL not configured on server." });
+  }
 
-  const sessionUserId = getSessionUserId(req);
+  const sessionUserId = await getGoogleUserId(req);
   const { userId } = req.query;
 
   if (!sessionUserId) return res.status(401).json({ message: "Unauthorized" });
