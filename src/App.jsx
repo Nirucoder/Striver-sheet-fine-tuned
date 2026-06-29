@@ -3263,10 +3263,10 @@ const OS_UNITS = [
     const [cloudLoadedAt, setCloudLoadedAt] = useState("");
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
-    // cloudReady: prevents auto-save from firing before Supabase data is loaded.
-    // On a new device, localStorage is empty. Without this guard, the debounced
-    // auto-save would run before loadUserProgress() resolves and wipe Supabase.
-    const cloudReady = useRef(!session?.sub); // if not signed in, no cloud load is needed
+    // cloudReady: prevents auto-save from firing before cloud data is loaded.
+    // Must start as false — auto-save is gated on this being true so we never
+    // overwrite cloud data with stale local state before the initial fetch resolves.
+    const cloudReady = useRef(false);
 
     // Compute Easy/Medium/Hard solved & total counts for donut widget
     const { diffCounts, diffTotal } = useMemo(() => {
