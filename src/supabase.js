@@ -1,14 +1,6 @@
-export const supabase = null;
+import { getAuthHeaders, syncAuthError } from "./authUtils.js";
 
-function getAuthHeaders() {
-  try {
-    const user = JSON.parse(localStorage.getItem("studyos_user") || "null");
-    if (user?.token) {
-      return { Authorization: `Bearer ${user.token}` };
-    }
-  } catch {}
-  return {};
-}
+export const supabase = null;
 
 export async function loadUserProgress(userId) {
   if (!userId) return null;
@@ -17,7 +9,7 @@ export async function loadUserProgress(userId) {
       headers: getAuthHeaders(),
     });
     if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    if (!res.ok) throw new Error(syncAuthError(res.status));
     const json = await res.json();
     return json.data ?? null;
   } catch (e) {
@@ -34,7 +26,7 @@ export async function saveUserProgress(userId, payload) {
       headers: { "Content-Type": "application/json", ...getAuthHeaders() },
       body: JSON.stringify({ data: payload }),
     });
-    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    if (!res.ok) throw new Error(syncAuthError(res.status));
   } catch (e) {
     console.error("Save error:", e);
     throw e;

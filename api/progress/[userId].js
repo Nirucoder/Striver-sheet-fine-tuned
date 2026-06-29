@@ -23,7 +23,12 @@ export default async function handler(req, res) {
   const sessionUserId = await getGoogleUserId(req);
   const { userId } = req.query;
 
-  if (!sessionUserId) return res.status(401).json({ message: "Unauthorized" });
+  if (!sessionUserId) {
+    return res.status(401).json({
+      message: "Unauthorized",
+      hint: "Google sign-in token missing, expired, or invalid. Sign in again.",
+    });
+  }
   if (sessionUserId !== userId) return res.status(403).json({ message: "Forbidden" });
 
   const db = getPool();

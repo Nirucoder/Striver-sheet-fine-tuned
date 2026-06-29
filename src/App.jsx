@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
 import CalendarTab from "./CalendarTab.jsx";
 import { supabase, loadUserProgress, saveUserProgress } from "./supabase.js";
-import AuthPage from "./AuthPage.jsx";
+import { isSessionValid, isTokenExpired } from "./authUtils.js";
+import GoogleReSignIn from "./GoogleReSignIn.jsx";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
@@ -3126,9 +3127,11 @@ const OS_UNITS = [
     { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
-    function SyncModal({ session, syncCode, syncStatus, setSyncStatus, onForcePush, onForcePull, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
+    function SyncModal({ session, syncCode, syncStatus, setSyncStatus, onForcePush, onForcePull, onSaveToCloud, onLoadFromCloud, onClose, lastSynced, setSession }) {
         const [inputCode, setInputCode] = useState(syncCode || "");
         const isSignedIn = !!session?.sub;
+        const tokenValid = isSessionValid(session);
+        const tokenExpired = isSignedIn && !tokenValid;
         return (
             <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(4px)"}}>
                 <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:16,padding:"28px 32px",maxWidth:460,width:"90%",boxShadow:"0 32px 80px rgba(0,0,0,0.7)"}}>
@@ -3141,20 +3144,27 @@ const OS_UNITS = [
                     </div>
 
                     {/* ── Google Account section ── */}
-                    <div style={{padding:"12px 16px",background:isSignedIn?"rgba(52,211,153,0.06)":"rgba(248,113,113,0.06)",border:`1px solid ${isSignedIn?"#065f46":"#7f1d1d"}`,borderRadius:10,marginBottom:20,display:"flex",alignItems:"center",gap:12}}>
+                    <div style={{padding:"12px 16px",background:tokenExpired?"rgba(251,191,36,0.06)":isSignedIn?"rgba(52,211,153,0.06)":"rgba(248,113,113,0.06)",border:`1px solid ${tokenExpired?"#92400e":isSignedIn?"#065f46":"#7f1d1d"}`,borderRadius:10,marginBottom:20,display:"flex",alignItems:"center",gap:12}}>
                         {session?.picture && <img src={session.picture} alt="" style={{width:32,height:32,borderRadius:"50%"}} />}
                         <div style={{flex:1}}>
-                            <div style={{fontSize:12,fontWeight:600,color:isSignedIn?"#34d399":"#f87171"}}>
-                                {isSignedIn ? `✓ Signed in as ${session.name}` : "✗ Not signed in"}
+                            <div style={{fontSize:12,fontWeight:600,color:tokenExpired?"#fbbf24":isSignedIn?"#34d399":"#f87171"}}>
+                                {tokenExpired ? `⚠ Session expired (${session.name})` : isSignedIn ? `✓ Signed in as ${session.name}` : "✗ Not signed in"}
                             </div>
                             <div style={{fontSize:11,color:"#475569"}}>
-                                {isSignedIn ? `${session.email} — data syncs automatically` : "Sign in with Google to enable cross-device sync"}
+                                {tokenExpired ? "Sign in again below to resume cloud sync" : isSignedIn ? `${session.email} — data syncs automatically` : "Sign in with Google to enable cross-device sync"}
                             </div>
                         </div>
                     </div>
 
+                    {tokenExpired && (
+                        <div style={{marginBottom:20,padding:"12px",background:"rgba(251,191,36,0.04)",border:"1px solid #92400e",borderRadius:10}}>
+                            <div style={{fontSize:11,color:"#fbbf24",marginBottom:8,textAlign:"center"}}>Google sign-in expires after ~1 hour. Re-authenticate to push or pull.</div>
+                            <GoogleReSignIn onAuth={(s) => { setSession(s); setSyncStatus("\u2713 Signed in — you can sync now."); }} />
+                        </div>
+                    )}
+
                     {/* ── Push / Pull buttons ── */}
-                    {isSignedIn && (
+                    {isSignedIn && tokenValid && (
                         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
                             <button onClick={onForcePush}
                                 style={{padding:"12px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:10,color:"#a5b4fc",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
@@ -3505,6 +3515,7 @@ const OS_UNITS = [
     // Force-push current state to Supabase immediately (bypasses debounce & cloudReady)
     async function handleForcePush() {
         if (!session?.sub) { setSyncStatus("\u26a0 Sign in with Google first."); return; }
+        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
         setSyncStatus("saving...");
         try {
             const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
@@ -3519,6 +3530,7 @@ const OS_UNITS = [
     // Force-pull from Supabase immediately (bypasses debounce & cloudReady)
     async function handleForcePull() {
         if (!session?.sub) { setSyncStatus("\u26a0 Sign in with Google first."); return; }
+        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
         setSyncStatus("loading from cloud...");
         try {
             const data = await loadUserProgress(session.sub);
@@ -3563,7 +3575,7 @@ const OS_UNITS = [
             let legacyOk   = !syncCode;    // if no syncCode, treat as not needed
 
             // Primary: save to Supabase keyed by Google user ID
-            if (session?.sub) {
+            if (session?.sub && isSessionValid(session)) {
                 try {
                     await saveUserProgress(session.sub, payload);
                     supabaseOk = true;
@@ -3858,6 +3870,7 @@ const OS_UNITS = [
         {showSyncModal && (
             <SyncModal
                 session={session}
+                setSession={setSession}
                 syncCode={syncCode}
                 syncStatus={syncStatus}
                 setSyncStatus={setSyncStatus}
@@ -4069,7 +4082,8 @@ const OS_UNITS = [
                         {autoSyncStatus==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
                         {autoSyncStatus==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
                         {!autoSyncStatus && !session?.sub && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
-                        {!autoSyncStatus && (session?.sub || syncCode) && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
+                        {!autoSyncStatus && session?.sub && !isSessionValid(session) && <span style={{fontSize:10,color:"#fbbf24"}}>re-auth</span>}
+                        {!autoSyncStatus && (isSessionValid(session) || syncCode) && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
                     </div>
                     {cloudLoadedAt && (
                         <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>

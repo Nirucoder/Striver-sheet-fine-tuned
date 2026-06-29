@@ -1,15 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
-const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-function decodeJwt(token) {
-  try {
-    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
-    return JSON.parse(atob(base64));
-  } catch {
-    return {};
-  }
-}
+import { CLIENT_ID, buildSession } from "./authUtils.js";
 
 export default function AuthPage({ onAuth }) {
   const btnRef = useRef(null);
@@ -23,14 +13,7 @@ export default function AuthPage({ onAuth }) {
     }
 
     const handleCredential = ({ credential }) => {
-      const user = decodeJwt(credential);
-      const session = {
-        name: user.name,
-        email: user.email,
-        picture: user.picture,
-        sub: user.sub,
-        token: credential,
-      };
+      const session = buildSession(credential);
       localStorage.setItem("studyos_user", JSON.stringify(session));
       onAuth(session);
     };
