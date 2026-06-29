@@ -12,7 +12,8 @@
     "build": "vite build",
     "start": "node server/index.js",
     "lint": "eslint .",
-    "validate-yt": "node scripts/validate-youtube-links.js"
+    "validate-yt": "node scripts/validate-youtube-links.js",
+    "sync-yt": "node scripts/remove-broken-articles.js && node scripts/fetch-official-sheet-yt.js && node scripts/apply-official-sheet-yt.js && node scripts/validate-youtube-links.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

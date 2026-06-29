@@ -1,0 +1,1310 @@
+{
+  "https://takeuforward.org/c/c-basic-input-output": {
+    "name": "Input Output",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/data-structure/what-are-arrays-strings": {
+    "name": "What are arrays, strings?",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/if-else/if-else-statements": {
+    "name": "If ElseIf",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/switch-case/switch-case-statements": {
+    "name": "Switch Case",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/for-loop/understanding-for-loop": {
+    "name": "For loops",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/while-loop/while-loops-in-programming": {
+    "name": "While loops",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/data-structure/functions-pass-by-reference-and-value": {
+    "name": "Functions (Pass by Reference and Value)",
+    "youtube": "https://youtu.be/EAR7De6Goz4"
+  },
+  "https://takeuforward.org/time-complexity/time-and-space-complexity-strivers-a2z-dsa-course": {
+    "name": "Theory with examples",
+    "youtube": "https://youtu.be/FPu9Uld7W-E"
+  },
+  "https://takeuforward.org/strivers-a2z-dsa-course/must-do-pattern-problems-before-starting-dsa": {
+    "name": "Pattern 22",
+    "youtube": "https://youtu.be/tNm_NNSB3_w"
+  },
+  "https://takeuforward.org/c/c-stl-tutorial-most-frequent-used-stl-containers": {
+    "name": "STL",
+    "youtube": "https://youtu.be/RRVYpIET_RU"
+  },
+  "https://takeuforward.org/data-structure/count-digits-in-a-number": {
+    "name": "Count all Digits of a Number",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/data-structure/check-if-a-number-is-palindrome-or-not": {
+    "name": "Palindrome Number",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/data-structure/find-gcd-of-two-numbers": {
+    "name": "GCD of Two Numbers",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not": {
+    "name": "Check if the Number is Armstrong",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/data-structure/print-all-divisors-of-a-given-number": {
+    "name": "Divisors of a Number",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/data-structure/check-if-a-number-is-prime-or-not": {
+    "name": "Check for Prime Number",
+    "youtube": "https://youtu.be/1xNbjMdbjug"
+  },
+  "https://takeuforward.org/recursion/introduction-to-recursion-understand-recursion-by-printing-something-n-times": {
+    "name": "Understand recursion by print something N times",
+    "youtube": "https://youtu.be/yVdKa8dnKiE"
+  },
+  "https://takeuforward.org/recursion/print-name-n-times-using-recursion": {
+    "name": "Print name N times using recursion",
+    "youtube": "https://youtu.be/un6PLygfXrA"
+  },
+  "https://takeuforward.org/recursion/print-1-to-n-using-recursion": {
+    "name": "Print 1 to N using Recursion",
+    "youtube": "https://youtu.be/un6PLygfXrA"
+  },
+  "https://takeuforward.org/recursion/print-n-to-1-using-recursion": {
+    "name": "Print N to 1 using Recursion",
+    "youtube": "https://youtu.be/un6PLygfXrA"
+  },
+  "https://takeuforward.org/data-structure/sum-of-first-n-natural-numbers": {
+    "name": "Sum of First N Numbers",
+    "youtube": "https://youtu.be/69ZCDFy-OUo"
+  },
+  "https://takeuforward.org/data-structure/factorial-of-a-number-iterative-and-recursive": {
+    "name": "Factorial of a given number",
+    "youtube": "https://youtu.be/69ZCDFy-OUo"
+  },
+  "https://takeuforward.org/data-structure/reverse-a-given-array": {
+    "name": "Reverse an array",
+    "youtube": "https://youtu.be/twuC1F6gLI8"
+  },
+  "https://takeuforward.org/data-structure/check-if-the-given-string-is-palindrome-or-not": {
+    "name": "Check if String is Palindrome or Not ",
+    "youtube": "https://youtu.be/twuC1F6gLI8"
+  },
+  "https://takeuforward.org/arrays/print-fibonacci-series-up-to-nth-term": {
+    "name": "Fibonacci Number",
+    "youtube": "https://youtu.be/kvRjNm4rVBE"
+  },
+  "https://takeuforward.org/hashing/hashing-maps-time-complexity-collisions-division-rule-of-hashing-strivers-a2z-dsa-course": {
+    "name": "Basic Hashing",
+    "youtube": "https://youtu.be/KEs5UyBJ39g"
+  },
+  "https://takeuforward.org/sorting/selection-sort-algorithm": {
+    "name": "Selection Sort",
+    "youtube": "https://youtu.be/HGk_ypEuS24"
+  },
+  "https://takeuforward.org/data-structure/bubble-sort-algorithm": {
+    "name": "Bubble Sort",
+    "youtube": "https://youtu.be/HGk_ypEuS24"
+  },
+  "https://takeuforward.org/data-structure/insertion-sort-algorithm": {
+    "name": "Insertion Sorting",
+    "youtube": "https://youtu.be/HGk_ypEuS24"
+  },
+  "https://takeuforward.org/data-structure/merge-sort-algorithm": {
+    "name": "Merge Sorting",
+    "youtube": "https://youtu.be/ogjf7ORKfd8"
+  },
+  "https://takeuforward.org/data-structure/quick-sort-algorithm": {
+    "name": "Quick Sorting",
+    "youtube": "https://youtu.be/WIrA4YexLRQ"
+  },
+  "https://takeuforward.org/data-structure/find-the-largest-element-in-an-array": {
+    "name": "Largest Element ",
+    "youtube": "https://youtu.be/37E9ckMDdTk"
+  },
+  "https://takeuforward.org/data-structure/find-second-smallest-and-second-largest-element-in-an-array": {
+    "name": "Second Largest Element",
+    "youtube": "https://youtu.be/37E9ckMDdTk"
+  },
+  "https://takeuforward.org/data-structure/check-if-an-array-is-sorted": {
+    "name": "Check if the Array is Sorted II",
+    "youtube": "https://youtu.be/37E9ckMDdTk"
+  },
+  "https://takeuforward.org/data-structure/remove-duplicates-in-place-from-sorted-array": {
+    "name": "Remove duplicates from Sorted array",
+    "youtube": "https://youtu.be/37E9ckMDdTk"
+  },
+  "https://takeuforward.org/data-structure/left-rotate-the-array-by-one": {
+    "name": "Left Rotate Array by One",
+    "youtube": "https://youtu.be/wvcQg43_V8U"
+  },
+  "https://takeuforward.org/data-structure/rotate-array-by-k-elements": {
+    "name": "Left Rotate Array by K Places",
+    "youtube": "https://youtu.be/wvcQg43_V8U"
+  },
+  "https://takeuforward.org/data-structure/move-all-zeros-to-the-end-of-the-array": {
+    "name": "Move Zeros to End",
+    "youtube": "https://youtu.be/wvcQg43_V8U"
+  },
+  "https://takeuforward.org/data-structure/linear-search-in-c": {
+    "name": "Linear Search",
+    "youtube": "https://youtu.be/wvcQg43_V8U"
+  },
+  "https://takeuforward.org/data-structure/union-of-two-sorted-arrays": {
+    "name": "Union of two sorted arrays",
+    "youtube": "https://youtu.be/wvcQg43_V8U"
+  },
+  "https://takeuforward.org/data-structure/count-maximum-consecutive-ones-in-the-array": {
+    "name": "Maximum Consecutive Ones",
+    "youtube": "https://youtu.be/bYWLJb3vCWY"
+  },
+  "https://takeuforward.org/arrays/find-the-number-that-appears-once-and-the-other-numbers-twice": {
+    "name": "Single Number - I",
+    "youtube": "https://youtu.be/bYWLJb3vCWY"
+  },
+  "https://takeuforward.org/data-structure/longest-subarray-with-given-sum-k": {
+    "name": "Longest subarray with given sum K(positives)",
+    "youtube": "https://youtu.be/frf7qxiN2qU"
+  },
+  "https://takeuforward.org/data-structure/length-of-the-longest-subarray-with-zero-sum": {
+    "name": "Largest Subarray with Sum 0",
+    "youtube": "https://youtu.be/xmguZ6GbatA"
+  },
+  "https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array": {
+    "name": "Two Sum",
+    "youtube": "https://youtu.be/UXDSeD9mN-k"
+  },
+  "https://takeuforward.org/data-structure/sort-an-array-of-0s-1s-and-2s": {
+    "name": "Sort an array of 0's 1's and 2's",
+    "youtube": "https://youtu.be/tp8JIuCXBaU"
+  },
+  "https://takeuforward.org/data-structure/find-the-majority-element-that-occurs-more-than-n-2-times": {
+    "name": "Majority Element-I",
+    "youtube": "https://youtu.be/nP_ns3uSh80"
+  },
+  "https://takeuforward.org/data-structure/kadanes-algorithm-maximum-subarray-sum-in-an-array": {
+    "name": "Print subarray with maximum subarray sum (extended version of above problem)",
+    "youtube": "https://youtu.be/AHZpyENo7k4"
+  },
+  "https://takeuforward.org/data-structure/stock-buy-and-sell": {
+    "name": "Best time to buy and sell stock",
+    "youtube": "https://youtu.be/excAOvwF_Wk"
+  },
+  "https://takeuforward.org/arrays/rearrange-array-elements-by-sign": {
+    "name": "Rearrange array elements by sign",
+    "youtube": "https://youtu.be/h4aBagy4Uok"
+  },
+  "https://takeuforward.org/data-structure/next_permutation-find-next-lexicographically-greater-permutation": {
+    "name": "Next Permutation",
+    "youtube": "https://youtu.be/JDOXKqF60RQ"
+  },
+  "https://takeuforward.org/data-structure/leaders-in-an-array": {
+    "name": "Leaders in an Array",
+    "youtube": "https://youtu.be/cHrH9CQ8pmY"
+  },
+  "https://takeuforward.org/data-structure/longest-consecutive-sequence-in-an-array": {
+    "name": "Longest Consecutive Sequence in an Array",
+    "youtube": "https://youtu.be/oO5uLE7EUlM"
+  },
+  "https://takeuforward.org/data-structure/set-matrix-zero": {
+    "name": "Set Matrix Zeroes",
+    "youtube": "https://youtu.be/N0MgLvceX7M"
+  },
+  "https://takeuforward.org/data-structure/rotate-image-by-90-degree": {
+    "name": "Rotate matrix by 90 degrees",
+    "youtube": "https://youtu.be/Z0R2u6gd3GU"
+  },
+  "https://takeuforward.org/data-structure/spiral-traversal-of-matrix": {
+    "name": "Print the matrix in spiral manner",
+    "youtube": "https://youtu.be/3Zv-s9UUrFM"
+  },
+  "https://takeuforward.org/arrays/count-subarray-sum-equals-k": {
+    "name": "Count subarrays with given sum",
+    "youtube": "https://youtu.be/xvNwoz-ufXA"
+  },
+  "https://takeuforward.org/data-structure/program-to-generate-pascals-triangle": {
+    "name": "Pascal's Triangle I",
+    "youtube": "https://youtu.be/bR7mQgwQ_o8"
+  },
+  "https://takeuforward.org/data-structure/majority-elementsn-3-times-find-the-elements-that-appears-more-than-n-3-times-in-the-array": {
+    "name": "Majority Element-II",
+    "youtube": "https://youtu.be/vwZj1K0e9U8"
+  },
+  "https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero": {
+    "name": "3 Sum",
+    "youtube": "https://youtu.be/DhFh8Kw7ymk"
+  },
+  "https://takeuforward.org/data-structure/4-sum-find-quads-that-add-up-to-a-target-value": {
+    "name": "4 Sum",
+    "youtube": "https://youtu.be/eD95WRfh81c"
+  },
+  "https://takeuforward.org/data-structure/merge-overlapping-sub-intervals": {
+    "name": "Merge Intervals",
+    "youtube": "https://youtu.be/2JzRBPFYbKE"
+  },
+  "https://takeuforward.org/data-structure/merge-two-sorted-arrays-without-extra-space": {
+    "name": "Merge two sorted arrays without extra space",
+    "youtube": "https://youtu.be/n7uwj04E0I4"
+  },
+  "https://takeuforward.org/data-structure/find-the-repeating-and-missing-numbers": {
+    "name": "Find the repeating and missing number",
+    "youtube": "https://youtu.be/2D0D8HE6uak"
+  },
+  "https://takeuforward.org/data-structure/count-inversions-in-an-array": {
+    "name": "Count Inversions",
+    "youtube": "https://youtu.be/AseUmwVNaoY"
+  },
+  "https://takeuforward.org/data-structure/count-reverse-pairs": {
+    "name": "Reverse Pairs",
+    "youtube": "https://youtu.be/0e4bZaP3MDI"
+  },
+  "https://takeuforward.org/data-structure/binary-search-explained": {
+    "name": "Search X in sorted array",
+    "youtube": "https://youtu.be/MHf6awe89xw"
+  },
+  "https://takeuforward.org/arrays/implement-lower-bound-bs-2": {
+    "name": "Lower Bound ",
+    "youtube": "https://youtu.be/6zhGS79oQ4k"
+  },
+  "https://takeuforward.org/arrays/implement-upper-bound": {
+    "name": "Upper Bound",
+    "youtube": "https://youtu.be/6zhGS79oQ4k"
+  },
+  "https://takeuforward.org/arrays/search-insert-position": {
+    "name": "Search insert position",
+    "youtube": "https://youtu.be/6zhGS79oQ4k"
+  },
+  "https://takeuforward.org/arrays/floor-and-ceil-in-sorted-array": {
+    "name": "Floor and Ceil in Sorted Array",
+    "youtube": "https://youtu.be/6zhGS79oQ4k"
+  },
+  "https://takeuforward.org/data-structure/last-occurrence-in-a-sorted-array": {
+    "name": "First and last occurrence",
+    "youtube": "https://youtu.be/hjR1IYVx9lY"
+  },
+  "https://takeuforward.org/data-structure/count-occurrences-in-sorted-array": {
+    "name": "Count Occurrences in a Sorted Array",
+    "youtube": "https://youtu.be/hjR1IYVx9lY"
+  },
+  "https://takeuforward.org/data-structure/search-element-in-a-rotated-sorted-array": {
+    "name": "Search in rotated sorted array-I",
+    "youtube": "https://youtu.be/r3pMQ8-Ad5s"
+  },
+  "https://takeuforward.org/arrays/search-element-in-rotated-sorted-array-ii": {
+    "name": "Search in rotated sorted array-II",
+    "youtube": "https://youtu.be/w2G2W8l__pc"
+  },
+  "https://takeuforward.org/data-structure/minimum-in-rotated-sorted-array": {
+    "name": "Find minimum in Rotated Sorted Array",
+    "youtube": "https://youtu.be/nhEMDKMB44g"
+  },
+  "https://takeuforward.org/arrays/find-out-how-many-times-the-array-has-been-rotated": {
+    "name": "Find out how many times the array is rotated",
+    "youtube": "https://youtu.be/jtSiWTPLwd0"
+  },
+  "https://takeuforward.org/data-structure/search-single-element-in-a-sorted-array": {
+    "name": "Single element in a Sorted Array",
+    "youtube": "https://youtu.be/AZOmHuHadxQ"
+  },
+  "https://takeuforward.org/data-structure/peak-element-in-array": {
+    "name": "Find peak element",
+    "youtube": "https://youtu.be/cXxmbemS6XM"
+  },
+  "https://takeuforward.org/binary-search/finding-sqrt-of-a-number-using-binary-search": {
+    "name": "Find square root of a number",
+    "youtube": "https://youtu.be/Bsv3FPUX_BA"
+  },
+  "https://takeuforward.org/data-structure/nth-root-of-a-number-using-binary-search": {
+    "name": "Find Nth root of a number",
+    "youtube": "https://youtu.be/WjpswYrS2nY"
+  },
+  "https://takeuforward.org/binary-search/koko-eating-bananas": {
+    "name": "Koko eating bananas",
+    "youtube": "https://youtu.be/qyfekrNni90"
+  },
+  "https://takeuforward.org/arrays/minimum-days-to-make-m-bouquets": {
+    "name": "Minimum days to make M bouquets",
+    "youtube": "https://youtu.be/TXAuxeYBTdg"
+  },
+  "https://takeuforward.org/arrays/find-the-smallest-divisor-given-a-threshold": {
+    "name": "Find the smallest divisor",
+    "youtube": "https://youtu.be/UvBKTVaG6U8"
+  },
+  "https://takeuforward.org/arrays/capacity-to-ship-packages-within-d-days": {
+    "name": "Capacity to Ship Packages Within D Days",
+    "youtube": "https://youtu.be/MG-Ac4TAvTY"
+  },
+  "https://takeuforward.org/arrays/kth-missing-positive-number": {
+    "name": "Kth Missing Positive Number",
+    "youtube": "https://youtu.be/uZ0N_hZpyps"
+  },
+  "https://takeuforward.org/data-structure/aggressive-cows-detailed-solution": {
+    "name": "Aggressive Cows",
+    "youtube": "https://youtu.be/R_Mfw4ew-Vo"
+  },
+  "https://takeuforward.org/data-structure/allocate-minimum-number-of-pages": {
+    "name": "Book Allocation Problem",
+    "youtube": "https://youtu.be/gYmWHvRHu-s"
+  },
+  "https://takeuforward.org/arrays/split-array-largest-sum": {
+    "name": "Split array - largest sum",
+    "youtube": "https://youtu.be/thUd_WJn6wk"
+  },
+  "https://takeuforward.org/arrays/painters-partition-problem": {
+    "name": "Painter's Partition",
+    "youtube": "https://youtu.be/thUd_WJn6wk"
+  },
+  "https://takeuforward.org/arrays/minimise-maximum-distance-between-gas-stations": {
+    "name": "Minimize Max Distance to Gas Station",
+    "youtube": "https://youtu.be/kMSBvlZ-_HA"
+  },
+  "$undefined": {
+    "name": "Bit PreRequisites for TRIE Problems",
+    "youtube": "https://youtu.be/5iyuU4hQFrw"
+  },
+  "https://takeuforward.org/data-structure/k-th-element-of-two-sorted-arrays": {
+    "name": "Kth element of 2 sorted arrays",
+    "youtube": "https://youtu.be/D1oDwWCq50g"
+  },
+  "https://takeuforward.org/arrays/find-the-row-with-maximum-number-of-1s": {
+    "name": "Find row with maximum 1's",
+    "youtube": "https://youtu.be/SCz-1TtYxDI"
+  },
+  "https://takeuforward.org/data-structure/search-in-a-sorted-2d-matrix": {
+    "name": "Search in a 2D matrix",
+    "youtube": "https://youtu.be/ZYpYur0znng"
+  },
+  "https://takeuforward.org/arrays/search-in-a-row-and-column-wise-sorted-matrix": {
+    "name": "Search in 2D matrix - II",
+    "youtube": "https://youtu.be/9ZbB397jU4k"
+  },
+  "https://takeuforward.org/data-structure/median-of-row-wise-sorted-matrix": {
+    "name": "Matrix Median",
+    "youtube": "https://youtu.be/Q9wXgdxJq48"
+  },
+  "https://takeuforward.org/linked-list/linked-list-introduction": {
+    "name": "Introduction to Singly LinkedList",
+    "youtube": "https://youtu.be/Nq7ok-OyEpg"
+  },
+  "https://takeuforward.org/linked-list/insert-at-the-head-of-a-linked-list": {
+    "name": "Insertion at the head of Linked List",
+    "youtube": "https://youtu.be/VaECK03Dz-g"
+  },
+  "https://takeuforward.org/data-structure/delete-last-node-of-linked-list": {
+    "name": "Deletion of the head of LL",
+    "youtube": "https://youtu.be/VaECK03Dz-g"
+  },
+  "https://takeuforward.org/linked-list/find-the-length-of-a-linked-list": {
+    "name": "Find the length of the Linked List",
+    "youtube": "https://youtu.be/Nq7ok-OyEpg"
+  },
+  "https://takeuforward.org/linked-list/search-an-element-in-a-linked-list": {
+    "name": "Search in Linked List",
+    "youtube": "https://youtu.be/Nq7ok-OyEpg"
+  },
+  "https://takeuforward.org/linked-list/introduction-to-doubly-linked-list": {
+    "name": "Introduction to Doubly LL",
+    "youtube": "https://youtu.be/0eKMU10uEDI"
+  },
+  "https://takeuforward.org/data-structure/insert-at-end-of-doubly-linked-list": {
+    "name": "Insert node before head in Doubly Linked List",
+    "youtube": "https://youtu.be/0eKMU10uEDI"
+  },
+  "https://takeuforward.org/data-structure/delete-last-node-of-a-doubly-linked-list": {
+    "name": "Delete head of Doubly Linked List",
+    "youtube": "https://youtu.be/0eKMU10uEDI"
+  },
+  "https://takeuforward.org/data-structure/reverse-a-doubly-linked-list": {
+    "name": "Reverse a Doubly Linked List",
+    "youtube": "https://youtu.be/u3WUW2qe6ww"
+  },
+  "https://takeuforward.org/data-structure/find-middle-element-in-a-linked-list": {
+    "name": "Middle of a LinkedList [TortoiseHare Method]",
+    "youtube": "https://youtu.be/7LjQ57RqgEc"
+  },
+  "https://takeuforward.org/data-structure/reverse-a-linked-list": {
+    "name": "Reverse a LL",
+    "youtube": "https://youtu.be/D2vI2DNJGd8"
+  },
+  "https://takeuforward.org/data-structure/starting-point-of-loop-in-a-linked-list": {
+    "name": "Find the starting point in LL",
+    "youtube": "https://youtu.be/2Kd0KKmmHFc"
+  },
+  "https://takeuforward.org/linked-list/length-of-loop-in-linked-list": {
+    "name": "Length of loop in LL",
+    "youtube": "https://youtu.be/I4g1qbkTPus"
+  },
+  "https://takeuforward.org/data-structure/check-if-given-linked-list-is-plaindrome": {
+    "name": "Check if LL is palindrome or not",
+    "youtube": "https://youtu.be/lRY_G-u_8jk"
+  },
+  "https://takeuforward.org/data-structure/segregate-even-and-odd-nodes-in-linkedlist": {
+    "name": "Segregate odd and even nodes in Linked List",
+    "youtube": "https://youtu.be/qf6qp7GzD5Q"
+  },
+  "https://takeuforward.org/data-structure/remove-n-th-node-from-the-end-of-a-linked-list": {
+    "name": "Remove Nth node from the back of the LL",
+    "youtube": "https://youtu.be/3kMKYQ2wNIU"
+  },
+  "https://takeuforward.org/linked-list/delete-the-middle-node-of-the-linked-list": {
+    "name": "Delete the middle node in LL",
+    "youtube": "https://youtu.be/ePpV-_pfOeI"
+  },
+  "https://takeuforward.org/linked-list/sort-a-linked-list": {
+    "name": "Sort LL",
+    "youtube": "https://youtu.be/8ocB7a_c-Cc"
+  },
+  "https://takeuforward.org/data-structure/sort-a-linked-list-of-0s-1s-and-2s-by-changing-links": {
+    "name": "Sort a Linked List of 0's 1's and 2's",
+    "youtube": "https://youtu.be/gRII7LhdJWc"
+  },
+  "https://takeuforward.org/data-structure/add-1-to-a-number-represented-by-ll": {
+    "name": "Add one to a number represented by LL",
+    "youtube": "https://youtu.be/aXQWhbvT3w0"
+  },
+  "https://takeuforward.org/data-structure/add-two-numbers-represented-as-linked-lists": {
+    "name": "Add two numbers in Linked List",
+    "youtube": "https://youtu.be/LBVsXSMOIk4"
+  },
+  "delete all occurrences of a key in dll": {
+    "name": "Delete all occurrences of a key in DLL",
+    "youtube": "https://youtu.be/Mh0NH_SD92k"
+  },
+  "https://takeuforward.org/data-structure/find-pairs-with-given-sum-in-doubly-linked-list": {
+    "name": "Find Pairs with Given Sum in Doubly Linked List",
+    "youtube": "https://youtu.be/YitR4dQsddE"
+  },
+  "https://takeuforward.org/data-structure/remove-duplicates-from-sorted-dll": {
+    "name": "Remove duplicates from sorted DLL",
+    "youtube": "https://youtu.be/YJKVTnOJXSY"
+  },
+  "https://takeuforward.org/data-structure/reverse-linked-list-in-groups-of-size-k": {
+    "name": "Reverse LL in group of given size K",
+    "youtube": "https://youtu.be/lIar1skcQYI"
+  },
+  "https://takeuforward.org/data-structure/rotate-a-linked-list": {
+    "name": "Rotate a LL",
+    "youtube": "https://youtu.be/uT7YI7XbTY8"
+  },
+  "https://takeuforward.org/data-structure/flattening-a-linked-list": {
+    "name": "Flattening of LL",
+    "youtube": "https://youtu.be/ykelywHJWLg"
+  },
+  "https://takeuforward.org/data-structure/implement-powxn-x-raised-to-the-power-n": {
+    "name": "Pow(x,n)",
+    "youtube": "https://youtu.be/l0YC3876qxg"
+  },
+  "https://takeuforward.org/data-structure/power-set-print-all-the-possible-subsequences-of-the-string": {
+    "name": "Power Set",
+    "youtube": "https://youtu.be/b7AYbpM5YrE"
+  },
+  "https://takeuforward.org/data-structure/learn-all-patterns-of-subsequences-theory": {
+    "name": "Learn All Patterns of Subsequences (Theory)",
+    "youtube": "https://youtu.be/eQCS_v3bw0Q"
+  },
+  "https://takeuforward.org/data-structure/combination-sum-1": {
+    "name": "Combination Sum",
+    "youtube": "https://youtu.be/OyZFFqQtu98"
+  },
+  "https://takeuforward.org/data-structure/combination-sum-ii-find-all-unique-combinations": {
+    "name": "Combination Sum II",
+    "youtube": "https://youtu.be/G1fRTGRxXU8"
+  },
+  "https://takeuforward.org/data-structure/subset-sum-sum-of-all-subsets": {
+    "name": "Subsets I",
+    "youtube": "https://youtu.be/rYkfBRtMJr8"
+  },
+  "https://takeuforward.org/data-structure/subset-ii-print-all-the-unique-subsets": {
+    "name": "Subsets II",
+    "youtube": "https://youtu.be/RIn3gOkbhQE"
+  },
+  "https://takeuforward.org/data-structure/rat-in-a-maze": {
+    "name": "Rat in a Maze",
+    "youtube": "https://youtu.be/bLGZhJlt4y0"
+  },
+  "https://takeuforward.org/data-structure/m-coloring-problem": {
+    "name": "M Coloring Problem",
+    "youtube": "https://youtu.be/wuVwUK25Rfc"
+  },
+  "https://takeuforward.org/data-structure/sudoku-solver": {
+    "name": "Sudoku Solver",
+    "youtube": "https://youtu.be/FWAIf_EVUKE"
+  },
+  "https://takeuforward.org/data-structure/introduction-to-bit-manipulation-theory": {
+    "name": "Introduction to Bits and Tricks",
+    "youtube": "https://youtu.be/qQd-ViW7bfk"
+  },
+  "https://takeuforward.org/data-structure/check-if-the-i-th-bit-is-set-or-not": {
+    "name": "Check if the i-th bit is Set or Not",
+    "youtube": "https://youtu.be/nttpF8kwgd4"
+  },
+  "https://takeuforward.org/data-structure/check-if-a-number-is-odd-or-not": {
+    "name": "Check if a Number is Odd or Not",
+    "youtube": "https://youtu.be/nttpF8kwgd4"
+  },
+  "https://takeuforward.org/data-structure/check-if-a-number-is-power-of-2-or-not": {
+    "name": "Check if a Number is Power of 2 or Not",
+    "youtube": "https://youtu.be/nttpF8kwgd4"
+  },
+  "https://takeuforward.org/data-structure/set-the-rightmost-bit": {
+    "name": "Set/Unset the rightmost unset bit",
+    "youtube": "https://youtu.be/nttpF8kwgd4"
+  },
+  "https://takeuforward.org/data-structure/swap-two-numbers": {
+    "name": "Swap Two Numbers",
+    "youtube": "https://youtu.be/nttpF8kwgd4"
+  },
+  "https://takeuforward.org/data-structure/divide-two-integers-without-using-multiplication-division-and-mod-operator": {
+    "name": "Divide two numbers without multiplication and division",
+    "youtube": "https://youtu.be/pBD4B1tzgVc"
+  },
+  "https://takeuforward.org/data-structure/count-number-of-bits-to-be-flipped-to-convert-a-to-b": {
+    "name": "Minimum Bit Flips to Convert Number",
+    "youtube": "https://youtu.be/OOdrmcfZXd8"
+  },
+  "https://takeuforward.org/bit-manipulation/power-set-bit-manipulation": {
+    "name": "Power Set Bit Manipulation",
+    "youtube": "https://youtu.be/LqKaUv1G3_I"
+  },
+  "https://takeuforward.org/data-structure/find-xor-of-numbers-from-l-to-r": {
+    "name": "XOR of numbers in a given range",
+    "youtube": "https://youtu.be/WqGb7159h7Q"
+  },
+  "https://takeuforward.org/data-structure/find-the-two-numbers-appearing-odd-number-of-times": {
+    "name": "Prime factorisation of a Number",
+    "youtube": "https://youtu.be/LT7XhVdeRyg"
+  },
+  "https://takeuforward.org/data-structure/sieve-of-eratosthenes": {
+    "name": "Count primes in range L to R",
+    "youtube": "https://youtu.be/g5Fuxn_AvSk"
+  },
+  "https://takeuforward.org/data-structure/implement-stack-using-array": {
+    "name": "Implement Stack using Arrays",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/implement-queue-using-array": {
+    "name": "Implement Queue using Arrays",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/implement-stack-using-single-queue": {
+    "name": "Implement Stack using Queue",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/implement-queue-using-stack": {
+    "name": "Implement Queue using Stack",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/implement-stack-using-linked-list": {
+    "name": "Implement stack using Linkedlist",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/implement-queue-using-linked-list": {
+    "name": "Implement queue using Linkedlist",
+    "youtube": "https://youtu.be/tqQ5fTamIN4"
+  },
+  "https://takeuforward.org/data-structure/check-for-balanced-parentheses": {
+    "name": "Balanced Paranthesis",
+    "youtube": "https://youtu.be/xwjS0iZhw4I"
+  },
+  "https://takeuforward.org/data-structure/implement-min-stack-o2n-and-on-space-complexity": {
+    "name": "Implement Min Stack",
+    "youtube": "https://youtu.be/NdDIaH91P0g"
+  },
+  "https://takeuforward.org/data-structure/infix-to-postfix": {
+    "name": "Infix to Postfix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/prefix-to-infix-conversion": {
+    "name": "Prefix to Infix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/prefix-to-postfix-conversion": {
+    "name": "Prefix to Postfix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/postfix-to-prefix-conversion": {
+    "name": "Postfix to Prefix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/postfix-to-infix": {
+    "name": "Postfix to Infix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/infix-to-prefix": {
+    "name": "Infix to Prefix Conversion",
+    "youtube": "https://youtu.be/4pIc9UBHJtk"
+  },
+  "https://takeuforward.org/data-structure/next-greater-element-using-stack": {
+    "name": "Next Greater Element",
+    "youtube": "https://youtu.be/e7XQLtOQM3I"
+  },
+  "https://takeuforward.org/data-structure/trapping-rainwater": {
+    "name": "Trapping Rainwater",
+    "youtube": "https://youtu.be/1_5VuquLbXg"
+  },
+  "https://takeuforward.org/data-structure/sum-of-subarray-minimums": {
+    "name": "Sum of Subarray Minimums",
+    "youtube": "https://youtu.be/v0e8p9JCgRc"
+  },
+  "https://takeuforward.org/data-structure/asteroid-collision": {
+    "name": "Asteroid Collision",
+    "youtube": "https://youtu.be/_eYGqw_VDR4"
+  },
+  "https://takeuforward.org/data-structure/sum-of-subarray-ranges": {
+    "name": "Sum of Subarray Ranges",
+    "youtube": "https://youtu.be/gIrMptNPf5M"
+  },
+  "https://takeuforward.org/data-structure/remove-k-digits": {
+    "name": "Remove K Digits",
+    "youtube": "https://youtu.be/jmbuRzYPGrg"
+  },
+  "https://takeuforward.org/data-structure/area-of-largest-rectangle-in-histogram": {
+    "name": "Largest rectangle in a histogram",
+    "youtube": "https://youtu.be/Bzat9vgD0fs"
+  },
+  "https://takeuforward.org/data-structure/maximum-rectangle-area-with-all-1s-dp-on-rectangles-dp-55": {
+    "name": "Maximum Rectangle Area with all 1's|(DP-55)",
+    "youtube": "https://youtu.be/tOylVCugy9k"
+  },
+  "https://takeuforward.org/data-structure/sliding-window-maximum": {
+    "name": "Sliding Window Maximum",
+    "youtube": "https://youtu.be/NwBvene4Imo"
+  },
+  "https://takeuforward.org/data-structure/stock-span-problem": {
+    "name": "Stock span problem",
+    "youtube": "https://youtu.be/eay-zoSRkVc"
+  },
+  "https://takeuforward.org/data-structure/celebrity-problem": {
+    "name": "Celebrity Problem",
+    "youtube": "https://youtu.be/cEadsbTeze4"
+  },
+  "https://takeuforward.org/data-structure/lfu-cache": {
+    "name": "LFU Cache",
+    "youtube": "https://youtu.be/0PSB9y8ehbk"
+  },
+  "https://takeuforward.org/data-structure/length-of-longest-substring-without-any-repeating-character": {
+    "name": "Longest Substring Without Repeating Characters",
+    "youtube": "https://youtu.be/-zSxTJkcdAo"
+  },
+  "https://takeuforward.org/data-structure/max-consecutive-ones-iii": {
+    "name": " Max Consecutive Ones III",
+    "youtube": "https://youtu.be/3E4JBHSLpYk"
+  },
+  "https://takeuforward.org/data-structure/fruit-into-baskets": {
+    "name": " Fruit Into Baskets",
+    "youtube": "https://youtu.be/e3bs0uA1NhQ"
+  },
+  "https://takeuforward.org/data-structure/longest-repeating-character-replacement": {
+    "name": "Longest Repeating Character Replacement",
+    "youtube": "https://youtu.be/_eNhaDCr6P0"
+  },
+  "https://takeuforward.org/data-structure/count-number-of-nice-subarrays": {
+    "name": "Count number of Nice subarrays",
+    "youtube": "https://youtu.be/j_QOv9OT9Og"
+  },
+  "https://takeuforward.org/data-structure/number-of-substring-containing-all-three-characters": {
+    "name": "Number of Substrings Containing All Three Characters",
+    "youtube": "https://youtu.be/xtqN4qlgr8s"
+  },
+  "https://takeuforward.org/data-structure/maximum-point-you-can-obtain-from-cards": {
+    "name": "Maximum Points You Can Obtain from Cards ",
+    "youtube": "https://youtu.be/pBWCOCS636U"
+  },
+  "https://takeuforward.org/data-structure/longest-substring-with-at-most-k-distinct-characters": {
+    "name": "Longest Substring With At Most K Distinct Characters",
+    "youtube": "https://youtu.be/teM9ZsVRQyc"
+  },
+  "https://takeuforward.org/data-structure/subarray-with-k-different-integers": {
+    "name": "Subarrays with K Different Integers",
+    "youtube": "https://youtu.be/7wYGbV_LsX4"
+  },
+  "https://takeuforward.org/data-structure/assign-cookies": {
+    "name": "Assign Cookies",
+    "youtube": "https://youtu.be/DIX2p7vb9co"
+  },
+  "https://takeuforward.org/data-structure/fractional-knapsack-problem-greedy-approach": {
+    "name": "Fractional Knapsack",
+    "youtube": "https://youtu.be/1ibsQrnuEEg"
+  },
+  "https://takeuforward.org/greedy/lemonade-change": {
+    "name": "Lemonade Change",
+    "youtube": "https://youtu.be/n_tmibEhO6Q"
+  },
+  "https://takeuforward.org/data-structure/valid-paranthesis-checker": {
+    "name": "Valid Paranthesis Checker",
+    "youtube": "https://youtu.be/cHT6sG_hUZI"
+  },
+  "https://takeuforward.org/data-structure/n-meetings-in-one-room": {
+    "name": "N meetings in one room",
+    "youtube": "https://youtu.be/mKfhTotEguk"
+  },
+  "https://takeuforward.org/data-structure/jump-game-2": {
+    "name": "Jump Game II",
+    "youtube": "https://youtu.be/7SBVnw7GSTk"
+  },
+  "https://takeuforward.org/data-structure/minimum-number-of-platforms-required-for-a-railway": {
+    "name": "Minimum number of platforms required for a railway",
+    "youtube": "https://youtu.be/AsGzwR_FWok"
+  },
+  "https://takeuforward.org/data-structure/job-sequencing-problem": {
+    "name": "Job sequencing Problem",
+    "youtube": "https://youtu.be/QbwltemZbRg"
+  },
+  "https://takeuforward.org/data-structure/candy": {
+    "name": "Candy",
+    "youtube": "https://youtu.be/IIqVFvKE6RY"
+  },
+  "https://takeuforward.org/greedy/shortest-job-first-or-sjf-cpu-scheduling": {
+    "name": "Shortest Job First",
+    "youtube": "https://youtu.be/3-QbX1iDbXs"
+  },
+  "https://takeuforward.org/?s=insert+interval": {
+    "name": "Insert Interval",
+    "youtube": "https://youtu.be/xxRE-46OCC8"
+  },
+  "https://takeuforward.org/data-structure/non-overlapping-intervals": {
+    "name": "Non-overlapping Intervals",
+    "youtube": "https://youtu.be/HDHQ8lAWakY"
+  },
+  "https://takeuforward.org/binary-tree/introduction-to-trees": {
+    "name": "Introduction to Trees",
+    "youtube": "https://youtu.be/_ANrF3FJm7I"
+  },
+  "https://takeuforward.org/binary-tree/binary-tree-representation-in-java": {
+    "name": "Binary Tree Representation in Java",
+    "youtube": "https://youtu.be/hyLyW7rP24I"
+  },
+  "https://takeuforward.org/data-structure/preorder-inorder-postorder-traversals-in-one-traversal": {
+    "name": "Preorder, Inorder, and Postorder Traversal in one Traversal",
+    "youtube": "https://youtu.be/ySp2epYvgTE"
+  },
+  "https://takeuforward.org/data-structure/preorder-traversal-of-binary-tree": {
+    "name": "Preorder Traversal",
+    "youtube": "https://youtu.be/RlUu72JrOCQ"
+  },
+  "https://takeuforward.org/data-structure/inorder-traversal-of-binary-tree": {
+    "name": "Iterative Inorder Traversal of Binary Tree",
+    "youtube": "https://youtu.be/lxTGsVXjwvM"
+  },
+  "https://takeuforward.org/data-structure/iterative-postorder-traversal-of-binary-tree-using-2-stack": {
+    "name": "Post-order Traversal of Binary Tree using 2 stack",
+    "youtube": "https://youtu.be/2YBhNLodD8Q"
+  },
+  "https://takeuforward.org/data-structure/level-order-traversal-of-a-binary-tree": {
+    "name": "Level Order Traversal",
+    "youtube": "https://youtu.be/EoAsWbO7sqg"
+  },
+  "https://takeuforward.org/data-structure/iterative-preorder-traversal-of-binary-tree": {
+    "name": "Iterative Preorder Traversal of Binary Tree",
+    "youtube": "https://youtu.be/Bfqd8BsPVuw"
+  },
+  "https://takeuforward.org/data-structure/post-order-traversal-of-binary-tree": {
+    "name": "Post-order Traversal of Binary Tree using 1 stack",
+    "youtube": "https://youtu.be/NzIGLLwZBS8"
+  },
+  "https://takeuforward.org/data-structure/maximum-depth-of-a-binary-tree": {
+    "name": "Maximum Depth in BT",
+    "youtube": "https://youtu.be/eD3tmO66aBA"
+  },
+  "https://takeuforward.org/data-structure/check-if-the-binary-tree-is-balanced-binary-tree": {
+    "name": "Check for balanced binary tree",
+    "youtube": "https://youtu.be/Yt50Jfbd8Po"
+  },
+  "https://takeuforward.org/data-structure/calculate-the-diameter-of-a-binary-tree": {
+    "name": "Diameter of Binary Tree",
+    "youtube": "https://youtu.be/Rezetez59Nk"
+  },
+  "https://takeuforward.org/data-structure/maximum-sum-path-in-binary-tree": {
+    "name": "Maximum path sum ",
+    "youtube": "https://youtu.be/WszrfSwMz58"
+  },
+  "https://takeuforward.org/data-structure/check-if-two-trees-are-identical": {
+    "name": "Check if two trees are identical or not",
+    "youtube": "https://youtu.be/BhuvF_-PWS0"
+  },
+  "https://takeuforward.org/data-structure/zig-zag-traversal-of-binary-tree": {
+    "name": "Zig Zag or Spiral Traversal",
+    "youtube": "https://youtu.be/3OXWEdlIGl4"
+  },
+  "https://takeuforward.org/data-structure/boundary-traversal-of-a-binary-tree": {
+    "name": "Boundary Traversal",
+    "youtube": "https://youtu.be/0ca1nvR0be4"
+  },
+  "https://takeuforward.org/data-structure/vertical-order-traversal-of-binary-tree": {
+    "name": "Vertical Order Traversal",
+    "youtube": "https://youtu.be/q_a6lpbKJdw"
+  },
+  "https://takeuforward.org/data-structure/top-view-of-a-binary-tree": {
+    "name": "Top View of BT",
+    "youtube": "https://youtu.be/Et9OCDNvJ78"
+  },
+  "https://takeuforward.org/data-structure/bottom-view-of-a-binary-tree": {
+    "name": "Bottom view of BT",
+    "youtube": "https://youtu.be/0FtVY6I4pB8"
+  },
+  "https://takeuforward.org/data-structure/right-left-view-of-binary-tree": {
+    "name": "Right/Left View of Binary Tree",
+    "youtube": "https://youtu.be/KV4mRzTjlAk"
+  },
+  "https://takeuforward.org/data-structure/print-root-to-node-path-in-a-binary-tree": {
+    "name": "Print root to leaf path in BT",
+    "youtube": "https://youtu.be/fmflMqVOC7k"
+  },
+  "https://takeuforward.org/data-structure/lowest-common-ancestor-for-two-given-nodes": {
+    "name": "LCA in BT",
+    "youtube": "https://youtu.be/_-QHfMDde90"
+  },
+  "https://takeuforward.org/data-structure/maximum-width-of-a-binary-tree": {
+    "name": "Maximum Width of BT",
+    "youtube": "https://youtu.be/ZbybYvcVLks"
+  },
+  "https://takeuforward.org/data-structure/check-for-children-sum-property-in-a-binary-tree": {
+    "name": "Children Sum Property in Binary Tree",
+    "youtube": "https://youtu.be/fnmisPM6cVo"
+  },
+  "https://takeuforward.org/data-structure/print-all-the-nodes-at-a-distance-of-k-in-a-binary-tree": {
+    "name": "Print all nodes at a distance of K in BT",
+    "youtube": "https://youtu.be/i9ORlEy6EsI"
+  },
+  "https://takeuforward.org/data-structure/minimum-time-taken-to-burn-the-binary-tree-from-a-node": {
+    "name": "Minimum time taken to burn the BT from a given Node",
+    "youtube": "https://youtu.be/2r5wLmQfD6g"
+  },
+  "https://takeuforward.org/binary-tree/count-number-of-nodes-in-a-binary-tree": {
+    "name": "Count total nodes in a complete BT",
+    "youtube": "https://youtu.be/u-yWemKGWO0"
+  },
+  "https://takeuforward.org/data-structure/construct-a-binary-tree-from-inorder-and-preorder-traversal": {
+    "name": "Construct a BT from Preorder and Inorder",
+    "youtube": "https://youtu.be/aZNaLrVebKQ"
+  },
+  "https://takeuforward.org/data-structure/construct-binary-tree-from-inorder-and-postorder-traversal": {
+    "name": "Construct the Binary Tree from Postorder and Inorder Traversal",
+    "youtube": "https://youtu.be/LgLRTaEMRVc"
+  },
+  "https://takeuforward.org/data-structure/serialize-and-deserialize-a-binary-tree": {
+    "name": "Serialize and De-serialize BT",
+    "youtube": "https://youtu.be/-YbXySKJsX8"
+  },
+  "https://takeuforward.org/data-structure/morris-preorder-traversal-of-a-binary-tree": {
+    "name": "Morris Preorder Traversal of a Binary Tree",
+    "youtube": "https://youtu.be/80Zug6D1_r4"
+  },
+  "https://takeuforward.org/data-structure/morris-inorder-traversal-of-a-binary-tree": {
+    "name": "Morris Inorder Traversal of a Binary Tree",
+    "youtube": "https://youtu.be/80Zug6D1_r4"
+  },
+  "https://takeuforward.org/binary-search-tree/introduction-to-binary-search-trees": {
+    "name": "Introduction to BST",
+    "youtube": "https://youtu.be/p7-9UvDQZ3w"
+  },
+  "https://takeuforward.org/data-structure/search-in-a-binary-search-tree-2": {
+    "name": "Search in a Binary Search Tree",
+    "youtube": "https://youtu.be/KcNt6v_56cc"
+  },
+  "https://takeuforward.org/binary-search-tree/floor-in-a-binary-search-tree": {
+    "name": "Floor in a Binary Search Tree",
+    "youtube": "https://youtu.be/xm_W1ub-K-w"
+  },
+  "https://takeuforward.org/data-structure/kth-largest-smallest-element-in-binary-search-tree": {
+    "name": "Kth Smallest and Largest element in BST",
+    "youtube": "https://youtu.be/9TJYWh0adfk"
+  },
+  "https://takeuforward.org/data-structure/inorder-successorpredecessor-in-bst": {
+    "name": "Inorder Successor/Predecessor in BST",
+    "youtube": "https://youtu.be/SXKAD2svfmI"
+  },
+  "https://takeuforward.org/data-structure/bst-iterator": {
+    "name": "Merge 2 BST's",
+    "youtube": "https://youtu.be/D2jMcmxU4bs"
+  },
+  "https://takeuforward.org/data-structure/two-sum-in-bst-check-if-there-exists-a-pair-with-sum-k": {
+    "name": "Two Sum In BST | Check if there exists a pair with Sum K",
+    "youtube": "https://youtu.be/ssL3sHwPeb4"
+  },
+  "https://takeuforward.org/data-structure/graph-representation-in-java": {
+    "name": "Graph Representation | Java",
+    "youtube": "https://youtu.be/3oI-34aPMWM"
+  },
+  "https://takeuforward.org/graph/graph-representation-in-c": {
+    "name": "Graph Representation | C++",
+    "youtube": "https://youtu.be/3oI-34aPMWM"
+  },
+  "https://takeuforward.org/data-structure/depth-first-search-dfs": {
+    "name": "DFS",
+    "youtube": "https://youtu.be/Qzf1a--rhp8"
+  },
+  "https://takeuforward.org/data-structure/number-of-provinces": {
+    "name": "Number of provinces",
+    "youtube": "https://youtu.be/ACzkVtewUYA"
+  },
+  "https://takeuforward.org/data-structure/rotten-oranges-min-time-to-rot-all-oranges-bfs": {
+    "name": "Rotten Oranges",
+    "youtube": "https://youtu.be/yf3oUhkvqA0"
+  },
+  "https://takeuforward.org/data-structure/detect-cycle-in-an-undirected-graph-using-bfs": {
+    "name": "Cycle Detection in Undirected Graph (bfs)",
+    "youtube": "https://youtu.be/BPlrALf1LDU"
+  },
+  "https://takeuforward.org/data-structure/detect-cycle-in-an-undirected-graph-using-dfs": {
+    "name": "Detect a cycle in an undirected graph",
+    "youtube": "https://youtu.be/zQ3zgFypzX4"
+  },
+  "https://takeuforward.org/graph/distance-of-nearest-cell-having-1": {
+    "name": "Distance of nearest cell having one",
+    "youtube": "https://youtu.be/edXdVwkYHF8"
+  },
+  "https://takeuforward.org/graph/surrounded-regions-replace-os-with-xs": {
+    "name": "Surrounded Regions",
+    "youtube": "https://youtu.be/BtdgAys4yMk"
+  },
+  "https://takeuforward.org/graph/number-of-enclaves": {
+    "name": "Number of enclaves",
+    "youtube": "https://youtu.be/rxKcepXQgU4"
+  },
+  "https://takeuforward.org/graph/word-ladder-i-g-29": {
+    "name": "Word ladder I",
+    "youtube": "https://youtu.be/tRPda0rcf8E"
+  },
+  "https://takeuforward.org/graph/g-30-word-ladder-ii": {
+    "name": "Word ladder II",
+    "youtube": "https://youtu.be/AD4SFl7tu7I"
+  },
+  "https://takeuforward.org/data-structure/number-of-distinct-islands": {
+    "name": "Number of islands",
+    "youtube": "https://youtu.be/muncqlKJrH0"
+  },
+  "https://takeuforward.org/graph/bipartite-graph-dfs-implementation": {
+    "name": "Bipartite Graph (DFS)",
+    "youtube": "https://youtu.be/KG5YFfR0j8A"
+  },
+  "https://takeuforward.org/data-structure/detect-cycle-in-a-directed-graph-using-dfs-g-19": {
+    "name": "Cycle Detection in Directed Graph (DFS)",
+    "youtube": "https://youtu.be/9twcmtQj4DU"
+  },
+  "https://takeuforward.org/data-structure/topological-sort-algorithm-dfs-g-21": {
+    "name": "Topological sort or Kahn's algorithm",
+    "youtube": "https://youtu.be/5lZ0iJMrUMk"
+  },
+  "https://takeuforward.org/data-structure/detect-a-cycle-in-directed-graph-topological-sort-kahns-algorithm-g-23": {
+    "name": "Detect a cycle in a directed graph",
+    "youtube": "https://youtu.be/uzVUw90ZFIg"
+  },
+  "https://takeuforward.org/data-structure/course-schedule-i-and-ii-pre-requisite-tasks-topological-sort-g-24": {
+    "name": "Course Schedule II",
+    "youtube": "https://youtu.be/WAOfKpxYHR8"
+  },
+  "https://takeuforward.org/data-structure/find-eventual-safe-states-bfs-topological-sort-g-25": {
+    "name": "Find eventual safe states",
+    "youtube": "https://youtu.be/2gtg3VsDGyc"
+  },
+  "https://takeuforward.org/data-structure/alien-dictionary-topological-sort-g-26": {
+    "name": "Alien Dictionary",
+    "youtube": "https://youtu.be/U3N_je7tWAs"
+  },
+  "https://takeuforward.org/data-structure/shortest-path-in-undirected-graph-with-unit-distance-g-28": {
+    "name": "Shortest path in undirected graph with unit weights",
+    "youtube": "https://youtu.be/C4gxoTaI71U"
+  },
+  "https://takeuforward.org/data-structure/shortest-path-in-directed-acyclic-graph-topological-sort-g-27": {
+    "name": "Shortest path in DAG",
+    "youtube": "https://youtu.be/ZUFQfFaU-8U"
+  },
+  "https://takeuforward.org/data-structure/dijkstras-algorithm-using-set-g-33": {
+    "name": "Djisktra's Algorithm",
+    "youtube": "https://youtu.be/rp1SMw7HSO8"
+  },
+  "https://takeuforward.org/data-structure/dijkstras-algorithm-using-priority-queue-g-32": {
+    "name": "Why priority Queue is used in Djisktra's Algorithm",
+    "youtube": "https://youtu.be/rp1SMw7HSO8"
+  },
+  "https://takeuforward.org/data-structure/g-36-shortest-distance-in-a-binary-maze": {
+    "name": "Shortest Distance in a Binary Maze",
+    "youtube": "https://youtu.be/U5Mw4eyUmw4"
+  },
+  "https://takeuforward.org/data-structure/g-37-path-with-minimum-effort": {
+    "name": "Path with minimum effort",
+    "youtube": "https://youtu.be/0ytpZyiZFhA"
+  },
+  "https://takeuforward.org/data-structure/g-38-cheapest-flights-within-k-stops": {
+    "name": "Cheapest flight within K stops",
+    "youtube": "https://youtu.be/9XybHVqTHcQ"
+  },
+  "https://takeuforward.org/data-structure/g-40-number-of-ways-to-arrive-at-destination": {
+    "name": "Number of ways to arrive at destination",
+    "youtube": "https://youtu.be/_-0mx0SmYxA"
+  },
+  "https://takeuforward.org/graph/g-39-minimum-multiplications-to-reach-end": {
+    "name": "Minimum multiplications to reach end",
+    "youtube": "https://youtu.be/_BvEJ3VIDWw"
+  },
+  "https://takeuforward.org/data-structure/bellman-ford-algorithm-g-41": {
+    "name": "Bellman Ford Algorithm",
+    "youtube": "https://youtu.be/0vVofAhAYjc"
+  },
+  "https://takeuforward.org/data-structure/floyd-warshall-algorithm-g-42": {
+    "name": "Floyd warshall algorithm",
+    "youtube": "https://youtu.be/YbY8cVwWAvw"
+  },
+  "https://takeuforward.org/data-structure/find-the-city-with-the-smallest-number-of-neighbours-at-a-threshold-distance-g-43": {
+    "name": "Find the city with the smallest number of neighbors",
+    "youtube": "https://youtu.be/9XybHVqTHcQ"
+  },
+  "https://takeuforward.org/data-structure/minimum-spanning-tree-theory-g-44": {
+    "name": "MST theory",
+    "youtube": "https://youtu.be/ZSPjZuZWCME"
+  },
+  "https://takeuforward.org/data-structure/prims-algorithm-minimum-spanning-tree-c-and-java-g-45": {
+    "name": "Find the MST weight",
+    "youtube": "https://youtu.be/mJcZjjKzeqk"
+  },
+  "https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46": {
+    "name": "Disjoint Set ",
+    "youtube": "https://youtu.be/aBxjDBC4M1U"
+  },
+  "https://takeuforward.org/data-structure/number-of-operations-to-make-network-connected-dsu-g-49": {
+    "name": "Number of operations to make network connected",
+    "youtube": "https://youtu.be/FYrl7iz9_ZU"
+  },
+  "https://takeuforward.org/data-structure/most-stones-removed-with-same-row-or-column-dsu-g-53": {
+    "name": "Most stones removed with same row or column",
+    "youtube": "https://youtu.be/OwMNX8SPavM"
+  },
+  "https://takeuforward.org/data-structure/accounts-merge-dsu-g-50": {
+    "name": "Accounts merge",
+    "youtube": "https://youtu.be/FMwpt_aQOGw"
+  },
+  "https://takeuforward.org/graph/number-of-islands-ii-online-queries-dsu-g-51": {
+    "name": "Number of islands II",
+    "youtube": "https://youtu.be/Rn6B-Q4SNyA"
+  },
+  "https://takeuforward.org/data-structure/making-a-large-island-dsu-g-52": {
+    "name": "Making a large island",
+    "youtube": "https://youtu.be/lgiz0Oup6gM"
+  },
+  "https://takeuforward.org/data-structure/articulation-point-in-graph-g-56": {
+    "name": "Articulation point in graph",
+    "youtube": "https://youtu.be/j1QDfU21iZk"
+  },
+  "https://takeuforward.org/graph/strongly-connected-components-kosarajus-algorithm-g-54": {
+    "name": "Kosaraju's algorithm",
+    "youtube": "https://youtu.be/V8qIqJxCioo"
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-introduction": {
+    "name": "Introduction to DP",
+    "youtube": "https://youtu.be/tyB0ztf0DNY"
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-climbing-stairs": {
+    "name": "Climbing stairs",
+    "youtube": "https://youtu.be/mLfjzJsN8us"
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-frog-jump-dp-3": {
+    "name": "Frog Jump",
+    "youtube": "https://youtu.be/EgG3jsGoPvQ"
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-frog-jump-with-k-distances-dp-4": {
+    "name": "Frog jump with K distances",
+    "youtube": "https://youtu.be/Kmh3rhyEtB8"
+  },
+  "https://takeuforward.org/data-structure/maximum-sum-of-non-adjacent-elements-dp-5": {
+    "name": "Maximum sum of non adjacent elements",
+    "youtube": "https://youtu.be/GrMBfJNk_NY"
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-house-robber-dp-6": {
+    "name": "House robber",
+    "youtube": "https://youtu.be/3WaxQMELSkw"
+  },
+  "https://takeuforward.org/data-structure/grid-unique-paths-dp-on-grids-dp8": {
+    "name": "Grid Unique Paths : DP on Grids (DP8)",
+    "youtube": "https://youtu.be/sdE0A2Oxofw"
+  },
+  "https://takeuforward.org/data-structure/grid-unique-paths-2-dp-9": {
+    "name": "Unique paths II",
+    "youtube": "https://youtu.be/TmhpgXScLyY"
+  },
+  "https://takeuforward.org/data-structure/minimum-path-sum-in-a-grid-dp-10": {
+    "name": "Minimum Falling Path Sum",
+    "youtube": "https://youtu.be/_rgTlyky1uQ"
+  },
+  "https://takeuforward.org/data-structure/minimum-path-sum-in-triangular-grid-dp-11": {
+    "name": "Triangle",
+    "youtube": "https://youtu.be/SrP-PiLSYC0"
+  },
+  "https://takeuforward.org/data-structure/3-d-dp-ninja-and-his-friends-dp-13": {
+    "name": "Ninja and his Friends",
+    "youtube": "https://youtu.be/QGfn7JeXK54"
+  },
+  "https://takeuforward.org/data-structure/subset-sum-equal-to-target-dp-14": {
+    "name": "Subset sum equal to target (DP- 14)",
+    "youtube": "https://youtu.be/fWX9xDmIzRI"
+  },
+  "https://takeuforward.org/data-structure/partition-equal-subset-sum-dp-15": {
+    "name": "Partition equal subset sum",
+    "youtube": "https://youtu.be/7win3dcgo3k"
+  },
+  "https://takeuforward.org/data-structure/partition-set-into-2-subsets-with-min-absolute-sum-diff-dp-16": {
+    "name": "Partition a set into two subsets with minimum absolute sum difference",
+    "youtube": "https://youtu.be/GS_OqZb2CWc"
+  },
+  "https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17": {
+    "name": "Count subsets with sum K",
+    "youtube": "https://youtu.be/ZHyb-A2Mte4"
+  },
+  "https://takeuforward.org/data-structure/count-partitions-with-given-difference-dp-18": {
+    "name": "Count partitions with given difference",
+    "youtube": "https://youtu.be/zoilQD1kYSg"
+  },
+  "https://takeuforward.org/data-structure/minimum-coins-dp-20": {
+    "name": "Minimum Coins (DP - 20)",
+    "youtube": "https://youtu.be/myPeWb3Y68A"
+  },
+  "https://takeuforward.org/data-structure/target-sum-dp-21": {
+    "name": "Target sum",
+    "youtube": "https://youtu.be/b3GD8263-PQ"
+  },
+  "https://takeuforward.org/data-structure/coin-change-2-dp-22": {
+    "name": "Coin Change 2 (DP - 22)",
+    "youtube": "https://youtu.be/HgyouUi11zk"
+  },
+  "https://takeuforward.org/data-structure/unbounded-knapsack-dp-23": {
+    "name": "Unbounded knapsack",
+    "youtube": "https://youtu.be/OgvOZ6OrJoY"
+  },
+  "https://takeuforward.org/data-structure/rod-cutting-problem-dp-24": {
+    "name": "Rod Cutting Problem | (DP - 24)",
+    "youtube": "https://youtu.be/mO8XpGoJwuo"
+  },
+  "https://takeuforward.org/data-structure/print-longest-common-subsequence-dp-26": {
+    "name": "Print Longest Common Subsequence | (DP - 26)",
+    "youtube": "https://youtu.be/-zI4mrF2Pb4"
+  },
+  "https://takeuforward.org/data-structure/longest-common-substring-dp-27": {
+    "name": "Longest common substring",
+    "youtube": "https://youtu.be/_wP9mWNPL5w"
+  },
+  "https://takeuforward.org/data-structure/longest-palindromic-subsequence-dp-28": {
+    "name": "Longest palindromic subsequence",
+    "youtube": "https://youtu.be/6i_T5kkfv4A"
+  },
+  "https://takeuforward.org/data-structure/minimum-insertions-to-make-string-palindrome-dp-29": {
+    "name": "Minimum insertions to make string palindrome | DP-29",
+    "youtube": "https://youtu.be/xPBLEj41rFU"
+  },
+  "https://takeuforward.org/data-structure/minimum-insertions-deletions-to-convert-string-dp-30": {
+    "name": "Minimum insertions or deletions to convert string A to B",
+    "youtube": "https://youtu.be/yMnH0jrir0Q"
+  },
+  "https://takeuforward.org/data-structure/shortest-common-supersequence-dp-31": {
+    "name": "Shortest common supersequence",
+    "youtube": "https://youtu.be/xElxAuBcvsU"
+  },
+  "https://takeuforward.org/data-structure/distinct-subsequences-dp-32": {
+    "name": "Distinct subsequences",
+    "youtube": "https://youtu.be/nVG7eTiD2bY"
+  },
+  "https://takeuforward.org/data-structure/edit-distance-dp-33": {
+    "name": "Edit distance",
+    "youtube": "https://youtu.be/fJaKO8FbDdo"
+  },
+  "https://takeuforward.org/data-structure/wildcard-matching-dp-34": {
+    "name": "Wildcard matching",
+    "youtube": "https://youtu.be/ZmlQ3vgAOMo"
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stock-ii-dp-36": {
+    "name": "Best time to buy and sell stock II",
+    "youtube": "https://youtu.be/nGJmxkUJQGs"
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stock-iii-dp-37": {
+    "name": "Best time to buy and sell stock III",
+    "youtube": "https://youtu.be/-uQGzhYj8BQ"
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stock-iv-dp-38": {
+    "name": "Best time to buy and sell stock IV",
+    "youtube": "https://youtu.be/IV1dHbk5CDc"
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stocks-with-cooldown-dp-39": {
+    "name": "Best Time to Buy and Sell Stock with Cooldown",
+    "youtube": "https://youtu.be/IGIe46xw3YY"
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stocks-with-transaction-fees-dp-40": {
+    "name": "Best time to buy and sell stock with transaction fees",
+    "youtube": "https://youtu.be/k4eK-vEmnKg"
+  },
+  "https://takeuforward.org/data-structure/longest-increasing-subsequence-binary-search-dp-43": {
+    "name": "Longest Increasing Subsequence |(DP-43)",
+    "youtube": "https://youtu.be/on2hvxBXJH4"
+  },
+  "https://takeuforward.org/data-structure/printing-longest-increasing-subsequence-dp-42": {
+    "name": "Print Longest Increasing Subsequence",
+    "youtube": "https://youtu.be/IFfYfonAFGc"
+  },
+  "https://takeuforward.org/data-structure/longest-divisible-subset-dp-44": {
+    "name": "Largest Divisible Subset",
+    "youtube": "https://youtu.be/gDuZwBW9VvM"
+  },
+  "https://takeuforward.org/data-structure/longest-string-chain-dp-45": {
+    "name": "Longest String Chain",
+    "youtube": "https://youtu.be/YY8iBaYcc4g"
+  },
+  "https://takeuforward.org/data-structure/longest-bitonic-subsequence-dp-46": {
+    "name": "Longest Bitonic Subsequence",
+    "youtube": "https://youtu.be/y4vN0WNdrlg"
+  },
+  "https://takeuforward.org/data-structure/number-of-longest-increasing-subsequences-dp-47": {
+    "name": "Number of Longest Increasing Subsequences",
+    "youtube": "https://youtu.be/cKVl1TFdNXg"
+  },
+  "https://takeuforward.org/dynamic-programming/matrix-chain-multiplication-dp-48": {
+    "name": "Matrix chain multiplication",
+    "youtube": "https://youtu.be/vRVfmbCFW7Y"
+  },
+  "https://takeuforward.org/data-structure/matrix-chain-multiplication-tabulation-method-dp-49": {
+    "name": "Matrix Chain Multiplication | Bottom-Up|(DP-49)",
+    "youtube": "https://youtu.be/pDCXsbAw5Cg"
+  },
+  "https://takeuforward.org/data-structure/minimum-cost-to-cut-the-stick-dp-50": {
+    "name": "Minimum cost to cut the stick",
+    "youtube": "https://youtu.be/xwomavsC86c"
+  },
+  "https://takeuforward.org/data-structure/burst-balloons-partition-dp-dp-51": {
+    "name": "Burst balloons",
+    "youtube": "https://youtu.be/Yz4LlDSlkns"
+  },
+  "https://takeuforward.org/data-structure/evaluate-boolean-expression-to-true-partition-dp-dp-52": {
+    "name": "Different Ways to Evaluate a Boolean Expression",
+    "youtube": "https://youtu.be/MM7fXopgyjw"
+  },
+  "https://takeuforward.org/data-structure/palindrome-partitioning-ii-front-partition-dp-53": {
+    "name": "Palindrome partitioning II ",
+    "youtube": "https://youtu.be/_H8V5hJUGd0"
+  },
+  "https://takeuforward.org/data-structure/partition-array-for-maximum-sum-front-partition-dp-54": {
+    "name": "Partition Array for Maximum Sum",
+    "youtube": "https://youtu.be/PhWWJmaKfMc"
+  },
+  "https://takeuforward.org/data-structure/count-square-submatrices-with-all-1s-dp-on-rectangles-dp-56": {
+    "name": "Count Square Submatrices with All Ones|(DP-56)",
+    "youtube": "https://youtu.be/auS1fynpnjo"
+  },
+  "https://takeuforward.org/data-structure/implement-trie-1": {
+    "name": "Trie Implementation and Operations",
+    "youtube": "https://youtu.be/dBGUmUQhjaM"
+  },
+  "https://takeuforward.org/data-structure/number-of-distinct-substrings-in-a-string-using-trie": {
+    "name": "Number of distinct substrings in a string",
+    "youtube": "https://youtu.be/RV0QeTyHZxo"
+  },
+  "https://takeuforward.org/data-structure/maximum-xor-of-two-numbers-in-an-array": {
+    "name": "Maximum XOR of two numbers in an array",
+    "youtube": "https://youtu.be/EIhAwfHubE8"
+  },
+  "https://takeuforward.org/trie/maximum-xor-queries-trie": {
+    "name": "Maximum Xor with an element from an array",
+    "youtube": "https://youtu.be/Q8LhG9Pi5KM"
+  }
+}

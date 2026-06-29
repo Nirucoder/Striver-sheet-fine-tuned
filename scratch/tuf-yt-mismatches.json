@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Binary Search Introduction",
+    "current": "https://youtu.be/W9QJ8HaRvJQ",
+    "official": "https://youtu.be/MHf6awe89xw",
+    "article": "https://takeuforward.org/data-structure/binary-search-explained/"
+  },
+  {
+    "title": "Subset Sums – Generate All Subset Sums",
+    "current": "https://youtu.be/fWX9xDmIzRI",
+    "official": "https://youtu.be/rYkfBRtMJr8",
+    "article": "https://takeuforward.org/data-structure/subset-sum-sum-of-all-subsets/"
+  },
+  {
+    "title": "Subset Sum Equals Target",
+    "current": "https://youtu.be/F7wqWbqYn9g",
+    "official": "https://youtu.be/AxNNVECce8c",
+    "article": "https://takeuforward.org/data-structure/subset-sum-equal-to-target-dp-14/"
+  },
+  {
+    "title": "Buy & Sell Stock II (Multiple Transactions)",
+    "current": "https://youtu.be/nGJTWaaFdjc",
+    "official": "https://youtu.be/nGJmxkUJQGs",
+    "article": "https://takeuforward.org/data-structure/buy-and-sell-stock-ii-dp-36/"
+  }
+]

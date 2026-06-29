@@ -1,0 +1,1721 @@
+{
+  "https://takeuforward.org/pattern/pattern-1/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/count-digits-in-a-number/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/print-name-n-times-using-recursion/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/sorting/selection-sort-algorithm/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/merge-sort-algorithm/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-the-largest-element-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/program-to-generate-pascals-triangle/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/binary-search-explained/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/binary-search/finding-sqrt-of-a-number-using-binary-search/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/row-with-maximum-1s/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/remove-outermost-parentheses/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sum-of-beauty-of-all-substrings/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/linked-list/introduction-to-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/reverse-a-doubly-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-middle-element-in-a-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/reverse-linked-list-in-groups-of-size-k/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/learn-all-patterns-of-recursion/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/subset-sum-sum-of-all-subsets/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/print-all-permutations-of-a-string-array/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/bit-manipulation-course/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/two-numbers-with-odd-occurrences/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-stack-using-array/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/infix-to-postfix-conversion/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/next-greater-element/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-subarray-with-sum-k/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-size-subarray-sum/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/introduction-to-heap/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/greedy/assign-cookies/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/jump-game-greedy-approach/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/introduction-to-binary-trees/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-the-height-depth-of-a-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/introduction-to-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/kth-largest-smallest-element-in-binary-search-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/introduction-to-graph/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/bipartite-graph/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/shortest-path-for-directed-acyclic-graphs/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/prims-algorithm-minimum-spanning-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/dynamic-programming-introduction/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/ninja-s-training-dp-7/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/subset-sum-equal-to-target-dp-14/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-common-subsequence-dp-25/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stock-ii-dp-36/": {
+    "notFound": false,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/matrix-chain-multiplication-dp-48/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-trie-i/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/pattern/pattern-2/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/pattern/pattern-3/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/reverse-a-number/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/check-if-a-number-is-palindrome-or-not/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/find-gcd-of-two-numbers/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/print-all-divisors-of-a-given-number/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/maths/check-if-a-number-is-prime-or-not/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/print-1-to-n-using-recursion/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/print-n-to-1-using-recursion/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/sum-of-first-n-natural-numbers/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/factorial-of-a-number-iterative-and-recursive/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/reverse-a-given-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-the-given-string-is-palindrome-or-not/": {
+    "notFound": false,
+    "videoId": "twuC1F6gLI8",
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/print-fibonacci-series-up-to-n-th-term/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/find-the-highest-lowest-frequency-element/": {
+    "notFound": false,
+    "videoId": "Rezetez59Nk",
+    "status": 200
+  },
+  "https://takeuforward.org/sorting/bubble-sort-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/sorting/insertion-sort-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/recursive-bubble-sort-algorithm/": {
+    "notFound": false,
+    "videoId": "Rezetez59Nk",
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/recursive-insertion-sort-algorithm/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-second-smallest-and-second-largest-element-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-an-array-is-sorted/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/remove-duplicates-in-place-from-sorted-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/left-rotate-the-array-by-one/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rotate-array-by-k-elements/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/move-all-zeros-to-the-end-of-the-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/linear-search-in-c/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/union-of-two-sorted-arrays/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/find-the-missing-number-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-maximum-consecutive-ones-in-the-array/": {
+    "notFound": false,
+    "videoId": "Mo33MjjMlyA",
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/find-the-number-that-appears-once-and-the-other-numbers-twice/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sort-an-array-of-0s-1s-and-2s/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-the-majority-element-that-occurs-more-than-n-2-times/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/kadanes-algorithm-maximum-subarray-sum-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/stock-buy-and-sell/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rearrange-array-elements-by-sign/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/next_permutation-find-next-lexicographically-greater-permutation/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/leaders-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-consecutive-sequence-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/set-matrix-zero/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rotate-image-by-90-degree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/spiral-traversal-of-matrix/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/majority-elements-n-3-times-find-the-elements-that-appears-more-than-n-3-times-in-the-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/": {
+    "notFound": false,
+    "videoId": "DhFh8Kw7ymk",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/4-sum-find-quads-that-add-up-to-a-target-value/": {
+    "notFound": false,
+    "videoId": "DhFh8Kw7ymk",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-product-subarray-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/merge-overlapping-sub-intervals/": {
+    "notFound": false,
+    "videoId": "IexN60k62jo",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/merge-two-sorted-arrays-without-extra-space/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-the-repeating-and-missing-numbers/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-inversions-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-reverse-pairs/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-sum-rectangle/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-lower-bound/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/floor-and-ceil-in-sorted-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/last-occurrence-in-a-sorted-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-occurrences-in-sorted-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/search-element-in-a-rotated-sorted-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/search-element-in-a-rotated-sorted-array-ii/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-element-in-a-rotated-sorted-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/single-element-in-a-sorted-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/peak-element-in-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-nth-root-of-m/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/binary-search/koko-eating-bananas/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/binary-search/minimum-days-to-make-m-bouquets/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/binary-search/find-the-smallest-divisor-given-a-threshold/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/binary-search/capacity-to-ship-packages-within-d-days/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/aggressive-cows-detailed-solution/": {
+    "notFound": false,
+    "videoId": "R_Mfw4ew-Vo",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/allocate-minimum-number-of-pages/": {
+    "notFound": false,
+    "videoId": "Z0hwjftStI4",
+    "status": 200
+  },
+  "https://takeuforward.org/arrays/split-array-largest-sum/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/painters-partition-problem/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimise-maximum-distance-between-petrol-pumps/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/median-of-two-sorted-arrays-of-different-sizes/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/k-th-element-of-two-sorted-arrays/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/search-in-a-2d-matrix/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/search-in-a-sorted-2d-matrix/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-peak-element-in-2d-grid/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/median-of-row-wise-sorted-matrix/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/reverse-words-in-a-string/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/largest-odd-number-in-a-string/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-common-prefix/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-two-strings-are-isomorphic/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-string-is-rotation-of-another-string/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-whether-two-strings-are-anagram-of-each-other/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-characters-for-palindrome/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/valid-palindrome-ii/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-palindromic-substring/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/roman-number-to-integer-and-vice-versa/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/integer-to-roman/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-atoi/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-and-say/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/kmp-algorithm/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/repeated-string-match/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/delete-last-node-of-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/linked-list/search-an-element-in-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/reverse-a-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/detect-a-cycle-in-a-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/starting-point-of-loop-in-a-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-linked-list-is-palindrome/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/segregate-odd-and-even-nodes-in-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/remove-nth-node-from-the-back-of-the-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/delete-the-middle-node-of-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sort-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sort-linked-list-of-0s-1s-2s/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-intersection-of-two-linked-lists/": {
+    "notFound": false,
+    "videoId": "u4FWXfgS8jw",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/add-1-to-a-number-represented-as-linked-list/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rotate-a-linked-list/": {
+    "notFound": false,
+    "videoId": "9VPm6nEbVPA",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/flattening-a-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/clone-linked-list-with-random-and-next-pointer/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/add-two-numbers-represented-as-linked-lists/": {
+    "notFound": false,
+    "videoId": "LBVsXSMOIk4",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/merge-two-sorted-linked-lists/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/merge-k-sorted-lists/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-good-numbers/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/sort-a-stack-using-recursion/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/recursion/reverse-a-stack-using-recursion/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/subset-ii-print-all-the-unique-subsets/": {
+    "notFound": false,
+    "videoId": "RIn3gOkbhQE",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/combination-sum-1/": {
+    "notFound": false,
+    "videoId": "OyZFFqQtu98",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/combination-sum-ii-find-all-unique-combinations/": {
+    "notFound": false,
+    "videoId": "G1fRTGRxXU8",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/combination-sum-iii/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/letter-combinations-of-a-phone-number/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/palindrome-partitioning/": {
+    "notFound": false,
+    "videoId": "WBgsABoClE0",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/word-search/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/n-queen-problem-return-all-distinct-solutions-to-the-n-queens-puzzle/": {
+    "notFound": false,
+    "videoId": "i05Ju7AftcM",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rat-in-a-maze/": {
+    "notFound": false,
+    "videoId": "bLGZhJlt4y0",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sudoku-solver/": {
+    "notFound": false,
+    "videoId": "FWAIf_EVUKE",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/m-coloring-problem/": {
+    "notFound": false,
+    "videoId": "wuVwUK25Rfc",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/expression-add-operators/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/generate-parentheses/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/check-if-ith-bit-is-set-or-not/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/count-number-of-set-bits/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/check-whether-the-number-is-power-of-2/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/minimum-bit-flips-to-convert-number/": {
+    "notFound": false,
+    "videoId": "OOdrmcfZXd8",
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/reverse-bits/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/xor-of-all-numbers-in-the-range/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/divide-two-integers-without-using-multiplication-division-and-mod-operator/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-xor-of-two-numbers-in-an-array/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/all-subsets-using-bit-masking/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/bit-manipulation/count-total-set-bits/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-stack-using-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-queue-using-array/": {
+    "notFound": false,
+    "videoId": "M6GnoUDpqEE",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/queue-using-stack/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/stack-using-queue/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/valid-parentheses/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/prefix-to-infix-conversion/": {
+    "notFound": false,
+    "videoId": "4pIc9UBHJtk",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/postfix-evaluation/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/next-greater-element-using-stack/": {
+    "notFound": false,
+    "videoId": "Du881K7Jtk8",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/next-smaller-element/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/trapping-rainwater/": {
+    "notFound": false,
+    "videoId": "m18Hntz4go8",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/area-of-largest-rectangle-in-histogram/": {
+    "notFound": false,
+    "videoId": "X0X6G-eWgQ8",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sum-of-subarray-minimums/": {
+    "notFound": false,
+    "videoId": "v0e8p9JCgRc",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sum-of-subarray-ranges/": {
+    "notFound": false,
+    "videoId": "gIrMptNPf5M",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/asteroid-collision/": {
+    "notFound": false,
+    "videoId": "_eYGqw_VDR4",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/remove-k-digits/": {
+    "notFound": false,
+    "videoId": "jmbuRzYPGrg",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximal-rectangle-area/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/sliding-window-maximum/": {
+    "notFound": false,
+    "videoId": "CZQGRp93K4k",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-subarray-with-sum-k-for-arrays-with-positives-and-zeroes/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-substring-with-k-unique-characters/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/length-of-longest-substring-without-any-repeating-character/": {
+    "notFound": false,
+    "videoId": "qtVh-XEpsJo",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/fruit-into-baskets/": {
+    "notFound": false,
+    "videoId": "e3bs0uA1NhQ",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/binary-subarrays-with-sum/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-number-of-nice-subarrays/": {
+    "notFound": false,
+    "videoId": "j_QOv9OT9Og",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/number-of-substrings-containing-all-three-characters/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-points-you-can-obtain-from-cards/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-window-substring/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/permutation-in-string/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-repeating-character-replacement/": {
+    "notFound": false,
+    "videoId": "_eNhaDCr6P0",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-substrings-with-all-1s/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/check-if-bt-is-heap/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/kth-largest-element-in-an-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/kth-smallest-element-in-an-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/sort-k-sorted-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/top-k-frequent-elements/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/task-scheduler/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/greedy/hand-of-straights/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/k-most-frequent-words/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/replace-elements-by-rank/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-median-from-data-stream/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/k-closest-points-to-origin/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/heap/maximum-sum-combinations/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/fractional-knapsack-problem-greedy-approach/": {
+    "notFound": false,
+    "videoId": "F_DDzYnxO14",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/job-sequencing-problem/": {
+    "notFound": false,
+    "videoId": "LjPx4wQaRIs",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/n-meetings-in-one-room/": {
+    "notFound": false,
+    "videoId": "II6ziNnub1Q",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-number-of-platforms-required-for-a-railway/": {
+    "notFound": false,
+    "videoId": "dxVcMDI7vyI",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-minimum-number-of-coins/": {
+    "notFound": false,
+    "videoId": "mVg9CfJvayM",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/jump-game-2-greedy-approach/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/candy-leetcode-greedy-approach/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/insert-interval/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/non-overlapping-intervals/": {
+    "notFound": false,
+    "videoId": "HDHQ8lAWakY",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/valid-parenthesis-string/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/operating-systems/shortest-job-first/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/greedy/gas-station/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/greedy/largest-number/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/preorder-inorder-postorder-traversals-in-one-traversal/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/preorder-traversal-of-binary-tree-using-iterative-approach/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/post-order-traversal-of-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/level-order-traversal-of-a-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-whether-the-binary-tree-is-balanced-or-not/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/calculate-the-diameter-of-a-binary-tree/": {
+    "notFound": false,
+    "videoId": "Rezetez59Nk",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-sum-path-in-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-if-two-trees-are-identical-or-not/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/zigzag-traversal-of-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/boundary-traversal-of-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/vertical-order-traversal-of-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/top-view-of-a-binary-tree/": {
+    "notFound": false,
+    "videoId": "Et9OCDNvJ78",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/bottom-view-of-a-binary-tree/": {
+    "notFound": false,
+    "videoId": "0FtVY6I4pB8",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/right-left-view-of-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-for-symmetrical-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/print-root-to-node-path-in-a-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/lowest-common-ancestor-for-two-given-nodes/": {
+    "notFound": false,
+    "videoId": "_-QHfMDde90",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-width-of-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/check-for-children-sum-property-in-a-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-time-taken-to-burn-the-binary-tree-from-a-node/": {
+    "notFound": false,
+    "videoId": "2r5wLmQfD6g",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-nodes-in-a-complete-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/requirement-for-unique-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/construct-a-binary-tree-from-inorder-and-preorder-traversal/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/construct-a-binary-tree-from-inorder-and-postorder-traversal/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/flatten-binary-tree-to-linked-list/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/serialize-and-deserialize-binary-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/floor-in-a-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/ceil-in-a-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/insert-a-node-in-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/delete-a-node-in-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/lowest-common-ancestor-in-a-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/construct-a-bst-from-a-preorder-traversal/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/find-inorder-successor-predecessor-of-a-node-in-bst/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/binary-search-tree-iterator/": {
+    "notFound": false,
+    "videoId": "D2jMcmxU4bs",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/two-sum-in-bst/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/recover-bst-correct-bst-with-two-nodes-swapped/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/largest-bst-in-binary-tree/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/validate-binary-search-tree/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/breadth-first-search-bfs-level-order-traversal/": {
+    "notFound": false,
+    "videoId": "-tgVpUgsQ5k",
+    "status": 200
+  },
+  "https://takeuforward.org/graph/number-of-provinces/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/flood-fill-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/rotten-oranges/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/detect-cycle-in-an-undirected-graph-using-bfs/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/detect-cycle-in-an-undirected-graph-using-dfs/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/01-matrix/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/surrounded-regions/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/topological-sort-algorithm-dfs/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/kahns-algorithm-topological-sort/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/detect-cycle-in-directed-graph-using-dfs-based-approach/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/detect-cycle-directed-graph-kahn/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/course-schedule-ii/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/eventual-safe-states/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/alien-dictionary-topological-sort/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/accounts-merge/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/shortest-path-in-undirected-graph/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/dijkstras-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/bellman-ford-algorithm-g-41/": {
+    "notFound": false,
+    "videoId": "0vVofAhAYjc",
+    "status": 200
+  },
+  "https://takeuforward.org/graph/floyd-warshall-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/word-ladder-i/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/word-ladder-ii/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/strongly-connected-components-kosarajus-algorithm/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/articulation-point-in-graph/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/graph/number-of-ways-in-maze/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/frog-jump-dp-3/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/frog-jump-with-k-distances-dp-4/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-sum-of-non-adjacent-elements/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/house-robber-2/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/grid-unique-paths-count-paths-from-left-top-to-the-right-bottom-of-a-matrix/": {
+    "notFound": false,
+    "videoId": "t_f0nwwdg5o",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/unique-paths-ii-dp-9/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-path-sum-in-grid/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-path-sum-in-triangular-grid/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-maximum-falling-path-sum/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/3-d-dp-ninja-and-his-friends-dp-13/": {
+    "notFound": false,
+    "videoId": "QGfn7JeXK54",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/partition-equal-subset-sum-dp-15/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-absolute-difference-in-partition/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/0-1-knapsack-dp-19/": {
+    "notFound": false,
+    "videoId": "GqOmJHQZivw",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-partitions-with-given-difference-dp-18/": {
+    "notFound": false,
+    "videoId": "zoilQD1kYSg",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/target-sum-dp-21/": {
+    "notFound": false,
+    "videoId": "AxNNVECce8c",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/rod-cutting-problem-dp-24/": {
+    "notFound": false,
+    "videoId": "AxNNVECce8c",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-common-substring/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-palindromic-subsequence-dp-28/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-insertions-to-make-string-palindrome/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-insertions-deletions-to-convert-string/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/shortest-common-supersequence/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/distinct-subsequences-dp-32/": {
+    "notFound": false,
+    "videoId": "nVG7eTiD2bY",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/edit-distance-dp-33/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/wildcard-matching-dp-34/": {
+    "notFound": false,
+    "videoId": "ZmlQ3vgAOMo",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stocks-iii-dp-37/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stocks-iv-dp-38/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stock-with-cooldown-dp-39/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/buy-and-sell-stocks-with-transaction-fee-dp-40/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-increasing-subsequence-dp-41/": {
+    "notFound": false,
+    "videoId": "ekcwMsSIzVc",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/largest-divisible-subset-dp-44/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-string-chain-dp-45/": {
+    "notFound": false,
+    "videoId": "YY8iBaYcc4g",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-bitonic-subsequence-dp-46/": {
+    "notFound": false,
+    "videoId": "y4vN0WNdrlg",
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/count-of-lis-dp-47/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/minimum-cost-to-cut-the-stick-dp-50/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/burst-balloons-dp-51/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/evaluate-boolean-expression-to-true-dp-52/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/palindrome-partitioning-ii-front-partition-dp-54/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/partition-array-for-maximum-sum-dp-55/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/implement-trie-ii/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/longest-string-with-all-prefixes/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/number-of-distinct-substrings-in-a-string/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/maximum-xor-with-an-element-from-array/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/word-search-ii/": {
+    "notFound": false,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/replace-words/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/design-add-search-words-structure/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  },
+  "https://takeuforward.org/data-structure/palindrome-pairs/": {
+    "notFound": true,
+    "videoId": null,
+    "status": 200
+  }
+}

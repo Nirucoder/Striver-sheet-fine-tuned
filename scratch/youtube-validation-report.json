@@ -1,8 +1,8 @@
 {
   "working": [
     {
-      "id": "h3uDCJ5mvgw",
-      "title": "How to setup VS code for DSA and CP | Input / Output split format"
+      "id": "EAR7De6Goz4",
+      "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1"
     },
     {
       "id": "tNm_NNSB3_w",
@@ -33,8 +33,16 @@
       "title": "Re 4. Problems on Functional Recursion | Strivers A2Z DSA Course"
     },
     {
+      "id": "kvRjNm4rVBE",
+      "title": "Re 5. Multiple Recursion Calls | Problems | Strivers A2Z DSA Course"
+    },
+    {
       "id": "KEs5UyBJ39g",
       "title": "Hashing | Maps | Time Complexity | Collisions | Division Rule of Hashing | Strivers A2Z DSA Course"
+    },
+    {
+      "id": "Rezetez59Nk",
+      "title": "L16. Diameter of Binary Tree | C++ | Java"
     },
     {
       "id": "HGk_ypEuS24",
@@ -51,6 +59,10 @@
     {
       "id": "wvcQg43_V8U",
       "title": "Rotate Array by K places | Union, Intersection of Sorted Arrays | Move Zeros to End | Arrays Part-2"
+    },
+    {
+      "id": "2D0D8HE6uak",
+      "title": "Find the Missing and Repeating Number | 4 Approaches 🔥"
     },
     {
       "id": "bYWLJb3vCWY",
@@ -73,8 +85,8 @@
       "title": "Kadane's Algorithm | Maximum Subarray Sum | Finding and Printing"
     },
     {
-      "id": "ioFPBdChabY",
-      "title": "LeetCode 121: Best Time to Buy and Sell Stock"
+      "id": "excAOvwF_Wk",
+      "title": "DP 35. Best Time to Buy and Sell Stock | DP on Stocks 🔥"
     },
     {
       "id": "h4aBagy4Uok",
@@ -117,8 +129,8 @@
       "title": "Majority Element II | Brute-Better-Optimal"
     },
     {
-      "id": "onLoX6Nhvmg",
-      "title": "3 SUM | Brute | Better | Optimal | C++ | Java"
+      "id": "DhFh8Kw7ymk",
+      "title": "3 Sum | Brute -  Better - Optimal with Codes"
     },
     {
       "id": "eD95WRfh81c",
@@ -129,28 +141,24 @@
       "title": "Maximum Product Subarray - Best Intuitive Approach Discussed"
     },
     {
-      "id": "IexN60k62jo",
-      "title": "Merge Overlapping Intervals | Brute, Optimal with Precise TC analysis"
+      "id": "2JzRBPFYbKE",
+      "title": "Merge Intervals | Leetcode | Problem-6 | Brute-Optimal | C++/Java"
     },
     {
       "id": "n7uwj04E0I4",
       "title": "Merge Sorted Arrays Without Extra Space | 2 Optimal Solution"
     },
     {
-      "id": "2D0D8HE6uak",
-      "title": "Find the Missing and Repeating Number | 4 Approaches 🔥"
-    },
-    {
       "id": "AseUmwVNaoY",
       "title": "Count Inversions in an Array | Brute and Optimal"
     },
     {
-      "id": "S6rsAlj_iB4",
-      "title": "Reverse Pairs | Leetcode(HARD) | Please watch new video - link in description"
+      "id": "0e4bZaP3MDI",
+      "title": "Reverse Pairs | Hard Interview Question"
     },
     {
-      "id": "W9QJ8HaRvJQ",
-      "title": "Binary Search Interview Questions - Google, Facebook, Amazon"
+      "id": "MHf6awe89xw",
+      "title": "BS-1. Binary Search Introduction | Real Life Example | Iterative | Recursive | Overflow Cases"
     },
     {
       "id": "6zhGS79oQ4k",
@@ -161,8 +169,8 @@
       "title": "BS-3. First and Last Occurrences in Array | Count occurrences in Array"
     },
     {
-      "id": "5qGrJbHhqFs",
-      "title": "BS-4. Search Element in Rotated Sorted Array - I"
+      "id": "r3pMQ8-Ad5s",
+      "title": "Search Element In a Rotated Sorted Array | LeetcodeBS-4. Search Element in Rotated Sorted Array - I"
     },
     {
       "id": "w2G2W8l__pc",
@@ -209,8 +217,8 @@
       "title": "BS-17. Aggressive Cows | Binary Search Hard"
     },
     {
-      "id": "Z0hwjftStI4",
-      "title": "BS-18. Allocate Books or Book Allocation | Hard Binary Search"
+      "id": "gYmWHvRHu-s",
+      "title": "Binary Search | BS-18. Allocate Books or Book Allocation | Hard Binary Search"
     },
     {
       "id": "thUd_WJn6wk",
@@ -233,20 +241,12 @@
       "title": "BS 23. Row with maximum number of 1s | Binary Search on 2D Arrays"
     },
     {
-      "id": "JXU4Akft7yk",
-      "title": "BS-24. Search in a 2D Matrix - I | Binary Search of 2D"
+      "id": "ZYpYur0znng",
+      "title": "Search in 2D-MATRIX | Leetcode | GFG | C++ | Java | Brute-Better-Better-Optimal"
     },
     {
-      "id": "9ZbB397jU4k",
-      "title": "BS-25. Search in a 2D Matrix - II  |  Binary Search on 2D"
-    },
-    {
-      "id": "63fPPOdIr2c",
-      "title": "Median of Row Wise Sorted Matrix | Nested Binary Search"
-    },
-    {
-      "id": "0e4bZaP3MDI",
-      "title": "Reverse Pairs | Hard Interview Question"
+      "id": "Q9wXgdxJq48",
+      "title": "BS-27. Median in a Row Wise Sorted Matrix"
     },
     {
       "id": "xtqN4qlgr8s",
@@ -293,24 +293,20 @@
       "title": "L1. Introduction to LinkedList | Traversal | Length | Search an Element"
     },
     {
-      "id": "ePpV-_pfOeI",
-      "title": "L16. Delete the middle node of the LinkedList"
+      "id": "VaECK03Dz-g",
+      "title": "L2. Deletion and Insertion in LL | 8 Problems"
     },
     {
       "id": "u3WUW2qe6ww",
       "title": "L4. Reverse a DLL | Multiple Approaches"
     },
     {
-      "id": "G0_I-ZF0S38",
-      "title": "Reverse Linked List - Iterative AND Recursive - Leetcode 206 - Python"
+      "id": "7LjQ57RqgEc",
+      "title": "L13. Find the middle element of the LinkedList | Multiple Approaches"
     },
     {
       "id": "D2vI2DNJGd8",
       "title": "L9. Reverse a LinkedList | Iterative and Recursive"
-    },
-    {
-      "id": "iTBaI90lpDQ",
-      "title": "G-23. Detect a Cycle in Directed Graph | Topological Sort | Kahn's Algorithm | BFS"
     },
     {
       "id": "2Kd0KKmmHFc",
@@ -327,6 +323,10 @@
     {
       "id": "3kMKYQ2wNIU",
       "title": "L8. Remove Nth Node from the end of the LinkedList | Multiple Approaches"
+    },
+    {
+      "id": "ePpV-_pfOeI",
+      "title": "L16. Delete the middle node of the LinkedList"
     },
     {
       "id": "8ocB7a_c-Cc",
@@ -349,20 +349,20 @@
       "title": "L21. Reverse Nodes in K Group Size of LinkedList"
     },
     {
-      "id": "9VPm6nEbVPA",
-      "title": "Rotate a LinkedList | Adobe | Amazon | Microsoft | GS | MMT"
+      "id": "uT7YI7XbTY8",
+      "title": "L22. Rotate a LinkedList"
     },
     {
-      "id": "ysytSSXpAI0",
-      "title": "Flattening of a Linked List | Amazon | Microsoft"
+      "id": "ykelywHJWLg",
+      "title": "L24. Flattening a LinkedList | Multiple Approaches with Dry Run"
     },
     {
       "id": "VNf6VynfpdM",
       "title": "Clone a Linked List with next and random pointer | Linear Time and Constant Space Solution"
     },
     {
-      "id": "XmRrGzR6udg",
-      "title": "L5. Add 2 numbers in LinkedList | Dummy Node Approach"
+      "id": "LBVsXSMOIk4",
+      "title": "Add Two Numbers Given as LinkedLists | Amazon | Microsoft | Facebook | Qualcomm"
     },
     {
       "id": "jXu-H7XuClE",
@@ -377,20 +377,20 @@
       "title": "Implementation of Stack using Arrays"
     },
     {
-      "id": "fWX9xDmIzRI",
-      "title": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them"
+      "id": "rYkfBRtMJr8",
+      "title": "L10. Subset Sum I | Recursion | C++ | Java"
     },
     {
       "id": "RIn3gOkbhQE",
       "title": "L11. Subset Sum II | Leetcode | Recursion"
     },
     {
-      "id": "frf7qxiN2qU",
-      "title": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays"
-    },
-    {
       "id": "OyZFFqQtu98",
       "title": "L8. Combination Sum | Recursion | Leetcode | C++ | Java"
+    },
+    {
+      "id": "G1fRTGRxXU8",
+      "title": "L9. Combination Sum II | Leetcode | Recursion | Java | C++"
     },
     {
       "id": "f2ic2Rsc9pU",
@@ -433,6 +433,10 @@
       "title": "G-29. Word Ladder - I | Shortest Paths"
     },
     {
+      "id": "frf7qxiN2qU",
+      "title": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays"
+    },
+    {
       "id": "5rtVTYAk9KQ",
       "title": "L1 | Bit Manipulations | Raj (Striver) | Introduction to Bit Manipulations"
     },
@@ -441,12 +445,12 @@
       "title": "DP 17. Counts Subsets with Sum K | Dp on Subsequences"
     },
     {
-      "id": "ZwU6wSkepBI",
-      "title": "L2 | Bit Manipulations | Raj (Striver) | Problem Solving on Bit Manipulations"
+      "id": "OOdrmcfZXd8",
+      "title": "L3. Minimum Bit Flips to Convert Number | Bit Manipulation"
     },
     {
-      "id": "BTf05gs_8iU",
-      "title": "Design Add and Search Words Data Structure - Leetcode 211 - Python"
+      "id": "EIhAwfHubE8",
+      "title": "L6. Maximum XOR of Two Numbers in an Array | C++ | Java"
     },
     {
       "id": "b7AYbpM5YrE",
@@ -457,8 +461,8 @@
       "title": "L32. Count total Nodes in a COMPLETE Binary Tree | O(Log^2 N) Approach | C++ | Java"
     },
     {
-      "id": "REOH22Xwdkk",
-      "title": "Subsets - Backtracking - Leetcode 78"
+      "id": "tqQ5fTamIN4",
+      "title": "L1. Introduction to Stack and Queue | Implementation using Data Structures"
     },
     {
       "id": "3Et9MrMc02A",
@@ -477,44 +481,44 @@
       "title": "Monotonic Stack Data Structure Explained"
     },
     {
-      "id": "Du881K7Jtk8",
-      "title": "Next Greater Element | Two Variants | Leetcode"
+      "id": "e7XQLtOQM3I",
+      "title": "L5. Next Greater Element | Stack and Queue Playlist"
     },
     {
-      "id": "m18Hntz4go8",
-      "title": "Trapping Rainwater | Brute | Better | Optimal | with INTUITION"
+      "id": "1_5VuquLbXg",
+      "title": "L8. Trapping Rainwater | 2 Approaches | Stack and Queue Playlist"
     },
     {
       "id": "Bzat9vgD0fs",
       "title": "L12. Largest Rectangle in Histogram | Stack and Queue Playlist"
     },
     {
-      "id": "jC_cWLy7jSI",
-      "title": "Largest Rectangle in Histogram | Part - 2 (6-7 lines of Code Approach)"
+      "id": "v0e8p9JCgRc",
+      "title": "L9. Sum of Subarray Minimum | Stack and Queue Playlist"
     },
     {
-      "id": "LN7KjRszjk4",
-      "title": "Asteroid Collision - Stack - Leetcode 735"
+      "id": "gIrMptNPf5M",
+      "title": "L10. Sum of subarray ranges | Stack and Queue Playlist"
     },
     {
-      "id": "cFabMOnJaq0",
-      "title": "Remove K Digits - Leetcode 402 - Python"
+      "id": "_eYGqw_VDR4",
+      "title": "L11. Aestroid Collisions | Stack and Queue Playlist"
+    },
+    {
+      "id": "jmbuRzYPGrg",
+      "title": "L14. Remove K Digits | Stack and Queue Playlist"
     },
     {
       "id": "tOylVCugy9k",
       "title": "DP 55. Maximum Rectangle Area with all 1's | DP on Rectangles"
     },
     {
-      "id": "pBWCOCS636U",
-      "title": "L2. Maximum Points You Can Obtain from Cards | 2 Pointers and Sliding Window Playlist"
+      "id": "NwBvene4Imo",
+      "title": "L16. Sliding Window Maximum | Stack and Queue Playlist"
     },
     {
       "id": "-zSxTJkcdAo",
       "title": "L3. Longest Substring Without Repeating Characters | 2 Pointers and Sliding Window Playlist"
-    },
-    {
-      "id": "qtVh-XEpsJo",
-      "title": "Longest Substring Without Repeating Characters | Amazon"
     },
     {
       "id": "e3bs0uA1NhQ",
@@ -529,8 +533,8 @@
       "title": "L10. Count number of Nice subarrays | 2 Pointers and Sliding Window Playlist"
     },
     {
-      "id": "v0e8p9JCgRc",
-      "title": "L9. Sum of Subarray Minimum | Stack and Queue Playlist"
+      "id": "pBWCOCS636U",
+      "title": "L2. Maximum Points You Can Obtain from Cards | 2 Pointers and Sliding Window Playlist"
     },
     {
       "id": "WJaij9ffOIY",
@@ -577,12 +581,12 @@
       "title": "L1. Assign Cookies | Greedy Algorithm Playlist"
     },
     {
-      "id": "F_DDzYnxO14",
-      "title": "Fractional Knapsack | Greedy Algorithms"
+      "id": "1ibsQrnuEEg",
+      "title": "L13. Fractional Knapsack Algorithm"
     },
     {
-      "id": "LjPx4wQaRIs",
-      "title": "Job Sequencing Problem | Greedy Algorithms"
+      "id": "QbwltemZbRg",
+      "title": "L6. Job Sequencing Problem | Greedy Algorithm Playlist"
     },
     {
       "id": "mKfhTotEguk",
@@ -601,6 +605,10 @@
       "title": "L4. Jump Game - I | Greedy Algorithm Playlist"
     },
     {
+      "id": "7SBVnw7GSTk",
+      "title": "L5. Jump Game - II | Greedy Algorithm Playlist"
+    },
+    {
       "id": "IIqVFvKE6RY",
       "title": "L12. Candy | Slope Approach Intuition Based"
     },
@@ -609,8 +617,8 @@
       "title": "L9. Insert Intervals | Greedy Algorithms Playlist"
     },
     {
-      "id": "nONCGxWoUfM",
-      "title": "Non-Overlapping Intervals - Leetcode 435 - Python"
+      "id": "HDHQ8lAWakY",
+      "title": "L8. Non Overlapping Intervals | Greedy Algorithms Playlist"
     },
     {
       "id": "cHT6sG_hUZI",
@@ -625,10 +633,6 @@
       "title": "Coding Interview Problem: Petrol Filling Problem | Applied AI Course"
     },
     {
-      "id": "MHf6awe89xw",
-      "title": "BS-1. Binary Search Introduction | Real Life Example | Iterative | Recursive | Overflow Cases"
-    },
-    {
       "id": "ySp2epYvgTE",
       "title": "L13. Preorder Inorder Postorder Traversals in One Traversal | C++ | Java | Stack | Binary Trees"
     },
@@ -637,16 +641,12 @@
       "title": "L37. Morris Traversal | Preorder | Inorder | C++ | Java"
     },
     {
-      "id": "2YBhNLodD8Q",
-      "title": "L11. Iterative Postorder Traversal using 2 Stack | C++ | Java | Binary Tree"
+      "id": "NzIGLLwZBS8",
+      "title": "L12. Iterative Postorder Traversal using 1 Stack | C++ | Java | Binary Trees"
     },
     {
       "id": "EoAsWbO7sqg",
       "title": "L8. Level Order Traversal of Binary Tree | BFS | C++ | Java"
-    },
-    {
-      "id": "Rezetez59Nk",
-      "title": "L16. Diameter of Binary Tree | C++ | Java"
     },
     {
       "id": "WszrfSwMz58",
@@ -681,8 +681,8 @@
       "title": "L26. Print Root to Node Path in Binary Tree | C++ | Java"
     },
     {
-      "id": "0r3cEKZiLmg",
-      "title": "Mile of Pi - Numberphile"
+      "id": "_-QHfMDde90",
+      "title": "L27. Lowest Common Ancestor in Binary Tree | LCA | C++ | Java"
     },
     {
       "id": "ZbybYvcVLks",
@@ -709,16 +709,12 @@
       "title": "L35. Construct the Binary Tree from Postorder and Inorder Traversal | C++ | Java"
     },
     {
-      "id": "sWf7k1x9XR4",
-      "title": "L38. Flatten a Binary Tree to Linked List | 3 Approaches | C++ | Java"
+      "id": "p7-9UvDQZ3w",
+      "title": "L39. Introduction to Binary Search Tree | BST"
     },
     {
       "id": "-YbXySKJsX8",
       "title": "L36. Serialize and De-serialize Binary Tree | C++ | Java"
-    },
-    {
-      "id": "p7-9UvDQZ3w",
-      "title": "L39. Introduction to Binary Search Tree | BST"
     },
     {
       "id": "xm_W1ub-K-w",
@@ -769,8 +765,8 @@
       "title": "G-1. Introduction to Graph | Types | Different Conventions Used"
     },
     {
-      "id": "jmy0LaGET1I",
-      "title": "L4. Binary Tree Traversals in Binary Tree | BFS | DFS"
+      "id": "-tgVpUgsQ5k",
+      "title": "G-5. Breadth-First Search (BFS) | C++ and Java | Traversal Technique in Graphs"
     },
     {
       "id": "ACzkVtewUYA",
@@ -817,12 +813,16 @@
       "title": "G-19. Detect cycle in a directed graph using DFS | Java | C++"
     },
     {
+      "id": "iTBaI90lpDQ",
+      "title": "G-23. Detect a Cycle in Directed Graph | Topological Sort | Kahn's Algorithm | BFS"
+    },
+    {
       "id": "WAOfKpxYHR8",
       "title": "G-24. Course Schedule I and II | Pre-requisite Tasks | Topological Sort"
     },
     {
-      "id": "uRbJ1OF9aYM",
-      "title": "G-20. Find Eventual Safe States - DFS"
+      "id": "2gtg3VsDGyc",
+      "title": "G-25. Find Eventual Safe States - BFS - Topological Sort"
     },
     {
       "id": "U3N_je7tWAs",
@@ -845,16 +845,16 @@
       "title": "G-32. Dijkstra's Algorithm - Using Priority Queue - C++ and Java - Part 1"
     },
     {
-      "id": "75yC1vbS8S8",
-      "title": "Bellman Ford Algorithm | Detect Negative Weight Cycle in Graphs"
+      "id": "0vVofAhAYjc",
+      "title": "G-41. Bellman Ford Algorithm"
     },
     {
       "id": "YbY8cVwWAvw",
       "title": "G-42. Floyd Warshall Algorithm"
     },
     {
-      "id": "DREutrv2XD0",
-      "title": "G-30. Word Ladder - 2 | Shortest Paths"
+      "id": "AD4SFl7tu7I",
+      "title": "G-31. Word Ladder - 2 | Optimised Approach for Leetcode"
     },
     {
       "id": "mJcZjjKzeqk",
@@ -913,8 +913,8 @@
       "title": "DP 13. Cherry Pickup II | 3D DP Made Easy | DP On Grids"
     },
     {
-      "id": "F7wqWbqYn9g",
-      "title": "9 Count of Subsets Sum with a Given Sum"
+      "id": "fWX9xDmIzRI",
+      "title": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them"
     },
     {
       "id": "7win3dcgo3k",
@@ -929,12 +929,20 @@
       "title": "DP 19. 0/1 Knapsack | Recursion to Single Array Space Optimised Approach | DP on Subsequences"
     },
     {
-      "id": "HgyouUi11zk",
-      "title": "DP 22. Coin Change 2 | Infinite Supply Problems  | DP on Subsequences"
+      "id": "zoilQD1kYSg",
+      "title": "DP 18. Count Partitions With Given Difference | Dp on Subsequences"
+    },
+    {
+      "id": "b3GD8263-PQ",
+      "title": "DP 21. Target Sum | DP on Subsequences"
     },
     {
       "id": "mO8XpGoJwuo",
       "title": "DP 24. Rod Cutting Problem | 1D Array Space Optimised Approach"
+    },
+    {
+      "id": "-zI4mrF2Pb4",
+      "title": "DP 26. Print Longest Common Subsequence | Dp on Strings"
     },
     {
       "id": "_wP9mWNPL5w",
@@ -957,16 +965,16 @@
       "title": "DP 32. Distinct Subsequences | 1D Array Optimisation Technique 🔥"
     },
     {
-      "id": "qMky6D6YtXU",
-      "title": "Dynamic Programming 2D - Full Course - Python"
+      "id": "fJaKO8FbDdo",
+      "title": "DP 33. Edit Distance | Recursive to 1D Array Optimised Solution 🔥"
     },
     {
       "id": "ZmlQ3vgAOMo",
       "title": "DP 34. Wildcard Matching | Recursive to 1D Array Optimisation 🔥"
     },
     {
-      "id": "nGJTWaaFdjc",
-      "title": "Object Oriented Programming in C++ | C++ Tutorials for Beginners #20"
+      "id": "nGJmxkUJQGs",
+      "title": "DP 36. Buy and Sell Stock - II | Recursion to Space Optimisation"
     },
     {
       "id": "-uQGzhYj8BQ",
@@ -1043,17 +1051,21 @@
     {
       "id": "asbcE9mZz_U",
       "title": "Word Search II - Backtracking Trie - Leetcode 212 - Python"
+    },
+    {
+      "id": "BTf05gs_8iU",
+      "title": "Design Add and Search Words Data Structure - Leetcode 211 - Python"
     }
   ],
   "broken": [],
   "entries": [
     {
       "title": "Learn the Basics",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1061,11 +1073,11 @@
     },
     {
       "title": "Data Types",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1073,11 +1085,11 @@
     },
     {
       "title": "If Else statements",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1085,11 +1097,11 @@
     },
     {
       "title": "Switch Statement",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1097,11 +1109,11 @@
     },
     {
       "title": "arrays, strings",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1109,11 +1121,11 @@
     },
     {
       "title": "For loops, while loops",
-      "url": "https://youtu.be/h3uDCJ5mvgw",
-      "videoId": "h3uDCJ5mvgw",
+      "url": "https://youtu.be/EAR7De6Goz4",
+      "videoId": "EAR7De6Goz4",
       "status": {
         "available": true,
-        "title": "How to setup VS code for DSA and CP | Input / Output split format",
+        "title": "C++ Basics in One Shot - Strivers A2Z DSA Course - L1",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1337,11 +1349,11 @@
     },
     {
       "title": "Fibonacci Number",
-      "url": "https://youtu.be/twuC1F6gLI8",
-      "videoId": "twuC1F6gLI8",
+      "url": "https://youtu.be/kvRjNm4rVBE",
+      "videoId": "kvRjNm4rVBE",
       "status": {
         "available": true,
-        "title": "Re 4. Problems on Functional Recursion | Strivers A2Z DSA Course",
+        "title": "Re 5. Multiple Recursion Calls | Problems | Strivers A2Z DSA Course",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1361,11 +1373,11 @@
     },
     {
       "title": "Find the highest/lowest frequency element",
-      "url": "https://youtu.be/KEs5UyBJ39g",
-      "videoId": "KEs5UyBJ39g",
+      "url": "https://youtu.be/Rezetez59Nk",
+      "videoId": "Rezetez59Nk",
       "status": {
         "available": true,
-        "title": "Hashing | Maps | Time Complexity | Collisions | Division Rule of Hashing | Strivers A2Z DSA Course",
+        "title": "L16. Diameter of Binary Tree | C++ | Java",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1421,11 +1433,11 @@
     },
     {
       "title": "Recursive Bubble Sort",
-      "url": "https://youtu.be/ogjf7ORKfd8",
-      "videoId": "ogjf7ORKfd8",
+      "url": "https://youtu.be/Rezetez59Nk",
+      "videoId": "Rezetez59Nk",
       "status": {
         "available": true,
-        "title": "Merge Sort | Algorithm | Pseudocode | Dry Run | Code | Strivers A2Z DSA Course",
+        "title": "L16. Diameter of Binary Tree | C++ | Java",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1553,11 +1565,11 @@
     },
     {
       "title": "Find missing number in an array",
-      "url": "https://youtu.be/bYWLJb3vCWY",
-      "videoId": "bYWLJb3vCWY",
+      "url": "https://youtu.be/2D0D8HE6uak",
+      "videoId": "2D0D8HE6uak",
       "status": {
         "available": true,
-        "title": "Find element that appears once | Find missing number | Max Consecutive number of 1's | Arrays Part-3",
+        "title": "Find the Missing and Repeating Number | 4 Approaches 🔥",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1637,12 +1649,12 @@
     },
     {
       "title": "Best Time to Buy and Sell Stock",
-      "url": "https://youtu.be/ioFPBdChabY",
-      "videoId": "ioFPBdChabY",
+      "url": "https://youtu.be/excAOvwF_Wk",
+      "videoId": "excAOvwF_Wk",
       "status": {
         "available": true,
-        "title": "LeetCode 121: Best Time to Buy and Sell Stock",
-        "channel": "Abstracted Away",
+        "title": "DP 35. Best Time to Buy and Sell Stock | DP on Stocks 🔥",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -1769,11 +1781,11 @@
     },
     {
       "title": "3-Sum",
-      "url": "https://youtu.be/onLoX6Nhvmg",
-      "videoId": "onLoX6Nhvmg",
+      "url": "https://youtu.be/DhFh8Kw7ymk",
+      "videoId": "DhFh8Kw7ymk",
       "status": {
         "available": true,
-        "title": "3 SUM | Brute | Better | Optimal | C++ | Java",
+        "title": "3 Sum | Brute -  Better - Optimal with Codes",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1805,11 +1817,11 @@
     },
     {
       "title": "Merge Overlapping Sub-intervals",
-      "url": "https://youtu.be/IexN60k62jo",
-      "videoId": "IexN60k62jo",
+      "url": "https://youtu.be/2JzRBPFYbKE",
+      "videoId": "2JzRBPFYbKE",
       "status": {
         "available": true,
-        "title": "Merge Overlapping Intervals | Brute, Optimal with Precise TC analysis",
+        "title": "Merge Intervals | Leetcode | Problem-6 | Brute-Optimal | C++/Java",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1853,11 +1865,11 @@
     },
     {
       "title": "Reverse Pairs (Merge Sort)",
-      "url": "https://youtu.be/S6rsAlj_iB4",
-      "videoId": "S6rsAlj_iB4",
+      "url": "https://youtu.be/0e4bZaP3MDI",
+      "videoId": "0e4bZaP3MDI",
       "status": {
         "available": true,
-        "title": "Reverse Pairs | Leetcode(HARD) | Please watch new video - link in description",
+        "title": "Reverse Pairs | Hard Interview Question",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -1877,12 +1889,12 @@
     },
     {
       "title": "Binary Search [1D, 2D Arrays, Search Space]",
-      "url": "https://youtu.be/W9QJ8HaRvJQ",
-      "videoId": "W9QJ8HaRvJQ",
+      "url": "https://youtu.be/MHf6awe89xw",
+      "videoId": "MHf6awe89xw",
       "status": {
         "available": true,
-        "title": "Binary Search Interview Questions - Google, Facebook, Amazon",
-        "channel": "Kunal Kushwaha",
+        "title": "BS-1. Binary Search Introduction | Real Life Example | Iterative | Recursive | Overflow Cases",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -1937,11 +1949,11 @@
     },
     {
       "title": "Search in Rotated Sorted Array I",
-      "url": "https://youtu.be/5qGrJbHhqFs",
-      "videoId": "5qGrJbHhqFs",
+      "url": "https://youtu.be/r3pMQ8-Ad5s",
+      "videoId": "r3pMQ8-Ad5s",
       "status": {
         "available": true,
-        "title": "BS-4. Search Element in Rotated Sorted Array - I",
+        "title": "Search Element In a Rotated Sorted Array | LeetcodeBS-4. Search Element in Rotated Sorted Array - I",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2081,11 +2093,11 @@
     },
     {
       "title": "Book Allocation Problem",
-      "url": "https://youtu.be/Z0hwjftStI4",
-      "videoId": "Z0hwjftStI4",
+      "url": "https://youtu.be/gYmWHvRHu-s",
+      "videoId": "gYmWHvRHu-s",
       "status": {
         "available": true,
-        "title": "BS-18. Allocate Books or Book Allocation | Hard Binary Search",
+        "title": "Binary Search | BS-18. Allocate Books or Book Allocation | Hard Binary Search",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2165,11 +2177,11 @@
     },
     {
       "title": "Search in a 2D Matrix",
-      "url": "https://youtu.be/JXU4Akft7yk",
-      "videoId": "JXU4Akft7yk",
+      "url": "https://youtu.be/ZYpYur0znng",
+      "videoId": "ZYpYur0znng",
       "status": {
         "available": true,
-        "title": "BS-24. Search in a 2D Matrix - I | Binary Search of 2D",
+        "title": "Search in 2D-MATRIX | Leetcode | GFG | C++ | Java | Brute-Better-Better-Optimal",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2177,11 +2189,11 @@
     },
     {
       "title": "Search in a 2D Matrix II",
-      "url": "https://youtu.be/9ZbB397jU4k",
-      "videoId": "9ZbB397jU4k",
+      "url": "https://youtu.be/ZYpYur0znng",
+      "videoId": "ZYpYur0znng",
       "status": {
         "available": true,
-        "title": "BS-25. Search in a 2D Matrix - II  |  Binary Search on 2D",
+        "title": "Search in 2D-MATRIX | Leetcode | GFG | C++ | Java | Brute-Better-Better-Optimal",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2201,11 +2213,11 @@
     },
     {
       "title": "Median in a Row-Wise Sorted Matrix",
-      "url": "https://youtu.be/63fPPOdIr2c",
-      "videoId": "63fPPOdIr2c",
+      "url": "https://youtu.be/Q9wXgdxJq48",
+      "videoId": "Q9wXgdxJq48",
       "status": {
         "available": true,
-        "title": "Median of Row Wise Sorted Matrix | Nested Binary Search",
+        "title": "BS-27. Median in a Row Wise Sorted Matrix",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2429,11 +2441,11 @@
     },
     {
       "title": "Delete Node in Linked List",
-      "url": "https://youtu.be/ePpV-_pfOeI",
-      "videoId": "ePpV-_pfOeI",
+      "url": "https://youtu.be/VaECK03Dz-g",
+      "videoId": "VaECK03Dz-g",
       "status": {
         "available": true,
-        "title": "L16. Delete the middle node of the LinkedList",
+        "title": "L2. Deletion and Insertion in LL | 8 Problems",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2465,12 +2477,12 @@
     },
     {
       "title": "Middle of the Linked List",
-      "url": "https://youtu.be/G0_I-ZF0S38",
-      "videoId": "G0_I-ZF0S38",
+      "url": "https://youtu.be/7LjQ57RqgEc",
+      "videoId": "7LjQ57RqgEc",
       "status": {
         "available": true,
-        "title": "Reverse Linked List - Iterative AND Recursive - Leetcode 206 - Python",
-        "channel": "NeetCode",
+        "title": "L13. Find the middle element of the LinkedList | Multiple Approaches",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -2489,11 +2501,11 @@
     },
     {
       "title": "Detect a Loop in LL (Floyd's Algorithm)",
-      "url": "https://youtu.be/iTBaI90lpDQ",
-      "videoId": "iTBaI90lpDQ",
+      "url": "https://youtu.be/2Kd0KKmmHFc",
+      "videoId": "2Kd0KKmmHFc",
       "status": {
         "available": true,
-        "title": "G-23. Detect a Cycle in Directed Graph | Topological Sort | Kahn's Algorithm | BFS",
+        "title": "L17. Find the starting point of the Loop/Cycle in LinkedList | Multiple Approaches",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2621,11 +2633,11 @@
     },
     {
       "title": "Rotate a Linked List",
-      "url": "https://youtu.be/9VPm6nEbVPA",
-      "videoId": "9VPm6nEbVPA",
+      "url": "https://youtu.be/uT7YI7XbTY8",
+      "videoId": "uT7YI7XbTY8",
       "status": {
         "available": true,
-        "title": "Rotate a LinkedList | Adobe | Amazon | Microsoft | GS | MMT",
+        "title": "L22. Rotate a LinkedList",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2633,11 +2645,11 @@
     },
     {
       "title": "Flattening a Linked List",
-      "url": "https://youtu.be/ysytSSXpAI0",
-      "videoId": "ysytSSXpAI0",
+      "url": "https://youtu.be/ykelywHJWLg",
+      "videoId": "ykelywHJWLg",
       "status": {
         "available": true,
-        "title": "Flattening of a Linked List | Amazon | Microsoft",
+        "title": "L24. Flattening a LinkedList | Multiple Approaches with Dry Run",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2657,11 +2669,11 @@
     },
     {
       "title": "Add Two Numbers (LL)",
-      "url": "https://youtu.be/XmRrGzR6udg",
-      "videoId": "XmRrGzR6udg",
+      "url": "https://youtu.be/LBVsXSMOIk4",
+      "videoId": "LBVsXSMOIk4",
       "status": {
         "available": true,
-        "title": "L5. Add 2 numbers in LinkedList | Dummy Node Approach",
+        "title": "Add Two Numbers Given as LinkedLists | Amazon | Microsoft | Facebook | Qualcomm",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2741,11 +2753,11 @@
     },
     {
       "title": "Subset Sums – Generate All Subset Sums",
-      "url": "https://youtu.be/fWX9xDmIzRI",
-      "videoId": "fWX9xDmIzRI",
+      "url": "https://youtu.be/rYkfBRtMJr8",
+      "videoId": "rYkfBRtMJr8",
       "status": {
         "available": true,
-        "title": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them",
+        "title": "L10. Subset Sum I | Recursion | C++ | Java",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2765,11 +2777,11 @@
     },
     {
       "title": "Combination Sum I",
-      "url": "https://youtu.be/frf7qxiN2qU",
-      "videoId": "frf7qxiN2qU",
+      "url": "https://youtu.be/OyZFFqQtu98",
+      "videoId": "OyZFFqQtu98",
       "status": {
         "available": true,
-        "title": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+        "title": "L8. Combination Sum | Recursion | Leetcode | C++ | Java",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2777,11 +2789,11 @@
     },
     {
       "title": "Combination Sum II",
-      "url": "https://youtu.be/OyZFFqQtu98",
-      "videoId": "OyZFFqQtu98",
+      "url": "https://youtu.be/G1fRTGRxXU8",
+      "videoId": "G1fRTGRxXU8",
       "status": {
         "available": true,
-        "title": "L8. Combination Sum | Recursion | Leetcode | C++ | Java",
+        "title": "L9. Combination Sum II | Leetcode | Recursion | Java | C++",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -2981,12 +2993,12 @@
     },
     {
       "title": "Minimum Bit Flips to Convert Number",
-      "url": "https://youtu.be/ZwU6wSkepBI",
-      "videoId": "ZwU6wSkepBI",
+      "url": "https://youtu.be/OOdrmcfZXd8",
+      "videoId": "OOdrmcfZXd8",
       "status": {
         "available": true,
-        "title": "L2 | Bit Manipulations | Raj (Striver) | Problem Solving on Bit Manipulations",
-        "channel": "CodeBeyond",
+        "title": "L3. Minimum Bit Flips to Convert Number | Bit Manipulation",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -3041,12 +3053,12 @@
     },
     {
       "title": "Maximum XOR of Two Numbers in Array",
-      "url": "https://youtu.be/BTf05gs_8iU",
-      "videoId": "BTf05gs_8iU",
+      "url": "https://youtu.be/EIhAwfHubE8",
+      "videoId": "EIhAwfHubE8",
       "status": {
         "available": true,
-        "title": "Design Add and Search Words Data Structure - Leetcode 211 - Python",
-        "channel": "NeetCode",
+        "title": "L6. Maximum XOR of Two Numbers in an Array | C++ | Java",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -3077,11 +3089,11 @@
     },
     {
       "title": "Stack and Queues [Learning, Pre-In-Post-fix, Monotonic]",
-      "url": "https://youtu.be/GYptUgnIM_I",
-      "videoId": "GYptUgnIM_I",
+      "url": "https://youtu.be/tqQ5fTamIN4",
+      "videoId": "tqQ5fTamIN4",
       "status": {
         "available": true,
-        "title": "Implementation of Stack using Arrays",
+        "title": "L1. Introduction to Stack and Queue | Implementation using Data Structures",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3089,11 +3101,11 @@
     },
     {
       "title": "Stack using Linked List",
-      "url": "https://youtu.be/GYptUgnIM_I",
-      "videoId": "GYptUgnIM_I",
+      "url": "https://youtu.be/tqQ5fTamIN4",
+      "videoId": "tqQ5fTamIN4",
       "status": {
         "available": true,
-        "title": "Implementation of Stack using Arrays",
+        "title": "L1. Introduction to Stack and Queue | Implementation using Data Structures",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3101,12 +3113,12 @@
     },
     {
       "title": "Queue using Array",
-      "url": "https://youtu.be/REOH22Xwdkk",
-      "videoId": "REOH22Xwdkk",
+      "url": "https://youtu.be/tqQ5fTamIN4",
+      "videoId": "tqQ5fTamIN4",
       "status": {
         "available": true,
-        "title": "Subsets - Backtracking - Leetcode 78",
-        "channel": "NeetCode",
+        "title": "L1. Introduction to Stack and Queue | Implementation using Data Structures",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -3197,11 +3209,11 @@
     },
     {
       "title": "Next Greater Element II (Circular)",
-      "url": "https://youtu.be/Du881K7Jtk8",
-      "videoId": "Du881K7Jtk8",
+      "url": "https://youtu.be/e7XQLtOQM3I",
+      "videoId": "e7XQLtOQM3I",
       "status": {
         "available": true,
-        "title": "Next Greater Element | Two Variants | Leetcode",
+        "title": "L5. Next Greater Element | Stack and Queue Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3221,11 +3233,11 @@
     },
     {
       "title": "Trapping Rain Water",
-      "url": "https://youtu.be/m18Hntz4go8",
-      "videoId": "m18Hntz4go8",
+      "url": "https://youtu.be/1_5VuquLbXg",
+      "videoId": "1_5VuquLbXg",
       "status": {
         "available": true,
-        "title": "Trapping Rainwater | Brute | Better | Optimal | with INTUITION",
+        "title": "L8. Trapping Rainwater | 2 Approaches | Stack and Queue Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3245,11 +3257,11 @@
     },
     {
       "title": "Sum of Subarray Minimums",
-      "url": "https://youtu.be/frf7qxiN2qU",
-      "videoId": "frf7qxiN2qU",
+      "url": "https://youtu.be/v0e8p9JCgRc",
+      "videoId": "v0e8p9JCgRc",
       "status": {
         "available": true,
-        "title": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+        "title": "L9. Sum of Subarray Minimum | Stack and Queue Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3257,11 +3269,11 @@
     },
     {
       "title": "Sum of Subarray Ranges",
-      "url": "https://youtu.be/jC_cWLy7jSI",
-      "videoId": "jC_cWLy7jSI",
+      "url": "https://youtu.be/gIrMptNPf5M",
+      "videoId": "gIrMptNPf5M",
       "status": {
         "available": true,
-        "title": "Largest Rectangle in Histogram | Part - 2 (6-7 lines of Code Approach)",
+        "title": "L10. Sum of subarray ranges | Stack and Queue Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3269,24 +3281,24 @@
     },
     {
       "title": "Asteroid Collision",
-      "url": "https://youtu.be/LN7KjRszjk4",
-      "videoId": "LN7KjRszjk4",
+      "url": "https://youtu.be/_eYGqw_VDR4",
+      "videoId": "_eYGqw_VDR4",
       "status": {
         "available": true,
-        "title": "Asteroid Collision - Stack - Leetcode 735",
-        "channel": "NeetCode",
+        "title": "L11. Aestroid Collisions | Stack and Queue Playlist",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
     },
     {
       "title": "Remove K Digits",
-      "url": "https://youtu.be/cFabMOnJaq0",
-      "videoId": "cFabMOnJaq0",
+      "url": "https://youtu.be/jmbuRzYPGrg",
+      "videoId": "jmbuRzYPGrg",
       "status": {
         "available": true,
-        "title": "Remove K Digits - Leetcode 402 - Python",
-        "channel": "NeetCode",
+        "title": "L14. Remove K Digits | Stack and Queue Playlist",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -3305,11 +3317,11 @@
     },
     {
       "title": "Sliding Window Maximum (Deque)",
-      "url": "https://youtu.be/pBWCOCS636U",
-      "videoId": "pBWCOCS636U",
+      "url": "https://youtu.be/NwBvene4Imo",
+      "videoId": "NwBvene4Imo",
       "status": {
         "available": true,
-        "title": "L2. Maximum Points You Can Obtain from Cards | 2 Pointers and Sliding Window Playlist",
+        "title": "L16. Sliding Window Maximum | Stack and Queue Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3353,11 +3365,11 @@
     },
     {
       "title": "Longest Substring Without Repeating Characters",
-      "url": "https://youtu.be/qtVh-XEpsJo",
-      "videoId": "qtVh-XEpsJo",
+      "url": "https://youtu.be/-zSxTJkcdAo",
+      "videoId": "-zSxTJkcdAo",
       "status": {
         "available": true,
-        "title": "Longest Substring Without Repeating Characters | Amazon",
+        "title": "L3. Longest Substring Without Repeating Characters | 2 Pointers and Sliding Window Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3653,11 +3665,11 @@
     },
     {
       "title": "Fractional Knapsack",
-      "url": "https://youtu.be/F_DDzYnxO14",
-      "videoId": "F_DDzYnxO14",
+      "url": "https://youtu.be/1ibsQrnuEEg",
+      "videoId": "1ibsQrnuEEg",
       "status": {
         "available": true,
-        "title": "Fractional Knapsack | Greedy Algorithms",
+        "title": "L13. Fractional Knapsack Algorithm",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3665,11 +3677,11 @@
     },
     {
       "title": "Greedy Job Sequencing",
-      "url": "https://youtu.be/LjPx4wQaRIs",
-      "videoId": "LjPx4wQaRIs",
+      "url": "https://youtu.be/QbwltemZbRg",
+      "videoId": "QbwltemZbRg",
       "status": {
         "available": true,
-        "title": "Job Sequencing Problem | Greedy Algorithms",
+        "title": "L6. Job Sequencing Problem | Greedy Algorithm Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3725,11 +3737,11 @@
     },
     {
       "title": "Jump Game II",
-      "url": "https://youtu.be/tZAa_jJ3SwQ",
-      "videoId": "tZAa_jJ3SwQ",
+      "url": "https://youtu.be/7SBVnw7GSTk",
+      "videoId": "7SBVnw7GSTk",
       "status": {
         "available": true,
-        "title": "L4. Jump Game - I | Greedy Algorithm Playlist",
+        "title": "L5. Jump Game - II | Greedy Algorithm Playlist",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -3761,12 +3773,12 @@
     },
     {
       "title": "Non-overlapping Intervals",
-      "url": "https://youtu.be/nONCGxWoUfM",
-      "videoId": "nONCGxWoUfM",
+      "url": "https://youtu.be/HDHQ8lAWakY",
+      "videoId": "HDHQ8lAWakY",
       "status": {
         "available": true,
-        "title": "Non-Overlapping Intervals - Leetcode 435 - Python",
-        "channel": "NeetCode",
+        "title": "L8. Non Overlapping Intervals | Greedy Algorithms Playlist",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -3857,11 +3869,11 @@
     },
     {
       "title": "Iterative Postorder (2 Stacks)",
-      "url": "https://youtu.be/2YBhNLodD8Q",
-      "videoId": "2YBhNLodD8Q",
+      "url": "https://youtu.be/NzIGLLwZBS8",
+      "videoId": "NzIGLLwZBS8",
       "status": {
         "available": true,
-        "title": "L11. Iterative Postorder Traversal using 2 Stack | C++ | Java | Binary Tree",
+        "title": "L12. Iterative Postorder Traversal using 1 Stack | C++ | Java | Binary Trees",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4037,12 +4049,12 @@
     },
     {
       "title": "LCA of Binary Tree",
-      "url": "https://youtu.be/0r3cEKZiLmg",
-      "videoId": "0r3cEKZiLmg",
+      "url": "https://youtu.be/_-QHfMDde90",
+      "videoId": "_-QHfMDde90",
       "status": {
         "available": true,
-        "title": "Mile of Pi - Numberphile",
-        "channel": "Numberphile",
+        "title": "L27. Lowest Common Ancestor in Binary Tree | LCA | C++ | Java",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -4133,11 +4145,11 @@
     },
     {
       "title": "Flatten Binary Tree to Linked List",
-      "url": "https://youtu.be/sWf7k1x9XR4",
-      "videoId": "sWf7k1x9XR4",
+      "url": "https://youtu.be/p7-9UvDQZ3w",
+      "videoId": "p7-9UvDQZ3w",
       "status": {
         "available": true,
-        "title": "L38. Flatten a Binary Tree to Linked List | 3 Approaches | C++ | Java",
+        "title": "L39. Introduction to Binary Search Tree | BST",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4337,11 +4349,11 @@
     },
     {
       "title": "BFS Traversal",
-      "url": "https://youtu.be/jmy0LaGET1I",
-      "videoId": "jmy0LaGET1I",
+      "url": "https://youtu.be/-tgVpUgsQ5k",
+      "videoId": "-tgVpUgsQ5k",
       "status": {
         "available": true,
-        "title": "L4. Binary Tree Traversals in Binary Tree | BFS | DFS",
+        "title": "G-5. Breadth-First Search (BFS) | C++ and Java | Traversal Technique in Graphs",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4505,11 +4517,11 @@
     },
     {
       "title": "Find Eventual Safe States",
-      "url": "https://youtu.be/uRbJ1OF9aYM",
-      "videoId": "uRbJ1OF9aYM",
+      "url": "https://youtu.be/2gtg3VsDGyc",
+      "videoId": "2gtg3VsDGyc",
       "status": {
         "available": true,
-        "title": "G-20. Find Eventual Safe States - DFS",
+        "title": "G-25. Find Eventual Safe States - BFS - Topological Sort",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4577,11 +4589,11 @@
     },
     {
       "title": "Bellman Ford Algorithm",
-      "url": "https://youtu.be/75yC1vbS8S8",
-      "videoId": "75yC1vbS8S8",
+      "url": "https://youtu.be/0vVofAhAYjc",
+      "videoId": "0vVofAhAYjc",
       "status": {
         "available": true,
-        "title": "Bellman Ford Algorithm | Detect Negative Weight Cycle in Graphs",
+        "title": "G-41. Bellman Ford Algorithm",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4613,11 +4625,11 @@
     },
     {
       "title": "Word Ladder II",
-      "url": "https://youtu.be/DREutrv2XD0",
-      "videoId": "DREutrv2XD0",
+      "url": "https://youtu.be/AD4SFl7tu7I",
+      "videoId": "AD4SFl7tu7I",
       "status": {
         "available": true,
-        "title": "G-30. Word Ladder - 2 | Shortest Paths",
+        "title": "G-31. Word Ladder - 2 | Optimised Approach for Leetcode",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4817,12 +4829,12 @@
     },
     {
       "title": "Subset Sum Equals Target",
-      "url": "https://youtu.be/F7wqWbqYn9g",
-      "videoId": "F7wqWbqYn9g",
+      "url": "https://youtu.be/fWX9xDmIzRI",
+      "videoId": "fWX9xDmIzRI",
       "status": {
         "available": true,
-        "title": "9 Count of Subsets Sum with a Given Sum",
-        "channel": "Aditya Verma",
+        "title": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -4865,11 +4877,11 @@
     },
     {
       "title": "Coin Change II – Number of Ways",
-      "url": "https://youtu.be/HgyouUi11zk",
-      "videoId": "HgyouUi11zk",
+      "url": "https://youtu.be/zoilQD1kYSg",
+      "videoId": "zoilQD1kYSg",
       "status": {
         "available": true,
-        "title": "DP 22. Coin Change 2 | Infinite Supply Problems  | DP on Subsequences",
+        "title": "DP 18. Count Partitions With Given Difference | Dp on Subsequences",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4877,11 +4889,11 @@
     },
     {
       "title": "Target Sum (Assign +/- to Nums)",
-      "url": "https://youtu.be/fWX9xDmIzRI",
-      "videoId": "fWX9xDmIzRI",
+      "url": "https://youtu.be/b3GD8263-PQ",
+      "videoId": "b3GD8263-PQ",
       "status": {
         "available": true,
-        "title": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them",
+        "title": "DP 21. Target Sum | DP on Subsequences",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4901,11 +4913,11 @@
     },
     {
       "title": "Longest Common Subsequence",
-      "url": "https://youtu.be/NPZn9jBrX8U",
-      "videoId": "NPZn9jBrX8U",
+      "url": "https://youtu.be/-zI4mrF2Pb4",
+      "videoId": "-zI4mrF2Pb4",
       "status": {
         "available": true,
-        "title": "Dp 25. Longest Common Subsequence | Top Down | Bottom-Up | Space Optimised | DP on Strings",
+        "title": "DP 26. Print Longest Common Subsequence | Dp on Strings",
         "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
@@ -4985,12 +4997,12 @@
     },
     {
       "title": "Edit Distance",
-      "url": "https://youtu.be/qMky6D6YtXU",
-      "videoId": "qMky6D6YtXU",
+      "url": "https://youtu.be/fJaKO8FbDdo",
+      "videoId": "fJaKO8FbDdo",
       "status": {
         "available": true,
-        "title": "Dynamic Programming 2D - Full Course - Python",
-        "channel": "NeetCode",
+        "title": "DP 33. Edit Distance | Recursive to 1D Array Optimised Solution 🔥",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
@@ -5009,12 +5021,12 @@
     },
     {
       "title": "Buy & Sell Stock II (Multiple Transactions)",
-      "url": "https://youtu.be/nGJTWaaFdjc",
-      "videoId": "nGJTWaaFdjc",
+      "url": "https://youtu.be/nGJmxkUJQGs",
+      "videoId": "nGJmxkUJQGs",
       "status": {
         "available": true,
-        "title": "Object Oriented Programming in C++ | C++ Tutorials for Beginners #20",
-        "channel": "CodeWithHarry",
+        "title": "DP 36. Buy and Sell Stock - II | Recursion to Space Optimisation",
+        "channel": "take U forward",
         "privacy": "public",
         "embeddable": true
       }
