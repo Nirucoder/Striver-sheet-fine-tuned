@@ -3127,21 +3127,8 @@ const OS_UNITS = [
     { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
-    function SyncModal({ session, syncCode, syncStatus, setSyncStatus, onForcePush, onForcePull, onSaveToCloud, onLoadFromCloud, onClose, lastSynced, setSession }) {
+    function SyncModal({ syncCode, syncStatus, setSyncStatus, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
         const [inputCode, setInputCode] = useState(syncCode || "");
-        const [serverIssue, setServerIssue] = useState(null);
-        const isSignedIn = !!session?.sub;
-        const tokenValid = isSessionValid(session);
-
-        useEffect(() => {
-            if (!tokenValid) { setServerIssue(null); return; }
-            checkCloudAuth(session.token).then((r) => {
-                if (!r.serverConfigured) setServerIssue("Server missing GOOGLE_CLIENT_ID — add it in Vercel env vars.");
-                else if (!r.tokenValid) setServerIssue("Sign-in token rejected — sign out and sign in again.");
-                else setServerIssue(null);
-            });
-        }, [session?.token, tokenValid]);
-        const tokenExpired = isSignedIn && !tokenValid;
         return (
             <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(4px)"}}>
                 <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:16,padding:"28px 32px",maxWidth:460,width:"90%",boxShadow:"0 32px 80px rgba(0,0,0,0.7)"}}>
@@ -3150,52 +3137,8 @@ const OS_UNITS = [
                         <button onClick={onClose} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer",lineHeight:1}}>×</button>
                     </div>
                     <div style={{fontSize:12,color:"#64748b",marginBottom:16,lineHeight:1.6}}>
-                        Your progress auto-saves to the cloud when you're signed in. Use the buttons below to manually sync if a device is out of date.
+                        Your progress auto-saves to the cloud. Use your sync code to restore your progress on another device.
                     </div>
-
-                    {/* ── Google Account section ── */}
-                    <div style={{padding:"12px 16px",background:tokenExpired?"rgba(251,191,36,0.06)":isSignedIn?"rgba(52,211,153,0.06)":"rgba(248,113,113,0.06)",border:`1px solid ${tokenExpired?"#92400e":isSignedIn?"#065f46":"#7f1d1d"}`,borderRadius:10,marginBottom:20,display:"flex",alignItems:"center",gap:12}}>
-                        {session?.picture && <img src={session.picture} alt="" style={{width:32,height:32,borderRadius:"50%"}} />}
-                        <div style={{flex:1}}>
-                            <div style={{fontSize:12,fontWeight:600,color:tokenExpired?"#fbbf24":isSignedIn?"#34d399":"#f87171"}}>
-                                {tokenExpired ? `⚠ Session expired (${session.name})` : isSignedIn ? `✓ Signed in as ${session.name}` : "✗ Not signed in"}
-                            </div>
-                            <div style={{fontSize:11,color:"#475569"}}>
-                                {tokenExpired ? "Sign in again below to resume cloud sync" : isSignedIn ? `${session.email} — data syncs automatically` : "Sign in with Google to enable cross-device sync"}
-                            </div>
-                        </div>
-                    </div>
-
-                    {tokenExpired && (
-                        <div style={{marginBottom:20,padding:"12px",background:"rgba(251,191,36,0.04)",border:"1px solid #92400e",borderRadius:10}}>
-                            <div style={{fontSize:11,color:"#fbbf24",marginBottom:8,textAlign:"center"}}>Google sign-in expires after ~1 hour. Re-authenticate to push or pull.</div>
-                            <GoogleReSignIn onAuth={(s) => { setSession(s); setSyncStatus("\u2713 Signed in — you can sync now."); }} />
-                        </div>
-                    )}
-
-                    {/* ── Push / Pull buttons ── */}
-                    {isSignedIn && tokenValid && (
-                        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
-                            <button onClick={onForcePush}
-                                style={{padding:"12px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:10,color:"#a5b4fc",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                                <span style={{fontSize:20}}>☁↑</span>
-                                <span>Push to Cloud</span>
-                                <span style={{fontSize:10,color:"#6366f1",fontWeight:400}}>Save this device → cloud</span>
-                            </button>
-                            <button onClick={onForcePull}
-                                style={{padding:"12px",background:"#0f2918",border:"1px solid #166534",borderRadius:10,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                                <span style={{fontSize:20}}>☁↓</span>
-                                <span>Pull from Cloud</span>
-                                <span style={{fontSize:10,color:"#4ade80",fontWeight:400}}>Load cloud → this device</span>
-                            </button>
-                        </div>
-                    )}
-
-                    {serverIssue && (
-                        <div style={{marginBottom:16,padding:"10px 12px",background:"rgba(248,113,113,0.08)",border:"1px solid #7f1d1d",borderRadius:8,fontSize:11,color:"#f87171",lineHeight:1.5}}>
-                            ⚠ {serverIssue}
-                        </div>
-                    )}
 
                     {lastSynced && (
                         <div style={{marginBottom:16,padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399",display:"flex",alignItems:"center",gap:6}}>
@@ -3204,30 +3147,26 @@ const OS_UNITS = [
                         </div>
                     )}
 
-                    {/* ── Legacy sync code (fallback) ── */}
-                    <details style={{marginTop:4}}>
-                        <summary style={{fontSize:11,color:"#334155",cursor:"pointer",userSelect:"none"}}>Legacy sync code (fallback)</summary>
-                        <div style={{marginTop:12}}>
-                            <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Save current progress</div>
-                            <button onClick={onSaveToCloud} style={{width:"100%",padding:"10px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:8,color:"#a5b4fc",fontSize:13,fontWeight:600,cursor:"pointer",marginBottom:10}}>
-                                ↑ Save to Cloud (Code)
-                            </button>
-                            {syncCode && (
-                                <div style={{padding:"10px 14px",background:"#0a0b0d",border:"1px solid #1e2030",borderRadius:8,marginBottom:12}}>
-                                    <div style={{fontSize:11,color:"#64748b",marginBottom:4}}>Your sync code — keep this safe:</div>
-                                    <div style={{fontFamily:"monospace",fontSize:15,color:"#818cf8",letterSpacing:"0.05em",userSelect:"all"}}>{syncCode}</div>
-                                </div>
-                            )}
-                            <div style={{borderTop:"1px solid #1e2030",paddingTop:12}}>
-                                <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Restore from code</div>
-                                <div style={{display:"flex",gap:8}}>
-                                    <input value={inputCode} onChange={e=>setInputCode(e.target.value)} placeholder="Enter sync code"
-                                        style={{flex:1,padding:"9px 12px",background:"#1a1d2e",border:"1px solid #2d3154",borderRadius:8,color:"#e2e8f0",fontSize:13,outline:"none",fontFamily:"monospace"}} />
-                                    <button onClick={()=>onLoadFromCloud(inputCode.trim())} style={{padding:"9px 16px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>↓ Restore</button>
-                                </div>
+                    <div style={{marginTop:12}}>
+                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Save current progress</div>
+                        <button onClick={onSaveToCloud} style={{width:"100%",padding:"10px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:8,color:"#a5b4fc",fontSize:13,fontWeight:600,cursor:"pointer",marginBottom:10}}>
+                            ↑ Force Save to Cloud
+                        </button>
+                        {syncCode && (
+                            <div style={{padding:"10px 14px",background:"#0a0b0d",border:"1px solid #1e2030",borderRadius:8,marginBottom:12}}>
+                                <div style={{fontSize:11,color:"#64748b",marginBottom:4}}>Your sync code — keep this safe:</div>
+                                <div style={{fontFamily:"monospace",fontSize:15,color:"#818cf8",letterSpacing:"0.05em",userSelect:"all"}}>{syncCode}</div>
+                            </div>
+                        )}
+                        <div style={{borderTop:"1px solid #1e2030",paddingTop:12}}>
+                            <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Restore from code</div>
+                            <div style={{display:"flex",gap:8}}>
+                                <input value={inputCode} onChange={e=>setInputCode(e.target.value)} placeholder="Enter sync code"
+                                    style={{flex:1,padding:"9px 12px",background:"#1a1d2e",border:"1px solid #2d3154",borderRadius:8,color:"#e2e8f0",fontSize:13,outline:"none",fontFamily:"monospace"}} />
+                                <button onClick={()=>onLoadFromCloud(inputCode.trim())} style={{padding:"9px 16px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>↓ Restore</button>
                             </div>
                         </div>
-                    </details>
+                    </div>
 
                     {syncStatus && (
                         <div style={{marginTop:16,padding:"10px 14px",borderRadius:8,fontSize:13,
@@ -3305,7 +3244,16 @@ const OS_UNITS = [
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
     const [showSyncModal, setShowSyncModal] = useState(false);
-    const [syncCode, setSyncCode] = useLocalStorage("studyos_sync_code", "");
+    const [syncCode, setSyncCode] = useLocalStorage("studyos_sync_code", () => {
+        const stored = localStorage.getItem("studyos_sync_code");
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed) return parsed;
+            } catch (e) {}
+        }
+        return "xxxx-xxxx-xxxx".replace(/x/g, () => Math.floor(Math.random()*16).toString(16));
+    });
     const [syncStatus, setSyncStatus] = useState("");
     const [autoSyncStatus, setAutoSyncStatus] = useState(""); // "saving" | "saved" | "error" | ""
     const [lastSynced, setLastSynced] = useLocalStorage("studyos_last_synced", "");
@@ -3416,62 +3364,40 @@ const OS_UNITS = [
     }, [lcUsername]);
 
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
+    const isCloudFetchFirstRender = useRef(true);
     useEffect(() => {
-        if (!session?.sub) return;
-        loadUserProgress(session.sub, session.token).then(data => {
-            if (data) {
-                // Cloud data exists — restore it (cloud wins)
-                if (data.dsaData)         setDsaData(mergeDsaData(data.dsaData));
-                if (data.coaData)         setCoaData(mergeCoaData(data.coaData));
-                if (data.revData)         setRevData(mergeRevData(data.revData));
-                if (data.weekStatus)      setWeekStatus(data.weekStatus);
-                if (data.streakData)           setStreakData(data.streakData);
+        if (!isCloudFetchFirstRender.current) return;
+        isCloudFetchFirstRender.current = false;
+        if (syncCode) {
+            fetch(`/api/sync/${syncCode}`)
+            .then(res => res.ok ? res.json() : Promise.reject("not found"))
+            .then(({ data }) => {
+                if (data.dsaData) setDsaData(mergeDsaData(data.dsaData));
+                if (data.coaData) setCoaData(mergeCoaData(data.coaData));
+                if (data.revData) setRevData(mergeRevData(data.revData));
+                if (data.weekStatus) setWeekStatus(data.weekStatus);
+                if (data.streakData) setStreakData(data.streakData);
                 else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
-                if (data.streakFreezes)        setStreakFreezes(data.streakFreezes);
-                if (data.dailyLog)        setDailyLog(data.dailyLog);
-                if (data.lastLogDate)     setLastLogDate(data.lastLogDate);
-                if (data.activityLog)     setActivityLog(data.activityLog);
+                if (data.streakFreezes) setStreakFreezes(data.streakFreezes);
+                if (data.dailyLog) setDailyLog(data.dailyLog);
+                if (data.lastLogDate) setLastLogDate(data.lastLogDate);
+                if (data.activityLog) setActivityLog(data.activityLog);
                 if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
-                if (data.todos)           setTodos(data.todos);
-                if (data.probNotes)       setProbNotes(data.probNotes);
-                if (data.revStars)        setRevStars(data.revStars);
-                if (data.mathsProgress)   setMathsProgress(data.mathsProgress);
-                if (data.osProgress)      setOsProgress(data.osProgress);
-                setCloudLoadedAt(new Date().toISOString());
+                if (data.todos) setTodos(data.todos);
+                if (data.probNotes) setProbNotes(data.probNotes);
+                if (data.revStars) setRevStars(data.revStars);
+                if (data.mathsProgress) setMathsProgress(data.mathsProgress);
+                if (data.osProgress) setOsProgress(data.osProgress);
                 cloudReady.current = true;
-            } else {
-                // First sign-in — no cloud data yet. Migrate whatever is in localStorage
-                // to Supabase so existing progress is never lost.
-                try {
-                    const existing = {
-                        dsaData:        JSON.parse(localStorage.getItem("srm_dsa_v3")   || "null"),
-                        coaData:        JSON.parse(localStorage.getItem("srm_coa_v3")   || "null"),
-                        revData:        JSON.parse(localStorage.getItem("srm_rev_v3")   || "null"),
-                        weekStatus:     JSON.parse(localStorage.getItem("srm_weeks_v3") || "null"),
-                        streak:         JSON.parse(localStorage.getItem("srm_streak_v3")|| "0"),
-                        streakData:     JSON.parse(localStorage.getItem("streak_data")   || "null"),
-                        streakFreezes:  JSON.parse(localStorage.getItem("streak_freezes")|| "null"),
-                        dailyLog:       JSON.parse(localStorage.getItem("srm_log_v3")   || "[]"),
-                        lastLogDate:    JSON.parse(localStorage.getItem("srm_lastlog_v3")|| '""'),
-                        activityLog:    JSON.parse(localStorage.getItem("srm_activity_v1")|| "{}"),
-                        solvedQuestions:JSON.parse(localStorage.getItem("a2z_solved")   || "{}"),
-                        todos:          JSON.parse(localStorage.getItem("studyos_todos_v1")|| "[]"),
-                        probNotes:      JSON.parse(localStorage.getItem("dsa_notes_v1") || "{}"),
-                        revStars:       JSON.parse(localStorage.getItem("dsa_rev_stars_v1")|| "{}"),
-                        mathsProgress:  JSON.parse(localStorage.getItem("maths_progress_v1")|| "{}"),
-                        osProgress:     JSON.parse(localStorage.getItem("os_progress_v1")|| "{}"),
-                    };
-                    // Only migrate if there's actually something to save
-                    const hasSomeProgress = existing.solvedQuestions && Object.keys(existing.solvedQuestions).length > 0
-                        || existing.todos?.length > 0
-                        || existing.streak > 0;
-                    if (hasSomeProgress) saveUserProgress(session.sub, existing, session.token);
-                } catch(e) { console.error("Migration error:", e); }
-                // Even if there's no cloud data, we're ready to auto-save local data
+                setLastSynced(new Date().toISOString());
+            })
+            .catch(() => {
                 cloudReady.current = true;
-            }
-        });
-    }, [session?.sub]);
+            });
+        } else {
+            cloudReady.current = true;
+        }
+    }, [syncCode]);
 
     // ── Streak: mark dates as LeetCode-active and recalculate ─────────────
     function markDateActive(datesArr) {
@@ -4097,9 +4023,8 @@ const OS_UNITS = [
                         {autoSyncStatus==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
                         {autoSyncStatus==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
                         {autoSyncStatus==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
-                        {!autoSyncStatus && !session?.sub && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
-                        {!autoSyncStatus && session?.sub && !isSessionValid(session) && <span style={{fontSize:10,color:"#fbbf24"}}>re-auth</span>}
-                        {!autoSyncStatus && (isSessionValid(session) || syncCode) && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
+                        {!autoSyncStatus && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
+                        {!autoSyncStatus && syncCode && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
                     </div>
                     {cloudLoadedAt && (
                         <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>
