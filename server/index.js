@@ -3,7 +3,7 @@ import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
-import { getPool, getGoogleUserId } from "../api/_lib/auth.js";
+import { getPool, getGoogleUserId, getGoogleClientId, getAuthFailureReason } from "../api/_lib/auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
@@ -15,8 +15,17 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "5mb" }));
 
 async function requireGoogleAuth(req, res, next) {
+  if (!getGoogleClientId()) {
+    return res.status(503).json({
+      message: "Server misconfigured",
+      hint: "GOOGLE_CLIENT_ID is not set.",
+    });
+  }
   const userId = await getGoogleUserId(req);
-  if (!userId) return res.status(401).json({ message: "Unauthorized" });
+  if (!userId) {
+    const reason = await getAuthFailureReason(req);
+    return res.status(401).json({ message: "Unauthorized", reason });
+  }
   req.googleUserId = userId;
   next();
 }

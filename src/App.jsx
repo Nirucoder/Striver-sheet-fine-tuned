@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
 import CalendarTab from "./CalendarTab.jsx";
-import { supabase, loadUserProgress, saveUserProgress } from "./supabase.js";
+import { supabase, loadUserProgress, saveUserProgress, checkCloudAuth } from "./supabase.js";
 import { isSessionValid, isTokenExpired } from "./authUtils.js";
 import GoogleReSignIn from "./GoogleReSignIn.jsx";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
@@ -3129,8 +3129,18 @@ const OS_UNITS = [
 
     function SyncModal({ session, syncCode, syncStatus, setSyncStatus, onForcePush, onForcePull, onSaveToCloud, onLoadFromCloud, onClose, lastSynced, setSession }) {
         const [inputCode, setInputCode] = useState(syncCode || "");
+        const [serverIssue, setServerIssue] = useState(null);
         const isSignedIn = !!session?.sub;
         const tokenValid = isSessionValid(session);
+
+        useEffect(() => {
+            if (!tokenValid) { setServerIssue(null); return; }
+            checkCloudAuth(session.token).then((r) => {
+                if (!r.serverConfigured) setServerIssue("Server missing GOOGLE_CLIENT_ID — add it in Vercel env vars.");
+                else if (!r.tokenValid) setServerIssue("Sign-in token rejected — sign out and sign in again.");
+                else setServerIssue(null);
+            });
+        }, [session?.token, tokenValid]);
         const tokenExpired = isSignedIn && !tokenValid;
         return (
             <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(4px)"}}>
@@ -3178,6 +3188,12 @@ const OS_UNITS = [
                                 <span>Pull from Cloud</span>
                                 <span style={{fontSize:10,color:"#4ade80",fontWeight:400}}>Load cloud → this device</span>
                             </button>
+                        </div>
+                    )}
+
+                    {serverIssue && (
+                        <div style={{marginBottom:16,padding:"10px 12px",background:"rgba(248,113,113,0.08)",border:"1px solid #7f1d1d",borderRadius:8,fontSize:11,color:"#f87171",lineHeight:1.5}}>
+                            ⚠ {serverIssue}
                         </div>
                     )}
 
@@ -3402,7 +3418,7 @@ const OS_UNITS = [
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
     useEffect(() => {
         if (!session?.sub) return;
-        loadUserProgress(session.sub).then(data => {
+        loadUserProgress(session.sub, session.token).then(data => {
             if (data) {
                 // Cloud data exists — restore it (cloud wins)
                 if (data.dsaData)         setDsaData(mergeDsaData(data.dsaData));
@@ -3449,7 +3465,7 @@ const OS_UNITS = [
                     const hasSomeProgress = existing.solvedQuestions && Object.keys(existing.solvedQuestions).length > 0
                         || existing.todos?.length > 0
                         || existing.streak > 0;
-                    if (hasSomeProgress) saveUserProgress(session.sub, existing);
+                    if (hasSomeProgress) saveUserProgress(session.sub, existing, session.token);
                 } catch(e) { console.error("Migration error:", e); }
                 // Even if there's no cloud data, we're ready to auto-save local data
                 cloudReady.current = true;
@@ -3519,7 +3535,7 @@ const OS_UNITS = [
         setSyncStatus("saving...");
         try {
             const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-            await saveUserProgress(session.sub, payload);
+            await saveUserProgress(session.sub, payload, session.token);
             setLastSynced(new Date().toISOString());
             setSyncStatus("\u2713 All data pushed to cloud! Open on any device.");
         } catch(e) {
@@ -3533,7 +3549,7 @@ const OS_UNITS = [
         if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
         setSyncStatus("loading from cloud...");
         try {
-            const data = await loadUserProgress(session.sub);
+            const data = await loadUserProgress(session.sub, session.token);
             if (!data) { setSyncStatus("\u26a0 No cloud data found. Push from your main device first."); return; }
             if (data.dsaData)         setDsaData(mergeDsaData(data.dsaData));
             if (data.coaData)         setCoaData(mergeCoaData(data.coaData));
@@ -3577,7 +3593,7 @@ const OS_UNITS = [
             // Primary: save to Supabase keyed by Google user ID
             if (session?.sub && isSessionValid(session)) {
                 try {
-                    await saveUserProgress(session.sub, payload);
+                    await saveUserProgress(session.sub, payload, session.token);
                     supabaseOk = true;
                 } catch(e) { console.error("Supabase save error:", e); }
             }

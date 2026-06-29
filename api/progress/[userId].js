@@ -1,4 +1,4 @@
-import { getPool, getGoogleUserId } from "../_lib/auth.js";
+import { getPool, getGoogleUserId, getGoogleClientId, getAuthFailureReason } from "../_lib/auth.js";
 
 export const config = {
   api: {
@@ -20,13 +20,29 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: "DATABASE_URL not configured on server." });
   }
 
+  const clientId = getGoogleClientId();
+  if (!clientId) {
+    return res.status(503).json({
+      message: "Server misconfigured",
+      hint: "GOOGLE_CLIENT_ID is not set in Vercel environment variables.",
+    });
+  }
+
   const sessionUserId = await getGoogleUserId(req);
   const { userId } = req.query;
 
   if (!sessionUserId) {
+    const reason = await getAuthFailureReason(req);
+    const hints = {
+      missing_token: "No auth token sent. Sign out and sign in with Google again.",
+      missing_client_id: "GOOGLE_CLIENT_ID is not set on the server.",
+      invalid_token: "Google token rejected. Sign out and sign in again.",
+      malformed_token: "Invalid auth token. Sign out and sign in again.",
+    };
     return res.status(401).json({
       message: "Unauthorized",
-      hint: "Google sign-in token missing, expired, or invalid. Sign in again.",
+      hint: hints[reason] || "Google sign-in token missing, expired, or invalid. Sign in again.",
+      reason,
     });
   }
   if (sessionUserId !== userId) return res.status(403).json({ message: "Forbidden" });
