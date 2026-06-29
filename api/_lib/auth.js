@@ -120,6 +120,54 @@ export async function ensureStrategy(domain) {
   return strategyName;
 }
 
+// --- Token refresh helper ---
+function updateUserSession(user, tokens) {
+  user.claims = tokens.claims();
+  user.access_token = tokens.access_token;
+  user.refresh_token = tokens.refresh_token;
+  user.expires_at = user.claims?.exp;
+}
+
+/**
+ * Checks whether req.user is authenticated and, if the access token has
+ * expired, transparently refreshes it using the stored refresh token.
+ * Saves the session after a successful refresh so the new tokens persist.
+ *
+ * Returns the validated user object, or null if authentication fails.
+ */
+export async function requireAuth(req, res) {
+  const user = req.user;
+
+  if (!user?.claims?.sub || !user?.expires_at) {
+    res.status(401).json({ message: "Unauthorized" });
+    return null;
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  if (now <= user.expires_at) return user;
+
+  // Token expired — try to refresh
+  const refreshToken = user.refresh_token;
+  if (!refreshToken) {
+    res.status(401).json({ message: "Unauthorized" });
+    return null;
+  }
+
+  try {
+    const cfg = await getOidcConfig();
+    const tokenResponse = await oidcClient.refreshTokenGrant(cfg, refreshToken);
+    updateUserSession(user, tokenResponse);
+    // Persist refreshed tokens back to the session store
+    await new Promise((resolve, reject) =>
+      req.session.save((err) => (err ? reject(err) : resolve()))
+    );
+    return user;
+  } catch {
+    res.status(401).json({ message: "Unauthorized" });
+    return null;
+  }
+}
+
 // --- Middleware runner helper ---
 export function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {

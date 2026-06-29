@@ -1,4 +1,11 @@
-import { getPool, getSessionMiddleware, runMiddleware } from "../_lib/auth.js";
+import {
+  getPool,
+  getSessionMiddleware,
+  initPassport,
+  runMiddleware,
+  requireAuth,
+  passport,
+} from "../_lib/auth.js";
 
 export const config = {
   api: {
@@ -17,13 +24,18 @@ export default async function handler(req, res) {
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
+  initPassport();
+
   await runMiddleware(req, res, getSessionMiddleware());
+  await runMiddleware(req, res, passport.initialize());
+  await runMiddleware(req, res, passport.session());
 
-  const sessionUserId = req.session?.passport?.user?.claims?.sub;
+  const user = await requireAuth(req, res);
+  if (!user) return;
+
   const { userId } = req.query;
-
-  if (!sessionUserId || sessionUserId !== userId) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (user.claims.sub !== userId) {
+    return res.status(403).json({ message: "Forbidden" });
   }
 
   const db = getPool();
