@@ -3128,48 +3128,79 @@ const OS_UNITS = [
     ];
 
     function SyncModal({ syncCode, syncStatus, setSyncStatus, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
-        const [inputCode, setInputCode] = useState(syncCode || "");
+        const [inputCode, setInputCode] = useState("");
+        const [copied, setCopied] = useState(false);
+
+        function copyCode() {
+            if (!syncCode) return;
+            navigator.clipboard.writeText(syncCode).then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            });
+        }
+
         return (
-            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.8)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(4px)"}}>
-                <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:16,padding:"28px 32px",maxWidth:460,width:"90%",boxShadow:"0 32px 80px rgba(0,0,0,0.7)"}}>
+            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)"}}>
+                <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:16,padding:"28px 28px",maxWidth:480,width:"93%",boxShadow:"0 32px 80px rgba(0,0,0,0.8)"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
                         <div style={{fontSize:18,fontWeight:700,color:"#f1f5f9"}}>☁ Cross-Device Sync</div>
-                        <button onClick={onClose} style={{background:"none",border:"none",color:"#64748b",fontSize:20,cursor:"pointer",lineHeight:1}}>×</button>
+                        <button onClick={onClose} style={{background:"none",border:"none",color:"#64748b",fontSize:22,cursor:"pointer",lineHeight:1}}>×</button>
                     </div>
-                    <div style={{fontSize:12,color:"#64748b",marginBottom:16,lineHeight:1.6}}>
-                        Your progress auto-saves to the cloud. Use your sync code to restore your progress on another device.
+
+                    {/* How it works */}
+                    <div style={{fontSize:12,color:"#64748b",marginBottom:16,lineHeight:1.7,padding:"10px 12px",background:"rgba(129,140,248,0.05)",border:"1px solid #1e2030",borderRadius:8}}>
+                        <strong style={{color:"#a5b4fc"}}>How it works:</strong> Your sync code is your cloud identity. To sync between devices, use the <strong style={{color:"#f1f5f9"}}>same code</strong> on all your devices. Copy it from your laptop and paste it on your phone.
                     </div>
 
                     {lastSynced && (
-                        <div style={{marginBottom:16,padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399",display:"flex",alignItems:"center",gap:6}}>
+                        <div style={{marginBottom:14,padding:"7px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399",display:"flex",alignItems:"center",gap:6}}>
                             <span>✓</span>
                             <span>Last synced: {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}</span>
                         </div>
                     )}
 
-                    <div style={{marginTop:12}}>
-                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Save current progress</div>
-                        <button onClick={onSaveToCloud} style={{width:"100%",padding:"10px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:8,color:"#a5b4fc",fontSize:13,fontWeight:600,cursor:"pointer",marginBottom:10}}>
-                            ↑ Force Save to Cloud
-                        </button>
-                        {syncCode && (
-                            <div style={{padding:"10px 14px",background:"#0a0b0d",border:"1px solid #1e2030",borderRadius:8,marginBottom:12}}>
-                                <div style={{fontSize:11,color:"#64748b",marginBottom:4}}>Your sync code — keep this safe:</div>
-                                <div style={{fontFamily:"monospace",fontSize:15,color:"#818cf8",letterSpacing:"0.05em",userSelect:"all"}}>{syncCode}</div>
+                    {/* This device's sync code */}
+                    <div style={{marginBottom:16}}>
+                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>📱 This device's sync code</div>
+                        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                            <div style={{flex:1,padding:"11px 14px",background:"#0a0b0d",border:"1px solid #2d3154",borderRadius:8,fontFamily:"monospace",fontSize:15,color:"#818cf8",letterSpacing:"0.08em",userSelect:"all"}}>
+                                {syncCode || "—"}
                             </div>
-                        )}
-                        <div style={{borderTop:"1px solid #1e2030",paddingTop:12}}>
-                            <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>Restore from code</div>
-                            <div style={{display:"flex",gap:8}}>
-                                <input value={inputCode} onChange={e=>setInputCode(e.target.value)} placeholder="Enter sync code"
-                                    style={{flex:1,padding:"9px 12px",background:"#1a1d2e",border:"1px solid #2d3154",borderRadius:8,color:"#e2e8f0",fontSize:13,outline:"none",fontFamily:"monospace"}} />
-                                <button onClick={()=>onLoadFromCloud(inputCode.trim())} style={{padding:"9px 16px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>↓ Restore</button>
-                            </div>
+                            <button onClick={copyCode} style={{padding:"11px 14px",background:copied?"#0f2918":"#1a1d2e",border:copied?"1px solid #166534":"1px solid #2d3154",borderRadius:8,color:copied?"#86efac":"#94a3b8",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",transition:"all 0.2s"}}>
+                                {copied ? "✓ Copied!" : "📋 Copy"}
+                            </button>
+                        </div>
+                        <div style={{display:"flex",gap:8,marginTop:8}}>
+                            <button onClick={onSaveToCloud} style={{flex:1,padding:"9px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:8,color:"#a5b4fc",fontSize:12,fontWeight:600,cursor:"pointer"}}>
+                                ↑ Save this device to cloud
+                            </button>
+                            <button onClick={() => onLoadFromCloud(syncCode)} style={{flex:1,padding:"9px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:12,fontWeight:600,cursor:"pointer"}}>
+                                ↓ Refresh from cloud
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Transfer from another device */}
+                    <div style={{borderTop:"1px solid #1e2030",paddingTop:14}}>
+                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>💻 Use code from another device</div>
+                        <div style={{fontSize:11,color:"#475569",marginBottom:8,lineHeight:1.5}}>
+                            If your other device has different data, paste its sync code here. This will <strong style={{color:"#f87171"}}>replace</strong> this device's data with the cloud data from that code.
+                        </div>
+                        <div style={{display:"flex",gap:8}}>
+                            <input
+                                value={inputCode}
+                                onChange={e => setInputCode(e.target.value)}
+                                placeholder="Paste sync code from other device"
+                                style={{flex:1,padding:"9px 12px",background:"#1a1d2e",border:"1px solid #2d3154",borderRadius:8,color:"#e2e8f0",fontSize:13,outline:"none",fontFamily:"monospace"}}
+                            />
+                            <button onClick={() => { if(inputCode.trim()) onLoadFromCloud(inputCode.trim()); }} style={{padding:"9px 16px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
+                                ↓ Load
+                            </button>
                         </div>
                     </div>
 
                     {syncStatus && (
-                        <div style={{marginTop:16,padding:"10px 14px",borderRadius:8,fontSize:13,
+                        <div style={{marginTop:14,padding:"10px 14px",borderRadius:8,fontSize:13,
                             background: syncStatus.startsWith("\u2713") ? "rgba(52,211,153,0.08)" : syncStatus.startsWith("\u2717") ? "rgba(248,113,113,0.08)" : "rgba(129,140,248,0.08)",
                             color: syncStatus.startsWith("\u2713") ? "#34d399" : syncStatus.startsWith("\u2717") ? "#f87171" : "#818cf8",
                             border: `1px solid ${syncStatus.startsWith("\u2713") ? "#065f46" : syncStatus.startsWith("\u2717") ? "#7f1d1d" : "#312e81"}`
