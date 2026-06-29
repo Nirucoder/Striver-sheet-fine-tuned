@@ -1,0 +1,1049 @@
+[
+  {
+    "oldId": "FPvPEA0Bkoo",
+    "newUrl": "https://youtu.be/h3uDCJ5mvgw",
+    "newTitle": "How to setup VS code for DSA and CP | Input / Output split format",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "User Input / Output",
+      "Data Types",
+      "If Else statements",
+      "Switch Statement",
+      "arrays, strings",
+      "For loops, while loops"
+    ]
+  },
+  {
+    "oldId": "581L8kC8A_E",
+    "newUrl": "https://youtu.be/bYWLJb3vCWY",
+    "newTitle": "Find element that appears once | Find missing number | Max Consecutive number of 1's | Arrays Part-3",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Find missing number in an array"
+    ]
+  },
+  {
+    "oldId": "AHZpyENo7kM",
+    "newUrl": "https://youtu.be/AHZpyENo7k4",
+    "newTitle": "Kadane's Algorithm | Maximum Subarray Sum | Finding and Printing",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Kadane's Algorithm – Max Subarray Sum"
+    ]
+  },
+  {
+    "oldId": "h4aBagy4dhw",
+    "newUrl": "https://youtu.be/h4aBagy4Uok",
+    "newTitle": "Rearrange Array Elements by Sign | 2 Varieties of same Problem",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Rearrange Array Elements by Sign"
+    ]
+  },
+  {
+    "oldId": "cHrE-bPSzJE",
+    "newUrl": "https://youtu.be/cHrH9CQ8pmY",
+    "newTitle": "Leaders in an Array | Brute - Optimal | Strivers A2Z DSA Course",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Leaders in an Array"
+    ]
+  },
+  {
+    "oldId": "oO5uLE8zzDk",
+    "newUrl": "https://youtu.be/oO5uLE7EUlM",
+    "newTitle": "Longest Consecutive Sequence | Google Interview Question | Brute Better Optimal",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Consecutive Sequence"
+    ]
+  },
+  {
+    "oldId": "3Zv1bkPnOPQ",
+    "newUrl": "https://youtu.be/3Zv-s9UUrFM",
+    "newTitle": "Spiral Traversal of a Matrix | Spiral Matrix",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Spiral Order Matrix"
+    ]
+  },
+  {
+    "oldId": "1jOeEwxTDow",
+    "newUrl": "https://youtu.be/AHZpyENo7k4",
+    "newTitle": "Kadane's Algorithm | Maximum Subarray Sum | Finding and Printing",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Maximum Sum Rectangle in Matrix"
+    ]
+  },
+  {
+    "oldId": "Ril1tCeB1wU",
+    "newUrl": "https://youtu.be/nhEMDKMB44g",
+    "newTitle": "BS-6. Minimum in Rotated Sorted Array",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Minimum in Rotated Sorted Array"
+    ]
+  },
+  {
+    "oldId": "l1ED7bG5nP0",
+    "newUrl": "https://youtu.be/AZOmHuHadxQ",
+    "newTitle": "BS-8. Single Element in Sorted Array",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Single Element in a Sorted Array"
+    ]
+  },
+  {
+    "oldId": "UvTMuf1LD5k",
+    "newUrl": "https://youtu.be/UvBKTVaG6U8",
+    "newTitle": "BS-14. Find the Smallest Divisor Given a Threshold | Binary Search",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Find the Smallest Divisor"
+    ]
+  },
+  {
+    "oldId": "s1YMbOVdZ8s",
+    "newUrl": "https://youtu.be/MG-Ac4TAvTY",
+    "newTitle": "BS-15. Capacity to Ship Packages within D Days",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Capacity to Ship Packages"
+    ]
+  },
+  {
+    "oldId": "kpas4GjFRfY",
+    "newUrl": "https://youtu.be/kMSBvlZ-_HA",
+    "newTitle": "BS-20. Minimise Maximum Distance between Gas Stations | 3 Approaches | Heap | Binary Search",
+    "score": 0.8333333333333334,
+    "method": "playlist",
+    "linkedProblems": [
+      "Minimize Max Distance between Gas Stations"
+    ]
+  },
+  {
+    "oldId": "q13SLMwVTi4",
+    "newUrl": "https://youtu.be/D1oDwWCq50g",
+    "newTitle": "Bs-22. K-th element of two sorted arrays | Binary Search Approach",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Kth Element of Two Sorted Arrays"
+    ]
+  },
+  {
+    "oldId": "oRhOUq6CfhI",
+    "newUrl": "https://youtu.be/cXxmbemS6XM",
+    "newTitle": "BS-9. Find Peak Element",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Find Peak Element in 2D Matrix"
+    ]
+  },
+  {
+    "oldId": "RXGkNQGFHgE",
+    "newUrl": "https://youtu.be/37E9ckMDdTk",
+    "newTitle": "Find Second Largest Element in Array | Remove duplicates from Sorted Array | Arrays Intro Video",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Remove Outermost Parentheses"
+    ]
+  },
+  {
+    "oldId": "AEgkh-nI8jQ",
+    "newUrl": "https://youtu.be/0e4bZaP3MDI",
+    "newTitle": "Reverse Pairs | Hard Interview Question",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Reverse Words in a String"
+    ]
+  },
+  {
+    "oldId": "vk-bNDp58X4",
+    "newUrl": "https://youtu.be/xtqN4qlgr8s",
+    "newTitle": "L7. Number of Substrings Containing All Three Characters | 2 Pointers and Sliding Window Playlist",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Largest Odd Number in a String"
+    ]
+  },
+  {
+    "oldId": "x1UcklEMfSc",
+    "newUrl": "https://youtu.be/NPZn9jBrX8U",
+    "newTitle": "Dp 25. Longest Common Subsequence | Top Down | Bottom-Up | Space Optimised | DP on Strings",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Common Prefix"
+    ]
+  },
+  {
+    "oldId": "mMonZHVNwgk",
+    "newUrl": "https://youtu.be/NPZn9jBrX8U",
+    "newTitle": "Dp 25. Longest Common Subsequence | Top Down | Bottom-Up | Space Optimised | DP on Strings",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Isomorphic Strings"
+    ]
+  },
+  {
+    "oldId": "7I9KN3PVHUY",
+    "newUrl": "https://youtu.be/BhuvF_-PWS0",
+    "newTitle": "L18. Check it two trees are Identical or Not | C++ | Java",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Check if Strings are Rotations"
+    ]
+  },
+  {
+    "oldId": "eXgzuKTCCio",
+    "newUrl": "https://youtu.be/Yt50Jfbd8Po",
+    "newTitle": "L15. Check for Balanced Binary Tree | C++ | Java",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Check if String is Anagram"
+    ]
+  },
+  {
+    "oldId": "vFZTxvUkNlk",
+    "newUrl": "https://youtu.be/N_aJ5qQbYA0",
+    "newTitle": "DP 12. Minimum/Maximum Falling Path Sum | Variable Starting and Ending Points | DP on Grids",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Sum of Beauty of All Substrings"
+    ]
+  },
+  {
+    "oldId": "eXyniy96SiU",
+    "newUrl": "https://youtu.be/xPBLEj41rFU",
+    "newTitle": "DP 29. Minimum Insertions to Make String Palindrome",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Minimum Characters to Make String Palindrome",
+      "Next Smaller Element"
+    ]
+  },
+  {
+    "oldId": "JrxobOHMEhU",
+    "newUrl": "https://youtu.be/f-sj7I5oXEI",
+    "newTitle": "L46. Check if a tree is a BST or BT | Validate a BST",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Valid Palindrome II"
+    ]
+  },
+  {
+    "oldId": "IFSMc_cAaTc",
+    "newUrl": "https://youtu.be/rjEJeYCasHs",
+    "newTitle": "BS-11. Find the Nth root of an Integer",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Roman to Integer"
+    ]
+  },
+  {
+    "oldId": "ZMLKhYvJNd4",
+    "newUrl": "https://youtu.be/rjEJeYCasHs",
+    "newTitle": "BS-11. Find the Nth root of an Integer",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Integer to Roman"
+    ]
+  },
+  {
+    "oldId": "n3Jj4Jg4yne",
+    "newUrl": "https://youtu.be/rjEJeYCasHs",
+    "newTitle": "BS-11. Find the Nth root of an Integer",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "String to Integer (atoi)"
+    ]
+  },
+  {
+    "oldId": "8I1lHEHFr0E",
+    "newUrl": "https://youtu.be/AseUmwVNaoY",
+    "newTitle": "Count Inversions in an Array | Brute and Optimal",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Count and Say"
+    ]
+  },
+  {
+    "oldId": "fOOiHWw10XQ",
+    "newUrl": "https://youtu.be/NPZn9jBrX8U",
+    "newTitle": "Dp 25. Longest Common Subsequence | Top Down | Bottom-Up | Space Optimised | DP on Strings",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Repeated String Match"
+    ]
+  },
+  {
+    "oldId": "QHvoZsCROpQ",
+    "newUrl": "https://youtu.be/ePpV-_pfOeI",
+    "newTitle": "L16. Delete the middle node of the LinkedList",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Delete Node in Linked List"
+    ]
+  },
+  {
+    "oldId": "W_CPMDsRDEU",
+    "newUrl": "https://youtu.be/Nq7ok-OyEpg",
+    "newTitle": "L1. Introduction to LinkedList | Traversal | Length | Search an Element",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Search in Linked List"
+    ]
+  },
+  {
+    "oldId": "BJHpDc9c8pc",
+    "newUrl": "https://youtu.be/u3WUW2qe6ww",
+    "newTitle": "L4. Reverse a DLL | Multiple Approaches",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Reverse a DLL"
+    ]
+  },
+  {
+    "oldId": "Mu_aCxnS2_8",
+    "newUrl": "https://youtu.be/D2vI2DNJGd8",
+    "newTitle": "L9. Reverse a LinkedList | Iterative and Recursive",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Reverse a Linked List"
+    ]
+  },
+  {
+    "oldId": "6BsBjpt9pCU",
+    "newUrl": "https://youtu.be/iTBaI90lpDQ",
+    "newTitle": "G-23. Detect a Cycle in Directed Graph | Topological Sort | Kahn's Algorithm | BFS",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Detect a Loop in LL (Floyd's Algorithm)"
+    ]
+  },
+  {
+    "oldId": "QfbstLVErp4",
+    "newUrl": "https://youtu.be/2Kd0KKmmHFc",
+    "newTitle": "L17. Find the starting point of the Loop/Cycle in LinkedList | Multiple Approaches",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Find Starting Point of Loop in LL"
+    ]
+  },
+  {
+    "oldId": "AdnBqyBBLvs",
+    "newUrl": "https://youtu.be/3kMKYQ2wNIU",
+    "newTitle": "L8. Remove Nth Node from the end of the LinkedList | Multiple Approaches",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Remove Nth Node from End"
+    ]
+  },
+  {
+    "oldId": "ePaUbEPITuw",
+    "newUrl": "https://youtu.be/ePpV-_pfOeI",
+    "newTitle": "L16. Delete the middle node of the LinkedList",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Delete the Middle Node"
+    ]
+  },
+  {
+    "oldId": "1zln14-CTMI",
+    "newUrl": "https://youtu.be/jXu-H7XuClE",
+    "newTitle": "L23. Merge two sorted Linked Lists",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Merge K Sorted Lists"
+    ]
+  },
+  {
+    "oldId": "eFdBODYNUPY",
+    "newUrl": "https://youtu.be/fWX9xDmIzRI",
+    "newTitle": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Subset Sums – Generate All Subset Sums"
+    ]
+  },
+  {
+    "oldId": "kvWNHKNv3AQ",
+    "newUrl": "https://youtu.be/frf7qxiN2qU",
+    "newTitle": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Combination Sum I"
+    ]
+  },
+  {
+    "oldId": "N_cBL7hT7xM",
+    "newUrl": "https://youtu.be/_H8V5hJUGd0",
+    "newTitle": "DP 53. Palindrome Partitioning - II | Front Partition 🔥",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Palindrome Partitioning"
+    ]
+  },
+  {
+    "oldId": "nV9OkLW-OvI",
+    "newUrl": "https://youtu.be/tRPda0rcf8E",
+    "newTitle": "G-29. Word Ladder - I | Shortest Paths",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Expression Add Operators"
+    ]
+  },
+  {
+    "oldId": "zuRQElJ6CwY",
+    "newUrl": "https://youtu.be/frf7qxiN2qU",
+    "newTitle": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Generate Parentheses"
+    ]
+  },
+  {
+    "oldId": "XxtmitBozAA",
+    "newUrl": "https://youtu.be/ZHyb-A2Mte4",
+    "newTitle": "DP 17. Counts Subsets with Sum K | Dp on Subsequences",
+    "score": 0.4,
+    "method": "playlist",
+    "linkedProblems": [
+      "Count Set Bits (Brian Kernighan)"
+    ]
+  },
+  {
+    "oldId": "SXrTi7xF30o",
+    "newUrl": "https://youtu.be/Yt50Jfbd8Po",
+    "newTitle": "L15. Check for Balanced Binary Tree | C++ | Java",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Check Power of 2"
+    ]
+  },
+  {
+    "oldId": "QuHxMJV_tcg",
+    "newUrl": "https://youtu.be/0e4bZaP3MDI",
+    "newTitle": "Reverse Pairs | Hard Interview Question",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Reverse Bits"
+    ]
+  },
+  {
+    "oldId": "jU07z14VIfs",
+    "newUrl": "https://youtu.be/2D0D8HE6uak",
+    "newTitle": "Find the Missing and Repeating Number | 4 Approaches 🔥",
+    "score": 0.42857142857142855,
+    "method": "playlist",
+    "linkedProblems": [
+      "Find the two Non-Repeating Numbers (XOR)"
+    ]
+  },
+  {
+    "oldId": "EgI_P01P5-c",
+    "newUrl": "https://youtu.be/h4aBagy4Uok",
+    "newTitle": "Rearrange Array Elements by Sign | 2 Varieties of same Problem",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "XOR of Numbers in Range [L, R]"
+    ]
+  },
+  {
+    "oldId": "5hHwnSPiMIs",
+    "newUrl": "https://youtu.be/n7uwj04E0I4",
+    "newTitle": "Merge Sorted Arrays Without Extra Space | 2 Optimal Solution",
+    "score": 0.25,
+    "method": "playlist",
+    "linkedProblems": [
+      "Divide Two Integers Without / or *"
+    ]
+  },
+  {
+    "oldId": "g_hIx4yn_zg",
+    "newUrl": "https://youtu.be/u-yWemKGWO0",
+    "newTitle": "L32. Count total Nodes in a COMPLETE Binary Tree | O(Log^2 N) Approach | C++ | Java",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Count Total Set Bits 1 to N"
+    ]
+  },
+  {
+    "oldId": "HVJ3DHTPhuI",
+    "newUrl": "https://youtu.be/f-sj7I5oXEI",
+    "newTitle": "L46. Check if a tree is a BST or BT | Validate a BST",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Valid Parentheses"
+    ]
+  },
+  {
+    "oldId": "aN0VB5eRLno",
+    "newUrl": "https://youtu.be/4pIc9UBHJtk",
+    "newTitle": "L3. Prefix, Infix, and Postfix Conversion | Stack and Queue Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Infix to Postfix Conversion"
+    ]
+  },
+  {
+    "oldId": "dplYC2F7OJA",
+    "newUrl": "https://youtu.be/4pIc9UBHJtk",
+    "newTitle": "L3. Prefix, Infix, and Postfix Conversion | Stack and Queue Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Prefix to Infix Conversion"
+    ]
+  },
+  {
+    "oldId": "IFOSCqbxL6E",
+    "newUrl": "https://youtu.be/4pIc9UBHJtk",
+    "newTitle": "L3. Prefix, Infix, and Postfix Conversion | Stack and Queue Playlist",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Postfix Evaluation"
+    ]
+  },
+  {
+    "oldId": "X0X7ne0gjOg",
+    "newUrl": "https://youtu.be/Bzat9vgD0fs",
+    "newTitle": "L12. Largest Rectangle in Histogram | Stack and Queue Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Largest Rectangle in Histogram"
+    ]
+  },
+  {
+    "oldId": "pNSXMuffpmQ",
+    "newUrl": "https://youtu.be/frf7qxiN2qU",
+    "newTitle": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Sum of Subarray Minimums"
+    ]
+  },
+  {
+    "oldId": "CZB6yhLoyQk",
+    "newUrl": "https://youtu.be/pBWCOCS636U",
+    "newTitle": "L2. Maximum Points You Can Obtain from Cards | 2 Pointers and Sliding Window Playlist",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Sliding Window Maximum (Deque)"
+    ]
+  },
+  {
+    "oldId": "SI_bV2t_0v4",
+    "newUrl": "https://youtu.be/frf7qxiN2qU",
+    "newTitle": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Subarray with Sum K (Positives)"
+    ]
+  },
+  {
+    "oldId": "fFe1uJX1uQg",
+    "newUrl": "https://youtu.be/frf7qxiN2qU",
+    "newTitle": "Longest Subarray with sum K | Brute - Better - Optimal | Generate Subarrays",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Subarray with K 1s"
+    ]
+  },
+  {
+    "oldId": "KiFLRc6l2gM",
+    "newUrl": "https://youtu.be/-zSxTJkcdAo",
+    "newTitle": "L3. Longest Substring Without Repeating Characters | 2 Pointers and Sliding Window Playlist",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Substring with K Unique Characters"
+    ]
+  },
+  {
+    "oldId": "9LcMGLKo6V0",
+    "newUrl": "https://youtu.be/XnMdNUkX6VM",
+    "newTitle": "L9. Binary Subarrays With Sum | 2 Pointers and Sliding Window Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Binary Subarrays with Sum"
+    ]
+  },
+  {
+    "oldId": "UqlI4CuTZ9g",
+    "newUrl": "https://youtu.be/j_QOv9OT9Og",
+    "newTitle": "L10. Count number of Nice subarrays | 2 Pointers and Sliding Window Playlist",
+    "score": 0.6,
+    "method": "playlist",
+    "linkedProblems": [
+      "Count Nice Subarrays (Odd Numbers)"
+    ]
+  },
+  {
+    "oldId": "-zSGNjkt8qI",
+    "newUrl": "https://youtu.be/xtqN4qlgr8s",
+    "newTitle": "L7. Number of Substrings Containing All Three Characters | 2 Pointers and Sliding Window Playlist",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Substrings with All Three Characters"
+    ]
+  },
+  {
+    "oldId": "A3UtekJgi5s",
+    "newUrl": "https://youtu.be/pBWCOCS636U",
+    "newTitle": "L2. Maximum Points You Can Obtain from Cards | 2 Pointers and Sliding Window Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Maximum Points from Cards"
+    ]
+  },
+  {
+    "oldId": "Xg8ykJFKPQE",
+    "newUrl": "https://youtu.be/v0e8p9JCgRc",
+    "newTitle": "L9. Sum of Subarray Minimum | Stack and Queue Playlist",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Minimum Size Subarray Sum"
+    ]
+  },
+  {
+    "oldId": "_eNhaDkMXEA",
+    "newUrl": "https://youtu.be/_eNhaDCr6P0",
+    "newTitle": "L8. Longest Repeating Character Replacement | 2 Pointers and Sliding Window Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Repeating Character Replacement"
+    ]
+  },
+  {
+    "oldId": "1aFV0sUNHMc",
+    "newUrl": "https://youtu.be/PwMVNSJ5SLI",
+    "newTitle": "G-43. Find the City With the Smallest Number of Neighbours at a Threshold Distance",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Number of Substrings with All 1s"
+    ]
+  },
+  {
+    "oldId": "i41AqPYdFBU",
+    "newUrl": "https://youtu.be/Yt50Jfbd8Po",
+    "newTitle": "L15. Check for Balanced Binary Tree | C++ | Java",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Check if Binary Tree is a Heap"
+    ]
+  },
+  {
+    "oldId": "9XALmcSKDrc",
+    "newUrl": "https://youtu.be/37E9ckMDdTk",
+    "newTitle": "Find Second Largest Element in Array | Remove duplicates from Sorted Array | Arrays Intro Video",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Kth Smallest Element in Array"
+    ]
+  },
+  {
+    "oldId": "lZB5AySnVxk",
+    "newUrl": "https://youtu.be/37E9ckMDdTk",
+    "newTitle": "Find Second Largest Element in Array | Remove duplicates from Sorted Array | Arrays Intro Video",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Sort a K-Sorted Array"
+    ]
+  },
+  {
+    "oldId": "vgrQPMCGSOg",
+    "newUrl": "https://youtu.be/h4aBagy4Uok",
+    "newTitle": "Rearrange Array Elements by Sign | 2 Varieties of same Problem",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Top K Frequent Elements"
+    ]
+  },
+  {
+    "oldId": "WwfnCDtRRjk",
+    "newUrl": "https://youtu.be/OwMNX8SPavM",
+    "newTitle": "G-53. Most Stones Removed with Same Row or Column - DSU",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "K Most Frequent Words"
+    ]
+  },
+  {
+    "oldId": "Xd_5FiQQGiI",
+    "newUrl": "https://youtu.be/h4aBagy4Uok",
+    "newTitle": "Rearrange Array Elements by Sign | 2 Varieties of same Problem",
+    "score": 0.3333333333333333,
+    "method": "playlist",
+    "linkedProblems": [
+      "Replace Elements by Rank"
+    ]
+  },
+  {
+    "oldId": "gCJovpFpEgg",
+    "newUrl": "https://youtu.be/AHZpyENo7k4",
+    "newTitle": "Kadane's Algorithm | Maximum Subarray Sum | Finding and Printing",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Maximum Sum Combination"
+    ]
+  },
+  {
+    "oldId": "7SedJZqajCU",
+    "newUrl": "https://youtu.be/tZAa_jJ3SwQ",
+    "newTitle": "L4. Jump Game - I | Greedy Algorithm Playlist",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Jump Game II"
+    ]
+  },
+  {
+    "oldId": "VyWp3BIHKY8",
+    "newUrl": "https://youtu.be/3-QbX1iDbXs",
+    "newTitle": "L3. Shortest Job First (or SJF) CPU Scheduling",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Shortest Job First (SJF) Scheduling"
+    ]
+  },
+  {
+    "oldId": "ffBCBqBRgj0",
+    "newUrl": "https://youtu.be/37E9ckMDdTk",
+    "newTitle": "Find Second Largest Element in Array | Remove duplicates from Sorted Array | Arrays Intro Video",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Largest Number"
+    ]
+  },
+  {
+    "oldId": "hyynSAFRFaI",
+    "newUrl": "https://youtu.be/MHf6awe89xw",
+    "newTitle": "BS-1. Binary Search Introduction | Real Life Example | Iterative | Recursive | Overflow Cases",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Introduction to Binary Trees"
+    ]
+  },
+  {
+    "oldId": "RlUu72JrOUM",
+    "newUrl": "https://youtu.be/ySp2epYvgTE",
+    "newTitle": "L13. Preorder Inorder Postorder Traversals in One Traversal | C++ | Java | Stack | Binary Trees",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Preorder, Inorder, Postorder (Recursive)"
+    ]
+  },
+  {
+    "oldId": "fCmKqRfuMb8",
+    "newUrl": "https://youtu.be/2YBhNLodD8Q",
+    "newTitle": "L11. Iterative Postorder Traversal using 2 Stack | C++ | Java | Binary Tree",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Iterative Postorder (2 Stacks)"
+    ]
+  },
+  {
+    "oldId": "_AwsRyg3a5M",
+    "newUrl": "https://youtu.be/EoAsWbO7sqg",
+    "newTitle": "L8. Level Order Traversal of Binary Tree | BFS | C++ | Java",
+    "score": 0.75,
+    "method": "playlist",
+    "linkedProblems": [
+      "Zigzag Level Order Traversal"
+    ]
+  },
+  {
+    "oldId": "5s0ojfWCm_E",
+    "newUrl": "https://youtu.be/9GMECGQgWrQ",
+    "newTitle": "L33. Requirements needed to construct a Unique Binary Tree | Theory",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Requirements to Construct Unique BT"
+    ]
+  },
+  {
+    "oldId": "cX_kFSSIYf8",
+    "newUrl": "https://youtu.be/cX_kPV_foZc",
+    "newTitle": "L47. LCA in Binary Search Tree",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "LCA of Binary Search Tree"
+    ]
+  },
+  {
+    "oldId": "iu1umy77DvI",
+    "newUrl": "https://youtu.be/jmy0LaGET1I",
+    "newTitle": "L4. Binary Tree Traversals in Binary Tree | BFS | DFS",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "BFS Traversal"
+    ]
+  },
+  {
+    "oldId": "5lJ8-TlG7YE",
+    "newUrl": "https://youtu.be/5lZ0iJMrUMk",
+    "newTitle": "G-21. Topological Sort Algorithm | DFS",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Topological Sort (DFS)"
+    ]
+  },
+  {
+    "oldId": "FMwpt_aQOGo",
+    "newUrl": "https://youtu.be/FMwpt_aQOGw",
+    "newTitle": "G-50. Accounts Merge - DSU",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Accounts Merge (DSU)"
+    ]
+  },
+  {
+    "oldId": "j1QX9hxM3S0",
+    "newUrl": "https://youtu.be/j1QDfU21iZk",
+    "newTitle": "G-56. Articulation Point in Graph",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Articulation Points in Graph"
+    ]
+  },
+  {
+    "oldId": "PATgNiyd2n0",
+    "newUrl": "https://youtu.be/_-0mx0SmYxA",
+    "newTitle": "G-40. Number of Ways to Arrive at Destination",
+    "score": 0.6,
+    "method": "playlist",
+    "linkedProblems": [
+      "Number of Ways to Reach Destination (DP+Graph)"
+    ]
+  },
+  {
+    "oldId": "EgG3jsGoPvg",
+    "newUrl": "https://youtu.be/EgG3jsGoPvQ",
+    "newTitle": "DP 3. Frog Jump | Dynamic Programming | Learn to write 1D DP",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Frog Jump (1D DP)"
+    ]
+  },
+  {
+    "oldId": "3WaqgiPTagY",
+    "newUrl": "https://youtu.be/GrMBfJNk_NY",
+    "newTitle": "DP 5. Maximum Sum of Non-Adjacent Elements | House Robber | 1-D | DP on Subsequences",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "House Robber II"
+    ]
+  },
+  {
+    "oldId": "N_aJ5pRuxuo",
+    "newUrl": "https://youtu.be/N_aJ5qQbYA0",
+    "newTitle": "DP 12. Minimum/Maximum Falling Path Sum | Variable Starting and Ending Points | DP on Grids",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Minimum / Maximum Falling Path Sum"
+    ]
+  },
+  {
+    "oldId": "GqOTyWuiBOQ",
+    "newUrl": "https://youtu.be/GqOmJHQZivw",
+    "newTitle": "DP 19. 0/1 Knapsack | Recursion to Single Array Space Optimised Approach | DP on Subsequences",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "0/1 Knapsack"
+    ]
+  },
+  {
+    "oldId": "b3GmCYQfIvY",
+    "newUrl": "https://youtu.be/fWX9xDmIzRI",
+    "newTitle": "DP 14. Subset Sum Equals to Target | Identify DP on Subsequences and Ways to Solve them",
+    "score": 0.5,
+    "method": "playlist",
+    "linkedProblems": [
+      "Target Sum (Assign +/- to Nums)"
+    ]
+  },
+  {
+    "oldId": "-Le6aYQnxqg",
+    "newUrl": "https://youtu.be/NPZn9jBrX8U",
+    "newTitle": "Dp 25. Longest Common Subsequence | Top Down | Bottom-Up | Space Optimised | DP on Strings",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Common Subsequence"
+    ]
+  },
+  {
+    "oldId": "BBgesL03LF0",
+    "newUrl": "https://youtu.be/_wP9mWNPL5w",
+    "newTitle": "DP 27. Longest Common Substring | DP on Strings 🔥",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Longest Common Substring"
+    ]
+  },
+  {
+    "oldId": "xElWj5nLHOY",
+    "newUrl": "https://youtu.be/xElxAuBcvsU",
+    "newTitle": "DP 31. Shortest Common Supersequence | DP on Strings",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Shortest Common Supersequence"
+    ]
+  },
+  {
+    "oldId": "wuzTpONbd-g",
+    "newUrl": "https://youtu.be/-uQGzhYj8BQ",
+    "newTitle": "DP 37. Buy and Sell Stocks III | Recursion to Space Optimisation",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Buy & Sell Stock III (At Most 2 Trans.)"
+    ]
+  },
+  {
+    "oldId": "IV1dHbk5Zm4",
+    "newUrl": "https://youtu.be/k4eK-vEmnKg",
+    "newTitle": "DP 40. Buy and Sell Stocks With Transaction Fee | Recursion to Space Optimisation",
+    "score": 0.8,
+    "method": "playlist",
+    "linkedProblems": [
+      "Buy & Sell Stock IV (At Most K Trans.)"
+    ]
+  },
+  {
+    "oldId": "IGHlN4DXOBM",
+    "newUrl": "https://youtu.be/IGIe46xw3YY",
+    "newTitle": "DP 39. Buy and Sell Stocks With Cooldown | Recursion to Space Optimisation",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Buy & Sell Stock with Cooldown"
+    ]
+  },
+  {
+    "oldId": "pTakjtNMTgs",
+    "newUrl": "https://youtu.be/k4eK-vEmnKg",
+    "newTitle": "DP 40. Buy and Sell Stocks With Transaction Fee | Recursion to Space Optimisation",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Buy & Sell Stock with Transaction Fee"
+    ]
+  },
+  {
+    "oldId": "pDCXsbAeX4c",
+    "newUrl": "https://youtu.be/vRVfmbCFW7Y",
+    "newTitle": "DP 48. Matrix Chain Multiplication | MCM | Partition DP Starts 🔥",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Matrix Chain Multiplication (MCM)"
+    ]
+  },
+  {
+    "oldId": "PhWENd3ggns",
+    "newUrl": "https://youtu.be/PhWWJmaKfMc",
+    "newTitle": "DP 54. Partition Array for Maximum Sum | Front Partition 🔥",
+    "score": 1,
+    "method": "playlist",
+    "linkedProblems": [
+      "Partition Array for Maximum Sum"
+    ]
+  },
+  {
+    "oldId": "RV0QETsfAAo",
+    "newUrl": "https://youtu.be/7zmgQSJghpo",
+    "newTitle": "G-16. Number of Distinct Islands | Constructive Thinking + DFS | C++ | Java",
+    "score": 0.6666666666666666,
+    "method": "playlist",
+    "linkedProblems": [
+      "Number of Distinct Substrings",
+      "Replace Words (Dictionary to Roots)"
+    ]
+  }
+]

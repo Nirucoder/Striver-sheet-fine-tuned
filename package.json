@@ -11,13 +11,12 @@
     "server": "node server/index.js",
     "build": "vite build",
     "start": "node server/index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "validate-yt": "node scripts/validate-youtube-links.js"
   },
   "dependencies": {
-    "connect-pg-simple": "^10.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "express-session": "^1.19.0",
     "pg": "^8.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -26,8 +25,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "openid-client": "^6.8.4",
-    "passport": "^0.7.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.7.0",

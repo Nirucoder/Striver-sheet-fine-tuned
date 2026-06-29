@@ -1,30 +1,29 @@
 import express from "express";
 import cors from "cors";
-import pg from "pg";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
-import { setupAuth, isAuthenticated } from "./auth.js";
+import { getPool, getGoogleUserId } from "../api/_lib/auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
 
-const { Pool } = pg;
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("localhost") ? false : { rejectUnauthorized: false },
-});
+const pool = getPool();
 
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "5mb" }));
 
-await setupAuth(app, pool);
+async function requireGoogleAuth(req, res, next) {
+  const userId = await getGoogleUserId(req);
+  if (!userId) return res.status(401).json({ message: "Unauthorized" });
+  req.googleUserId = userId;
+  next();
+}
 
-app.get("/api/progress/:userId", isAuthenticated, async (req, res) => {
+app.get("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
   try {
-    const sessionUserId = req.user?.claims?.sub;
-    if (sessionUserId !== req.params.userId) {
+    if (req.googleUserId !== req.params.userId) {
       return res.status(403).json({ error: "Forbidden" });
     }
     const { rows } = await pool.query(
@@ -39,10 +38,9 @@ app.get("/api/progress/:userId", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/api/progress/:userId", isAuthenticated, async (req, res) => {
+app.post("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
   try {
-    const sessionUserId = req.user?.claims?.sub;
-    if (sessionUserId !== req.params.userId) {
+    if (req.googleUserId !== req.params.userId) {
       return res.status(403).json({ error: "Forbidden" });
     }
     const { data } = req.body;
@@ -109,8 +107,9 @@ app.get("/api/leetcode/:username", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Referer": "https://leetcode.com",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Referer: "https://leetcode.com",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
       body: JSON.stringify({ query, variables: { username, limit: 100 } }),
     });
