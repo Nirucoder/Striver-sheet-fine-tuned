@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
 import CalendarTab from "./CalendarTab.jsx";
-import { supabase, loadUserProgress, saveUserProgress, checkCloudAuth } from "./supabase.js";
-import { isSessionValid, isTokenExpired } from "./authUtils.js";
-import GoogleReSignIn from "./GoogleReSignIn.jsx";
+import { loadUserProgressRecord, saveUserProgress } from "./supabase.js";
+import { isSessionValid } from "./authUtils.js";
+import AccountSyncModal from "./AccountSyncModal.jsx";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
@@ -3226,7 +3226,7 @@ const OS_UNITS = [
     RevisionTracker = memo(RevisionTracker);
     Analytics       = memo(Analytics);
     TodoApp         = memo(TodoApp);
-    SyncModal       = memo(SyncModal);
+    SyncModal       = memo(AccountSyncModal);
 
     // ─── STREAK HELPERS ────────────────────────────────────────────────────────
     function getStreakDate() {
@@ -3295,6 +3295,10 @@ const OS_UNITS = [
     const autoSyncTimer = useRef(null);
     const isFirstRender = useRef(true);
     // cloudReady: prevents auto-save from firing before cloud data is loaded.
+    const cloudUpdatedAt = useRef(0);
+    const applyingCloudData = useRef(false);
+    const localSavePending = useRef(false);
+    const lastCloudPayload = useRef("");
     // Must start as false — auto-save is gated on this being true so we never
     // overwrite cloud data with stale local state before the initial fetch resolves.
     const cloudReady = useRef(false);
@@ -3395,40 +3399,112 @@ const OS_UNITS = [
     }, [lcUsername]);
 
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
-    const isCloudFetchFirstRender = useRef(true);
+    function getProgressPayload() {
+        return { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress };
+    }
+
+    function applyCloudProgress(data) {
+        if (!data) return;
+        applyingCloudData.current = true;
+        lastCloudPayload.current = JSON.stringify(data);
+        if (data.dsaData) setDsaData(mergeDsaData(data.dsaData));
+        if (data.coaData) setCoaData(mergeCoaData(data.coaData));
+        if (data.revData) setRevData(mergeRevData(data.revData));
+        if (data.weekStatus) setWeekStatus(data.weekStatus);
+        if (data.streakData) setStreakData(data.streakData);
+        else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
+        if (data.streakFreezes) setStreakFreezes(data.streakFreezes);
+        if (data.dailyLog) setDailyLog(data.dailyLog);
+        if (data.lastLogDate) setLastLogDate(data.lastLogDate);
+        if (data.activityLog) setActivityLog(data.activityLog);
+        if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
+        if (data.todos) setTodos(data.todos);
+        if (data.probNotes) setProbNotes(data.probNotes);
+        if (data.revStars) setRevStars(data.revStars);
+        if (data.mathsProgress) setMathsProgress(data.mathsProgress);
+        if (data.osProgress) setOsProgress(data.osProgress);
+        if (data.coaGsProgress) setCoaGsProgress(data.coaGsProgress);
+        setCloudLoadedAt(new Date().toISOString());
+    }
+
     useEffect(() => {
-        if (!isCloudFetchFirstRender.current) return;
-        isCloudFetchFirstRender.current = false;
-        if (syncCode) {
-            fetch(`/api/sync/${syncCode}`)
-            .then(res => res.ok ? res.json() : Promise.reject("not found"))
-            .then(({ data }) => {
-                if (data.dsaData) setDsaData(mergeDsaData(data.dsaData));
-                if (data.coaData) setCoaData(mergeCoaData(data.coaData));
-                if (data.revData) setRevData(mergeRevData(data.revData));
-                if (data.weekStatus) setWeekStatus(data.weekStatus);
-                if (data.streakData) setStreakData(data.streakData);
-                else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
-                if (data.streakFreezes) setStreakFreezes(data.streakFreezes);
-                if (data.dailyLog) setDailyLog(data.dailyLog);
-                if (data.lastLogDate) setLastLogDate(data.lastLogDate);
-                if (data.activityLog) setActivityLog(data.activityLog);
-                if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
-                if (data.todos) setTodos(data.todos);
-                if (data.probNotes) setProbNotes(data.probNotes);
-                if (data.revStars) setRevStars(data.revStars);
-                if (data.mathsProgress) setMathsProgress(data.mathsProgress);
-                if (data.osProgress) setOsProgress(data.osProgress);
-                cloudReady.current = true;
-                setLastSynced(new Date().toISOString());
-            })
-            .catch(() => {
-                cloudReady.current = true;
-            });
-        } else {
-            cloudReady.current = true;
+        let cancelled = false;
+        cloudReady.current = false;
+
+        async function initializeAccountCloud() {
+            if (!session?.sub || !isSessionValid(session)) return;
+            try {
+                let record = await loadUserProgressRecord(session.sub, session.token);
+                if (!record && syncCode) {
+                    const legacyResponse = await fetch(`/api/sync/${encodeURIComponent(syncCode)}`);
+                    if (legacyResponse.ok) {
+                        const legacy = await legacyResponse.json();
+                        if (legacy.data) {
+                            applyCloudProgress(legacy.data);
+                            const saved = await saveUserProgress(session.sub, legacy.data, session.token);
+                            record = { data: legacy.data, updatedAt: saved?.updatedAt };
+                            localStorage.removeItem("studyos_sync_code");
+                        }
+                    }
+                }
+
+                if (cancelled) return;
+                if (record?.data) {
+                    applyCloudProgress(record.data);
+                    cloudUpdatedAt.current = Date.parse(record.updatedAt || "") || Date.now();
+                    setLastSynced(record.updatedAt || new Date().toISOString());
+                } else {
+                    const saved = await saveUserProgress(session.sub, getProgressPayload(), session.token);
+                    cloudUpdatedAt.current = Date.parse(saved?.updatedAt || "") || Date.now();
+                    setLastSynced(saved?.updatedAt || new Date().toISOString());
+                }
+            } catch (error) {
+                console.error("Initial account sync failed:", error);
+                setAutoSyncStatus("error");
+            } finally {
+                if (!cancelled) cloudReady.current = true;
+            }
         }
-    }, [syncCode]);
+
+        initializeAccountCloud();
+        return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session?.sub, session?.token]);
+
+    useEffect(() => {
+        if (!session?.sub || !isSessionValid(session)) return;
+
+        async function refreshFromAnotherDevice() {
+            if (!cloudReady.current || localSavePending.current || document.visibilityState === "hidden") return;
+            try {
+                const updatedAfter = cloudUpdatedAt.current ? new Date(cloudUpdatedAt.current).toISOString() : undefined;
+                const record = await loadUserProgressRecord(session.sub, session.token, updatedAfter);
+                const remoteUpdatedAt = Date.parse(record?.updatedAt || "") || 0;
+                if (record?.data && remoteUpdatedAt > cloudUpdatedAt.current) {
+                    cloudUpdatedAt.current = remoteUpdatedAt;
+                    applyCloudProgress(record.data);
+                    setLastSynced(record.updatedAt);
+                    setAutoSyncStatus("saved");
+                    setTimeout(() => setAutoSyncStatus(""), 2000);
+                }
+            } catch (error) {
+                console.error("Background cloud refresh failed:", error);
+            }
+        }
+
+        const interval = setInterval(refreshFromAnotherDevice, 5000);
+        const onVisible = () => {
+            if (document.visibilityState === "visible") refreshFromAnotherDevice();
+        };
+        window.addEventListener("focus", refreshFromAnotherDevice);
+        document.addEventListener("visibilitychange", onVisible);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("focus", refreshFromAnotherDevice);
+            document.removeEventListener("visibilitychange", onVisible);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session?.sub, session?.token]);
 
     // ── Streak: mark dates as LeetCode-active and recalculate ─────────────
     function markDateActive(datesArr) {
@@ -3491,9 +3567,12 @@ const OS_UNITS = [
         if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
         setSyncStatus("saving...");
         try {
-            const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-            await saveUserProgress(session.sub, payload, session.token);
-            setLastSynced(new Date().toISOString());
+            const payload = getProgressPayload();
+            const saved = await saveUserProgress(session.sub, payload, session.token);
+            cloudUpdatedAt.current = Date.parse(saved?.updatedAt || "") || Date.now();
+            lastCloudPayload.current = JSON.stringify(payload);
+            setLastSynced(saved?.updatedAt || new Date().toISOString());
+            localSavePending.current = false;
             setSyncStatus("\u2713 All data pushed to cloud! Open on any device.");
         } catch(e) {
             setSyncStatus(`\u2717 Push failed: ${e.message}`);
@@ -3506,26 +3585,13 @@ const OS_UNITS = [
         if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
         setSyncStatus("loading from cloud...");
         try {
-            const data = await loadUserProgress(session.sub, session.token);
+            const record = await loadUserProgressRecord(session.sub, session.token);
+            const data = record?.data;
             if (!data) { setSyncStatus("\u26a0 No cloud data found. Push from your main device first."); return; }
-            if (data.dsaData)         setDsaData(mergeDsaData(data.dsaData));
-            if (data.coaData)         setCoaData(mergeCoaData(data.coaData));
-            if (data.revData)         setRevData(mergeRevData(data.revData));
-            if (data.weekStatus)      setWeekStatus(data.weekStatus);
-            if (data.streakData)           setStreakData(data.streakData);
-            else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
-            if (data.streakFreezes)        setStreakFreezes(data.streakFreezes);
-            if (data.dailyLog)        setDailyLog(data.dailyLog);
-            if (data.lastLogDate)     setLastLogDate(data.lastLogDate);
-            if (data.activityLog)     setActivityLog(data.activityLog);
-            if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
-            if (data.todos)           setTodos(data.todos);
-            if (data.probNotes)       setProbNotes(data.probNotes);
-            if (data.revStars)        setRevStars(data.revStars);
-            if (data.mathsProgress)   setMathsProgress(data.mathsProgress);
-            if (data.osProgress)      setOsProgress(data.osProgress);
+            applyCloudProgress(data);
+            cloudUpdatedAt.current = Date.parse(record.updatedAt || "") || Date.now();
             cloudReady.current = true;
-            setLastSynced(new Date().toISOString());
+            setLastSynced(record.updatedAt || new Date().toISOString());
             setSyncStatus("\u2713 Data loaded! All your progress is restored.");
         } catch(e) {
             setSyncStatus(`\u2717 Pull failed: ${e.message}`);
@@ -3537,45 +3603,41 @@ const OS_UNITS = [
     // — Legacy sync-code save fires only if user has a syncCode set (secondary, optional)
     useEffect(() => {
         if (isFirstRender.current) { isFirstRender.current = false; return; }
-        if (!session?.sub && !syncCode) return; // nothing to sync to
-        if (!cloudReady.current) return;        // wait until cloud data is loaded first
+        if (!session?.sub || !isSessionValid(session) || !cloudReady.current) return;
+
+        const payload = getProgressPayload();
+        const serializedPayload = JSON.stringify(payload);
+        if (applyingCloudData.current && serializedPayload === lastCloudPayload.current) {
+            applyingCloudData.current = false;
+            return;
+        }
+        applyingCloudData.current = false;
 
         if (autoSyncTimer.current) clearTimeout(autoSyncTimer.current);
+        localSavePending.current = true;
         setAutoSyncStatus("saving");
         autoSyncTimer.current = setTimeout(async () => {
-            const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-            let supabaseOk = !session?.sub; // if not signed in, treat as not needed
-            let legacyOk   = !syncCode;    // if no syncCode, treat as not needed
-
-            // Primary: save to Supabase keyed by Google user ID
-            if (session?.sub && isSessionValid(session)) {
-                try {
-                    await saveUserProgress(session.sub, payload, session.token);
-                    supabaseOk = true;
-                } catch(e) { console.error("Supabase save error:", e); }
-            }
-
-            // Secondary: save to legacy sync-code endpoint (skipped on Vercel if not available)
-            if (syncCode) {
-                try {
-                    const res = await fetch(`/api/sync/${syncCode}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ data: payload }),
-                    });
-                    legacyOk = res.ok;
-                } catch { legacyOk = false; }
-            }
-
-            if (supabaseOk || legacyOk) {
-                setLastSynced(new Date().toISOString());
+            try {
+                const saved = await saveUserProgress(session.sub, payload, session.token);
+                cloudUpdatedAt.current = Date.parse(saved?.updatedAt || "") || Date.now();
+                lastCloudPayload.current = serializedPayload;
+                setLastSynced(saved?.updatedAt || new Date().toISOString());
                 setAutoSyncStatus("saved");
                 setTimeout(() => setAutoSyncStatus(""), 3000);
-            } else {
+            } catch (error) {
+                console.error("Account cloud save failed:", error);
                 setAutoSyncStatus("error");
+            } finally {
+                localSavePending.current = false;
             }
         }, 500);
-    }, [dsaData, coaData, revData, weekStatus, streak, dailyLog, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, syncCode]);
+
+        return () => {
+            if (autoSyncTimer.current) clearTimeout(autoSyncTimer.current);
+            localSavePending.current = false;
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dsaData, coaData, revData, weekStatus, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress, session?.sub, session?.token]);
 
     function handleExport() {
     const blob = new
@@ -3844,13 +3906,10 @@ const OS_UNITS = [
             <SyncModal
                 session={session}
                 setSession={setSession}
-                syncCode={syncCode}
                 syncStatus={syncStatus}
                 setSyncStatus={setSyncStatus}
                 onForcePush={handleForcePush}
                 onForcePull={handleForcePull}
-                onSaveToCloud={handleSyncUp}
-                onLoadFromCloud={handleSyncDown}
                 onClose={() => { setShowSyncModal(false); setSyncStatus(""); }}
                 lastSynced={lastSynced}
             />
@@ -4054,8 +4113,7 @@ const OS_UNITS = [
                         {autoSyncStatus==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
                         {autoSyncStatus==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
                         {autoSyncStatus==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
-                        {!autoSyncStatus && !syncCode && <span style={{fontSize:10,color:"#475569"}}>off</span>}
-                        {!autoSyncStatus && syncCode && <span style={{fontSize:10,color:"#34d399",opacity:0.6}}>active</span>}
+                        {!autoSyncStatus && <span style={{fontSize:10,color:isSessionValid(session)?"#34d399":"#fbbf24",opacity:0.7}}>{isSessionValid(session)?"active":"sign in"}</span>}
                     </div>
                     {cloudLoadedAt && (
                         <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>

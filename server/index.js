@@ -35,9 +35,18 @@ app.get("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
     if (req.googleUserId !== req.params.userId) {
       return res.status(403).json({ error: "Forbidden" });
     }
+    const params = [req.params.userId];
+    let query = "SELECT data, updated_at FROM user_progress WHERE user_id = $1";
+    if (req.query.updatedAfter) {
+      const updatedAfter = Date.parse(req.query.updatedAfter);
+      if (Number.isNaN(updatedAfter)) {
+        return res.status(400).json({ error: "Invalid updatedAfter timestamp" });
+      }
+      query += " AND updated_at > $2";
+      params.push(new Date(updatedAfter));
+    }
     const { rows } = await pool.query(
-      "SELECT data, updated_at FROM user_progress WHERE user_id = $1",
-      [req.params.userId]
+      query, params
     );
     if (rows.length === 0) return res.status(404).json({ error: "No data found" });
     res.json({ data: rows[0].data, updatedAt: rows[0].updated_at });
@@ -54,13 +63,14 @@ app.post("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
     }
     const { data } = req.body;
     if (!data) return res.status(400).json({ error: "No data provided" });
-    await pool.query(
+    const { rows } = await pool.query(
       `INSERT INTO user_progress (user_id, data, updated_at)
        VALUES ($1, $2, NOW())
-       ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()`,
+       ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()
+       RETURNING updated_at`,
       [req.params.userId, JSON.stringify(data)]
     );
-    res.json({ success: true });
+    res.json({ success: true, updatedAt: rows[0].updated_at });
   } catch (e) {
     console.error("[progress post]", e.message);
     res.status(500).json({ error: "Server error" });

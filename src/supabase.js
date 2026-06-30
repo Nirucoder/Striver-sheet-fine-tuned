@@ -18,15 +18,23 @@ function buildHeaders(token) {
 }
 
 export async function loadUserProgress(userId, token) {
+  const record = await loadUserProgressRecord(userId, token);
+  return record?.data ?? null;
+}
+
+export async function loadUserProgressRecord(userId, token, updatedAfter) {
   if (!userId) return null;
   try {
-    const res = await fetch(`/api/progress/${encodeURIComponent(userId)}`, {
+    const query = updatedAfter
+      ? `?updatedAfter=${encodeURIComponent(updatedAfter)}`
+      : "";
+    const res = await fetch(`/api/progress/${encodeURIComponent(userId)}${query}`, {
       headers: buildHeaders(token),
     });
     if (res.status === 404) return null;
     if (!res.ok) throw new Error(await parseError(res));
     const json = await res.json();
-    return json.data ?? null;
+    return { data: json.data ?? null, updatedAt: json.updatedAt ?? null };
   } catch (e) {
     console.error("Load error:", e);
     throw e;
@@ -42,6 +50,7 @@ export async function saveUserProgress(userId, payload, token) {
       body: JSON.stringify({ data: payload }),
     });
     if (!res.ok) throw new Error(await parseError(res));
+    return res.json();
   } catch (e) {
     console.error("Save error:", e);
     throw e;

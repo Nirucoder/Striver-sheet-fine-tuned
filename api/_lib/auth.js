@@ -3,6 +3,7 @@ import pg from "pg";
 const { Pool } = pg;
 
 let pool;
+const verifiedTokenCache = new Map();
 export function getPool() {
   if (!pool) {
     pool = new Pool({
@@ -15,15 +16,6 @@ export function getPool() {
 
 export function getGoogleClientId() {
   return process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID || null;
-}
-
-function decodeJwtPayload(token) {
-  try {
-    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
-    return JSON.parse(Buffer.from(base64, "base64").toString("utf8"));
-  } catch {
-    return null;
-  }
 }
 
 function audMatches(payload, clientId) {
@@ -51,26 +43,29 @@ export async function verifyGoogleIdToken(authHeader) {
   const token = header.slice(7);
   if (!token) return { payload: null, reason: "missing_token" };
 
-  // Primary: Google's tokeninfo (validates signature)
+  const cached = verifiedTokenCache.get(token);
+  if (cached && isPayloadValid(cached, clientId)) {
+    return { payload: cached, reason: null };
+  }
+  verifiedTokenCache.delete(token);
+
+  // The signature must be verified because the Google subject is the cloud data key.
   try {
     const res = await fetch(
       `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(token)}`
     );
-    if (res.ok) {
-      const payload = await res.json();
-      if (isPayloadValid(payload, clientId)) return { payload, reason: null };
+    if (!res.ok) return { payload: null, reason: "invalid_token" };
+
+    const payload = await res.json();
+    if (!isPayloadValid(payload, clientId)) {
+      return { payload: null, reason: "invalid_token" };
     }
-  } catch {
-    // fall through to local decode
-  }
 
-  // Fallback: decode JWT locally (aud/exp/iss check; used when tokeninfo is unreachable)
-  const payload = decodeJwtPayload(token);
-  if (payload && isPayloadValid(payload, clientId)) {
+    verifiedTokenCache.set(token, payload);
     return { payload, reason: null };
+  } catch {
+    return { payload: null, reason: "auth_unavailable" };
   }
-
-  return { payload: null, reason: payload ? "invalid_token" : "malformed_token" };
 }
 
 export async function getGoogleUserId(req) {

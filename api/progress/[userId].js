@@ -38,6 +38,7 @@ export default async function handler(req, res) {
       missing_client_id: "GOOGLE_CLIENT_ID is not set on the server.",
       invalid_token: "Google token rejected. Sign out and sign in again.",
       malformed_token: "Invalid auth token. Sign out and sign in again.",
+      auth_unavailable: "Google verification is temporarily unavailable. Try again shortly.",
     };
     return res.status(401).json({
       message: "Unauthorized",
@@ -51,9 +52,18 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
+      const params = [userId];
+      let query = "SELECT data, updated_at FROM user_progress WHERE user_id = $1";
+      if (req.query.updatedAfter) {
+        const updatedAfter = Date.parse(req.query.updatedAfter);
+        if (Number.isNaN(updatedAfter)) {
+          return res.status(400).json({ error: "Invalid updatedAfter timestamp" });
+        }
+        query += " AND updated_at > $2";
+        params.push(new Date(updatedAfter));
+      }
       const { rows } = await db.query(
-        "SELECT data, updated_at FROM user_progress WHERE user_id = $1",
-        [userId]
+        query, params
       );
       if (rows.length === 0) return res.status(404).json({ error: "No data found" });
       return res.json({ data: rows[0].data, updatedAt: rows[0].updated_at });
@@ -67,13 +77,14 @@ export default async function handler(req, res) {
     try {
       const { data } = req.body || {};
       if (!data) return res.status(400).json({ error: "No data provided" });
-      await db.query(
+      const { rows } = await db.query(
         `INSERT INTO user_progress (user_id, data, updated_at)
          VALUES ($1, $2, NOW())
-         ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()`,
+         ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()
+         RETURNING updated_at`,
         [userId, JSON.stringify(data)]
       );
-      return res.json({ success: true });
+      return res.json({ success: true, updatedAt: rows[0].updated_at });
     } catch (e) {
       console.error("[progress POST]", e.message);
       return res.status(500).json({ error: "Server error" });
