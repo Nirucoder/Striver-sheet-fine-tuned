@@ -3127,93 +3127,9 @@ const OS_UNITS = [
     { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
-    function SyncModal({ syncCode, syncStatus, setSyncStatus, onSaveToCloud, onLoadFromCloud, onClose, lastSynced }) {
-        const [inputCode, setInputCode] = useState("");
-        const [copied, setCopied] = useState(false);
+    let SyncModal = AccountSyncModal;
 
-        function copyCode() {
-            if (!syncCode) return;
-            navigator.clipboard.writeText(syncCode).then(() => {
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-            });
-        }
-
-        return (
-            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)"}}>
-                <div style={{background:"#0f1117",border:"1px solid #2d3154",borderRadius:16,padding:"28px 28px",maxWidth:480,width:"93%",boxShadow:"0 32px 80px rgba(0,0,0,0.8)"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                        <div style={{fontSize:18,fontWeight:700,color:"#f1f5f9"}}>☁ Cross-Device Sync</div>
-                        <button onClick={onClose} style={{background:"none",border:"none",color:"#64748b",fontSize:22,cursor:"pointer",lineHeight:1}}>×</button>
-                    </div>
-
-                    {/* How it works */}
-                    <div style={{fontSize:12,color:"#64748b",marginBottom:16,lineHeight:1.7,padding:"10px 12px",background:"rgba(129,140,248,0.05)",border:"1px solid #1e2030",borderRadius:8}}>
-                        <strong style={{color:"#a5b4fc"}}>How it works:</strong> Your sync code is your cloud identity. To sync between devices, use the <strong style={{color:"#f1f5f9"}}>same code</strong> on all your devices. Copy it from your laptop and paste it on your phone.
-                    </div>
-
-                    {lastSynced && (
-                        <div style={{marginBottom:14,padding:"7px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399",display:"flex",alignItems:"center",gap:6}}>
-                            <span>✓</span>
-                            <span>Last synced: {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}</span>
-                        </div>
-                    )}
-
-                    {/* This device's sync code */}
-                    <div style={{marginBottom:16}}>
-                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>📱 This device's sync code</div>
-                        <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                            <div style={{flex:1,padding:"11px 14px",background:"#0a0b0d",border:"1px solid #2d3154",borderRadius:8,fontFamily:"monospace",fontSize:15,color:"#818cf8",letterSpacing:"0.08em",userSelect:"all"}}>
-                                {syncCode || "—"}
-                            </div>
-                            <button onClick={copyCode} style={{padding:"11px 14px",background:copied?"#0f2918":"#1a1d2e",border:copied?"1px solid #166534":"1px solid #2d3154",borderRadius:8,color:copied?"#86efac":"#94a3b8",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",transition:"all 0.2s"}}>
-                                {copied ? "✓ Copied!" : "📋 Copy"}
-                            </button>
-                        </div>
-                        <div style={{display:"flex",gap:8,marginTop:8}}>
-                            <button onClick={onSaveToCloud} style={{flex:1,padding:"9px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:8,color:"#a5b4fc",fontSize:12,fontWeight:600,cursor:"pointer"}}>
-                                ↑ Save this device to cloud
-                            </button>
-                            <button onClick={() => onLoadFromCloud(syncCode)} style={{flex:1,padding:"9px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:12,fontWeight:600,cursor:"pointer"}}>
-                                ↓ Refresh from cloud
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Transfer from another device */}
-                    <div style={{borderTop:"1px solid #1e2030",paddingTop:14}}>
-                        <div style={{fontSize:11,color:"#94a3b8",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>💻 Use code from another device</div>
-                        <div style={{fontSize:11,color:"#475569",marginBottom:8,lineHeight:1.5}}>
-                            If your other device has different data, paste its sync code here. This will <strong style={{color:"#f87171"}}>replace</strong> this device's data with the cloud data from that code.
-                        </div>
-                        <div style={{display:"flex",gap:8}}>
-                            <input
-                                value={inputCode}
-                                onChange={e => setInputCode(e.target.value)}
-                                placeholder="Paste sync code from other device"
-                                style={{flex:1,padding:"9px 12px",background:"#1a1d2e",border:"1px solid #2d3154",borderRadius:8,color:"#e2e8f0",fontSize:13,outline:"none",fontFamily:"monospace"}}
-                            />
-                            <button onClick={() => { if(inputCode.trim()) onLoadFromCloud(inputCode.trim()); }} style={{padding:"9px 16px",background:"#0f2918",border:"1px solid #166534",borderRadius:8,color:"#86efac",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>
-                                ↓ Load
-                            </button>
-                        </div>
-                    </div>
-
-                    {syncStatus && (
-                        <div style={{marginTop:14,padding:"10px 14px",borderRadius:8,fontSize:13,
-                            background: syncStatus.startsWith("\u2713") ? "rgba(52,211,153,0.08)" : syncStatus.startsWith("\u2717") ? "rgba(248,113,113,0.08)" : "rgba(129,140,248,0.08)",
-                            color: syncStatus.startsWith("\u2713") ? "#34d399" : syncStatus.startsWith("\u2717") ? "#f87171" : "#818cf8",
-                            border: `1px solid ${syncStatus.startsWith("\u2713") ? "#065f46" : syncStatus.startsWith("\u2717") ? "#7f1d1d" : "#312e81"}`
-                        }}>
-                            {syncStatus}
-                        </div>
-                    )}
-                </div>
-            </div>
-        );
-    }
-
-    // ─── MEMOIZE ALL PAGE COMPONENTS ──────────────────────────────────────────────
+    // MEMOIZE ALL PAGE COMPONENTS ──────────────────────────────────────────────
     // Reassigning function declarations is valid in ES modules.
     // Each component now only re-renders when its own props change.
     ActivityHeatmap = memo(ActivityHeatmap);
@@ -3275,7 +3191,7 @@ const OS_UNITS = [
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
     const [showSyncModal, setShowSyncModal] = useState(false);
-    const [syncCode, setSyncCode] = useLocalStorage("studyos_sync_code", () => {
+    const [syncCode] = useLocalStorage("studyos_sync_code", () => {
         const stored = localStorage.getItem("studyos_sync_code");
         if (stored) {
             try {
@@ -3283,7 +3199,7 @@ const OS_UNITS = [
                 if (parsed) return parsed;
             } catch (e) {}
         }
-        return "xxxx-xxxx-xxxx".replace(/x/g, () => Math.floor(Math.random()*16).toString(16));
+        return "";
     });
     const [syncStatus, setSyncStatus] = useState("");
     const [autoSyncStatus, setAutoSyncStatus] = useState(""); // "saving" | "saved" | "error" | ""
@@ -3564,7 +3480,7 @@ const OS_UNITS = [
     // Force-push current state to Supabase immediately (bypasses debounce & cloudReady)
     async function handleForcePush() {
         if (!session?.sub) { setSyncStatus("\u26a0 Sign in with Google first."); return; }
-        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
+        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Sync will resume when your app login refreshes."); return; }
         setSyncStatus("saving...");
         try {
             const payload = getProgressPayload();
@@ -3573,7 +3489,7 @@ const OS_UNITS = [
             lastCloudPayload.current = JSON.stringify(payload);
             setLastSynced(saved?.updatedAt || new Date().toISOString());
             localSavePending.current = false;
-            setSyncStatus("\u2713 All data pushed to cloud! Open on any device.");
+            setSyncStatus("\u2713 Saved to your Google profile. Other devices will update automatically.");
         } catch(e) {
             setSyncStatus(`\u2717 Push failed: ${e.message}`);
         }
@@ -3582,12 +3498,12 @@ const OS_UNITS = [
     // Force-pull from Supabase immediately (bypasses debounce & cloudReady)
     async function handleForcePull() {
         if (!session?.sub) { setSyncStatus("\u26a0 Sign in with Google first."); return; }
-        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Session expired — sign in again below."); return; }
+        if (!isSessionValid(session)) { setSyncStatus("\u26a0 Sync will resume when your app login refreshes."); return; }
         setSyncStatus("loading from cloud...");
         try {
             const record = await loadUserProgressRecord(session.sub, session.token);
             const data = record?.data;
-            if (!data) { setSyncStatus("\u26a0 No cloud data found. Push from your main device first."); return; }
+            if (!data) { setSyncStatus("\u26a0 No saved profile data found yet."); return; }
             applyCloudProgress(data);
             cloudUpdatedAt.current = Date.parse(record.updatedAt || "") || Date.now();
             cloudReady.current = true;
@@ -3598,9 +3514,7 @@ const OS_UNITS = [
         }
     }
 
-    // Auto-sync: debounce 500ms after any data change
-    // — Supabase save always fires when user is signed in (primary)
-    // — Legacy sync-code save fires only if user has a syncCode set (secondary, optional)
+    // Account sync: load by Google profile, then save after every progress change.
     useEffect(() => {
         if (isFirstRender.current) { isFirstRender.current = false; return; }
         if (!session?.sub || !isSessionValid(session) || !cloudReady.current) return;
@@ -3646,62 +3560,6 @@ const OS_UNITS = [
     a.click();
     }
 
-    function generateCode() {
-        return "xxxx-xxxx-xxxx".replace(/x/g, () => Math.floor(Math.random()*16).toString(16));
-    }
-
-    async function handleSyncUp() {
-        let code = syncCode;
-        if (!code) { code = generateCode(); setSyncCode(code); }
-        setSyncStatus("saving...");
-        try {
-            const payload = { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress };
-            const res = await fetch(`/api/sync/${code}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ data: payload }),
-            });
-            if (!res.ok) {
-                const body = await res.json().catch(() => ({}));
-                throw new Error(body.error || `HTTP ${res.status}`);
-            }
-            setLastSynced(new Date().toISOString());
-            setSyncStatus("✓ Saved! Use your code on any device to restore.");
-        } catch(e) {
-            setSyncStatus(`✗ Save failed: ${e.message}`);
-        }
-    }
-
-    async function handleSyncDown(code) {
-        if (!code) return;
-        setSyncStatus("loading...");
-        try {
-            const res = await fetch(`/api/sync/${code}`);
-            if (!res.ok) throw new Error("not found");
-            const { data } = await res.json();
-            if (data.dsaData) setDsaData(mergeDsaData(data.dsaData));
-            if (data.coaData) setCoaData(mergeCoaData(data.coaData));
-            if (data.revData) setRevData(mergeRevData(data.revData));
-            if (data.weekStatus) setWeekStatus(data.weekStatus);
-            if (data.streakData) setStreakData(data.streakData);
-            else if (data.streak !== undefined) setStreakData(prev => ({ ...prev, currentStreak: data.streak }));
-            if (data.streakFreezes) setStreakFreezes(data.streakFreezes);
-            if (data.dailyLog) setDailyLog(data.dailyLog);
-            if (data.lastLogDate) setLastLogDate(data.lastLogDate);
-            if (data.activityLog) setActivityLog(data.activityLog);
-            if (data.solvedQuestions) setSolvedQuestions(data.solvedQuestions);
-            if (data.todos) setTodos(data.todos);
-            if (data.probNotes) setProbNotes(data.probNotes);
-            if (data.revStars) setRevStars(data.revStars);
-            if (data.mathsProgress) setMathsProgress(data.mathsProgress);
-            if (data.osProgress) setOsProgress(data.osProgress);
-            setSyncCode(code);
-            setLastSynced(new Date().toISOString());
-            setSyncStatus("✓ Data restored! All your progress is back.");
-        } catch(e) {
-            setSyncStatus(e.message === "not found" ? "✗ Code not found. Check and try again." : "✗ Load failed. Try again.");
-        }
-    }
     function handleReset() {
         setDsaData(DSA_TABLE);
         setCoaData(COA_TABLE);

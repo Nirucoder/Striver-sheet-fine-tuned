@@ -1,20 +1,7 @@
-import { useEffect, useState } from "react";
-import { checkCloudAuth } from "./supabase.js";
 import { isSessionValid } from "./authUtils.js";
-import GoogleReSignIn from "./GoogleReSignIn.jsx";
 
-export default function AccountSyncModal({ session, syncStatus, setSyncStatus, onForcePush, onForcePull, onClose, lastSynced, setSession }) {
-  const [serverIssue, setServerIssue] = useState(null);
+export default function AccountSyncModal({ session, syncStatus, onForcePush, onForcePull, onClose, lastSynced }) {
   const tokenValid = isSessionValid(session);
-
-  useEffect(() => {
-    if (!tokenValid) return;
-    checkCloudAuth(session.token).then((result) => {
-      if (!result.serverConfigured) setServerIssue("Cloud authentication is not configured on the server.");
-      else if (!result.tokenValid) setServerIssue("Your Google session was rejected. Please sign in again.");
-      else setServerIssue(null);
-    });
-  }, [session?.token, tokenValid]);
 
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)"}}>
@@ -32,20 +19,15 @@ export default function AccountSyncModal({ session, syncStatus, setSyncStatus, o
           {session?.picture && <img src={session.picture} alt="" style={{width:34,height:34,borderRadius:"50%"}} />}
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:12,fontWeight:600,color:tokenValid?"#34d399":"#fbbf24"}}>
-              {tokenValid ? `\u2713 Syncing as ${session.name || session.email}` : "\u26A0 Google session expired"}
+              {tokenValid ? `\u2713 Syncing as ${session.name || session.email}` : "\u26A0 Sync pauses until your app login refreshes"}
             </div>
             <div style={{fontSize:11,color:"#64748b",overflow:"hidden",textOverflow:"ellipsis"}}>{session?.email}</div>
           </div>
           {tokenValid && <span style={{fontSize:10,color:"#34d399"}}>Automatic</span>}
         </div>
-
         {!tokenValid && (
-          <div style={{marginBottom:16,padding:"12px",background:"rgba(251,191,36,0.04)",border:"1px solid #92400e",borderRadius:10}}>
-            <div style={{fontSize:11,color:"#fbbf24",marginBottom:8,textAlign:"center"}}>Sign in again to resume automatic syncing.</div>
-            <GoogleReSignIn onAuth={(nextSession) => {
-              setSession(nextSession);
-              setSyncStatus("\u2713 Signed in. Automatic sync resumed.");
-            }} />
+          <div style={{marginBottom:16,padding:"12px",background:"rgba(251,191,36,0.04)",border:"1px solid #92400e",borderRadius:10,fontSize:11,color:"#fbbf24",lineHeight:1.6,textAlign:"center"}}>
+            Sync uses the same Google profile you used to enter the app. Once your app login is active again, your progress continues syncing automatically.
           </div>
         )}
 
@@ -55,8 +37,6 @@ export default function AccountSyncModal({ session, syncStatus, setSyncStatus, o
             <button onClick={onForcePull} style={{padding:"11px",background:"#0f2918",border:"1px solid #166534",borderRadius:9,color:"#86efac",fontSize:12,fontWeight:600,cursor:"pointer"}}>Check for updates</button>
           </div>
         )}
-
-        {serverIssue && <div style={{marginBottom:14,padding:"10px 12px",background:"rgba(248,113,113,0.08)",border:"1px solid #7f1d1d",borderRadius:8,fontSize:11,color:"#f87171"}}>{serverIssue}</div>}
 
         {lastSynced && (
           <div style={{marginBottom:syncStatus?12:0,padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399"}}>
