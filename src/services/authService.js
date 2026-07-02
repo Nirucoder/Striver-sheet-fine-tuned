@@ -54,3 +54,46 @@ export async function signOut() {
     /* even if the network call fails, the client clears local state */
   }
 }
+
+const LEGACY_SESSION_KEY = "studyos_user";
+
+/**
+ * One-time backward-compatibility migration.
+ *
+ * Older builds stored the Google ID token in localStorage["studyos_user"].
+ * When a returning user has no cookie session yet, we try to exchange that
+ * legacy token for a durable HttpOnly session — silently, without a new sign-in.
+ *
+ * IMPORTANT: this only migrates the *identity/session*. It never touches the
+ * "studyos_*" progress keys or "studyos_last_synced", so all local progress and
+ * sync state are preserved. If the legacy token has expired, we leave everything
+ * in place and simply return null so the user is asked to sign in again — their
+ * progress remains intact and re-syncs after login.
+ */
+export async function migrateLegacySession() {
+  let legacy = null;
+  try {
+    const raw = localStorage.getItem(LEGACY_SESSION_KEY);
+    if (!raw) return null;
+    legacy = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+
+  const token = legacy?.token;
+  if (!token) return null;
+
+  try {
+    const user = await signInWithGoogle(token);
+    // Migration succeeded — the durable cookie is set. Drop only the stale
+    // identity blob; progress keys are intentionally left untouched.
+    try {
+      localStorage.removeItem(LEGACY_SESSION_KEY);
+    } catch {}
+    return user;
+  } catch {
+    // Token likely expired. Keep the legacy blob and all progress; the user will
+    // re-authenticate and nothing is lost.
+    return null;
+  }
+}

@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     email: payload.email,
     picture: payload.picture,
   };
-  const sessionToken = signSession(user);
+  const sessionToken = await signSession(user);
   const csrfToken = generateCsrfToken();
   res.setHeader(
     "Set-Cookie",

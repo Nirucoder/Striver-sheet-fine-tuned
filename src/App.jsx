@@ -442,7 +442,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     );
     }
 
-    // ─── DASHBOARD ────────────────────────────────────────────────────────────────
+    // ─── DASHBOARD ──────────────────────────────────────��─────────────────────────
     function ActivityHeatmap({ activityLog, activeDates, dsaData }) {
     const [selectedDay, setSelectedDay] = useState(null);
     const [showOther, setShowOther] = useState(false);
@@ -3424,6 +3424,17 @@ const OS_UNITS = [
     const BOTTOM_NAV = NAV.slice(0, 5);
     const DRAWER_NAV = NAV.slice(5);
 
+    // Hold the UI behind a splash until cloud reconciliation finishes, so stale
+    // local data never flashes before the correct (newest) state is applied.
+    if (!cloudBootstrapped) {
+        return (
+            <div style={{minHeight:"100vh",background:"#0a0b0d",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,color:"#475569",fontFamily:"'DM Sans','Inter',sans-serif"}}>
+                <img src="/pwa-512x512.png" alt="StudyOS" style={{width:48,height:48,opacity:0.9}} />
+                <div style={{fontSize:13}}>Syncing your progress…</div>
+            </div>
+        );
+    }
+
     return (
     <div style={S.app} className="studyos-app-mobile">
         <style>
@@ -3665,7 +3676,7 @@ const OS_UNITS = [
                             <span style={{fontSize:14,fontWeight:800,background:"linear-gradient(90deg,#818cf8,#c084fc)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>StudyOS</span>
                         </div>
                         <div style={{display:"flex",alignItems:"center",gap:8}}>
-                            <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); }}
+                            <div onClick={()=>{ setShowSyncModal(true); }}
                                 style={{padding:"6px 10px",borderRadius:8,background:"#1a1d2e",border:"1px solid #2d3154",cursor:"pointer",fontSize:14,color:"#818cf8"}}>
                                 ☁
                             </div>
@@ -3742,14 +3753,14 @@ const OS_UNITS = [
                         <button onClick={()=>setMobileSidebarOpen(false)}
                             style={{background:"none",border:"none",color:"#64748b",fontSize:22,cursor:"pointer",lineHeight:1}}>✕</button>
                     </div>
-                    {session && (
+                    {user && (
                         <div style={{margin:"10px 12px",padding:"8px 10px",background:"#0a0b0d",borderRadius:8,border:"1px solid #1e2030",display:"flex",alignItems:"center",gap:8}}>
-                            {session.picture && <img src={session.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
+                            {user.picture && <img src={user.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
                             <div style={{flex:1,minWidth:0}}>
-                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.name?.split(" ")[0] || "User"}</div>
-                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.email}</div>
+                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name?.split(" ")[0] || "User"}</div>
+                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.email}</div>
                             </div>
-                            <div onClick={()=>{localStorage.removeItem("studyos_user");setSession(null);setMobileSidebarOpen(false);}} title="Sign out"
+                            <div onClick={()=>{setMobileSidebarOpen(false);signOut();}} title="Sign out"
                                 style={{cursor:"pointer",color:"#475569",fontSize:14,flexShrink:0}}>⏻</div>
                         </div>
                     )}
@@ -3759,7 +3770,7 @@ const OS_UNITS = [
                         </div>)}
                     </nav>
                     <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
-                        <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); setMobileSidebarOpen(false); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8"}}>
+                        <div onClick={()=>{ setShowSyncModal(true); setMobileSidebarOpen(false); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8"}}>
                             <span style={{fontSize:13}}>☁</span><span style={{fontSize:12}}>Cloud Sync</span>
                         </div>
                         <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
@@ -3779,14 +3790,14 @@ const OS_UNITS = [
                         <div style={{...S.logo, marginBottom: 0}}>StudyOS</div>
                     </div>
                     <div style={S.logoSub}>SRM KTR · Sem Break</div>
-                    {session && (
+                    {user && (
                         <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,padding:"8px 10px",background:"#0a0b0d",borderRadius:8,border:"1px solid #1e2030"}}>
-                            {session.picture && <img src={session.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
+                            {user.picture && <img src={user.picture} alt="" style={{width:24,height:24,borderRadius:"50%",flexShrink:0}} />}
                             <div style={{flex:1,minWidth:0}}>
-                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.name?.split(" ")[0] || "User"}</div>
-                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{session.email}</div>
+                                <div style={{fontSize:11,fontWeight:600,color:"#e2e8f0",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name?.split(" ")[0] || "User"}</div>
+                                <div style={{fontSize:10,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.email}</div>
                             </div>
-                            <div onClick={()=>{localStorage.removeItem("studyos_user");setSession(null);}} title="Sign out"
+                            <div onClick={()=>signOut()} title="Sign out"
                                 style={{cursor:"pointer",color:"#475569",fontSize:14,flexShrink:0,padding:2,borderRadius:4}}
                                 onMouseEnter={e=>e.currentTarget.style.color="#f87171"}
                                 onMouseLeave={e=>e.currentTarget.style.color="#475569"}>⏻</div>
@@ -3799,22 +3810,24 @@ const OS_UNITS = [
                     </div>)}
                 </nav>
                 <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
-                    <div onClick={()=>{ setSyncStatus(""); setShowSyncModal(true); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8",justifyContent:"space-between"}}>
+                    <div onClick={()=>{ setShowSyncModal(true); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8",justifyContent:"space-between"}}>
                         <div style={{display:"flex",alignItems:"center",gap:8}}>
                             <span style={{fontSize:13}}>☁</span><span style={{fontSize:12}}>Cloud Sync</span>
                         </div>
-                        {autoSyncStatus==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
-                        {autoSyncStatus==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
-                        {autoSyncStatus==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
-                        {!autoSyncStatus && <span style={{fontSize:10,color:isSessionValid(session)?"#34d399":"#fbbf24",opacity:0.7}}>{isSessionValid(session)?"active":"sign in"}</span>}
+                        {syncState==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
+                        {syncState==="retrying" && <span style={{fontSize:10,color:"#fbbf24"}}>retrying…</span>}
+                        {syncState==="offline" && <span style={{fontSize:10,color:"#fbbf24"}}>offline</span>}
+                        {syncState==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
+                        {syncState==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
+                        {(syncState==="idle") && <span style={{fontSize:10,color:user?"#34d399":"#fbbf24",opacity:0.7}}>{user?"active":"sign in"}</span>}
                     </div>
-                    {cloudLoadedAt && (
+                    {lastSynced && (
                         <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>
                             <span style={{fontSize:9,color:"#34d399",opacity:0.6}}>⬇</span>
                             <span style={{fontSize:9,color:"#475569",lineHeight:1.4}}>
-                                Loaded from cloud<br/>
+                                Synced with cloud<br/>
                                 <span style={{color:"#64748b"}}>
-                                    {new Date(cloudLoadedAt).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+                                    {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
                                 </span>
                             </span>
                         </div>

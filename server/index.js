@@ -31,8 +31,8 @@ function setCookies(res, cookies) {
 }
 
 // ── Session middleware: derive user from the HttpOnly session cookie ──────────
-function requireSession(req, res, next) {
-  const user = getSessionUser(req);
+async function requireSession(req, res, next) {
+  const user = await getSessionUser(req);
   if (!user) {
     return res.status(401).json({
       message: "Unauthorized",
@@ -55,14 +55,14 @@ app.post("/api/auth/google", async (req, res) => {
   if (!payload) return res.status(401).json({ message: "Invalid Google credential", reason });
 
   const user = { sub: payload.sub, name: payload.name, email: payload.email, picture: payload.picture };
-  const sessionToken = signSession(user);
+  const sessionToken = await signSession(user);
   const csrfToken = generateCsrfToken();
   setCookies(res, buildSessionCookies({ sessionToken, csrfToken, secure: isSecureRequest(req) }));
   res.json({ user });
 });
 
-app.get("/api/auth/me", (req, res) => {
-  const user = getSessionUser(req);
+app.get("/api/auth/me", async (req, res) => {
+  const user = await getSessionUser(req);
   if (!user) return res.status(401).json({ user: null });
   res.json({ user: { sub: user.sub, name: user.name, email: user.email, picture: user.picture } });
 });

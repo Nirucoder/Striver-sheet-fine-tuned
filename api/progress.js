@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: "DATABASE_URL not configured on server." });
   }
 
-  const user = getSessionUser(req);
+  const user = await getSessionUser(req);
   if (!user) {
     return res.status(401).json({
       message: "Unauthorized",

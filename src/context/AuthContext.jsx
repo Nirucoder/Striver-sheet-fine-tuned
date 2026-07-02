@@ -3,6 +3,7 @@ import {
   fetchCurrentUser,
   signInWithGoogle,
   signOut as apiSignOut,
+  migrateLegacySession,
 } from "../services/authService.js";
 
 const AuthContext = createContext(null);
@@ -20,12 +21,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let cancelled = false;
-    // Remove any legacy client-stored identity from the old token-in-localStorage scheme.
-    try {
-      localStorage.removeItem("studyos_user");
-    } catch {}
     (async () => {
-      const current = await fetchCurrentUser();
+      // 1) Prefer an existing durable cookie session.
+      let current = await fetchCurrentUser();
+      // 2) Otherwise attempt a one-time migration from the legacy
+      //    token-in-localStorage scheme (preserves all local progress).
+      if (!current) {
+        current = await migrateLegacySession();
+      }
       if (cancelled) return;
       setUser(current);
       setStatus(current ? "authenticated" : "unauthenticated");

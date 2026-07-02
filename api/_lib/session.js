@@ -1,13 +1,15 @@
 import crypto from "crypto";
+import { SignJWT, jwtVerify } from "jose";
 
 /**
- * Stateless signed-session helpers.
+ * Stateless signed-session helpers (backed by the `jose` library).
  *
- * A session is a compact HMAC-signed token (header.body.signature, all base64url)
- * stored in an HttpOnly cookie. This decouples the app login from the short-lived
- * Google ID token: the Google credential is verified exactly once at sign-in, and
- * from then on the user stays logged in for SESSION_TTL_DAYS regardless of Google
- * token expiry.
+ * A session is a signed JWT (HS256) stored in an HttpOnly cookie. This decouples
+ * the app login from the short-lived Google ID token: the Google credential is
+ * verified exactly once at sign-in, and from then on the user stays logged in for
+ * SESSION_TTL_DAYS regardless of Google token expiry.
+ *
+ * NOTE: signSession / verifySession are async because jose's crypto is async.
  */
 
 export const SESSION_COOKIE = "studyos_session";
@@ -15,67 +17,50 @@ export const CSRF_COOKIE = "studyos_csrf";
 export const CSRF_HEADER = "x-csrf-token";
 const SESSION_TTL_DAYS = 30;
 const SESSION_TTL_SECONDS = SESSION_TTL_DAYS * 24 * 60 * 60;
+const ALG = "HS256";
 
-function getSecret() {
+function getSecretKey() {
   const secret = process.env.SESSION_SECRET;
   if (!secret) throw new Error("SESSION_SECRET is not configured");
-  return secret;
-}
-
-function b64urlEncode(input) {
-  return Buffer.from(input).toString("base64url");
-}
-
-function b64urlDecode(input) {
-  return Buffer.from(input, "base64url").toString("utf8");
-}
-
-function sign(data) {
-  return crypto.createHmac("sha256", getSecret()).update(data).digest("base64url");
+  return new TextEncoder().encode(secret);
 }
 
 /**
- * Create a signed session token for the given user claims.
+ * Create a signed session JWT for the given user claims.
  * Only stable identity fields are stored; nothing security-sensitive.
  */
-export function signSession(user, { ttlSeconds = SESSION_TTL_SECONDS } = {}) {
+export async function signSession(user, { ttlSeconds = SESSION_TTL_SECONDS } = {}) {
   const now = Math.floor(Date.now() / 1000);
-  const body = {
-    sub: user.sub,
+  return new SignJWT({
     name: user.name ?? null,
     email: user.email ?? null,
     picture: user.picture ?? null,
-    iat: now,
-    exp: now + ttlSeconds,
-  };
-  const headerPart = b64urlEncode(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-  const bodyPart = b64urlEncode(JSON.stringify(body));
-  const signature = sign(`${headerPart}.${bodyPart}`);
-  return `${headerPart}.${bodyPart}.${signature}`;
+  })
+    .setProtectedHeader({ alg: ALG, typ: "JWT" })
+    .setSubject(String(user.sub))
+    .setIssuedAt(now)
+    .setExpirationTime(now + ttlSeconds)
+    .sign(getSecretKey());
 }
 
 /**
- * Verify a session token. Returns the user claims, or null when the token is
- * missing, malformed, tampered with, or expired.
+ * Verify a session JWT. Returns normalized user claims, or null when the token is
+ * missing, malformed, tampered with, or expired. jose verifies the signature in
+ * constant time and enforces the `exp` claim.
  */
-export function verifySession(token) {
+export async function verifySession(token) {
   if (!token || typeof token !== "string") return null;
-  const parts = token.split(".");
-  if (parts.length !== 3) return null;
-  const [headerPart, bodyPart, signature] = parts;
-
-  const expected = sign(`${headerPart}.${bodyPart}`);
-  const sigBuf = Buffer.from(signature);
-  const expBuf = Buffer.from(expected);
-  if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
-    return null;
-  }
-
   try {
-    const body = JSON.parse(b64urlDecode(bodyPart));
-    if (!body?.sub) return null;
-    if (body.exp && Number(body.exp) * 1000 < Date.now()) return null;
-    return body;
+    const { payload } = await jwtVerify(token, getSecretKey(), { algorithms: [ALG] });
+    if (!payload?.sub) return null;
+    return {
+      sub: payload.sub,
+      name: payload.name ?? null,
+      email: payload.email ?? null,
+      picture: payload.picture ?? null,
+      iat: payload.iat,
+      exp: payload.exp,
+    };
   } catch {
     return null;
   }
@@ -149,7 +134,7 @@ export function isSecureRequest(req) {
   return !!req.secure;
 }
 
-export function getSessionUser(req) {
+export async function getSessionUser(req) {
   const cookies = parseCookies(req);
   return verifySession(cookies[SESSION_COOKIE]);
 }
