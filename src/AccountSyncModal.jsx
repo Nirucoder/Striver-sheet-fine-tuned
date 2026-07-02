@@ -1,7 +1,25 @@
-import { isSessionValid } from "./authUtils.js";
+const STATUS_TEXT = {
+  idle: "All changes saved",
+  saving: "Saving changes…",
+  retrying: "Connection issue — retrying…",
+  saved: "All changes saved",
+  offline: "Offline — changes will sync when you reconnect",
+  error: "Couldn't reach the cloud — will retry automatically",
+};
 
-export default function AccountSyncModal({ session, syncStatus, onForcePush, onForcePull, onClose, lastSynced }) {
-  const tokenValid = isSessionValid(session);
+function statusTone(status) {
+  if (status === "error") return { fg: "#f87171", bg: "rgba(248,113,113,0.08)", border: "#7f1d1d" };
+  if (status === "offline" || status === "retrying")
+    return { fg: "#fbbf24", bg: "rgba(251,191,36,0.06)", border: "#92400e" };
+  return { fg: "#34d399", bg: "rgba(52,211,153,0.08)", border: "#065f46" };
+}
+
+/**
+ * Cloud Sync status panel. Sync is fully automatic now, so this is read-only:
+ * it shows who you're syncing as, the live status, and when you last synced.
+ */
+export default function AccountSyncModal({ user, status, lastSynced, onClose }) {
+  const tone = statusTone(status);
 
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:10000,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)"}}>
@@ -12,41 +30,27 @@ export default function AccountSyncModal({ session, syncStatus, onForcePush, onF
         </div>
 
         <div style={{fontSize:12,color:"#64748b",marginBottom:18,lineHeight:1.7,padding:"11px 13px",background:"rgba(129,140,248,0.05)",border:"1px solid #1e2030",borderRadius:8}}>
-          Progress is linked to your Google account. Sign in with the same account on another device and your saved data loads automatically. Changes are kept up to date in the background.
+          Progress is linked to your Google account and synced automatically in the background. Sign in with the same account on another device and your data loads on its own — there is nothing to save manually.
         </div>
 
-        <div style={{padding:"12px 16px",background:tokenValid?"rgba(52,211,153,0.06)":"rgba(251,191,36,0.06)",border:`1px solid ${tokenValid?"#065f46":"#92400e"}`,borderRadius:10,marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
-          {session?.picture && <img src={session.picture} alt="" style={{width:34,height:34,borderRadius:"50%"}} />}
+        <div style={{padding:"12px 16px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:10,marginBottom:16,display:"flex",alignItems:"center",gap:12}}>
+          {user?.picture && <img src={user.picture} alt="" style={{width:34,height:34,borderRadius:"50%"}} />}
           <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:12,fontWeight:600,color:tokenValid?"#34d399":"#fbbf24"}}>
-              {tokenValid ? `\u2713 Syncing as ${session.name || session.email}` : "\u26A0 Sync pauses until your app login refreshes"}
+            <div style={{fontSize:12,fontWeight:600,color:"#34d399"}}>
+              Syncing as {user?.name || user?.email || "your account"}
             </div>
-            <div style={{fontSize:11,color:"#64748b",overflow:"hidden",textOverflow:"ellipsis"}}>{session?.email}</div>
+            <div style={{fontSize:11,color:"#64748b",overflow:"hidden",textOverflow:"ellipsis"}}>{user?.email}</div>
           </div>
-          {tokenValid && <span style={{fontSize:10,color:"#34d399"}}>Automatic</span>}
+          <span style={{fontSize:10,color:"#34d399"}}>Automatic</span>
         </div>
-        {!tokenValid && (
-          <div style={{marginBottom:16,padding:"12px",background:"rgba(251,191,36,0.04)",border:"1px solid #92400e",borderRadius:10,fontSize:11,color:"#fbbf24",lineHeight:1.6,textAlign:"center"}}>
-            Sync uses the same Google profile you used to enter the app. Once your app login is active again, your progress continues syncing automatically.
-          </div>
-        )}
 
-        {tokenValid && (
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-            <button onClick={onForcePush} style={{padding:"11px",background:"#1e1b4b",border:"1px solid #4338ca",borderRadius:9,color:"#a5b4fc",fontSize:12,fontWeight:600,cursor:"pointer"}}>Save now</button>
-            <button onClick={onForcePull} style={{padding:"11px",background:"#0f2918",border:"1px solid #166534",borderRadius:9,color:"#86efac",fontSize:12,fontWeight:600,cursor:"pointer"}}>Check for updates</button>
-          </div>
-        )}
+        <div style={{padding:"10px 14px",borderRadius:8,fontSize:13,marginBottom:lastSynced?12:0,background:tone.bg,color:tone.fg,border:`1px solid ${tone.border}`}}>
+          {STATUS_TEXT[status] || STATUS_TEXT.idle}
+        </div>
 
         {lastSynced && (
-          <div style={{marginBottom:syncStatus?12:0,padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399"}}>
+          <div style={{padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid #065f46",borderRadius:8,fontSize:12,color:"#34d399"}}>
             Last synced: {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
-          </div>
-        )}
-
-        {syncStatus && (
-          <div style={{padding:"10px 14px",borderRadius:8,fontSize:13,background:syncStatus.startsWith("\u2713")?"rgba(52,211,153,0.08)":syncStatus.startsWith("\u2717")?"rgba(248,113,113,0.08)":"rgba(129,140,248,0.08)",color:syncStatus.startsWith("\u2713")?"#34d399":syncStatus.startsWith("\u2717")?"#f87171":"#818cf8",border:`1px solid ${syncStatus.startsWith("\u2713")?"#065f46":syncStatus.startsWith("\u2717")?"#7f1d1d":"#312e81"}`}}>
-            {syncStatus}
           </div>
         )}
       </div>

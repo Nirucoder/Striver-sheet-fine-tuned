@@ -3762,14 +3762,10 @@ const OS_UNITS = [
         <Confetti active={confetti} onDone={()=>setConfetti(false)}/>
         {showSyncModal && (
             <SyncModal
-                session={session}
-                setSession={setSession}
-                syncStatus={syncStatus}
-                setSyncStatus={setSyncStatus}
-                onForcePush={handleForcePush}
-                onForcePull={handleForcePull}
-                onClose={() => { setShowSyncModal(false); setSyncStatus(""); }}
+                user={user}
+                status={syncState}
                 lastSynced={lastSynced}
+                onClose={() => setShowSyncModal(false)}
             />
         )}
         {showResetModal && (
@@ -3892,7 +3888,7 @@ const OS_UNITS = [
                     })()}
                 </div>
 
-                {/* ── MOBILE SIDEBAR OVERLAY ─────────────────────────── */}
+                {/* ── MOBILE SIDEBAR OVERLAY ────��────────────────────── */}
                 <div className={`studyos-sidebar-overlay${mobileSidebarOpen ? "" : " hidden"}`}
                     onClick={()=>setMobileSidebarOpen(false)} />
                 <div className={`studyos-mobile-sidebar${mobileSidebarOpen ? " open" : ""}`}>

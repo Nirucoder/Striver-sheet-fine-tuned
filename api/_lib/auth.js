@@ -34,25 +34,25 @@ function isPayloadValid(payload, clientId) {
   return true;
 }
 
-export async function verifyGoogleIdToken(authHeader) {
+/**
+ * Verify a raw Google ID token (the credential returned by Google Identity
+ * Services). This now runs exactly once per login — inside POST /api/auth/google —
+ * to mint a durable app session. It is no longer called on every API request.
+ */
+export async function verifyGoogleCredential(credential) {
   const clientId = getGoogleClientId();
-  const header = authHeader || "";
   if (!clientId) return { payload: null, reason: "missing_client_id" };
-  if (!header.startsWith("Bearer ")) return { payload: null, reason: "missing_token" };
+  if (!credential) return { payload: null, reason: "missing_token" };
 
-  const token = header.slice(7);
-  if (!token) return { payload: null, reason: "missing_token" };
-
-  const cached = verifiedTokenCache.get(token);
+  const cached = verifiedTokenCache.get(credential);
   if (cached && isPayloadValid(cached, clientId)) {
     return { payload: cached, reason: null };
   }
-  verifiedTokenCache.delete(token);
+  verifiedTokenCache.delete(credential);
 
-  // The signature must be verified because the Google subject is the cloud data key.
   try {
     const res = await fetch(
-      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(token)}`
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`
     );
     if (!res.ok) return { payload: null, reason: "invalid_token" };
 
@@ -61,21 +61,9 @@ export async function verifyGoogleIdToken(authHeader) {
       return { payload: null, reason: "invalid_token" };
     }
 
-    verifiedTokenCache.set(token, payload);
+    verifiedTokenCache.set(credential, payload);
     return { payload, reason: null };
   } catch {
     return { payload: null, reason: "auth_unavailable" };
   }
-}
-
-export async function getGoogleUserId(req) {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
-  const { payload } = await verifyGoogleIdToken(authHeader);
-  return payload?.sub ?? null;
-}
-
-export async function getAuthFailureReason(req) {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
-  const { reason } = await verifyGoogleIdToken(authHeader);
-  return reason;
 }

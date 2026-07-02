@@ -3,7 +3,19 @@ import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
-import { getPool, getGoogleUserId, getGoogleClientId, getAuthFailureReason } from "../api/_lib/auth.js";
+import { getPool, getGoogleClientId, verifyGoogleCredential } from "../api/_lib/auth.js";
+import {
+  signSession,
+  getSessionUser,
+  generateCsrfToken,
+  buildSessionCookies,
+  buildClearCookies,
+  isSecureRequest,
+  parseCookies,
+  csrfMatches,
+  CSRF_COOKIE,
+  CSRF_HEADER,
+} from "../api/_lib/session.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
@@ -12,30 +24,58 @@ const pool = getPool();
 
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "10mb" }));
 
-async function requireGoogleAuth(req, res, next) {
-  if (!getGoogleClientId()) {
-    return res.status(503).json({
-      message: "Server misconfigured",
-      hint: "GOOGLE_CLIENT_ID is not set.",
+function setCookies(res, cookies) {
+  res.setHeader("Set-Cookie", cookies);
+}
+
+// ── Session middleware: derive user from the HttpOnly session cookie ──────────
+function requireSession(req, res, next) {
+  const user = getSessionUser(req);
+  if (!user) {
+    return res.status(401).json({
+      message: "Unauthorized",
+      hint: "Your session is missing or expired. Please sign in again.",
     });
   }
-  const userId = await getGoogleUserId(req);
-  if (!userId) {
-    const reason = await getAuthFailureReason(req);
-    return res.status(401).json({ message: "Unauthorized", reason });
-  }
-  req.googleUserId = userId;
+  req.user = user;
   next();
 }
 
-app.get("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
+// ── Auth: exchange a Google credential for a durable app session ──────────────
+app.post("/api/auth/google", async (req, res) => {
+  if (!getGoogleClientId()) {
+    return res.status(503).json({ message: "Server misconfigured", hint: "GOOGLE_CLIENT_ID is not set." });
+  }
+  if (!process.env.SESSION_SECRET) {
+    return res.status(503).json({ message: "Server misconfigured", hint: "SESSION_SECRET is not set." });
+  }
+  const { payload, reason } = await verifyGoogleCredential(req.body?.credential);
+  if (!payload) return res.status(401).json({ message: "Invalid Google credential", reason });
+
+  const user = { sub: payload.sub, name: payload.name, email: payload.email, picture: payload.picture };
+  const sessionToken = signSession(user);
+  const csrfToken = generateCsrfToken();
+  setCookies(res, buildSessionCookies({ sessionToken, csrfToken, secure: isSecureRequest(req) }));
+  res.json({ user });
+});
+
+app.get("/api/auth/me", (req, res) => {
+  const user = getSessionUser(req);
+  if (!user) return res.status(401).json({ user: null });
+  res.json({ user: { sub: user.sub, name: user.name, email: user.email, picture: user.picture } });
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  setCookies(res, buildClearCookies({ secure: isSecureRequest(req) }));
+  res.json({ success: true });
+});
+
+// ── Progress: user id comes from the session, never from the client ───────────
+app.get("/api/progress", requireSession, async (req, res) => {
   try {
-    if (req.googleUserId !== req.params.userId) {
-      return res.status(403).json({ error: "Forbidden" });
-    }
-    const params = [req.params.userId];
+    const params = [req.user.sub];
     let query = "SELECT data, updated_at FROM user_progress WHERE user_id = $1";
     if (req.query.updatedAfter) {
       const updatedAfter = Date.parse(req.query.updatedAfter);
@@ -45,9 +85,7 @@ app.get("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
       query += " AND updated_at > $2";
       params.push(new Date(updatedAfter));
     }
-    const { rows } = await pool.query(
-      query, params
-    );
+    const { rows } = await pool.query(query, params);
     if (rows.length === 0) return res.status(404).json({ error: "No data found" });
     res.json({ data: rows[0].data, updatedAt: rows[0].updated_at });
   } catch (e) {
@@ -56,11 +94,12 @@ app.get("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
   }
 });
 
-app.post("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
+app.post("/api/progress", requireSession, async (req, res) => {
+  const cookies = parseCookies(req);
+  if (!csrfMatches(cookies[CSRF_COOKIE], req.headers[CSRF_HEADER])) {
+    return res.status(403).json({ error: "Invalid CSRF token" });
+  }
   try {
-    if (req.googleUserId !== req.params.userId) {
-      return res.status(403).json({ error: "Forbidden" });
-    }
     const { data } = req.body;
     if (!data) return res.status(400).json({ error: "No data provided" });
     const { rows } = await pool.query(
@@ -68,7 +107,7 @@ app.post("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
        VALUES ($1, $2, NOW())
        ON CONFLICT (user_id) DO UPDATE SET data = $2, updated_at = NOW()
        RETURNING updated_at`,
-      [req.params.userId, JSON.stringify(data)]
+      [req.user.sub, JSON.stringify(data)]
     );
     res.json({ success: true, updatedAt: rows[0].updated_at });
   } catch (e) {
@@ -77,6 +116,7 @@ app.post("/api/progress/:userId", requireGoogleAuth, async (req, res) => {
   }
 });
 
+// ── Legacy sync-code endpoints (kept for one-time migration) ──────────────────
 app.get("/api/sync/:code", async (req, res) => {
   try {
     const { rows } = await pool.query(
