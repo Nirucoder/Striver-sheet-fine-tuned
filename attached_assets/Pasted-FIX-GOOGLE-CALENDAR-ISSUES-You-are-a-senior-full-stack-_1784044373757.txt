@@ -1,0 +1,223 @@
+FIX GOOGLE CALENDAR ISSUES
+You are a senior full-stack engineer specializing in Google OAuth, Vercel, and Google Calendar integrations.
+
+I want to completely redesign my Google Calendar integration.
+
+Current implementation:
+- React frontend
+- Google Identity Services Token Client (initTokenClient)
+- Access token stored in localStorage
+- Access token expires every ~1 hour
+- User has to reconnect Calendar every hour
+
+This architecture is NOT acceptable.
+
+I already have:
+- React + Vite frontend
+- Vercel deployment
+- Vercel API Routes
+- PostgreSQL database
+- Google Authentication already implemented
+- Cookie-based session authentication (or being migrated)
+
+I DO NOT want Render or any additional backend hosting.
+Everything should run using Vercel API Routes.
+
+==================================================
+GOAL
+==================================================
+
+Implement a production-grade Google Calendar integration like Notion, Motion, ClickUp, or Google Tasks.
+
+Users should:
+
+- Connect Calendar once.
+- Stay connected for months.
+- Never reconnect every hour.
+- Never store Google access tokens in localStorage.
+- Never expose refresh tokens to the frontend.
+
+==================================================
+IMPLEMENTATION
+==================================================
+
+Replace the browser Token Client flow with Google's OAuth 2.0 Authorization Code Flow.
+
+Flow:
+
+Frontend
+↓
+
+/api/calendar/connect
+
+↓
+
+Google Consent Screen
+
+↓
+
+Google redirects to
+
+/api/calendar/callback
+
+↓
+
+Backend exchanges authorization code for:
+
+- access_token
+- refresh_token
+
+↓
+
+Store refresh_token securely in PostgreSQL.
+
+==================================================
+BACKEND
+==================================================
+
+Create API routes:
+
+/api/calendar/connect
+
+/api/calendar/callback
+
+/api/calendar/events
+
+/api/calendar/create-event
+
+/api/calendar/update-event
+
+/api/calendar/delete-event
+
+/api/calendar/disconnect
+
+/api/calendar/status
+
+Use the official googleapis Node.js library.
+
+==================================================
+TOKEN MANAGEMENT
+==================================================
+
+Backend should:
+
+- Store refresh_token securely.
+- Automatically refresh expired access tokens.
+- Never send refresh_token to frontend.
+- Never store access tokens in localStorage.
+- Refresh tokens silently whenever needed.
+
+The frontend should never know when an access token expires.
+
+==================================================
+DATABASE
+==================================================
+
+Create a table for calendar connections.
+
+Example fields:
+
+user_id
+
+google_account_id
+
+refresh_token
+
+scope
+
+created_at
+
+updated_at
+
+last_sync
+
+Only authenticated users may access their own calendar connection.
+
+Enable Row Level Security.
+
+Generate SQL migration.
+
+==================================================
+SECURITY
+==================================================
+
+- Use existing cookie authentication.
+- Never trust client user IDs.
+- Derive user identity from the session cookie.
+- HttpOnly cookies only.
+- Validate every request.
+- Encrypt refresh tokens before storing if practical.
+- Handle revoked refresh tokens gracefully.
+
+==================================================
+FRONTEND
+==================================================
+
+Remove:
+
+- localStorage calendar tokens
+- token expiry logic
+- reconnect every hour
+- initTokenClient flow
+
+Replace with:
+
+Connect Calendar
+
+↓
+
+Backend OAuth
+
+↓
+
+Connected
+
+↓
+
+Fetch events through backend
+
+The frontend should only call backend APIs.
+
+==================================================
+SYNC
+==================================================
+
+Calendar operations should automatically:
+
+- refresh expired tokens
+- retry transient failures
+- return friendly errors
+- reconnect only if refresh token is revoked
+
+==================================================
+MIGRATION
+==================================================
+
+Preserve existing users.
+
+If a user already connected Calendar using the old implementation:
+
+- detect the legacy connection
+- prompt them ONCE to reconnect
+- migrate them to the new backend OAuth flow
+- remove legacy localStorage token logic
+
+==================================================
+OUTPUT
+==================================================
+
+1. Explain the new architecture.
+
+2. Implement all backend routes.
+
+3. Implement frontend changes.
+
+4. Generate SQL migration.
+
+5. Update Google Cloud OAuth configuration.
+
+6. Explain every file changed.
+
+7. Ensure everything works on Vercel only.
+
+The final experience should be identical to professional applications where users connect Google Calendar once and remain connected indefinitely without hourly reauthentication.
