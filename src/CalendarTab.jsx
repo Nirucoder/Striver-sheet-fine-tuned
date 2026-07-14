@@ -52,16 +52,22 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       window.history.replaceState({}, "", url.toString());
     }
     if (params.get("calendar_error")) {
-      const code = params.get("calendar_error");
+      const code   = params.get("calendar_error");
+      const hint   = params.get("hint")   || "";
+      const detail = params.get("detail") || "";
       const messages = {
-        no_refresh_token: "No refresh token received — please disconnect Google Calendar in your Google Account settings, then reconnect here.",
-        not_authenticated: "Your session expired. Please sign in again.",
-        state_mismatch: "Security check failed. Please try connecting again.",
-        server_error: "A server error occurred. Please try again.",
+        no_refresh_token:      "No refresh token — open Google Account → Security → Third-party apps, remove StudyOS, then reconnect.",
+        not_authenticated:     "Your session expired. Please sign out and sign in again, then reconnect Calendar.",
+        state_mismatch:        "Security check failed (state mismatch). Please try connecting again.",
+        server_error:          `Server error${detail ? ": " + detail : ""}. Check Vercel logs or visit /api/calendar/debug.`,
+        token_exchange_failed: `Token exchange failed${hint ? ": " + hint : ""}. Check GOOGLE_CLIENT_SECRET and GOOGLE_REDIRECT_URI in Vercel.`,
+        redirect_uri_mismatch: "Redirect URI mismatch — the GOOGLE_REDIRECT_URI in Vercel must exactly match the one in Google Cloud Console.",
       };
-      setError(messages[code] || `Connection failed: ${code}`);
+      setError(messages[code] || `Connection failed: ${code}${detail ? " — " + detail : ""}`);
       const url = new URL(window.location.href);
       url.searchParams.delete("calendar_error");
+      url.searchParams.delete("hint");
+      url.searchParams.delete("detail");
       window.history.replaceState({}, "", url.toString());
     }
   }, []);

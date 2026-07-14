@@ -200,6 +200,7 @@ const withAction = (action) => (req, res) => {
 app.get("/api/calendar/connect",         withAction("connect"));
 app.get("/api/calendar/callback",        withAction("callback"));
 app.get("/api/calendar/status",          withAction("status"));
+app.get("/api/calendar/debug",           withAction("debug"));
 app.get("/api/calendar/events",          withAction("events"));
 app.post("/api/calendar/create-event",   withAction("create-event"));
 app.delete("/api/calendar/delete-event", withAction("delete-event"));
