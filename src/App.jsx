@@ -3191,6 +3191,8 @@ const OS_UNITS = [
     const [confetti, setConfetti] = useState(false);
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
+    const [sidebarPanelOpen, setSidebarPanelOpen] = useState(true);
+    const sidebarDragRef = React.useRef(null);
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncCode] = useLocalStorage("studyos_sync_code", () => {
         const stored = localStorage.getItem("studyos_sync_code");
@@ -3809,34 +3811,76 @@ const OS_UNITS = [
                         <span style={{fontSize:14}}>{n.icon}</span><span>{n.label}</span>
                     </div>)}
                 </nav>
-                <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
-                    <div onClick={()=>{ setShowSyncModal(true); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8",justifyContent:"space-between"}}>
-                        <div style={{display:"flex",alignItems:"center",gap:8}}>
-                            <span style={{fontSize:13}}>☁</span><span style={{fontSize:12}}>Cloud Sync</span>
-                        </div>
-                        {syncState==="saving" && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
-                        {syncState==="retrying" && <span style={{fontSize:10,color:"#fbbf24"}}>retrying…</span>}
-                        {syncState==="offline" && <span style={{fontSize:10,color:"#fbbf24"}}>offline</span>}
-                        {syncState==="saved" && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
-                        {syncState==="error" && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
-                        {(syncState==="idle") && <span style={{fontSize:10,color:user?"#34d399":"#fbbf24",opacity:0.7}}>{user?"active":"sign in"}</span>}
+                {/* ── Draggable bottom panel ── */}
+                <div
+                    style={{borderTop:"1px solid #1e2030", userSelect:"none", flexShrink:0}}
+                    onMouseDown={(e)=>{
+                        const startY = e.clientY;
+                        const wasOpen = sidebarPanelOpen;
+                        const onMove = (mv)=>{
+                            const dy = mv.clientY - startY;
+                            if (wasOpen && dy > 30)  { setSidebarPanelOpen(false); cleanup(); }
+                            if (!wasOpen && dy < -30) { setSidebarPanelOpen(true);  cleanup(); }
+                        };
+                        const cleanup = ()=>{ window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", cleanup); };
+                        window.addEventListener("mousemove", onMove);
+                        window.addEventListener("mouseup", cleanup);
+                    }}
+                    onTouchStart={(e)=>{
+                        const startY = e.touches[0].clientY;
+                        const wasOpen = sidebarPanelOpen;
+                        const onMove = (mv)=>{
+                            const dy = mv.touches[0].clientY - startY;
+                            if (wasOpen && dy > 30)  { setSidebarPanelOpen(false); cleanup(); }
+                            if (!wasOpen && dy < -30) { setSidebarPanelOpen(true);  cleanup(); }
+                        };
+                        const cleanup = ()=>{ window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", cleanup); };
+                        window.addEventListener("touchmove", onMove);
+                        window.addEventListener("touchend", cleanup);
+                    }}
+                >
+                    {/* Drag handle */}
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 12px",cursor:"ns-resize"}}
+                        onClick={()=>setSidebarPanelOpen(o=>!o)}>
+                        <span style={{fontSize:10,color:"#4a5568",letterSpacing:"0.05em",textTransform:"uppercase"}}>Quick Actions</span>
+                        <span style={{fontSize:11,color:"#4a5568",transition:"transform 0.2s",display:"inline-block",transform:sidebarPanelOpen?"rotate(0deg)":"rotate(180deg)"}}>▲</span>
                     </div>
-                    {lastSynced && (
-                        <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>
-                            <span style={{fontSize:9,color:"#34d399",opacity:0.6}}>⬇</span>
-                            <span style={{fontSize:9,color:"#475569",lineHeight:1.4}}>
-                                Synced with cloud<br/>
-                                <span style={{color:"#64748b"}}>
-                                    {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+                    {/* Collapsible content */}
+                    <div style={{
+                        overflow:"hidden",
+                        maxHeight: sidebarPanelOpen ? 200 : 0,
+                        opacity: sidebarPanelOpen ? 1 : 0,
+                        transition:"max-height 0.25s ease, opacity 0.2s ease",
+                        padding: sidebarPanelOpen ? "0 8px 12px" : "0 8px 0",
+                    }}>
+                        <div onClick={()=>{ setShowSyncModal(true); }} style={{...S.navItem(false),marginBottom:4,color:"#818cf8",justifyContent:"space-between"}}>
+                            <div style={{display:"flex",alignItems:"center",gap:8}}>
+                                <span style={{fontSize:13}}>☁</span><span style={{fontSize:12}}>Cloud Sync</span>
+                            </div>
+                            {syncState==="saving"   && <span style={{fontSize:10,color:"#818cf8",opacity:0.7}}>saving…</span>}
+                            {syncState==="retrying" && <span style={{fontSize:10,color:"#fbbf24"}}>retrying…</span>}
+                            {syncState==="offline"  && <span style={{fontSize:10,color:"#fbbf24"}}>offline</span>}
+                            {syncState==="saved"    && <span style={{fontSize:10,color:"#34d399"}}>✓ saved</span>}
+                            {syncState==="error"    && <span style={{fontSize:10,color:"#f87171"}}>✗ error</span>}
+                            {syncState==="idle"     && <span style={{fontSize:10,color:user?"#34d399":"#fbbf24",opacity:0.7}}>{user?"active":"sign in"}</span>}
+                        </div>
+                        {lastSynced && (
+                            <div style={{padding:"4px 10px 8px",display:"flex",alignItems:"center",gap:5}}>
+                                <span style={{fontSize:9,color:"#34d399",opacity:0.6}}>⬇</span>
+                                <span style={{fontSize:9,color:"#475569",lineHeight:1.4}}>
+                                    Synced with cloud<br/>
+                                    <span style={{color:"#64748b"}}>
+                                        {new Date(lastSynced).toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+                                    </span>
                                 </span>
-                            </span>
+                            </div>
+                        )}
+                        <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
+                            <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
                         </div>
-                    )}
-                    <div onClick={handleExport} style={{...S.navItem(false),marginBottom:4}}>
-                        <span style={{fontSize:13}}>↓</span><span style={{fontSize:12}}>Export JSON</span>
-                    </div>
-                    <div onClick={()=>setShowResetModal(true)} style={{...S.navItem(false),color:"#f87171"}}>
-                        <span style={{fontSize:13}}>↺</span><span style={{fontSize:12}}>Reset Progress</span>
+                        <div onClick={()=>setShowResetModal(true)} style={{...S.navItem(false),color:"#f87171"}}>
+                            <span style={{fontSize:13}}>↺</span><span style={{fontSize:12}}>Reset Progress</span>
+                        </div>
                     </div>
                 </div>
             </div>
