@@ -16,6 +16,13 @@ import {
   CSRF_COOKIE,
   CSRF_HEADER,
 } from "../api/_lib/session.js";
+import calendarConnect     from "../api/calendar/connect.js";
+import calendarCallback    from "../api/calendar/callback.js";
+import calendarStatus      from "../api/calendar/status.js";
+import calendarEvents      from "../api/calendar/events.js";
+import calendarCreateEvent from "../api/calendar/create-event.js";
+import calendarDeleteEvent from "../api/calendar/delete-event.js";
+import calendarDisconnect  from "../api/calendar/disconnect.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
@@ -190,6 +197,15 @@ app.get("/api/leetcode/:username", async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
+
+// ── Google Calendar (backend OAuth, tokens stored in DB) ──────────────────────
+app.get("/api/calendar/connect",        calendarConnect);
+app.get("/api/calendar/callback",       calendarCallback);
+app.get("/api/calendar/status",         calendarStatus);
+app.get("/api/calendar/events",         calendarEvents);
+app.post("/api/calendar/create-event",  calendarCreateEvent);
+app.delete("/api/calendar/delete-event", calendarDeleteEvent);
+app.post("/api/calendar/disconnect",    calendarDisconnect);
 
 app.get("/api/health", async (req, res) => {
   try {

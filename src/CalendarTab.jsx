@@ -1,10 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-const SCOPES = "https://www.googleapis.com/auth/calendar";
-const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const COLORS = { gcal:"#818cf8", todo:"#34d399", local:"#60a5fa", weekly:"#fbbf24" };
+const COLORS = { gcal:"#818cf8", local:"#60a5fa" };
+
+function getCsrfToken() {
+  const m = document.cookie.match(/studyos_csrf=([^;]+)/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function fmtDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+}
 
 function useLocalStorageState(key, initial) {
   const [val, setVal] = useState(() => {
@@ -20,31 +27,10 @@ function useLocalStorageState(key, initial) {
   return [val, setter];
 }
 
-function fmtDate(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,"0");
-  const d = String(date.getDate()).padStart(2,"0");
-  return `${y}-${m}-${d}`;
-}
-
 export default function CalendarTab({ todos = [], weekStatus = [] }) {
-  const [accessToken, setAccessToken]   = useState(() => {
-    const tok = localStorage.getItem("gcal_token");
-    const exp = localStorage.getItem("gcal_token_exp");
-    if (tok && exp && parseInt(exp) > Date.now() + 60000) return tok;
-    return null;
-  });
-  const [tokenExpiry, setTokenExpiry]   = useState(() => {
-    const e = localStorage.getItem("gcal_token_exp");
-    return e ? parseInt(e) : null;
-  });
-  // True when user previously connected but token has since expired
-  const [hadPreviousSession, setHadPreviousSession] = useState(() => {
-    const tok = localStorage.getItem("gcal_token");
-    const exp = localStorage.getItem("gcal_token_exp");
-    if (!tok || !exp) return false;
-    return parseInt(exp) <= Date.now() + 60000; // token exists but expired
-  });
+  const [connected, setConnected]       = useState(false);
+  const [calEmail, setCalEmail]         = useState(null);
+  const [statusLoading, setStatusLoading] = useState(true);
   const [gcalEvents, setGcalEvents]     = useState([]);
   const [loading, setLoading]           = useState(false);
   const [error, setError]               = useState(null);
@@ -54,180 +40,177 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
   const [showDetail, setShowDetail]     = useState(null);
   const [newEv, setNewEv]               = useState({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
   const [localEvents, setLocalEvents]   = useLocalStorageState("studyos_cal_v1", []);
-  const tokenClientRef    = useRef(null);
-  const pollRef           = useRef(null);
-  const gisReady          = useRef(false);
+  const pollRef = useRef(null);
 
+  // Handle ?calendar=connected or ?calendar_error= redirect from OAuth callback
   useEffect(() => {
-    if (!CLIENT_ID) return;
-    if (window.google?.accounts?.oauth2) { initTokenClient(); return; }
-    const s = document.createElement("script");
-    s.src = "https://accounts.google.com/gsi/client";
-    s.async = true;
-    s.onload = initTokenClient;
-    document.head.appendChild(s);
-    return () => { try { document.head.removeChild(s); } catch {} };
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("calendar") === "connected") {
+      setConnected(true);
+      const url = new URL(window.location.href);
+      url.searchParams.delete("calendar");
+      window.history.replaceState({}, "", url.toString());
+    }
+    if (params.get("calendar_error")) {
+      const code = params.get("calendar_error");
+      const messages = {
+        no_refresh_token: "No refresh token received — please disconnect Google Calendar in your Google Account settings, then reconnect here.",
+        not_authenticated: "Your session expired. Please sign in again.",
+        state_mismatch: "Security check failed. Please try connecting again.",
+        server_error: "A server error occurred. Please try again.",
+      };
+      setError(messages[code] || `Connection failed: ${code}`);
+      const url = new URL(window.location.href);
+      url.searchParams.delete("calendar_error");
+      window.history.replaceState({}, "", url.toString());
+    }
   }, []);
 
-  function initTokenClient() {
-    if (!window.google?.accounts?.oauth2 || gisReady.current) return;
-    gisReady.current = true;
-    tokenClientRef.current = window.google.accounts.oauth2.initTokenClient({
-      client_id: CLIENT_ID,
-      scope: SCOPES,
-      callback: (resp) => {
-        if (resp.error) {
-          // silent re-auth failed (user not logged in) — don't show error, just wait for manual connect
-          if (resp.error === "interaction_required" || resp.error === "access_denied") return;
-          setError(`Auth error: ${resp.error}`);
-          return;
-        }
-        const exp = Date.now() + resp.expires_in * 1000;
-        setAccessToken(resp.access_token);
-        setTokenExpiry(exp);
-        localStorage.setItem("gcal_token", resp.access_token);
-        localStorage.setItem("gcal_token_exp", String(exp));
-        setError(null);
+  // Check backend connection status on mount
+  useEffect(() => {
+    (async () => {
+      setStatusLoading(true);
+      try {
+        const res = await fetch("/api/calendar/status", { credentials: "include" });
+        const data = await res.json();
+        setConnected(!!data.connected);
+        setCalEmail(data.email || null);
+      } catch {
+        setConnected(false);
+      } finally {
+        setStatusLoading(false);
       }
-    });
-    // Do NOT auto-trigger sign-in — let the user click Connect/Reconnect explicitly
-    // (silent requestAccessToken still shows the Google account chooser popup in GIS token model)
-  }
+    })();
+  }, []);
 
-  const isValid = useCallback(() =>
-    !!(accessToken && tokenExpiry && tokenExpiry > Date.now() + 60000),
-    [accessToken, tokenExpiry]
-  );
-
-  const signIn = (silent = false) => {
-    if (!tokenClientRef.current) {
-      initTokenClient();
-      setTimeout(() => tokenClientRef.current?.requestAccessToken({ prompt: silent ? "" : "consent" }), 500);
-      return;
-    }
-    tokenClientRef.current.requestAccessToken({ prompt: silent ? "" : "consent" });
-  };
-
-  const signOut = () => {
-    if (accessToken && window.google?.accounts?.oauth2) window.google.accounts.oauth2.revoke(accessToken);
-    setAccessToken(null); setTokenExpiry(null); setGcalEvents([]);
-    localStorage.removeItem("gcal_token"); localStorage.removeItem("gcal_token_exp");
-  };
-
-  const fetchEvents = useCallback(async (token) => {
-    if (!token) return;
-    setLoading(true); setError(null);
+  const fetchEvents = useCallback(async () => {
+    if (!connected) return;
+    setLoading(true);
+    setError(null);
     try {
       const yr = currentDate.getFullYear(), mo = currentDate.getMonth();
-      const tMin = new Date(yr, mo - 1, 1).toISOString();
-      const tMax = new Date(yr, mo + 2, 0, 23, 59, 59).toISOString();
-      const params = new URLSearchParams({ timeMin:tMin, timeMax:tMax, singleEvents:"true", orderBy:"startTime", maxResults:"500" });
-      const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
-        { headers: { Authorization:`Bearer ${token}` } });
-      if (res.status === 401) { setAccessToken(null); localStorage.removeItem("gcal_token"); localStorage.removeItem("gcal_token_exp"); setError("Session expired — please reconnect."); return; }
-      if (!res.ok) throw new Error(`GCal error ${res.status}`);
+      const timeMin = new Date(yr, mo - 1, 1).toISOString();
+      const timeMax = new Date(yr, mo + 2, 0, 23, 59, 59).toISOString();
+      const res = await fetch(`/api/calendar/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}`, {
+        credentials: "include",
+      });
+      if (res.status === 401) {
+        const data = await res.json().catch(() => ({}));
+        if (data.error === "calendar_revoked") {
+          setConnected(false); setCalEmail(null);
+          setError("Google Calendar access was revoked. Please reconnect.");
+        }
+        return;
+      }
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
       const data = await res.json();
       setGcalEvents(data.items || []);
-    } catch(e) { setError(e.message); }
-    finally { setLoading(false); }
-  }, [currentDate]);
-
-
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [connected, currentDate]);
 
   useEffect(() => {
-    if (isValid()) {
-      fetchEvents(accessToken);
+    if (connected) {
+      fetchEvents();
       clearInterval(pollRef.current);
-      pollRef.current = setInterval(() => fetchEvents(accessToken), 60000);
+      pollRef.current = setInterval(fetchEvents, 60000);
     }
     return () => clearInterval(pollRef.current);
-  }, [accessToken, currentDate, isValid, fetchEvents]);
+  }, [connected, currentDate, fetchEvents]);
 
-
-
-  async function createGCalEvent(ev) {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const body = {
-      summary: ev.title,
-      description: ev.description || "",
-      start: ev.allDay ? { date: ev.date } : { dateTime:`${ev.date}T${ev.startTime}:00`, timeZone:tz },
-      end:   ev.allDay ? { date: ev.date } : { dateTime:`${ev.date}T${ev.endTime}:00`, timeZone:tz }
-    };
-    const res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
-      method:"POST", headers:{ Authorization:`Bearer ${accessToken}`, "Content-Type":"application/json" },
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error("Failed to create event in GCal");
-    return res.json();
+  async function connectCalendar() {
+    setError(null);
+    try {
+      const res = await fetch("/api/calendar/connect", { credentials: "include" });
+      if (res.status === 503) {
+        const data = await res.json();
+        setError(data.hint || "Calendar not configured on server. Set GOOGLE_CLIENT_SECRET and GOOGLE_REDIRECT_URI.");
+        return;
+      }
+      if (!res.ok) { setError("Failed to start connection."); return; }
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch (e) {
+      setError(e.message);
+    }
   }
 
-  async function deleteGCalEvent(id) {
-    await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${id}`,
-      { method:"DELETE", headers:{ Authorization:`Bearer ${accessToken}` } });
+  async function disconnectCalendar() {
+    try {
+      await fetch("/api/calendar/disconnect", {
+        method: "POST", credentials: "include",
+        headers: { "Content-Type": "application/json", "x-csrf-token": getCsrfToken() },
+      });
+      setConnected(false); setCalEmail(null); setGcalEvents([]);
+    } catch (e) {
+      setError(e.message);
+    }
   }
-
-
 
   async function handleAddEvent() {
     if (!newEv.title.trim() || !selectedDate) return;
     const dateStr = fmtDate(selectedDate);
-    const localEv = { id:`local_${Date.now()}`, title:newEv.title, description:newEv.description,
-      date:dateStr, startTime:newEv.startTime, endTime:newEv.endTime, allDay:newEv.allDay, gcalId:null };
-    if (isValid()) {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    if (connected) {
       try {
-        const gcalEv = await createGCalEvent({ ...localEv });
-        localEv.gcalId = gcalEv?.id;
-        // Event successfully synced to GCal — don't also store in localEvents
-        // (GCal fetch will return it, so storing locally causes duplicates)
+        const body = {
+          summary: newEv.title,
+          description: newEv.description || "",
+          start: newEv.allDay ? { date: dateStr } : { dateTime:`${dateStr}T${newEv.startTime}:00`, timeZone:tz },
+          end:   newEv.allDay ? { date: dateStr } : { dateTime:`${dateStr}T${newEv.endTime}:00`,   timeZone:tz },
+        };
+        const res = await fetch("/api/calendar/create-event", {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json", "x-csrf-token": getCsrfToken() },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error(`${res.status}`);
         setShowAddModal(false);
         setNewEv({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
-        fetchEvents(accessToken);
+        fetchEvents();
         return;
-      } catch(e) {
+      } catch (e) {
         console.error("GCal create failed, saving locally:", e);
       }
     }
-    // Only save locally if not synced to GCal
-    setLocalEvents(p => [...p, localEv]);
+    setLocalEvents(p => [...p, {
+      id:`local_${Date.now()}`, title:newEv.title, description:newEv.description,
+      date:dateStr, startTime:newEv.startTime, endTime:newEv.endTime, allDay:newEv.allDay,
+    }]);
     setShowAddModal(false);
     setNewEv({ title:"", description:"", startTime:"09:00", endTime:"10:00", allDay:false });
   }
 
   async function handleDeleteEvent(ev) {
-    if (ev._src === "gcal" && isValid()) {
-      // Delete directly from Google Calendar using the event's own id
-      await deleteGCalEvent(ev.id).catch(console.error);
-      setShowDetail(null);
-      fetchEvents(accessToken);
-      return;
+    if (ev._src === "gcal" && connected) {
+      try {
+        await fetch(`/api/calendar/delete-event?eventId=${encodeURIComponent(ev.id)}`, {
+          method: "DELETE", credentials: "include",
+          headers: { "x-csrf-token": getCsrfToken() },
+        });
+        setShowDetail(null); fetchEvents(); return;
+      } catch (e) { console.error("Delete failed:", e); }
     }
-    // Local event: also remove from GCal if it was synced
-    if (ev.gcalId && isValid()) await deleteGCalEvent(ev.gcalId).catch(console.error);
     setLocalEvents(p => p.filter(e => e.id !== ev.id));
     setShowDetail(null);
-    if (isValid()) fetchEvents(accessToken);
+    if (connected) fetchEvents();
   }
 
   function getEventsForDate(dateStr) {
     const out = [];
-    const gcalIds = new Set();
     gcalEvents.forEach(ev => {
       const s = ev.start?.date || ev.start?.dateTime?.slice(0,10);
-      if (s === dateStr) {
-        out.push({ ...ev, _src:"gcal", _color:COLORS.gcal, _label: ev.summary || "Untitled" });
-        gcalIds.add(ev.id);
-      }
+      if (s === dateStr) out.push({ ...ev, _src:"gcal", _color:COLORS.gcal, _label:ev.summary || "Untitled" });
     });
     localEvents.forEach(ev => {
-      if (ev.date === dateStr) {
-        // Skip if this event was synced to GCal — it already shows via gcalEvents
-        if (ev.gcalId) return;
-        out.push({ ...ev, _src:"local", _color:COLORS.local, _label:ev.title });
-      }
+      if (ev.date === dateStr) out.push({ ...ev, _src:"local", _color:COLORS.local, _label:ev.title });
     });
     return out;
   }
-
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -266,49 +249,37 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
       <div style={S.topBar}>
         <div style={S.title}>📅 Calendar</div>
         <div style={{ display:"flex", gap:10, alignItems:"center", flexWrap:"wrap" }}>
-          {loading && <span style={{ fontSize:11, color:"#64748b" }}>↻ Syncing…</span>}
-          {!isValid() ? (
-            hadPreviousSession ? (
-              // Token expired but user was connected before — show reconnect (not auto-sign-in)
+          {(loading || statusLoading) && <span style={{ fontSize:11, color:"#64748b" }}>↻ Syncing…</span>}
+          {!statusLoading && (
+            connected ? (
               <>
-                <span style={{ fontSize:11, color:"#fbbf24" }}>Session expired</span>
-                <button onClick={() => { setHadPreviousSession(false); signIn(false); }}
-                  style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
-                  Reconnect Google Calendar
-                </button>
-                <button onClick={() => {
-                  localStorage.removeItem("gcal_token");
-                  localStorage.removeItem("gcal_token_exp");
-                  setHadPreviousSession(false);
-                }} style={S.btn("#0f1117","#2d3154","#475569")}>Dismiss</button>
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
+                  <span style={{ fontSize:11, color:"#34d399", display:"flex", alignItems:"center", gap:4 }}>
+                    <span style={{ fontSize:8 }}>●</span> Google Calendar connected
+                  </span>
+                  {calEmail && <span style={{ fontSize:10, color:"#475569" }}>{calEmail}</span>}
+                </div>
+                <button onClick={fetchEvents} style={S.btn("#0f1117","#2d3154","#64748b")}>↻ Refresh</button>
+                <button onClick={disconnectCalendar} style={S.btn("#0f1117","#2d3154","#475569")}>Disconnect</button>
               </>
             ) : (
-              <button onClick={() => signIn(false)} style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
+              <button onClick={connectCalendar} style={S.btn("#1e1b4b","#4338ca","#a5b4fc")}>
                 Connect Google Calendar
               </button>
             )
-          ) : (
-            <>
-              <span style={{ fontSize:11, color:"#34d399", display:"flex", alignItems:"center", gap:4 }}>
-                <span style={{ fontSize:8 }}>●</span> Google Calendar connected
-              </span>
-              <button onClick={() => fetchEvents(accessToken)} style={S.btn("#0f1117","#2d3154","#64748b")}>↻ Refresh</button>
-              <button onClick={signOut} style={S.btn("#0f1117","#2d3154","#475569")}>Disconnect</button>
-            </>
           )}
         </div>
       </div>
 
       {/* Error */}
       {error && (
-        <div style={{ background:"rgba(248,113,113,0.08)", border:"1px solid #7f1d1d", borderRadius:8, padding:"10px 14px", color:"#f87171", fontSize:12, marginBottom:16, display:"flex", justifyContent:"space-between" }}>
+        <div style={{ background:"rgba(248,113,113,0.08)", border:"1px solid #7f1d1d", borderRadius:8, padding:"10px 14px", color:"#f87171", fontSize:12, marginBottom:16, display:"flex", justifyContent:"space-between", gap:12 }}>
           <span>{error}</span>
-          <button onClick={() => setError(null)} style={{ background:"none", border:"none", color:"#f87171", cursor:"pointer" }}>×</button>
+          <button onClick={() => setError(null)} style={{ background:"none", border:"none", color:"#f87171", cursor:"pointer", flexShrink:0 }}>×</button>
         </div>
       )}
 
-      {/* Sync info text */}
-      <div style={{ display:"flex", gap:10, marginBottom:20, alignItems:"center", flexWrap:"wrap" }}>
+      <div style={{ display:"flex", gap:10, marginBottom:20, alignItems:"center" }}>
         <span style={{ fontSize:11, color:"#334155", marginLeft:"auto" }}>Click any date to add an event</span>
       </div>
 
@@ -351,18 +322,15 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
 
       {/* Legend */}
       <div style={{ display:"flex", gap:20, marginTop:18, flexWrap:"wrap" }}>
-        {[["gcal","Google Calendar"],["local","Added here"]].map(([k,lbl]) => (
+        {[["gcal","Google Calendar"],["local","Added here (offline)"]].map(([k,lbl]) => (
           <div key={k} style={{ display:"flex", alignItems:"center", gap:6 }}>
             <div style={{ width:10, height:10, borderRadius:2, background:COLORS[k] }} />
             <span style={{ fontSize:11, color:"#475569" }}>{lbl}</span>
           </div>
         ))}
-        {!CLIENT_ID && (
-          <span style={{ fontSize:11, color:"#f87171", marginLeft:"auto" }}>⚠ VITE_GOOGLE_CLIENT_ID not set</span>
-        )}
       </div>
 
-      {/* ── Add Event Modal ───────────────────────────────── */}
+      {/* ── Add Event Modal ─── */}
       {showAddModal && (
         <div style={S.modal} onClick={() => setShowAddModal(false)}>
           <div style={S.mBox} onClick={e => e.stopPropagation()}>
@@ -402,7 +370,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
               </div>
             )}
 
-            {!isValid() && (
+            {!connected && (
               <div style={{ fontSize:11, color:"#fbbf24", marginBottom:14, padding:"8px 10px", background:"rgba(251,191,36,0.06)", borderRadius:6, border:"1px solid rgba(251,191,36,0.2)" }}>
                 ⚠ Connect Google Calendar to sync this event to your phone too
               </div>
@@ -415,14 +383,14 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
               </button>
               <button onClick={handleAddEvent}
                 style={{ padding:"9px 20px", background:"#1e1b4b", border:"1px solid #4338ca", borderRadius:8, color:"#a5b4fc", cursor:"pointer", fontSize:13, fontWeight:600 }}>
-                {isValid() ? "Save & sync to GCal ↑" : "Save locally"}
+                {connected ? "Save & sync to GCal ↑" : "Save locally"}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Event Detail Modal ────────────────────────────── */}
+      {/* ── Event Detail Modal ─── */}
       {showDetail && (
         <div style={S.modal} onClick={() => setShowDetail(null)}>
           <div style={S.mBox} onClick={e => e.stopPropagation()}>
@@ -432,7 +400,7 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
                   {showDetail._label}
                 </div>
                 <div style={{ fontSize:11, color: COLORS[showDetail._src] || "#64748b", fontWeight:600, textTransform:"uppercase", letterSpacing:"0.06em" }}>
-                  {showDetail._src === "gcal" ? "Google Calendar" : showDetail._src === "todo" ? "To-Do item" : "Local event"}
+                  {showDetail._src === "gcal" ? "Google Calendar" : "Local event"}
                 </div>
               </div>
               <button onClick={() => setShowDetail(null)} style={{ background:"none", border:"none", color:"#64748b", fontSize:22, cursor:"pointer", lineHeight:1 }}>×</button>
@@ -444,14 +412,14 @@ export default function CalendarTab({ todos = [], weekStatus = [] }) {
                 : showDetail.start?.date || showDetail.date || ""}
             </div>
 
-            {showDetail.description && (
+            {(showDetail.description || showDetail.summary !== showDetail._label) && (
               <div style={{ fontSize:13, color:"#94a3b8", marginBottom:16, lineHeight:1.6, padding:"10px 12px", background:"#0a0b0d", borderRadius:8, border:"1px solid #1a1d2e" }}>
-                {showDetail.description}
+                {showDetail.description || ""}
               </div>
             )}
 
             <div style={{ display:"flex", gap:10, justifyContent:"flex-end" }}>
-              {(showDetail._src === "local" || (showDetail._src === "gcal" && isValid())) && (
+              {(showDetail._src === "local" || (showDetail._src === "gcal" && connected)) && (
                 <button onClick={() => handleDeleteEvent(showDetail)}
                   style={{ padding:"8px 16px", background:"rgba(248,113,113,0.08)", border:"1px solid #7f1d1d", borderRadius:8, color:"#f87171", cursor:"pointer", fontSize:12 }}>
                   🗑 Delete
