@@ -3812,38 +3812,45 @@ const OS_UNITS = [
                     </div>)}
                 </nav>
                 {/* ── Draggable bottom panel ── */}
-                <div
-                    style={{borderTop:"1px solid #1e2030", userSelect:"none", flexShrink:0}}
-                    onMouseDown={(e)=>{
-                        const startY = e.clientY;
-                        const wasOpen = sidebarPanelOpen;
-                        const onMove = (mv)=>{
-                            const dy = mv.clientY - startY;
-                            if (wasOpen && dy > 30)  { setSidebarPanelOpen(false); cleanup(); }
-                            if (!wasOpen && dy < -30) { setSidebarPanelOpen(true);  cleanup(); }
-                        };
-                        const cleanup = ()=>{ window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", cleanup); };
-                        window.addEventListener("mousemove", onMove);
-                        window.addEventListener("mouseup", cleanup);
-                    }}
-                    onTouchStart={(e)=>{
-                        const startY = e.touches[0].clientY;
-                        const wasOpen = sidebarPanelOpen;
-                        const onMove = (mv)=>{
-                            const dy = mv.touches[0].clientY - startY;
-                            if (wasOpen && dy > 30)  { setSidebarPanelOpen(false); cleanup(); }
-                            if (!wasOpen && dy < -30) { setSidebarPanelOpen(true);  cleanup(); }
-                        };
-                        const cleanup = ()=>{ window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", cleanup); };
-                        window.addEventListener("touchmove", onMove);
-                        window.addEventListener("touchend", cleanup);
-                    }}
-                >
-                    {/* Drag handle */}
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 12px",cursor:"ns-resize"}}
-                        onClick={()=>setSidebarPanelOpen(o=>!o)}>
-                        <span style={{fontSize:10,color:"#4a5568",letterSpacing:"0.05em",textTransform:"uppercase"}}>Quick Actions</span>
-                        <span style={{fontSize:11,color:"#4a5568",transition:"transform 0.2s",display:"inline-block",transform:sidebarPanelOpen?"rotate(0deg)":"rotate(180deg)"}}>▲</span>
+                <div style={{borderTop:"1px solid #1e2030", userSelect:"none", flexShrink:0}}>
+                    {/* Drag handle — drag up to open, drag down to close, or just click */}
+                    <div
+                        style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 12px",cursor:"ns-resize",background:"transparent"}}
+                        onClick={()=>setSidebarPanelOpen(o=>!o)}
+                        onMouseDown={(e)=>{
+                            e.preventDefault();
+                            const startY = e.clientY;
+                            const wasOpen = sidebarPanelOpen;
+                            let moved = false;
+                            const onMove = (mv)=>{
+                                const dy = mv.clientY - startY;
+                                if (!moved && Math.abs(dy) > 15) moved = true;
+                                if (moved && wasOpen && dy > 20)  { setSidebarPanelOpen(false); cleanup(); }
+                                if (moved && !wasOpen && dy < -20) { setSidebarPanelOpen(true);  cleanup(); }
+                            };
+                            const onUp = ()=>{ cleanup(); };
+                            const cleanup = ()=>{ window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+                            window.addEventListener("mousemove", onMove);
+                            window.addEventListener("mouseup", onUp);
+                        }}
+                        onTouchStart={(e)=>{
+                            const startY = e.touches[0].clientY;
+                            const wasOpen = sidebarPanelOpen;
+                            let moved = false;
+                            const onMove = (mv)=>{
+                                const dy = mv.touches[0].clientY - startY;
+                                if (!moved && Math.abs(dy) > 15) moved = true;
+                                if (moved && wasOpen && dy > 20)  { setSidebarPanelOpen(false); cleanup(); }
+                                if (moved && !wasOpen && dy < -20) { setSidebarPanelOpen(true);  cleanup(); }
+                            };
+                            const onUp = ()=>{ cleanup(); };
+                            const cleanup = ()=>{ window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", onUp); };
+                            window.addEventListener("touchmove", onMove);
+                            window.addEventListener("touchend", onUp);
+                        }}
+                    >
+                        <span style={{fontSize:10,color:"#4a5568",letterSpacing:"0.06em",textTransform:"uppercase",fontWeight:600}}>Quick Actions</span>
+                        <span style={{fontSize:10,color:"#4a5568",transition:"transform 0.22s",display:"inline-block",transform:sidebarPanelOpen?"rotate(0deg)":"rotate(180deg)"}}>▲</span>
                     </div>
                     {/* Collapsible content */}
                     <div style={{
