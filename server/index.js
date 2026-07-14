@@ -16,13 +16,7 @@ import {
   CSRF_COOKIE,
   CSRF_HEADER,
 } from "../api/_lib/session.js";
-import calendarConnect     from "../api/calendar/connect.js";
-import calendarCallback    from "../api/calendar/callback.js";
-import calendarStatus      from "../api/calendar/status.js";
-import calendarEvents      from "../api/calendar/events.js";
-import calendarCreateEvent from "../api/calendar/create-event.js";
-import calendarDeleteEvent from "../api/calendar/delete-event.js";
-import calendarDisconnect  from "../api/calendar/disconnect.js";
+import calendarHandler from "../api/calendar/[action].js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, "../dist");
@@ -199,13 +193,17 @@ app.get("/api/leetcode/:username", async (req, res) => {
 });
 
 // ── Google Calendar (backend OAuth, tokens stored in DB) ──────────────────────
-app.get("/api/calendar/connect",        calendarConnect);
-app.get("/api/calendar/callback",       calendarCallback);
-app.get("/api/calendar/status",         calendarStatus);
-app.get("/api/calendar/events",         calendarEvents);
-app.post("/api/calendar/create-event",  calendarCreateEvent);
-app.delete("/api/calendar/delete-event", calendarDeleteEvent);
-app.post("/api/calendar/disconnect",    calendarDisconnect);
+const withAction = (action) => (req, res) => {
+  req.query = { ...req.query, action };
+  return calendarHandler(req, res);
+};
+app.get("/api/calendar/connect",         withAction("connect"));
+app.get("/api/calendar/callback",        withAction("callback"));
+app.get("/api/calendar/status",          withAction("status"));
+app.get("/api/calendar/events",          withAction("events"));
+app.post("/api/calendar/create-event",   withAction("create-event"));
+app.delete("/api/calendar/delete-event", withAction("delete-event"));
+app.post("/api/calendar/disconnect",     withAction("disconnect"));
 
 app.get("/api/health", async (req, res) => {
   try {
