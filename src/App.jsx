@@ -17,7 +17,7 @@ const STRIVER_STEPS = [
   ]},{ name:"Learn STL", problems:[
       { title:"Pairs, Vectors, Maps, Sets", yt:"https://youtu.be/RRVYpIET_RU", practice:"https://takeuforward.org/plus" }
   ]},{ name:"Know Basic Maths", problems:[
-      { title:"Count Digits", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/count-primes/", difficulty:"Medium" },{ title:"Reverse a Number", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/reverse-integer/", difficulty:"Medium" },{ title:"Check Palindrome", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/palindrome-number/", difficulty:"Easy" },{ title:"GCD Or HCF", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/find-greatest-common-divisor-of-array/", difficulty:"Easy" },{ title:"Armstrong Numbers", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/", practice:"https://leetcode.com/problems/armstrong-number/", difficulty:"Easy" },{ title:"Print all Divisors", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://takeuforward.org/plus" },{ title:"Check for Prime", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://takeuforward.org/plus" },{ title:"Happy Number", practice:"https://leetcode.com/problems/happy-number/", difficulty:"Easy" },{ title:"Ugly Number", practice:"https://leetcode.com/problems/ugly-number/", difficulty:"Easy" },{ title:"Add Digits", practice:"https://leetcode.com/problems/add-digits/", difficulty:"Easy" },{ title:"Power of Three", practice:"https://leetcode.com/problems/power-of-three/", difficulty:"Easy" },{ title:"Number of Steps to Reduce a Number to Zero", practice:"https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/", difficulty:"Easy" },{ title:"Count Common Factors", practice:"https://leetcode.com/problems/count-common-factors/" },{ title:"Trailing Zeroes in Factorial", practice:"https://leetcode.com/problems/factorial-trailing-zeroes/", difficulty:"Medium" }
+      { title:"Count Digits", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/count-primes/", difficulty:"Medium" },{ title:"Reverse a Number", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/reverse-integer/", difficulty:"Medium" },{ title:"Check Palindrome", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/palindrome-number/", difficulty:"Easy" },{ title:"GCD Or HCF", yt:"https://youtu.be/1xNbjMdbjug",  practice:"https://leetcode.com/problems/find-greatest-common-divisor-of-array/", difficulty:"Easy" },{ title:"Armstrong Numbers", yt:"https://youtu.be/1xNbjMdbjug", article:"https://takeuforward.org/maths/check-if-a-number-is-armstrong-number-or-not/", practice:"https://leetcode.com/problems/armstrong-number/", difficulty:"Easy" },{ title:"Print all Divisors", yt:"https://youtu.be/1xNbjMdbjug", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"Check for Prime", yt:"https://youtu.be/1xNbjMdbjug", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"Happy Number", practice:"https://leetcode.com/problems/happy-number/", difficulty:"Easy" },{ title:"Ugly Number", practice:"https://leetcode.com/problems/ugly-number/", difficulty:"Easy" },{ title:"Add Digits", practice:"https://leetcode.com/problems/add-digits/", difficulty:"Easy" },{ title:"Power of Three", practice:"https://leetcode.com/problems/power-of-three/", difficulty:"Easy" },{ title:"Number of Steps to Reduce a Number to Zero", practice:"https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/", difficulty:"Easy" },{ title:"Count Common Factors", practice:"https://leetcode.com/problems/count-common-factors/", difficulty:"Easy" },{ title:"Trailing Zeroes in Factorial", practice:"https://leetcode.com/problems/factorial-trailing-zeroes/", difficulty:"Medium" }
   ]},{ name:"Learn Basic Recursion", problems:[
       { title:"Understand recursion by print something N times", yt:"https://youtu.be/yVdKa8dnKiE", article:"https://takeuforward.org/recursion/print-name-n-times-using-recursion/", practice:"https://takeuforward.org/plus" },{ title:"Print 1 to N using recursion", yt:"https://youtu.be/un6PLygfXrA", article:"https://takeuforward.org/recursion/print-1-to-n-using-recursion/", practice:"https://takeuforward.org/plus" },{ title:"Print N to 1 using recursion", yt:"https://youtu.be/un6PLygfXrA", article:"https://takeuforward.org/recursion/print-n-to-1-using-recursion/", practice:"https://takeuforward.org/plus" },{ title:"Sum of first N numbers", yt:"https://youtu.be/69ZCDFy-OUo",  practice:"https://takeuforward.org/plus" },{ title:"Factorial of N numbers", yt:"https://youtu.be/69ZCDFy-OUo",  practice:"https://takeuforward.org/plus" },{ title:"Reverse an array", yt:"https://youtu.be/twuC1F6gLI8", article:"https://takeuforward.org/data-structure/reverse-a-given-array/", practice:"https://leetcode.com/problems/reverse-string/", difficulty:"Easy" },{ title:"Check if a string is palindrome or not", yt:"https://youtu.be/twuC1F6gLI8", article:"https://takeuforward.org/data-structure/check-if-the-given-string-is-palindrome-or-not/", practice:"https://leetcode.com/problems/valid-palindrome/", difficulty:"Easy" },{ title:"Fibonacci Number", yt:"https://youtu.be/kvRjNm4rVBE",  practice:"https://leetcode.com/problems/fibonacci-number/", difficulty:"Easy" },{ title:"K-th Symbol in Grammar", practice:"https://leetcode.com/problems/k-th-symbol-in-grammar/", difficulty:"Medium" },{ title:"Letter Case Permutation", practice:"https://leetcode.com/problems/letter-case-permutation/", difficulty:"Medium" }
   ]},{ name:"Learn Basic Hashing", problems:[
@@ -852,6 +852,19 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
+    // Build title→difficulty lookup from raw STRIVER_STEPS so old log entries without stored difficulty are resolved correctly
+    const probTitleToDiff = useMemo(() => {
+        const map = {};
+        for (const step of STRIVER_STEPS) {
+            for (const sub of step.subtopics) {
+                for (const p of sub.problems) {
+                    if (p.title && p.difficulty) map[p.title] = p.difficulty;
+                }
+            }
+        }
+        return map;
+    }, []);
+
     const [editingTodo, setEditingTodo] = useState(null); // { id, text }
 
     function addTodayTask() {
@@ -1076,7 +1089,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         for (const d of dates) {
                             for (const act of activityLog[d]) {
                                 if (act.type === "dsa" && act.title && act.title !== "LeetCode Sync" && act.title !== "LeetCode AC" && act.subName !== "LeetCode Sync") {
-                                    let diff = act.difficulty || getDiffFromSubtopic(act.subName) || "Medium";
+                                    let diff = act.difficulty || getDiffFromSubtopic(act.subName) || probTitleToDiff[act.title] || "Easy";
                                     const todayDate = new Date(today);
                                     const actDate = new Date(d);
                                     const diffTime = todayDate - actDate;
@@ -1448,7 +1461,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 setActivityLog(prev => {
                     const dayProbs = prev[today] || [];
                     if (dayProbs.find(p => p.title === probTitle && p.subName === subName)) return prev;
-                    return { ...prev, [today]: [...dayProbs, { title: probTitle, stepTitle, subName, type:"dsa" }] };
+                    return { ...prev, [today]: [...dayProbs, { title: probTitle, stepTitle, subName, type:"dsa", difficulty: prob?.difficulty || null }] };
                 });
                 if (lastLogDate !== today) {
                     setDailyLog(logs => {
