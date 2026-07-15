@@ -32,6 +32,31 @@ function getAppBase(req) {
 
 // ─── Route handlers ────────────────────────────────────────────────────────
 
+// Build a signed state value that embeds the user ID so the callback
+// can identify the user without needing the session cookie (which browsers
+// sometimes drop during cross-site OAuth redirects).
+function signCalState(nonce, userId) {
+  const secret = process.env.SESSION_SECRET || process.env.GOOGLE_CLIENT_SECRET || "cal_fallback";
+  const payload = `${nonce}.${userId}`;
+  const sig = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+  return `${payload}.${sig}`;
+}
+
+function verifyCalState(signedState, nonce) {
+  if (!signedState || typeof signedState !== "string") return null;
+  const parts = signedState.split(".");
+  if (parts.length !== 3) return null;
+  const [storedNonce, userId, sig] = parts;
+  if (storedNonce !== nonce) return null;
+  const secret = process.env.SESSION_SECRET || process.env.GOOGLE_CLIENT_SECRET || "cal_fallback";
+  const payload = `${storedNonce}.${userId}`;
+  const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+  try {
+    if (!crypto.timingSafeEqual(Buffer.from(sig, "hex"), Buffer.from(expected, "hex"))) return null;
+  } catch { return null; }
+  return userId;
+}
+
 async function handleConnect(req, res, user) {
   const clientId     = getCalendarClientId();
   const clientSecret = getCalendarClientSecret();
@@ -49,8 +74,11 @@ async function handleConnect(req, res, user) {
     });
   }
 
-  const state  = crypto.randomBytes(16).toString("hex");
+  const nonce  = crypto.randomBytes(16).toString("hex");
   const secure = isSecureRequest(req);
+  // Embed user ID in the state cookie so the callback can identify the user
+  // even if the session cookie is not forwarded during the OAuth redirect.
+  const signedState = signCalState(nonce, user.sub);
 
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id",     clientId);
@@ -59,18 +87,18 @@ async function handleConnect(req, res, user) {
   url.searchParams.set("scope",         SCOPES);
   url.searchParams.set("access_type",   "offline");
   url.searchParams.set("prompt",        "consent");
-  url.searchParams.set("state",         state);
+  url.searchParams.set("state",         nonce);
 
   res.setHeader(
     "Set-Cookie",
-    `cal_state=${state}; HttpOnly; Path=/; Max-Age=300${secure ? "; Secure" : ""}; SameSite=Lax`
+    `cal_state=${encodeURIComponent(signedState)}; HttpOnly; Path=/; Max-Age=600${secure ? "; Secure" : ""}; SameSite=Lax`
   );
   return res.json({ url: url.toString() });
 }
 
 async function handleCallback(req, res) {
   const appBase = getAppBase(req);
-  const { code, state, error } = req.query;
+  const { code, state: nonce, error } = req.query;
 
   if (error) {
     return res.redirect(302, `${appBase}/?calendar_error=${encodeURIComponent(error)}`);
@@ -79,13 +107,21 @@ async function handleCallback(req, res) {
     return res.redirect(302, `${appBase}/?calendar_error=no_code`);
   }
 
+  // Verify the signed state cookie — this embeds the user ID so we don't
+  // need the session cookie (which some browsers drop during OAuth redirects).
   const cookies = parseCookies(req);
-  if (state && cookies.cal_state && cookies.cal_state !== state) {
-    return res.redirect(302, `${appBase}/?calendar_error=state_mismatch`);
+  const rawState = decodeURIComponent(cookies.cal_state || "");
+  const userId = rawState && nonce ? verifyCalState(rawState, nonce) : null;
+
+  // Fall back to session cookie if state-based lookup fails (e.g. legacy flow)
+  let resolvedUserId = userId;
+  if (!resolvedUserId) {
+    const sessionUser = await getSessionUser(req);
+    resolvedUserId = sessionUser?.sub || null;
   }
 
-  const user = await getSessionUser(req);
-  if (!user) {
+  if (!resolvedUserId) {
+    console.error("[calendar/callback] could not identify user — no valid state cookie or session");
     return res.redirect(302, `${appBase}/?calendar_error=not_authenticated`);
   }
 
@@ -134,7 +170,7 @@ async function handleCallback(req, res) {
            scope         = EXCLUDED.scope,
            google_email  = EXCLUDED.google_email,
            updated_at    = NOW()`,
-      [user.sub, tokens.refresh_token, tokens.scope || null, googleEmail]
+      [resolvedUserId, tokens.refresh_token, tokens.scope || null, googleEmail]
     );
 
     const secure = isSecureRequest(req);
