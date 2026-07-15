@@ -847,22 +847,27 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>;
     }
 
-    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData, mathsProgress, osProgress, lcGlobalStats, lcAllQuestions }) {
+    function Dashboard({ dsaData, coaData, weekStatus, streak, streakData, streakFreezes, onApplyFreeze, dailyLog, setDailyLog, activityLog, setActivityLog, diffCounts, diffTotal, solvedQuestions, todos, setTodos, revData, mathsProgress, osProgress, lcGlobalStats, lcAllQuestions, lcDiffCache }) {
     const [logNote, setLogNote] = useState("");
     const [todayInput, setTodayInput] = useState("");
     const today = new Date().toISOString().slice(0,10);
 
-    // Build title→difficulty lookup from raw STRIVER_STEPS so old log entries without stored difficulty are resolved correctly
-    const probTitleToDiff = useMemo(() => {
-        const map = {};
+    // Build title→difficulty and title→lcSlug lookups from STRIVER_STEPS
+    const { probTitleToDiff, titleToSlug } = useMemo(() => {
+        const diff = {}, slug = {};
         for (const step of STRIVER_STEPS) {
             for (const sub of step.subtopics) {
                 for (const p of sub.problems) {
-                    if (p.title && p.difficulty) map[p.title] = p.difficulty;
+                    if (!p.title) continue;
+                    if (p.difficulty) diff[p.title] = p.difficulty;
+                    if (p.practice && p.practice.includes("leetcode.com/problems/")) {
+                        const s = p.practice.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0];
+                        if (s) slug[p.title] = s;
+                    }
                 }
             }
         }
-        return map;
+        return { probTitleToDiff: diff, titleToSlug: slug };
     }, []);
 
     const [editingTodo, setEditingTodo] = useState(null); // { id, text }
@@ -1089,7 +1094,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                         for (const d of dates) {
                             for (const act of activityLog[d]) {
                                 if (act.type === "dsa" && act.title && act.title !== "LeetCode Sync" && act.title !== "LeetCode AC" && act.subName !== "LeetCode Sync") {
-                                    let diff = act.difficulty || getDiffFromSubtopic(act.subName) || probTitleToDiff[act.title] || "Easy";
+                                    // Priority: LC API cache (by stored slug or title→slug lookup) > stored > our data > subtopic heuristic > Easy
+                                    const lcSlug = act.lcSlug || titleToSlug[act.title];
+                                    let diff = (lcSlug && lcDiffCache?.[lcSlug]) || act.difficulty || probTitleToDiff[act.title] || getDiffFromSubtopic(act.subName) || "Easy";
                                     const todayDate = new Date(today);
                                     const actDate = new Date(d);
                                     const diffTime = todayDate - actDate;
@@ -3949,7 +3956,7 @@ const OS_UNITS = [
                     streakData={streakData} streakFreezes={streakFreezes} onApplyFreeze={applyFreeze}
                     dailyLog={dailyLog} setDailyLog={setDailyLog} activityLog={activityLog} setActivityLog={setActivityLog}
                     diffCounts={diffCounts} diffTotal={diffTotal} solvedQuestions={solvedQuestions} todos={todos} setTodos={setTodos} revData={revData}
-                    mathsProgress={mathsProgress} osProgress={osProgress} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions} />}
+                    mathsProgress={mathsProgress} osProgress={osProgress} lcGlobalStats={lcGlobalStats} lcAllQuestions={lcAllQuestions} lcDiffCache={lcDiffCache} />}
                 {page==="dsa" &&
                 <DSATracker dsaData={dsaData} setDsaData={setDsaData} setDailyLog={setDailyLog} lastLogDate={lastLogDate}
                     setActivityLog={setActivityLog} solvedQuestions={solvedQuestions} setSolvedQuestions={setSolvedQuestions}
