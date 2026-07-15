@@ -2316,8 +2316,39 @@ const OS_UNITS = [
     }
 
     // ─── WEEKLY PLANNER ───────────────────────────────────────────────────────────
-    function WeeklyPlanner({ dsaData, coaData, weekStatus, setWeekStatus, onCelebrate, solvedQuestions }) {
+    function WeeklyPlanner({ dsaData, coaData, weekStatus, setWeekStatus, onCelebrate, solvedQuestions, lcDiffCache, setLcDiffCache }) {
     const [expanded, setExpanded] = useState(null);
+
+    // Extract slug from a LeetCode practice URL
+    function getSlug(url) {
+        if (!url || !url.includes("leetcode.com/problems/")) return null;
+        return url.replace(/\/$/, "").split("/problems/")[1]?.split("/")[0] || null;
+    }
+
+    // On mount: collect all slugs across ALL weeks, find which are missing from cache,
+    // fetch from LeetCode API, and update cache. Always trust LC API over our data.
+    useEffect(() => {
+        const allSlugs = [];
+        STRIVER_STEPS.forEach(step => {
+            step.subtopics.forEach(sub => {
+                sub.problems.forEach(p => {
+                    const slug = getSlug(p.practice);
+                    if (slug) allSlugs.push(slug);
+                });
+            });
+        });
+        const missing = [...new Set(allSlugs)].filter(s => !lcDiffCache[s]);
+        if (missing.length === 0) return;
+        fetch(`/api/lc-diff?slugs=${missing.join(",")}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (data?.difficulties && Object.keys(data.difficulties).length > 0) {
+                    setLcDiffCache(prev => ({ ...prev, ...data.difficulties }));
+                }
+            })
+            .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     function toggleWeek(i) {
     const next = [...weekStatus]; next[i]=!next[i];
@@ -2392,7 +2423,11 @@ const OS_UNITS = [
                     </div>
                     <div style={{display:"flex",gap:6,alignItems:"center"}}>
                         {["Easy","Medium","Hard"].map(d => {
-                            const cnt = weekLCProblems.filter(p=>p.difficulty===d).length;
+                            const cnt = weekLCProblems.filter(p => {
+                                const slug = getSlug(p.practice);
+                                const diff = (slug && lcDiffCache[slug]) || p.difficulty;
+                                return diff === d;
+                            }).length;
                             return cnt > 0 ? <span key={d} style={{fontSize:11,fontWeight:700,...DIFF_BADGE[d], borderRadius:5,padding:"3px 9px"}}>{d} {cnt}</span> : null;
                         })}
                         <span style={{fontSize:11,color:"#475569",background:"#0f1117",border:"1px solid #1e2030",borderRadius:5,padding:"3px 9px",fontWeight:600}}>{weekLCProblems.length} total</span>
@@ -2436,7 +2471,9 @@ const OS_UNITS = [
                                             </tr>,
                                             ...problems.map((p,pi) => {
                                                 const isDone = solvedQuestions && solvedQuestions[`s${step}_${p._si}_${p._pi}`];
-                                                const diff = p.difficulty;
+                                                const slug = getSlug(p.practice);
+                                                // Always trust LeetCode API difficulty; fall back to our data only if not cached yet
+                                                const diff = (slug && lcDiffCache[slug]) || p.difficulty;
                                                 return <tr key={`${p._si}-${p._pi}`} style={{background:isDone?"#071a1020":"#0a0b0d",borderBottom:"1px solid #13151f",transition:"background 0.15s"}}
                                                     onMouseEnter={e=>e.currentTarget.style.background=isDone?"#071a1035":"#0f1117"}
                                                     onMouseLeave={e=>e.currentTarget.style.background=isDone?"#071a1020":"#0a0b0d"}>
@@ -3220,6 +3257,8 @@ const OS_UNITS = [
     const [lcGlobalStats, setLcGlobalStats] = useLocalStorage("studyos_lc_global", null);
     const [lcAllQuestions, setLcAllQuestions] = useLocalStorage("studyos_lc_all", null);
     const [lcUsername, setLcUsername] = useLocalStorage("lc_username", "");
+    // Slug → difficulty cache, always sourced from the LeetCode API
+    const [lcDiffCache, setLcDiffCache] = useLocalStorage("studyos_lc_diff_v1", {});
 
     // Compute Easy/Medium/Hard solved & total counts for donut widget
     const { diffCounts, diffTotal } = useMemo(() => {
@@ -3922,7 +3961,8 @@ const OS_UNITS = [
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
                 {page==="os" && <OSTracker osProgress={osProgress} setOsProgress={setOsProgress} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
-                    setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}/>}
+                    setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}
+                    lcDiffCache={lcDiffCache} setLcDiffCache={setLcDiffCache} />}
                     {page==="revision" &&
                     <RevisionTracker revData={revData} setRevData={setRevData} />}
                     {page==="analytics" &&
