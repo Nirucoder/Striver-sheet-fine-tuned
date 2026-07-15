@@ -161,16 +161,23 @@ async function handleCallback(req, res) {
       googleEmail = info.email || null;
     } catch {}
 
+    // access_token from the initial exchange is already valid for ~1 hour —
+    // store it now so the first API call doesn't need an immediate refresh.
+    const initialExpiresAt = new Date(Date.now() + (Number(tokens.expires_in) || 3600) * 1000);
+
     const pool = getPool();
     await pool.query(
-      `INSERT INTO calendar_connections (user_id, refresh_token, scope, google_email, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, NOW(), NOW())
+      `INSERT INTO calendar_connections
+         (user_id, refresh_token, access_token, token_expires_at, scope, google_email, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
        ON CONFLICT (user_id) DO UPDATE
-       SET refresh_token = EXCLUDED.refresh_token,
-           scope         = EXCLUDED.scope,
-           google_email  = EXCLUDED.google_email,
-           updated_at    = NOW()`,
-      [resolvedUserId, tokens.refresh_token, tokens.scope || null, googleEmail]
+       SET refresh_token    = EXCLUDED.refresh_token,
+           access_token     = EXCLUDED.access_token,
+           token_expires_at = EXCLUDED.token_expires_at,
+           scope            = EXCLUDED.scope,
+           google_email     = EXCLUDED.google_email,
+           updated_at       = NOW()`,
+      [resolvedUserId, tokens.refresh_token, tokens.access_token, initialExpiresAt, tokens.scope || null, googleEmail]
     );
 
     const secure = isSecureRequest(req);
