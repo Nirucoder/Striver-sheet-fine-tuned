@@ -3364,7 +3364,7 @@ const OS_UNITS = [
 
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
     function getProgressPayload() {
-        return { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress };
+        return { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress, lcDiffCache };
     }
 
     function applyCloudProgress(data) {
@@ -3386,6 +3386,10 @@ const OS_UNITS = [
         if (data.mathsProgress) setMathsProgress(data.mathsProgress);
         if (data.osProgress) setOsProgress(data.osProgress);
         if (data.coaGsProgress) setCoaGsProgress(data.coaGsProgress);
+        // Merge difficulty cache: cloud fills in any slugs missing on this device
+        if (data.lcDiffCache && typeof data.lcDiffCache === "object") {
+            setLcDiffCache(prev => ({ ...data.lcDiffCache, ...prev }));
+        }
     }
 
     // Cloud sync: offline-first startup reconciliation + automatic background
@@ -3394,7 +3398,7 @@ const OS_UNITS = [
     const { bootstrapped: cloudBootstrapped, status: syncState, lastSynced } = useCloudSync({
         getPayload: getProgressPayload,
         applyPayload: applyCloudProgress,
-        deps: [dsaData, coaData, revData, weekStatus, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress],
+        deps: [dsaData, coaData, revData, weekStatus, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress, lcDiffCache],
         legacySyncCode: syncCode,
     });
 
