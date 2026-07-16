@@ -3249,7 +3249,7 @@ const OS_UNITS = [
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
     const [sidebarPanelOpen, setSidebarPanelOpen] = useState(true);
-    const sidebarDragRef = React.useRef(null);
+    const sidebarDragRef = useRef(null);
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncCode] = useLocalStorage("studyos_sync_code", () => {
         const stored = localStorage.getItem("studyos_sync_code");
