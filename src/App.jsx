@@ -896,7 +896,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
     const totalProblems = useMemo(()=>STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0),[]);
-    const solvedProblems = Object.keys(solvedQuestions||{}).length;
+    const solvedProblems = Object.values(solvedQuestions||{}).filter(Boolean).length;
     const overallPct = Math.round((dsaDone+coaDone)/(dsaData.length+coaData.length)*100);
     const weeksDone = weekStatus.filter(Boolean).length;
     
@@ -1492,7 +1492,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     }
 
     const totalProblems = useMemo(()=>STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0),[]);
-    const solvedProbs = Object.keys(solvedQuestions||{}).length;
+    const solvedProbs = Object.values(solvedQuestions||{}).filter(Boolean).length;
     const doneSubs = dsaData.filter(d=>d.status==="done").length;
 
     function toggleStar(key) {
