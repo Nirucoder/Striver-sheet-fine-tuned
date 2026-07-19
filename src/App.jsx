@@ -2378,8 +2378,11 @@ const OS_UNITS = [
                                             <td style={{padding:"9px 12px",fontSize:13,fontWeight:done?400:500}}>
                                                 {v.article
                                                     ? <a href={v.article} target="_blank" rel="noreferrer"
-                                                        style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none",textDecorationColor:"#4ade80"}}>
+                                                        style={{color:done?"#4ade80":"#38bdf8",textDecoration:done?"line-through":"none",textDecorationColor:done?"#4ade80":"#38bdf8"}}
+                                                        onMouseEnter={e=>{if(!done){e.currentTarget.style.textDecoration="underline";e.currentTarget.style.textDecorationColor="#38bdf8";}}}
+                                                        onMouseLeave={e=>{if(!done)e.currentTarget.style.textDecoration="none";}}>
                                                         {v.title}
+                                                        {!done&&<span style={{fontSize:9,color:"#0ea5e9",marginLeft:4,opacity:0.65,verticalAlign:"middle"}}>↗</span>}
                                                       </a>
                                                     : <span style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none"}}>{v.title}</span>
                                                 }
