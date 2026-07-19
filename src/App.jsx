@@ -1240,10 +1240,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         // Initial sync when DSATracker opens
         syncRef.current();
 
-        // Sync every 10 minutes (600000 ms)
+        // Sync every 100 seconds
         const intervalId = setInterval(() => {
             syncRef.current();
-        }, 600000);
+        }, 100000);
 
         return () => clearInterval(intervalId);
     }, [lcUsername]);
