@@ -1,0 +1,27 @@
+I want to update my existing project to add a new "System Design" tracking section. The layout must perfectly match the existing "OS Tracker" UI (accordion components, dark mode cards, progress bars, and rows with 'Watch' buttons and checkboxes for Watched, Revised, and Practiced).
+
+Please implement this across the following files in the project workspace:
+
+### Step 1: Create the Data Engine (`scripts/scrape_system_design.py`)
+Create or update a python script that will scrape the takeUforward system design roadmap structure (from https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes).
+- It should organize data into Units (e.g., "U1: Basics", "U2: Load Balancing", "U3: DataStores") to match the OS tracker data model.
+- Each unit should have sub-topics containing: `title`, `article_url` (the takeUforward article link).
+- Use the Google YouTube Data API v3 (`YOUTUBE_API_KEY` from secrets) to fetch or match the correct video URLs/IDs for each system design topic and map them to the red 'Watch' icon action.
+- Save this final parsed output array into the project's static data folder as `system_design_data.json`.
+
+### Step 2: Update Sidebar Navigation & State Router
+- Open the sidebar navigation file (likely `src/components/Sidebar.jsx` or similar layout component).
+- Add a new navigation tab option labeled "System Design" right alongside 'DSA Tracker', 'COA Tracker', and 'OS'. Use an appropriate system icon (like a network, hierarchy, or layers icon).
+- Update the main application state router (likely `src/App.jsx`) so that clicking the "System Design" tab renders the new view component.
+
+### Step 3: Create the System Design Tracker Component
+Create a new view component `src/pages/SystemDesignTracker.jsx` (modeled exactly after your OS tracker view):
+- **Header Overview:** Display a progress metric grid card ("System Design Progress", showing X% completed, X/Y subtopics completed) matching the dashboard metric style.
+- **Accordion Units:** Map through `system_design_data.json`. Render collapsible accordion rows for each Unit ("U1", "U2", etc.) displaying the Unit Title, total videos, videos watched, and a colored linear progress bar indicator.
+- **Topic Rows (The Table):** Inside an expanded unit accordion, render a clean table layout matching the screenshot:
+  1. Column 1 (`#`): Topic numbering.
+  2. Column 2 (`Topic`): The title of the topic text. Make clicking the text open the scraped `article_url` in a new browser tab.
+  3. Column 3 (`Watch`): The red YouTube play icon button. Clicking it should open the YouTube video modal/link using the API-fetched video data.
+  4. Columns 4, 5, 6 (`Watched`, `Revised`, `Practiced`): Render styled custom checkboxes. Use LocalStorage (or the project's existing state sync system) to save states so progress persists on reload and updates the parent component progress percentages.
+
+Run the Python script once to generate the static dataset, then hot-reload the React application layout.

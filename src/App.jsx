@@ -1861,6 +1861,95 @@ const MATHS_UNITS = [
   },
 ];
 
+// ─── SYSTEM DESIGN DATA (TUF Roadmap) ────────────────────────────────────────
+const SD_UNITS = [
+  {
+    unit: 1, title: "Fundamentals of System Design",
+    videos: [
+      { title: "What is System Design? | High Level vs Low Level Design", yt: "https://www.youtube.com/results?search_query=striver+what+is+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "How to Approach System Design Interviews", yt: "https://www.youtube.com/results?search_query=striver+system+design+interview+approach", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Functional vs Non-Functional Requirements", yt: "https://www.youtube.com/results?search_query=system+design+functional+non+functional+requirements", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Back-of-Envelope Estimation & Capacity Planning", yt: "https://www.youtube.com/results?search_query=system+design+back+of+envelope+estimation+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "APIs: REST, GraphQL, gRPC — When to Use What", yt: "https://www.youtube.com/results?search_query=system+design+REST+GraphQL+gRPC+comparison", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 2, title: "Scalability & Reliability Concepts",
+    videos: [
+      { title: "Horizontal vs Vertical Scaling", yt: "https://www.youtube.com/results?search_query=horizontal+vs+vertical+scaling+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "CAP Theorem — Consistency, Availability, Partition Tolerance", yt: "https://www.youtube.com/results?search_query=CAP+theorem+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "PACELC Theorem & Consistency Models", yt: "https://www.youtube.com/results?search_query=PACELC+theorem+consistency+models+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Availability, Reliability & SLA / SLO / SLI", yt: "https://www.youtube.com/results?search_query=availability+reliability+SLA+SLO+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "ACID vs BASE Properties", yt: "https://www.youtube.com/results?search_query=ACID+vs+BASE+properties+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 3, title: "Core Building Blocks",
+    videos: [
+      { title: "DNS and How the Internet Works", yt: "https://www.youtube.com/results?search_query=DNS+how+internet+works+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Load Balancers — L4 vs L7, Algorithms", yt: "https://www.youtube.com/results?search_query=load+balancer+system+design+striver+L4+L7", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Reverse Proxy vs Forward Proxy vs API Gateway", yt: "https://www.youtube.com/results?search_query=reverse+proxy+api+gateway+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "CDN — Content Delivery Network", yt: "https://www.youtube.com/results?search_query=CDN+content+delivery+network+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Service Discovery & Health Checks", yt: "https://www.youtube.com/results?search_query=service+discovery+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "WebSockets vs Long Polling vs SSE", yt: "https://www.youtube.com/results?search_query=websocket+long+polling+SSE+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 4, title: "Databases & Storage",
+    videos: [
+      { title: "SQL vs NoSQL — When to Use What", yt: "https://www.youtube.com/results?search_query=SQL+vs+NoSQL+when+to+use+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Database Indexing — How and Why", yt: "https://www.youtube.com/results?search_query=database+indexing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Database Replication — Master-Slave, Multi-Master", yt: "https://www.youtube.com/results?search_query=database+replication+master+slave+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Database Sharding & Partitioning Strategies", yt: "https://www.youtube.com/results?search_query=database+sharding+partitioning+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Consistent Hashing", yt: "https://www.youtube.com/results?search_query=consistent+hashing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Bloom Filters & Probabilistic Data Structures", yt: "https://www.youtube.com/results?search_query=bloom+filter+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 5, title: "Caching",
+    videos: [
+      { title: "Caching Fundamentals — Why and Where to Cache", yt: "https://www.youtube.com/results?search_query=caching+fundamentals+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Cache Invalidation Strategies (Write-Through, Write-Back, Write-Around)", yt: "https://www.youtube.com/results?search_query=cache+invalidation+write+through+write+back+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Cache Eviction Policies — LRU, LFU, TTL", yt: "https://www.youtube.com/results?search_query=LRU+LFU+cache+eviction+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Redis Architecture, Data Types & Use Cases", yt: "https://www.youtube.com/results?search_query=redis+system+design+striver+data+structures", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Cache Stampede & Thundering Herd Problem", yt: "https://www.youtube.com/results?search_query=cache+stampede+thundering+herd+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 6, title: "Messaging & Async Processing",
+    videos: [
+      { title: "Message Queues — RabbitMQ, SQS, and Use Cases", yt: "https://www.youtube.com/results?search_query=message+queue+RabbitMQ+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Apache Kafka — Event Streaming Architecture", yt: "https://www.youtube.com/results?search_query=kafka+event+streaming+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Pub/Sub Pattern vs Message Queue", yt: "https://www.youtube.com/results?search_query=pub+sub+vs+message+queue+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Idempotency & Exactly-Once Delivery", yt: "https://www.youtube.com/results?search_query=idempotency+exactly+once+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Webhook, Polling, Long Polling — Async Communication", yt: "https://www.youtube.com/results?search_query=webhook+polling+async+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 7, title: "Resiliency & Reliability Patterns",
+    videos: [
+      { title: "Rate Limiting — Token Bucket, Leaky Bucket, Sliding Window", yt: "https://www.youtube.com/results?search_query=rate+limiting+token+bucket+leaky+bucket+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Circuit Breaker Pattern", yt: "https://www.youtube.com/results?search_query=circuit+breaker+pattern+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Bulkhead & Retry Patterns", yt: "https://www.youtube.com/results?search_query=bulkhead+retry+pattern+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Saga Pattern for Distributed Transactions", yt: "https://www.youtube.com/results?search_query=saga+pattern+distributed+transactions+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Monitoring, Logging, Observability (Metrics, Traces, Logs)", yt: "https://www.youtube.com/results?search_query=monitoring+observability+logging+metrics+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+  {
+    unit: 8, title: "System Design Case Studies",
+    videos: [
+      { title: "Design URL Shortener (TinyURL)", yt: "https://www.youtube.com/results?search_query=design+url+shortener+tinyurl+striver+system+design", article: "https://takeuforward.org/system-design/design-url-shortener/" },
+      { title: "Design Twitter / X — News Feed & Timeline", yt: "https://www.youtube.com/results?search_query=design+twitter+news+feed+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design Instagram — Photo Sharing & Feed", yt: "https://www.youtube.com/results?search_query=design+instagram+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design WhatsApp — Chat & Messaging System", yt: "https://www.youtube.com/results?search_query=design+whatsapp+chat+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design YouTube — Video Streaming Platform", yt: "https://www.youtube.com/results?search_query=design+youtube+video+streaming+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design Uber — Ride Sharing & Location Tracking", yt: "https://www.youtube.com/results?search_query=design+uber+ride+sharing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design Google Drive — Distributed File Storage", yt: "https://www.youtube.com/results?search_query=design+google+drive+file+storage+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Design Distributed Cache (Redis-like System)", yt: "https://www.youtube.com/results?search_query=design+distributed+cache+redis+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+    ]
+  },
+];
+
 // ─── OS DATA (Gate Smashers – Operating System Complete Playlist) ────────────
 const OS_PLAYLIST = "PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p";
 const OS_UNITS = [
@@ -2179,6 +2268,125 @@ const OS_UNITS = [
                                             <td style={{padding:"9px 12px",fontSize:13,color:done?"#4ade80":"#cbd5e1",fontWeight:done?400:500,textDecoration:done?"line-through":"none"}}>{v.title}</td>
                                             <td style={{padding:"9px 12px",textAlign:"center"}}>
                                                 <a href={`https://www.youtube.com/watch?v=${v.id}&list=${u.playlist}`} target="_blank" rel="noreferrer"
+                                                   title="Watch on YouTube"
+                                                   style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
+                                                    <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect width="32" height="22" rx="5" fill="#FF0000"/>
+                                                        <polygon points="13,6 13,16 22,11" fill="white"/>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                            <td style={{padding:"9px 12px",textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.watched} color="#ef4444" label="Watched" onClick={()=>toggle(u.unit,i,"watched")} />
+                                            </td>
+                                            <td style={{padding:"9px 12px",textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.revised} color="#f59e0b" label="Revised" onClick={()=>toggle(u.unit,i,"revised")} />
+                                            </td>
+                                            <td style={{padding:"9px 16px",textAlign:"center"}}>
+                                                <MathsCheckBox checked={!!s.practiced} color="#34d399" label="Practiced" onClick={()=>toggle(u.unit,i,"practiced")} />
+                                            </td>
+                                        </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                        )}
+                    </div>
+                    );
+                })}
+                </div>
+            </div>
+        );
+    }
+
+    // ─── SYSTEM DESIGN TRACKER ───────────────────────────────────────────────────
+    function SystemDesignTracker({ sdProgress, setSdProgress }) {
+        const [openUnit, setOpenUnit] = useState(1);
+
+        function toggle(unit, idx, field) {
+            setSdProgress(prev => {
+                const key = `${unit}-${idx}`;
+                const cur = prev[key] || {};
+                return { ...prev, [key]: { ...cur, [field]: !cur[field] } };
+            });
+        }
+
+        function getKey(unit, idx) { return sdProgress[`${unit}-${idx}`] || {}; }
+
+        const totalTopics = SD_UNITS.reduce((a, u) => a + u.videos.length, 0);
+        const watchedCount = SD_UNITS.reduce((a, u) =>
+            a + u.videos.filter((_, i) => getKey(u.unit, i).watched).length, 0);
+        const pct = Math.round(watchedCount / totalTopics * 100) || 0;
+
+        return (
+            <div style={{padding:"28px 32px",maxWidth:960,margin:"0 auto"}}>
+                <div style={{marginBottom:6,fontSize:22,fontWeight:700,color:"#f1f5f9"}}>System Design Tracker</div>
+                <div style={{marginBottom:16,fontSize:13,color:"#64748b"}}>
+                    TUF System Design Roadmap · {watchedCount}/{totalTopics} topics studied
+                </div>
+                <div style={{marginBottom:24,background:"#1e2030",borderRadius:8,height:6,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#0ea5e9,#38bdf8)",borderRadius:8,transition:"width 0.4s"}}/>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:12}}>
+                {SD_UNITS.map(u => {
+                    const isOpen = openUnit === u.unit;
+                    const unitWatched = u.videos.filter((_, i) => getKey(u.unit, i).watched).length;
+                    const unitTotal = u.videos.length;
+                    const unitPct = Math.round(unitWatched / unitTotal * 100);
+                    return (
+                    <div key={u.unit} style={{background:"#0d0f18",border:"1px solid #1e2030",borderRadius:12,overflow:"hidden"}}>
+                        <div onClick={() => setOpenUnit(isOpen ? null : u.unit)}
+                            style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 18px",cursor:"pointer",background:isOpen?"#0d1a2a":"#0d0f18",transition:"background 0.15s"}}>
+                            <div style={{display:"flex",alignItems:"center",gap:12}}>
+                                <div style={{width:32,height:32,borderRadius:8,background:"#0c1a2e",border:"1px solid #0369a1",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:"#38bdf8",flexShrink:0}}>
+                                    U{u.unit}
+                                </div>
+                                <div>
+                                    <div style={{fontSize:14,fontWeight:600,color:"#e2e8f0"}}>{u.title}</div>
+                                    <div style={{fontSize:11,color:"#475569",marginTop:2}}>{unitTotal} topics · {unitWatched} studied · {unitPct}%</div>
+                                </div>
+                            </div>
+                            <div style={{display:"flex",alignItems:"center",gap:10}}>
+                                <div style={{width:80,height:4,background:"#1e2030",borderRadius:4,overflow:"hidden"}}>
+                                    <div style={{height:"100%",width:`${unitPct}%`,background:"#0ea5e9",borderRadius:4,transition:"width 0.3s"}}/>
+                                </div>
+                                <span style={{color:"#475569",fontSize:13,transform:isOpen?"rotate(180deg)":"none",transition:"transform 0.2s",display:"inline-block"}}>▼</span>
+                            </div>
+                        </div>
+                        {isOpen && (
+                        <div style={{overflowX:"auto"}}>
+                            <table style={{width:"100%",borderCollapse:"collapse",minWidth:600}}>
+                                <thead>
+                                    <tr style={{background:"#0a0b0d",borderBottom:"1px solid #1e2030"}}>
+                                        <th style={{padding:"8px 12px",textAlign:"left",fontSize:11,color:"#374151",fontWeight:600,width:40}}>#</th>
+                                        <th style={{padding:"8px 12px",textAlign:"left",fontSize:11,color:"#374151",fontWeight:600}}>Topic</th>
+                                        <th style={{padding:"8px 12px",textAlign:"center",fontSize:11,color:"#374151",fontWeight:600,width:60}}>Watch</th>
+                                        <th style={{padding:"8px 12px",textAlign:"center",fontSize:11,color:"#374151",fontWeight:600,width:90}}>Watched</th>
+                                        <th style={{padding:"8px 12px",textAlign:"center",fontSize:11,color:"#374151",fontWeight:600,width:90}}>Revised</th>
+                                        <th style={{padding:"8px 16px",textAlign:"center",fontSize:11,color:"#374151",fontWeight:600,width:100}}>Practiced</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {u.videos.map((v, i) => {
+                                        const s = getKey(u.unit, i);
+                                        const done = s.watched && s.revised && s.practiced;
+                                        return (
+                                        <tr key={i} style={{borderBottom:"1px solid #0f1117",background:done?"#061a1a":"transparent",transition:"background 0.15s"}}
+                                            onMouseEnter={e=>e.currentTarget.style.background=done?"#061a1a":"#0d0f18"}
+                                            onMouseLeave={e=>e.currentTarget.style.background=done?"#061a1a":"transparent"}>
+                                            <td style={{padding:"9px 12px",fontSize:12,color:"#374151",textAlign:"center"}}>{i+1}</td>
+                                            <td style={{padding:"9px 12px",fontSize:13,fontWeight:done?400:500}}>
+                                                {v.article
+                                                    ? <a href={v.article} target="_blank" rel="noreferrer"
+                                                        style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none",textDecorationColor:"#4ade80"}}>
+                                                        {v.title}
+                                                      </a>
+                                                    : <span style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none"}}>{v.title}</span>
+                                                }
+                                            </td>
+                                            <td style={{padding:"9px 12px",textAlign:"center"}}>
+                                                <a href={v.yt} target="_blank" rel="noreferrer"
                                                    title="Watch on YouTube"
                                                    style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
                                                     <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
@@ -3181,7 +3389,7 @@ const OS_UNITS = [
 
     // ─── MAIN APP ─────────────────────────────────────────────────────────────────
     const NAV = [
-    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
+    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"sysdesign", label:"System Design", icon:"⬡" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
     ];
 
     let SyncModal = AccountSyncModal;
@@ -3193,7 +3401,8 @@ const OS_UNITS = [
     Dashboard       = memo(Dashboard);
     DSATracker      = memo(DSATracker);
     MathsTracker    = memo(MathsTracker);
-    OSTracker       = memo(OSTracker);
+    OSTracker             = memo(OSTracker);
+    SystemDesignTracker   = memo(SystemDesignTracker);
     COATracker      = memo(COATracker);
     WeeklyPlanner   = memo(WeeklyPlanner);
     RevisionTracker = memo(RevisionTracker);
@@ -3244,6 +3453,7 @@ const OS_UNITS = [
     const [revStars, setRevStars] = useLocalStorage("dsa_rev_stars_v1", {});
     const [mathsProgress, setMathsProgress] = useLocalStorage("maths_progress_v1", {});
     const [osProgress, setOsProgress] = useLocalStorage("os_progress_v1", {});
+    const [sdProgress, setSdProgress] = useLocalStorage("sd_progress_v1", {});
     const [coaGsProgress, setCoaGsProgress] = useLocalStorage("coa_tracker_gs", {});
     const [confetti, setConfetti] = useState(false);
     const handleCelebrate = useCallback(() => setConfetti(true), []);
@@ -3364,7 +3574,7 @@ const OS_UNITS = [
 
     // ── Supabase: load or migrate user progress on sign-in ────────────────────
     function getProgressPayload() {
-        return { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress, lcDiffCache };
+        return { dsaData, coaData, revData, weekStatus, streak, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, sdProgress, coaGsProgress, lcDiffCache };
     }
 
     function applyCloudProgress(data) {
@@ -3385,6 +3595,7 @@ const OS_UNITS = [
         if (data.revStars) setRevStars(data.revStars);
         if (data.mathsProgress) setMathsProgress(data.mathsProgress);
         if (data.osProgress) setOsProgress(data.osProgress);
+        if (data.sdProgress) setSdProgress(data.sdProgress);
         if (data.coaGsProgress) setCoaGsProgress(data.coaGsProgress);
         // Merge difficulty cache: cloud fills in any slugs missing on this device
         if (data.lcDiffCache && typeof data.lcDiffCache === "object") {
@@ -3398,7 +3609,7 @@ const OS_UNITS = [
     const { bootstrapped: cloudBootstrapped, status: syncState, lastSynced } = useCloudSync({
         getPayload: getProgressPayload,
         applyPayload: applyCloudProgress,
-        deps: [dsaData, coaData, revData, weekStatus, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, coaGsProgress, lcDiffCache],
+        deps: [dsaData, coaData, revData, weekStatus, streakData, streakFreezes, dailyLog, lastLogDate, activityLog, solvedQuestions, todos, probNotes, revStars, mathsProgress, osProgress, sdProgress, coaGsProgress, lcDiffCache],
         legacySyncCode: syncCode,
     });
 
@@ -3480,11 +3691,12 @@ const OS_UNITS = [
         setRevStars({});
         setMathsProgress({});
         setOsProgress({});
+        setSdProgress({});
         setShowResetModal(false);
     }
 
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-    const isMobileNavPage = ["dashboard","dsa","coa","maths","os","weekly","revision","analytics","todo","calendar"];
+    const isMobileNavPage = ["dashboard","dsa","coa","maths","os","sysdesign","weekly","revision","analytics","todo","calendar"];
     // Bottom nav shows first 5 items; rest accessible via sidebar drawer
     const BOTTOM_NAV = NAV.slice(0, 5);
     const DRAWER_NAV = NAV.slice(5);
@@ -3971,6 +4183,7 @@ const OS_UNITS = [
                 <COATracker coaGsProgress={coaGsProgress} setCoaGsProgress={setCoaGsProgress} />}
                 {page==="maths" && <MathsTracker mathsProgress={mathsProgress} setMathsProgress={setMathsProgress} />}
                 {page==="os" && <OSTracker osProgress={osProgress} setOsProgress={setOsProgress} />}
+                {page==="sysdesign" && <SystemDesignTracker sdProgress={sdProgress} setSdProgress={setSdProgress} />}
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
                     setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}
                     lcDiffCache={lcDiffCache} setLcDiffCache={setLcDiffCache} />}
