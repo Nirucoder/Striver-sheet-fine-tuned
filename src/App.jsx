@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import CalendarTab from "./CalendarTab.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { useCloudSync } from "./hooks/useCloudSync.js";
@@ -4275,6 +4276,7 @@ const OS_UNITS = [
                     <span className="nav-label">More</span>
                 </div>
             </nav>
+    <VercelAnalytics />
     </div>
     );
     }
