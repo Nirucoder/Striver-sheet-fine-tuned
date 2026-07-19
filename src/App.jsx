@@ -1861,91 +1861,87 @@ const MATHS_UNITS = [
   },
 ];
 
-// ─── SYSTEM DESIGN DATA (TUF Roadmap) ────────────────────────────────────────
+// ─── SYSTEM DESIGN DATA (TUF Roadmap · Gaurav Sen videos · scraped July 2026) ─
+const TUF_SD = "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/";
 const SD_UNITS = [
   {
     unit: 1, title: "Fundamentals of System Design",
     videos: [
-      { title: "What is System Design? | High Level vs Low Level Design", yt: "https://www.youtube.com/results?search_query=striver+what+is+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "How to Approach System Design Interviews", yt: "https://www.youtube.com/results?search_query=striver+system+design+interview+approach", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Functional vs Non-Functional Requirements", yt: "https://www.youtube.com/results?search_query=system+design+functional+non+functional+requirements", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Back-of-Envelope Estimation & Capacity Planning", yt: "https://www.youtube.com/results?search_query=system+design+back+of+envelope+estimation+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "APIs: REST, GraphQL, gRPC — When to Use What", yt: "https://www.youtube.com/results?search_query=system+design+REST+GraphQL+gRPC+comparison", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "System Design Primer: How to Start with Distributed Systems", id: "SqcXvc3ZmRU", article: TUF_SD },
+      { title: "System Design for Beginners — Full Course", id: "m8Icp_Cid5o", article: TUF_SD },
+      { title: "Capacity Planning & Estimation: How Much Data Does YouTube Store Daily?", id: "0myM0k1mjZw", article: TUF_SD },
+      { title: "Latency, Concurrency & Parallelism: How 100ms Cost Amazon $3B", id: "I8FeITQvLAk", article: TUF_SD },
+      { title: "What is an API and How Do You Design It?", id: "_YlYuNMTCc8", article: TUF_SD },
     ]
   },
   {
-    unit: 2, title: "Scalability & Reliability Concepts",
+    unit: 2, title: "Scalability & Reliability",
     videos: [
-      { title: "Horizontal vs Vertical Scaling", yt: "https://www.youtube.com/results?search_query=horizontal+vs+vertical+scaling+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "CAP Theorem — Consistency, Availability, Partition Tolerance", yt: "https://www.youtube.com/results?search_query=CAP+theorem+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "PACELC Theorem & Consistency Models", yt: "https://www.youtube.com/results?search_query=PACELC+theorem+consistency+models+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Availability, Reliability & SLA / SLO / SLI", yt: "https://www.youtube.com/results?search_query=availability+reliability+SLA+SLO+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "ACID vs BASE Properties", yt: "https://www.youtube.com/results?search_query=ACID+vs+BASE+properties+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "System Design BASICS: Horizontal vs. Vertical Scaling", id: "xpDnVSmNFX0", article: TUF_SD },
+      { title: "Data Consistency and Trade-offs in Distributed Systems", id: "m4q7VkgDWrM", article: TUF_SD },
+      { title: "Distributed Consensus and Data Replication Strategies", id: "GeGxgmPTe4c", article: TUF_SD },
+      { title: "How to Avoid a Single Point of Failure in Distributed Systems", id: "-BOysyYErLY", article: TUF_SD },
+      { title: "How to Avoid Cascading Failures in a Distributed System", id: "xrizarXJgC8", article: TUF_SD },
     ]
   },
   {
     unit: 3, title: "Core Building Blocks",
     videos: [
-      { title: "DNS and How the Internet Works", yt: "https://www.youtube.com/results?search_query=DNS+how+internet+works+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Load Balancers — L4 vs L7, Algorithms", yt: "https://www.youtube.com/results?search_query=load+balancer+system+design+striver+L4+L7", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Reverse Proxy vs Forward Proxy vs API Gateway", yt: "https://www.youtube.com/results?search_query=reverse+proxy+api+gateway+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "CDN — Content Delivery Network", yt: "https://www.youtube.com/results?search_query=CDN+content+delivery+network+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Service Discovery & Health Checks", yt: "https://www.youtube.com/results?search_query=service+discovery+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "WebSockets vs Long Polling vs SSE", yt: "https://www.youtube.com/results?search_query=websocket+long+polling+SSE+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "What is LOAD BALANCING?", id: "K0Ta65OqQkY", article: TUF_SD },
+      { title: "System Design: Content Delivery Networks (CDN) Simplified", id: "8zX0rue2Hic", article: TUF_SD },
+      { title: "Containers and Virtualisation in Cloud Computing", id: "GOuVeZmMee0", article: TUF_SD },
+      { title: "Service Discovery and Heartbeats in Micro-Services", id: "lWE_UIbm8NA", article: TUF_SD },
+      { title: "Authorization across Distributed Systems: The OAuth Protocol", id: "65-6asTjuB8", article: TUF_SD },
     ]
   },
   {
     unit: 4, title: "Databases & Storage",
     videos: [
-      { title: "SQL vs NoSQL — When to Use What", yt: "https://www.youtube.com/results?search_query=SQL+vs+NoSQL+when+to+use+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Database Indexing — How and Why", yt: "https://www.youtube.com/results?search_query=database+indexing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Database Replication — Master-Slave, Multi-Master", yt: "https://www.youtube.com/results?search_query=database+replication+master+slave+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Database Sharding & Partitioning Strategies", yt: "https://www.youtube.com/results?search_query=database+sharding+partitioning+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Consistent Hashing", yt: "https://www.youtube.com/results?search_query=consistent+hashing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Bloom Filters & Probabilistic Data Structures", yt: "https://www.youtube.com/results?search_query=bloom+filter+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Introduction to NoSQL Databases", id: "xQnIN9bW0og", article: TUF_SD },
+      { title: "Relational Database Index vs. NoSQL Index", id: "mTNkqMDCasI", article: TUF_SD },
+      { title: "What is DATABASE SHARDING?", id: "5faMjKuB9bc", article: TUF_SD },
+      { title: "What is CONSISTENT HASHING and Where is it Used?", id: "zaRkONvyGr8", article: TUF_SD },
+      { title: "What are Bloom Filters? — Hashing", id: "bgzUdBVr5tE", article: TUF_SD },
+      { title: "Why Do Databases Fail? Anti-Patterns to Avoid!", id: "9T-gNZ5bGCw", article: TUF_SD },
+      { title: "How Databases Scale Writes: The Power of the Log", id: "_5vrfuwhvlQ", article: TUF_SD },
+      { title: "Designing a Location Database: QuadTrees and Hilbert Curves", id: "OcUKFIjhKu0", article: TUF_SD },
     ]
   },
   {
     unit: 5, title: "Caching",
     videos: [
-      { title: "Caching Fundamentals — Why and Where to Cache", yt: "https://www.youtube.com/results?search_query=caching+fundamentals+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Cache Invalidation Strategies (Write-Through, Write-Back, Write-Around)", yt: "https://www.youtube.com/results?search_query=cache+invalidation+write+through+write+back+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Cache Eviction Policies — LRU, LFU, TTL", yt: "https://www.youtube.com/results?search_query=LRU+LFU+cache+eviction+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Redis Architecture, Data Types & Use Cases", yt: "https://www.youtube.com/results?search_query=redis+system+design+striver+data+structures", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Cache Stampede & Thundering Herd Problem", yt: "https://www.youtube.com/results?search_query=cache+stampede+thundering+herd+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "What are Distributed CACHES and How Do They Manage Data Consistency?", id: "U3RkDLtS7uY", article: TUF_SD },
     ]
   },
   {
     unit: 6, title: "Messaging & Async Processing",
     videos: [
-      { title: "Message Queues — RabbitMQ, SQS, and Use Cases", yt: "https://www.youtube.com/results?search_query=message+queue+RabbitMQ+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Apache Kafka — Event Streaming Architecture", yt: "https://www.youtube.com/results?search_query=kafka+event+streaming+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Pub/Sub Pattern vs Message Queue", yt: "https://www.youtube.com/results?search_query=pub+sub+vs+message+queue+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Idempotency & Exactly-Once Delivery", yt: "https://www.youtube.com/results?search_query=idempotency+exactly+once+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Webhook, Polling, Long Polling — Async Communication", yt: "https://www.youtube.com/results?search_query=webhook+polling+async+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "What is a MESSAGE QUEUE and Where is it Used?", id: "oUJbuFMyBDk", article: TUF_SD },
+      { title: "What is the Publisher Subscriber (Pub/Sub) Model?", id: "FMhbR_kQeHw", article: TUF_SD },
+      { title: "What's an Event Driven System?", id: "rJHTK2TfZ1I", article: TUF_SD },
     ]
   },
   {
-    unit: 7, title: "Resiliency & Reliability Patterns",
+    unit: 7, title: "Microservices & Architecture Patterns",
     videos: [
-      { title: "Rate Limiting — Token Bucket, Leaky Bucket, Sliding Window", yt: "https://www.youtube.com/results?search_query=rate+limiting+token+bucket+leaky+bucket+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Circuit Breaker Pattern", yt: "https://www.youtube.com/results?search_query=circuit+breaker+pattern+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Bulkhead & Retry Patterns", yt: "https://www.youtube.com/results?search_query=bulkhead+retry+pattern+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Saga Pattern for Distributed Transactions", yt: "https://www.youtube.com/results?search_query=saga+pattern+distributed+transactions+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Monitoring, Logging, Observability (Metrics, Traces, Logs)", yt: "https://www.youtube.com/results?search_query=monitoring+observability+logging+metrics+system+design", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "What is a MICROSERVICE ARCHITECTURE and What are its Advantages?", id: "qYhRvH9tJKw", article: TUF_SD },
+      { title: "Moving from MONOLITHS to MICROSERVICES", id: "rckfN7xFig0", article: TUF_SD },
     ]
   },
   {
     unit: 8, title: "System Design Case Studies",
     videos: [
-      { title: "Design URL Shortener (TinyURL)", yt: "https://www.youtube.com/results?search_query=design+url+shortener+tinyurl+striver+system+design", article: "https://takeuforward.org/system-design/design-url-shortener/" },
-      { title: "Design Twitter / X — News Feed & Timeline", yt: "https://www.youtube.com/results?search_query=design+twitter+news+feed+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design Instagram — Photo Sharing & Feed", yt: "https://www.youtube.com/results?search_query=design+instagram+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design WhatsApp — Chat & Messaging System", yt: "https://www.youtube.com/results?search_query=design+whatsapp+chat+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design YouTube — Video Streaming Platform", yt: "https://www.youtube.com/results?search_query=design+youtube+video+streaming+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design Uber — Ride Sharing & Location Tracking", yt: "https://www.youtube.com/results?search_query=design+uber+ride+sharing+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design Google Drive — Distributed File Storage", yt: "https://www.youtube.com/results?search_query=design+google+drive+file+storage+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
-      { title: "Design Distributed Cache (Redis-like System)", yt: "https://www.youtube.com/results?search_query=design+distributed+cache+redis+system+design+striver", article: "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/" },
+      { title: "Designing INSTAGRAM: System Design of News Feed", id: "QmX2NPkJTKg", article: TUF_SD },
+      { title: "System Design: TINDER as a Microservice Architecture", id: "tndzLznxq40", article: TUF_SD },
+      { title: "WHATSAPP System Design: Chat Messaging Systems for Interviews", id: "vvhC64hQZMk", article: TUF_SD },
+      { title: "System Design Interview: TikTok Architecture", id: "07BVxmVFDGY", article: TUF_SD },
+      { title: "How NETFLIX Onboards New Content: Video Processing at Scale", id: "x9Hrn0oNmJM", article: TUF_SD },
+      { title: "System Design: Online Judge for Coding Contests", id: "eg0nlYcbLpo", article: TUF_SD },
+      { title: "System Design of an Online Code Editor", id: "07jkn4jUtso", article: TUF_SD },
+      { title: "UPI System Design Mock Interview", id: "QpLy0_c_RXk", article: TUF_SD },
+      { title: "IRCTC System Design — Expert Mock Interview", id: "j3etJx7M0Sc", article: TUF_SD },
+      { title: "Zerodha Stock Broker System Design", id: "DH2-vDPFiE4", article: TUF_SD },
+      { title: "System Design Interview: Amazon / Flipkart E-Commerce Architecture", id: "2BWr0fsDSs0", article: TUF_SD },
     ]
   },
 ];
@@ -2386,7 +2382,7 @@ const OS_UNITS = [
                                                 }
                                             </td>
                                             <td style={{padding:"9px 12px",textAlign:"center"}}>
-                                                <a href={v.yt} target="_blank" rel="noreferrer"
+                                                <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
                                                    title="Watch on YouTube"
                                                    style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
                                                     <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
@@ -3458,7 +3454,7 @@ const OS_UNITS = [
     const [confetti, setConfetti] = useState(false);
     const handleCelebrate = useCallback(() => setConfetti(true), []);
     const [showResetModal, setShowResetModal] = useState(false);
-    const [sidebarPanelOpen, setSidebarPanelOpen] = useState(true);
+    const [sidebarPanelOpen, setSidebarPanelOpen] = useLocalStorage("quick_actions_open_v1", true);
     const sidebarDragRef = useRef(null);
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncCode] = useLocalStorage("studyos_sync_code", () => {
