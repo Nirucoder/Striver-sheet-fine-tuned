@@ -3447,7 +3447,6 @@ const OS_UNITS = [
     { id:"os",        label:"OS",                icon:"⚙", color:"#38bdf8" },
     { id:"sysdesign", label:"System Design",     icon:"⬡", color:"#f472b6" },
     { id:"weekly",    label:"LeetCode Problems", icon:"▦", color:"#facc15" },
-    { id:"revision",  label:"Revision Tracker",  icon:"↺", color:"#f87171" },
     { id:"analytics", label:"Analytics",         icon:"⋯", color:"#4ade80" },
     { id:"todo",      label:"To-Do",             icon:"✓", color:"#fb7185" },
     { id:"calendar",  label:"Calendar",          icon:"📅",color:"#60a5fa" },
@@ -3757,7 +3756,7 @@ const OS_UNITS = [
     }
 
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-    const isMobileNavPage = ["dashboard","dsa","coa","maths","os","sysdesign","weekly","revision","analytics","todo","calendar"];
+    const isMobileNavPage = ["dashboard","dsa","coa","maths","os","sysdesign","weekly","analytics","todo","calendar"];
     // Bottom nav shows first 5 items; rest accessible via sidebar drawer
     const BOTTOM_NAV = NAV.slice(0, 5);
     const DRAWER_NAV = NAV.slice(5);
@@ -4250,8 +4249,6 @@ const OS_UNITS = [
                 {page==="weekly" && <WeeklyPlanner dsaData={dsaData} coaData={coaData} weekStatus={weekStatus}
                     setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}
                     lcDiffCache={lcDiffCache} setLcDiffCache={setLcDiffCache} />}
-                    {page==="revision" &&
-                    <RevisionTracker revData={revData} setRevData={setRevData} />}
                     {page==="analytics" &&
                     <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} />}
                     {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} setActivityLog={setActivityLog} />}
