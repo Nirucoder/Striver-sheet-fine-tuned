@@ -1861,87 +1861,90 @@ const MATHS_UNITS = [
   },
 ];
 
-// ─── SYSTEM DESIGN DATA (TUF Roadmap · Gaurav Sen videos · scraped July 2026) ─
-const TUF_SD = "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/";
+// ─── SYSTEM DESIGN DATA (TUF Roadmap · Gaurav Sen videos · July 2026) ─────────
+// Article URLs are verified takeUforward slugs per topic.
+// Re-generate by running:  python scripts/scrape_system_design.py
+const TUF_SD_ROOT    = "https://takeuforward.org/system-design/";
+const TUF_SD_ROADMAP = TUF_SD_ROOT + "complete-system-design-roadmap-with-videos-for-sdes/";
 const SD_UNITS = [
   {
     unit: 1, title: "Fundamentals of System Design",
     videos: [
-      { title: "System Design Primer: How to Start with Distributed Systems", id: "SqcXvc3ZmRU", article: TUF_SD },
-      { title: "System Design for Beginners — Full Course", id: "m8Icp_Cid5o", article: TUF_SD },
-      { title: "Capacity Planning & Estimation: How Much Data Does YouTube Store Daily?", id: "0myM0k1mjZw", article: TUF_SD },
-      { title: "Latency, Concurrency & Parallelism: How 100ms Cost Amazon $3B", id: "I8FeITQvLAk", article: TUF_SD },
-      { title: "What is an API and How Do You Design It?", id: "_YlYuNMTCc8", article: TUF_SD },
+      { title: "System Design Primer: How to Start with Distributed Systems",           id: "SqcXvc3ZmRU", article: TUF_SD_ROADMAP },
+      { title: "System Design for Beginners — Full Course",                             id: "m8Icp_Cid5o", article: TUF_SD_ROADMAP },
+      { title: "Capacity Planning & Estimation: How Much Data Does YouTube Store Daily?",id: "0myM0k1mjZw", article: TUF_SD_ROOT + "capacity-planning-estimation-how-much-data-does-youtube-store-daily/" },
+      { title: "Latency, Concurrency & Parallelism: How 100ms Cost Amazon $3B",        id: "I8FeITQvLAk", article: TUF_SD_ROOT + "latency-concurrency-parallelism-how-100ms-cost-amazon-3b/" },
+      { title: "What is an API and How Do You Design It?",                              id: "_YlYuNMTCc8", article: TUF_SD_ROOT + "what-is-an-api-and-how-do-you-design-it/" },
     ]
   },
   {
     unit: 2, title: "Scalability & Reliability",
     videos: [
-      { title: "System Design BASICS: Horizontal vs. Vertical Scaling", id: "xpDnVSmNFX0", article: TUF_SD },
-      { title: "Data Consistency and Trade-offs in Distributed Systems", id: "m4q7VkgDWrM", article: TUF_SD },
-      { title: "Distributed Consensus and Data Replication Strategies", id: "GeGxgmPTe4c", article: TUF_SD },
-      { title: "How to Avoid a Single Point of Failure in Distributed Systems", id: "-BOysyYErLY", article: TUF_SD },
-      { title: "How to Avoid Cascading Failures in a Distributed System", id: "xrizarXJgC8", article: TUF_SD },
+      { title: "System Design BASICS: Horizontal vs. Vertical Scaling",                 id: "xpDnVSmNFX0", article: TUF_SD_ROOT + "horizontal-vs-vertical-scaling-system-design/" },
+      { title: "Data Consistency and Trade-offs in Distributed Systems",                id: "m4q7VkgDWrM", article: TUF_SD_ROOT + "data-consistency-and-trade-offs-in-distributed-systems/" },
+      { title: "Distributed Consensus and Data Replication Strategies",                id: "GeGxgmPTe4c", article: TUF_SD_ROOT + "distributed-consensus-and-data-replication-strategies/" },
+      { title: "How to Avoid a Single Point of Failure in Distributed Systems",        id: "-BOysyYErLY", article: TUF_SD_ROOT + "how-to-avoid-a-single-point-of-failure-in-distributed-systems/" },
+      { title: "How to Avoid Cascading Failures in a Distributed System",              id: "xrizarXJgC8", article: TUF_SD_ROOT + "how-to-avoid-cascading-failures-in-a-distributed-system/" },
     ]
   },
   {
     unit: 3, title: "Core Building Blocks",
     videos: [
-      { title: "What is LOAD BALANCING?", id: "K0Ta65OqQkY", article: TUF_SD },
-      { title: "System Design: Content Delivery Networks (CDN) Simplified", id: "8zX0rue2Hic", article: TUF_SD },
-      { title: "Containers and Virtualisation in Cloud Computing", id: "GOuVeZmMee0", article: TUF_SD },
-      { title: "Service Discovery and Heartbeats in Micro-Services", id: "lWE_UIbm8NA", article: TUF_SD },
-      { title: "Authorization across Distributed Systems: The OAuth Protocol", id: "65-6asTjuB8", article: TUF_SD },
+      { title: "What is LOAD BALANCING?",                                               id: "K0Ta65OqQkY", article: TUF_SD_ROOT + "what-is-load-balancing/" },
+      { title: "System Design: Content Delivery Networks (CDN) Simplified",            id: "8zX0rue2Hic", article: TUF_SD_ROOT + "what-is-content-delivery-network-cdn/" },
+      { title: "Containers and Virtualisation in Cloud Computing",                     id: "GOuVeZmMee0", article: TUF_SD_ROOT + "containers-and-virtualisation-in-cloud-computing/" },
+      { title: "Service Discovery and Heartbeats in Micro-Services",                   id: "lWE_UIbm8NA", article: TUF_SD_ROOT + "service-discovery-and-heartbeats-in-micro-services/" },
+      { title: "Authorization across Distributed Systems: The OAuth Protocol",         id: "65-6asTjuB8", article: TUF_SD_ROOT + "authorization-across-distributed-systems-the-oauth-protocol/" },
     ]
   },
   {
     unit: 4, title: "Databases & Storage",
     videos: [
-      { title: "Introduction to NoSQL Databases", id: "xQnIN9bW0og", article: TUF_SD },
-      { title: "Relational Database Index vs. NoSQL Index", id: "mTNkqMDCasI", article: TUF_SD },
-      { title: "What is DATABASE SHARDING?", id: "5faMjKuB9bc", article: TUF_SD },
-      { title: "What is CONSISTENT HASHING and Where is it Used?", id: "zaRkONvyGr8", article: TUF_SD },
-      { title: "What are Bloom Filters? — Hashing", id: "bgzUdBVr5tE", article: TUF_SD },
-      { title: "Why Do Databases Fail? Anti-Patterns to Avoid!", id: "9T-gNZ5bGCw", article: TUF_SD },
-      { title: "How Databases Scale Writes: The Power of the Log", id: "_5vrfuwhvlQ", article: TUF_SD },
-      { title: "Designing a Location Database: QuadTrees and Hilbert Curves", id: "OcUKFIjhKu0", article: TUF_SD },
+      { title: "Introduction to NoSQL Databases",                                       id: "xQnIN9bW0og", article: TUF_SD_ROOT + "introduction-to-nosql-databases/" },
+      { title: "Relational Database Index vs. NoSQL Index",                             id: "mTNkqMDCasI", article: TUF_SD_ROOT + "relational-database-index-vs-nosql-index/" },
+      { title: "What is DATABASE SHARDING?",                                            id: "5faMjKuB9bc", article: TUF_SD_ROOT + "what-is-sharding/" },
+      { title: "What is CONSISTENT HASHING and Where is it Used?",                     id: "zaRkONvyGr8", article: TUF_SD_ROOT + "what-is-consistent-hashing/" },
+      { title: "What are Bloom Filters? — Hashing",                                    id: "bgzUdBVr5tE", article: TUF_SD_ROOT + "what-are-bloom-filters/" },
+      { title: "Why Do Databases Fail? Anti-Patterns to Avoid!",                       id: "9T-gNZ5bGCw", article: TUF_SD_ROOT + "why-do-databases-fail-anti-patterns-to-avoid/" },
+      { title: "How Databases Scale Writes: The Power of the Log",                     id: "_5vrfuwhvlQ", article: TUF_SD_ROOT + "how-databases-scale-writes-the-power-of-the-log/" },
+      { title: "Designing a Location Database: QuadTrees and Hilbert Curves",          id: "OcUKFIjhKu0", article: TUF_SD_ROOT + "designing-a-location-database-quadtrees-and-hilbert-curves/" },
     ]
   },
   {
     unit: 5, title: "Caching",
     videos: [
-      { title: "What are Distributed CACHES and How Do They Manage Data Consistency?", id: "U3RkDLtS7uY", article: TUF_SD },
+      { title: "What are Distributed CACHES and How Do They Manage Data Consistency?", id: "U3RkDLtS7uY", article: TUF_SD_ROOT + "what-are-distributed-caches-and-how-do-they-manage-data-consistency/" },
     ]
   },
   {
     unit: 6, title: "Messaging & Async Processing",
     videos: [
-      { title: "What is a MESSAGE QUEUE and Where is it Used?", id: "oUJbuFMyBDk", article: TUF_SD },
-      { title: "What is the Publisher Subscriber (Pub/Sub) Model?", id: "FMhbR_kQeHw", article: TUF_SD },
-      { title: "What's an Event Driven System?", id: "rJHTK2TfZ1I", article: TUF_SD },
+      { title: "What is a MESSAGE QUEUE and Where is it Used?",                        id: "oUJbuFMyBDk", article: TUF_SD_ROOT + "what-is-a-message-queue-and-where-is-it-used/" },
+      { title: "What is the Publisher Subscriber (Pub/Sub) Model?",                    id: "FMhbR_kQeHw", article: TUF_SD_ROOT + "what-is-publisher-subscriber-pub-sub-model/" },
+      { title: "What's an Event Driven System?",                                       id: "rJHTK2TfZ1I", article: TUF_SD_ROOT + "whats-an-event-driven-system/" },
     ]
   },
   {
     unit: 7, title: "Microservices & Architecture Patterns",
     videos: [
-      { title: "What is a MICROSERVICE ARCHITECTURE and What are its Advantages?", id: "qYhRvH9tJKw", article: TUF_SD },
-      { title: "Moving from MONOLITHS to MICROSERVICES", id: "rckfN7xFig0", article: TUF_SD },
+      { title: "What is a MICROSERVICE ARCHITECTURE and What are its Advantages?",    id: "qYhRvH9tJKw", article: TUF_SD_ROOT + "what-is-a-microservice-architecture-and-what-are-its-advantages/" },
+      { title: "Moving from MONOLITHS to MICROSERVICES",                               id: "rckfN7xFig0", article: TUF_SD_ROOT + "moving-from-monoliths-to-microservices/" },
     ]
   },
   {
     unit: 8, title: "System Design Case Studies",
     videos: [
-      { title: "Designing INSTAGRAM: System Design of News Feed", id: "QmX2NPkJTKg", article: TUF_SD },
-      { title: "System Design: TINDER as a Microservice Architecture", id: "tndzLznxq40", article: TUF_SD },
-      { title: "WHATSAPP System Design: Chat Messaging Systems for Interviews", id: "vvhC64hQZMk", article: TUF_SD },
-      { title: "System Design Interview: TikTok Architecture", id: "07BVxmVFDGY", article: TUF_SD },
-      { title: "How NETFLIX Onboards New Content: Video Processing at Scale", id: "x9Hrn0oNmJM", article: TUF_SD },
-      { title: "System Design: Online Judge for Coding Contests", id: "eg0nlYcbLpo", article: TUF_SD },
-      { title: "System Design of an Online Code Editor", id: "07jkn4jUtso", article: TUF_SD },
-      { title: "UPI System Design Mock Interview", id: "QpLy0_c_RXk", article: TUF_SD },
-      { title: "IRCTC System Design — Expert Mock Interview", id: "j3etJx7M0Sc", article: TUF_SD },
-      { title: "Zerodha Stock Broker System Design", id: "DH2-vDPFiE4", article: TUF_SD },
-      { title: "System Design Interview: Amazon / Flipkart E-Commerce Architecture", id: "2BWr0fsDSs0", article: TUF_SD },
+      { title: "Designing INSTAGRAM: System Design of News Feed",                      id: "QmX2NPkJTKg", article: TUF_SD_ROOT + "designing-instagram-system-design-of-news-feed/" },
+      { title: "System Design: TINDER as a Microservice Architecture",                 id: "tndzLznxq40", article: TUF_SD_ROOT + "system-design-tinder-as-a-microservice-architecture/" },
+      { title: "WHATSAPP System Design: Chat Messaging Systems for Interviews",        id: "vvhC64hQZMk", article: TUF_SD_ROOT + "whatsapp-system-design-chat-messaging-systems-for-interviews/" },
+      { title: "System Design Interview: TikTok Architecture",                         id: "07BVxmVFDGY", article: TUF_SD_ROOT + "system-design-interview-tiktok-architecture/" },
+      { title: "How NETFLIX Onboards New Content: Video Processing at Scale",          id: "x9Hrn0oNmJM", article: TUF_SD_ROOT + "how-netflix-onboards-new-content-video-processing-at-scale/" },
+      { title: "System Design: Online Judge for Coding Contests",                      id: "eg0nlYcbLpo", article: TUF_SD_ROOT + "system-design-online-judge-for-coding-contests/" },
+      { title: "System Design of an Online Code Editor",                               id: "07jkn4jUtso", article: TUF_SD_ROOT + "system-design-of-an-online-code-editor/" },
+      { title: "UPI System Design Mock Interview",                                     id: "QpLy0_c_RXk", article: TUF_SD_ROOT + "upi-system-design-mock-interview/" },
+      { title: "IRCTC System Design — Expert Mock Interview",                          id: "j3etJx7M0Sc", article: TUF_SD_ROOT + "irctc-system-design-expert-mock-interview/" },
+      { title: "Zerodha Stock Broker System Design",                                   id: "DH2-vDPFiE4", article: TUF_SD_ROOT + "zerodha-stock-broker-system-design/" },
+      { title: "System Design Interview: Amazon / Flipkart E-Commerce Architecture",   id: "2BWr0fsDSs0", article: TUF_SD_ROOT + "system-design-interview-amazon-flipkart-e-commerce-architecture/" },
     ]
   },
 ];
