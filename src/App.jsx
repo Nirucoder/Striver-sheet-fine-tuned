@@ -1861,90 +1861,134 @@ const MATHS_UNITS = [
   },
 ];
 
-// ─── SYSTEM DESIGN DATA (TUF Roadmap · Gaurav Sen videos · July 2026) ─────────
-// Article URLs are verified takeUforward slugs per topic.
-// Re-generate by running:  python scripts/scrape_system_design.py
-const TUF_SD_ROOT    = "https://takeuforward.org/system-design/";
-const TUF_SD_ROADMAP = TUF_SD_ROOT + "complete-system-design-roadmap-with-videos-for-sdes/";
+// ─── SYSTEM DESIGN DATA — exact mirror of TUF sheet (fetched July 2026) ────────
+// id  = YouTube video ID   → shows red ▶ button
+// article = URL (no id)    → shows 📄 document button
+// titles match the TUF "Problem" column exactly; topic text is plain (not a link)
+const IR = "https://interviewready.io/learn/system-design-course/";
 const SD_UNITS = [
   {
-    unit: 1, title: "Fundamentals of System Design",
+    unit: 1, title: "Basics",
     videos: [
-      { title: "System Design Primer: How to Start with Distributed Systems",           id: "SqcXvc3ZmRU", article: TUF_SD_ROADMAP },
-      { title: "System Design for Beginners — Full Course",                             id: "m8Icp_Cid5o", article: TUF_SD_ROADMAP },
-      { title: "Capacity Planning & Estimation: How Much Data Does YouTube Store Daily?",id: "0myM0k1mjZw", article: TUF_SD_ROOT + "capacity-planning-estimation-how-much-data-does-youtube-store-daily/" },
-      { title: "Latency, Concurrency & Parallelism: How 100ms Cost Amazon $3B",        id: "I8FeITQvLAk", article: TUF_SD_ROOT + "latency-concurrency-parallelism-how-100ms-cost-amazon-3b/" },
-      { title: "What is an API and How Do You Design It?",                              id: "_YlYuNMTCc8", article: TUF_SD_ROOT + "what-is-an-api-and-how-do-you-design-it/" },
+      { title: "What is System Design?",                    id: "SqcXvc3ZmRU" },
+      { title: "Horizontal vs. Vertical Scaling",           id: "xpDnVSmNFX0" },
+      { title: "What is Capacity Estimation?",              id: "0myM0k1mjZw" },
+      { title: "What is HTTP?",                             article: "https://takeuforward.org/computer-network/what-are-http-and-https-protocols/" },
+      { title: "What is the Internet TCP/IP stack?",        article: "https://takeuforward.org/computer-network/explain-tcp-model/" },
+      { title: "What happens when you enter Google.com?",   article: "https://takeuforward.org/computer-network/what-happens-when-you-enter-google-com/" },
+      { title: "What are Relational Databases?",            article: "https://takeuforward.org/dbms/relational-model-in-DBMS" },
+      { title: "What are Database Indexes?",                id: "mTNkqMDCasI" },
+      { title: "What are NoSQL databases?",                 id: "xQnIN9bW0og" },
+      { title: "What is a Cache?",                          article: "https://takeuforward.org/operating-system/what-is-cache/" },
+      { title: "What is Thrashing?",                        article: "https://takeuforward.org/operating-system/why-does-thrashing-occur/" },
+      { title: "What are Threads?",                         article: "https://takeuforward.org/operating-system/difference-between-process-program-and-thread-different-types/" },
     ]
   },
   {
-    unit: 2, title: "Scalability & Reliability",
+    unit: 2, title: "Load Balancing",
     videos: [
-      { title: "System Design BASICS: Horizontal vs. Vertical Scaling",                 id: "xpDnVSmNFX0", article: TUF_SD_ROOT + "horizontal-vs-vertical-scaling-system-design/" },
-      { title: "Data Consistency and Trade-offs in Distributed Systems",                id: "m4q7VkgDWrM", article: TUF_SD_ROOT + "data-consistency-and-trade-offs-in-distributed-systems/" },
-      { title: "Distributed Consensus and Data Replication Strategies",                id: "GeGxgmPTe4c", article: TUF_SD_ROOT + "distributed-consensus-and-data-replication-strategies/" },
-      { title: "How to Avoid a Single Point of Failure in Distributed Systems",        id: "-BOysyYErLY", article: TUF_SD_ROOT + "how-to-avoid-a-single-point-of-failure-in-distributed-systems/" },
-      { title: "How to Avoid Cascading Failures in a Distributed System",              id: "xrizarXJgC8", article: TUF_SD_ROOT + "how-to-avoid-cascading-failures-in-a-distributed-system/" },
+      { title: "What is Load Balancing?",     id: "K0Ta65OqQkY" },
+      { title: "What is Consistent Hashing?", id: "zaRkONvyGr8" },
+      { title: "What is Sharding?",           id: "5faMjKuB9bc" },
     ]
   },
   {
-    unit: 3, title: "Core Building Blocks",
+    unit: 3, title: "DataStores",
     videos: [
-      { title: "What is LOAD BALANCING?",                                               id: "K0Ta65OqQkY", article: TUF_SD_ROOT + "what-is-load-balancing/" },
-      { title: "System Design: Content Delivery Networks (CDN) Simplified",            id: "8zX0rue2Hic", article: TUF_SD_ROOT + "what-is-content-delivery-network-cdn/" },
-      { title: "Containers and Virtualisation in Cloud Computing",                     id: "GOuVeZmMee0", article: TUF_SD_ROOT + "containers-and-virtualisation-in-cloud-computing/" },
-      { title: "Service Discovery and Heartbeats in Micro-Services",                   id: "lWE_UIbm8NA", article: TUF_SD_ROOT + "service-discovery-and-heartbeats-in-micro-services/" },
-      { title: "Authorization across Distributed Systems: The OAuth Protocol",         id: "65-6asTjuB8", article: TUF_SD_ROOT + "authorization-across-distributed-systems-the-oauth-protocol/" },
+      { title: "What are Bloom Filters?",              id: "bgzUdBVr5tE" },
+      { title: "What is Data Replication?",            id: "GeGxgmPTe4c" },
+      { title: "How are NoSQL databases optimized?",   id: "_5vrfuwhvlQ" },
+      { title: "What are Location-based Databases?",   id: "OcUKFIjhKu0" },
+      { title: "Database Migrations",                  article: IR + "database-migrations/database-migrations?_aff=TAKEUFORWARD" },
     ]
   },
   {
-    unit: 4, title: "Databases & Storage",
+    unit: 4, title: "Consistency vs. Availability",
     videos: [
-      { title: "Introduction to NoSQL Databases",                                       id: "xQnIN9bW0og", article: TUF_SD_ROOT + "introduction-to-nosql-databases/" },
-      { title: "Relational Database Index vs. NoSQL Index",                             id: "mTNkqMDCasI", article: TUF_SD_ROOT + "relational-database-index-vs-nosql-index/" },
-      { title: "What is DATABASE SHARDING?",                                            id: "5faMjKuB9bc", article: TUF_SD_ROOT + "what-is-sharding/" },
-      { title: "What is CONSISTENT HASHING and Where is it Used?",                     id: "zaRkONvyGr8", article: TUF_SD_ROOT + "what-is-consistent-hashing/" },
-      { title: "What are Bloom Filters? — Hashing",                                    id: "bgzUdBVr5tE", article: TUF_SD_ROOT + "what-are-bloom-filters/" },
-      { title: "Why Do Databases Fail? Anti-Patterns to Avoid!",                       id: "9T-gNZ5bGCw", article: TUF_SD_ROOT + "why-do-databases-fail-anti-patterns-to-avoid/" },
-      { title: "How Databases Scale Writes: The Power of the Log",                     id: "_5vrfuwhvlQ", article: TUF_SD_ROOT + "how-databases-scale-writes-the-power-of-the-log/" },
-      { title: "Designing a Location Database: QuadTrees and Hilbert Curves",          id: "OcUKFIjhKu0", article: TUF_SD_ROOT + "designing-a-location-database-quadtrees-and-hilbert-curves/" },
+      { title: "What is Data Consistency?",    id: "m4q7VkgDWrM" },
+      { title: "Data Consistency Levels",      article: IR + "consistency-in-distributed-systems/what-is-data-consistency?_aff=TAKEUFORWARD" },
+      { title: "Transaction Isolation Levels", article: IR + "consistency-in-distributed-systems/Transaction-Isolation-Levels-Read-Uncommitted-Data?_aff=TAKEUFORWARD" },
     ]
   },
   {
-    unit: 5, title: "Caching",
+    unit: 5, title: "Message Queues",
     videos: [
-      { title: "What are Distributed CACHES and How Do They Manage Data Consistency?", id: "U3RkDLtS7uY", article: TUF_SD_ROOT + "what-are-distributed-caches-and-how-do-they-manage-data-consistency/" },
+      { title: "What is a Message Queue?",                 id: "oUJbuFMyBDk" },
+      { title: "What is the publisher-subscriber model?",  id: "FMhbR_kQeHw" },
+      { title: "What are event-driven systems?",           id: "rJHTK2TfZ1I" },
+      { title: "Database as a Message Queue",              id: "9T-gNZ5bGCw" },
     ]
   },
   {
-    unit: 6, title: "Messaging & Async Processing",
+    unit: 6, title: "DevOps Concepts",
     videos: [
-      { title: "What is a MESSAGE QUEUE and Where is it Used?",                        id: "oUJbuFMyBDk", article: TUF_SD_ROOT + "what-is-a-message-queue-and-where-is-it-used/" },
-      { title: "What is the Publisher Subscriber (Pub/Sub) Model?",                    id: "FMhbR_kQeHw", article: TUF_SD_ROOT + "what-is-publisher-subscriber-pub-sub-model/" },
-      { title: "What's an Event Driven System?",                                       id: "rJHTK2TfZ1I", article: TUF_SD_ROOT + "whats-an-event-driven-system/" },
+      { title: "What is a Single Point of Failure?",          id: "-BOysyYErLY" },
+      { title: "What are Containers?",                        id: "GOuVeZmMee0" },
+      { title: "What is Service Discovery and Heartbeats?",   id: "lWE_UIbm8NA" },
+      { title: "How to avoid Cascading Failures?",            id: "xrizarXJgC8" },
+      { title: "Anomaly Detection in Distributed Systems",    id: "smiu01pLosI" },
+      { title: "Distributed Rate Limiting",                   article: IR + "distributed-rate-limiting/the_oracle_and_the_timer_wheel?_aff=TAKEUFORWARD" },
     ]
   },
   {
-    unit: 7, title: "Microservices & Architecture Patterns",
+    unit: 7, title: "Caching",
     videos: [
-      { title: "What is a MICROSERVICE ARCHITECTURE and What are its Advantages?",    id: "qYhRvH9tJKw", article: TUF_SD_ROOT + "what-is-a-microservice-architecture-and-what-are-its-advantages/" },
-      { title: "Moving from MONOLITHS to MICROSERVICES",                               id: "rckfN7xFig0", article: TUF_SD_ROOT + "moving-from-monoliths-to-microservices/" },
+      { title: "What is Distributed Caching?",          id: "U3RkDLtS7uY" },
+      { title: "What are Content Delivery Networks?",   id: "8zX0rue2Hic" },
+      { title: "Write Policies",                        article: IR + "caches-deep-dive/write-back-policy?_aff=TAKEUFORWARD" },
+      { title: "Replacement Policies",                  article: IR + "caches-deep-dive/replacement-policies-segmented-lru?_aff=TAKEUFORWARD" },
     ]
   },
   {
-    unit: 8, title: "System Design Case Studies",
+    unit: 8, title: "Microservices",
     videos: [
-      { title: "Designing INSTAGRAM: System Design of News Feed",                      id: "QmX2NPkJTKg", article: TUF_SD_ROOT + "designing-instagram-system-design-of-news-feed/" },
-      { title: "System Design: TINDER as a Microservice Architecture",                 id: "tndzLznxq40", article: TUF_SD_ROOT + "system-design-tinder-as-a-microservice-architecture/" },
-      { title: "WHATSAPP System Design: Chat Messaging Systems for Interviews",        id: "vvhC64hQZMk", article: TUF_SD_ROOT + "whatsapp-system-design-chat-messaging-systems-for-interviews/" },
-      { title: "System Design Interview: TikTok Architecture",                         id: "07BVxmVFDGY", article: TUF_SD_ROOT + "system-design-interview-tiktok-architecture/" },
-      { title: "How NETFLIX Onboards New Content: Video Processing at Scale",          id: "x9Hrn0oNmJM", article: TUF_SD_ROOT + "how-netflix-onboards-new-content-video-processing-at-scale/" },
-      { title: "System Design: Online Judge for Coding Contests",                      id: "eg0nlYcbLpo", article: TUF_SD_ROOT + "system-design-online-judge-for-coding-contests/" },
-      { title: "System Design of an Online Code Editor",                               id: "07jkn4jUtso", article: TUF_SD_ROOT + "system-design-of-an-online-code-editor/" },
-      { title: "UPI System Design Mock Interview",                                     id: "QpLy0_c_RXk", article: TUF_SD_ROOT + "upi-system-design-mock-interview/" },
-      { title: "IRCTC System Design — Expert Mock Interview",                          id: "j3etJx7M0Sc", article: TUF_SD_ROOT + "irctc-system-design-expert-mock-interview/" },
-      { title: "Zerodha Stock Broker System Design",                                   id: "DH2-vDPFiE4", article: TUF_SD_ROOT + "zerodha-stock-broker-system-design/" },
-      { title: "System Design Interview: Amazon / Flipkart E-Commerce Architecture",   id: "2BWr0fsDSs0", article: TUF_SD_ROOT + "system-design-interview-amazon-flipkart-e-commerce-architecture/" },
+      { title: "Microservices vs. Monoliths",  id: "qYhRvH9tJKw" },
+      { title: "How monoliths are migrated",   id: "rckfN7xFig0" },
+    ]
+  },
+  {
+    unit: 9, title: "API Gateways",
+    videos: [
+      { title: "How are APIs designed?",       id: "_YlYuNMTCc8" },
+      { title: "What are asynchronous APIs?",  id: "I8FeITQvLAk" },
+    ]
+  },
+  {
+    unit: 10, title: "Authentication Mechanisms",
+    videos: [
+      { title: "OAuth",                                     id: "65-6asTjuB8" },
+      { title: "Token Based Auth",                          article: IR + "security-in-distributed-systems/token-based-auth?_aff=TAKEUFORWARD" },
+      { title: "Access Control Lists and Rule Engines",     article: IR + "security-in-distributed-systems/access-control-lists-and-rule-engines?_aff=TAKEUFORWARD" },
+    ]
+  },
+  {
+    unit: 11, title: "System Design Tradeoffs",
+    videos: [
+      { title: "Pull vs. Push",               article: IR + "system-design-tradeoffs/pull-vs-push-architectures?_aff=TAKEUFORWARD" },
+      { title: "Memory vs. Latency",          article: IR + "system-design-tradeoffs/memory-vs-latency?_aff=TAKEUFORWARD" },
+      { title: "Throughput vs. Latency",      article: IR + "system-design-tradeoffs/throughput-vs-latency?_aff=TAKEUFORWARD" },
+      { title: "Consistency vs. Availability",article: IR + "system-design-tradeoffs/consistency-vs-availability?_aff=TAKEUFORWARD" },
+      { title: "Latency vs. Accuracy",        article: IR + "system-design-tradeoffs/latency-vs-accuracy?_aff=TAKEUFORWARD" },
+      { title: "SQL vs. NoSQL databases",     article: IR + "system-design-tradeoffs/sql-vs-nosql-databases?_aff=TAKEUFORWARD" },
+    ]
+  },
+  {
+    unit: 12, title: "Practice Problems",
+    videos: [
+      { title: "System Design of a Live-Streaming App",            id: "m8Icp_Cid5o" },
+      { title: "System Design of Instagram",                       id: "QmX2NPkJTKg" },
+      { title: "System Design of Tinder",                         id: "tndzLznxq40" },
+      { title: "System Design of WhatsApp",                        id: "vvhC64hQZMk" },
+      { title: "System Design of TikTok",                         id: "07BVxmVFDGY" },
+      { title: "System Design of IRCTC",                          id: "j3etJx7M0Sc" },
+      { title: "System Design of Netflix Video Onboarding Pipeline",id: "x9Hrn0oNmJM" },
+      { title: "System Design of Doordash",                        id: "DH2-vDPFiE4" },
+      { title: "System Design of Amazon Online Shops",             id: "2BWr0fsDSs0" },
+      { title: "System Design of Google Maps",   article: IR + "design-a-location-based-service-like-google-maps/requirements-of-a-map-application?_aff=TAKEUFORWARD" },
+      { title: "System Design of Gmail",         article: IR + "design-an-emailing-service-like-gmail/scope_and_requirement_setting?_aff=TAKEUFORWARD" },
+      { title: "System Design of a Chess Website",article: IR + "chess-design-building-a-highly-scalable-turn-based-gaming-website/requirements_of_a_chess_website?_aff=TAKEUFORWARD" },
+      { title: "System Design of Uber",          article: IR + "design-a-cab-aggregator-app-like-uber/requirements-of-a-cab-aggregator?_aff=TAKEUFORWARD" },
+      { title: "System Design of Google Docs",   article: IR + "google-docs-collaborative-editor-design/Google-Docs-Requirements?_aff=TAKEUFORWARD" },
     ]
   },
 ];
@@ -2376,26 +2420,31 @@ const OS_UNITS = [
                                             onMouseLeave={e=>e.currentTarget.style.background=done?"#061a1a":"transparent"}>
                                             <td style={{padding:"9px 12px",fontSize:12,color:"#374151",textAlign:"center"}}>{i+1}</td>
                                             <td style={{padding:"9px 12px",fontSize:13,fontWeight:done?400:500}}>
-                                                {v.article
-                                                    ? <a href={v.article} target="_blank" rel="noreferrer"
-                                                        style={{color:done?"#4ade80":"#38bdf8",textDecoration:done?"line-through":"none",textDecorationColor:done?"#4ade80":"#38bdf8"}}
-                                                        onMouseEnter={e=>{if(!done){e.currentTarget.style.textDecoration="underline";e.currentTarget.style.textDecorationColor="#38bdf8";}}}
-                                                        onMouseLeave={e=>{if(!done)e.currentTarget.style.textDecoration="none";}}>
-                                                        {v.title}
-                                                        {!done&&<span style={{fontSize:9,color:"#0ea5e9",marginLeft:4,opacity:0.65,verticalAlign:"middle"}}>↗</span>}
-                                                      </a>
-                                                    : <span style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none"}}>{v.title}</span>
-                                                }
+                                                <span style={{color:done?"#4ade80":"#cbd5e1",textDecoration:done?"line-through":"none",textDecorationColor:"#4ade80"}}>{v.title}</span>
                                             </td>
                                             <td style={{padding:"9px 12px",textAlign:"center"}}>
-                                                <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
-                                                   title="Watch on YouTube"
-                                                   style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
-                                                    <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
-                                                        <rect width="32" height="22" rx="5" fill="#FF0000"/>
-                                                        <polygon points="13,6 13,16 22,11" fill="white"/>
-                                                    </svg>
-                                                </a>
+                                                {v.id
+                                                    ? <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
+                                                         title="Watch on YouTube"
+                                                         style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
+                                                          <svg width="32" height="22" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
+                                                              <rect width="32" height="22" rx="5" fill="#FF0000"/>
+                                                              <polygon points="13,6 13,16 22,11" fill="white"/>
+                                                          </svg>
+                                                      </a>
+                                                    : v.article
+                                                        ? <a href={v.article} target="_blank" rel="noreferrer"
+                                                             title="Read Article"
+                                                             style={{display:"inline-flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}>
+                                                              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                                                                  <rect width="28" height="28" rx="6" fill="#1e3a5f"/>
+                                                                  <rect x="7" y="8" width="14" height="2" rx="1" fill="#38bdf8"/>
+                                                                  <rect x="7" y="12" width="14" height="2" rx="1" fill="#38bdf8"/>
+                                                                  <rect x="7" y="16" width="9"  height="2" rx="1" fill="#38bdf8"/>
+                                                              </svg>
+                                                          </a>
+                                                        : null
+                                                }
                                             </td>
                                             <td style={{padding:"9px 12px",textAlign:"center"}}>
                                                 <MathsCheckBox checked={!!s.watched} color="#ef4444" label="Watched" onClick={()=>toggle(u.unit,i,"watched")} />

@@ -1,289 +1,457 @@
 [
   {
     "unit": 1,
-    "title": "Fundamentals of System Design",
+    "title": "Basics",
     "videos": [
       {
-        "title": "System Design Primer: How to Start with Distributed Systems",
+        "title": "What is System Design?",
         "video_id": "SqcXvc3ZmRU",
         "video_url": "https://www.youtube.com/watch?v=SqcXvc3ZmRU",
-        "article_url": "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/"
+        "article_url": null
       },
       {
-        "title": "System Design for Beginners — Full Course",
-        "video_id": "m8Icp_Cid5o",
-        "video_url": "https://www.youtube.com/watch?v=m8Icp_Cid5o",
-        "article_url": "https://takeuforward.org/system-design/complete-system-design-roadmap-with-videos-for-sdes/"
+        "title": "Horizontal vs. Vertical Scaling",
+        "video_id": "xpDnVSmNFX0",
+        "video_url": "https://www.youtube.com/watch?v=xpDnVSmNFX0",
+        "article_url": null
       },
       {
-        "title": "Capacity Planning & Estimation: How Much Data Does YouTube Store Daily?",
+        "title": "What is Capacity Estimation?",
         "video_id": "0myM0k1mjZw",
         "video_url": "https://www.youtube.com/watch?v=0myM0k1mjZw",
-        "article_url": "https://takeuforward.org/system-design/capacity-planning-estimation-how-much-data-does-youtube-store-daily/"
+        "article_url": null
       },
       {
-        "title": "Latency, Concurrency & Parallelism: How 100ms Cost Amazon $3B",
-        "video_id": "I8FeITQvLAk",
-        "video_url": "https://www.youtube.com/watch?v=I8FeITQvLAk",
-        "article_url": "https://takeuforward.org/system-design/latency-concurrency-parallelism-how-100ms-cost-amazon-3b/"
+        "title": "What is HTTP?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/computer-network/what-are-http-and-https-protocols/"
       },
       {
-        "title": "What is an API and How Do You Design It?",
-        "video_id": "_YlYuNMTCc8",
-        "video_url": "https://www.youtube.com/watch?v=_YlYuNMTCc8",
-        "article_url": "https://takeuforward.org/system-design/what-is-an-api-and-how-do-you-design-it/"
+        "title": "What is the Internet TCP/IP stack?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/computer-network/explain-tcp-model/"
+      },
+      {
+        "title": "What happens when you enter Google.com?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/computer-network/what-happens-when-you-enter-google-com/"
+      },
+      {
+        "title": "What are Relational Databases?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/dbms/relational-model-in-DBMS"
+      },
+      {
+        "title": "What are Database Indexes?",
+        "video_id": "mTNkqMDCasI",
+        "video_url": "https://www.youtube.com/watch?v=mTNkqMDCasI",
+        "article_url": null
+      },
+      {
+        "title": "What are NoSQL databases?",
+        "video_id": "xQnIN9bW0og",
+        "video_url": "https://www.youtube.com/watch?v=xQnIN9bW0og",
+        "article_url": null
+      },
+      {
+        "title": "What is a Cache?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/operating-system/what-is-cache/"
+      },
+      {
+        "title": "What is Thrashing?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/operating-system/why-does-thrashing-occur/"
+      },
+      {
+        "title": "What are Threads?",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://takeuforward.org/operating-system/difference-between-process-program-and-thread-different-types/"
       }
     ]
   },
   {
     "unit": 2,
-    "title": "Scalability & Reliability",
+    "title": "Load Balancing",
     "videos": [
       {
-        "title": "System Design BASICS: Horizontal vs. Vertical Scaling",
-        "video_id": "xpDnVSmNFX0",
-        "video_url": "https://www.youtube.com/watch?v=xpDnVSmNFX0",
-        "article_url": "https://takeuforward.org/system-design/horizontal-vs-vertical-scaling-system-design/"
+        "title": "What is Load Balancing?",
+        "video_id": "K0Ta65OqQkY",
+        "video_url": "https://www.youtube.com/watch?v=K0Ta65OqQkY",
+        "article_url": null
       },
       {
-        "title": "Data Consistency and Trade-offs in Distributed Systems",
-        "video_id": "m4q7VkgDWrM",
-        "video_url": "https://www.youtube.com/watch?v=m4q7VkgDWrM",
-        "article_url": "https://takeuforward.org/system-design/data-consistency-and-trade-offs-in-distributed-systems/"
+        "title": "What is Consistent Hashing?",
+        "video_id": "zaRkONvyGr8",
+        "video_url": "https://www.youtube.com/watch?v=zaRkONvyGr8",
+        "article_url": null
       },
       {
-        "title": "Distributed Consensus and Data Replication Strategies",
-        "video_id": "GeGxgmPTe4c",
-        "video_url": "https://www.youtube.com/watch?v=GeGxgmPTe4c",
-        "article_url": "https://takeuforward.org/system-design/distributed-consensus-and-data-replication-strategies/"
-      },
-      {
-        "title": "How to Avoid a Single Point of Failure in Distributed Systems",
-        "video_id": "-BOysyYErLY",
-        "video_url": "https://www.youtube.com/watch?v=-BOysyYErLY",
-        "article_url": "https://takeuforward.org/system-design/how-to-avoid-a-single-point-of-failure-in-distributed-systems/"
-      },
-      {
-        "title": "How to Avoid Cascading Failures in a Distributed System",
-        "video_id": "xrizarXJgC8",
-        "video_url": "https://www.youtube.com/watch?v=xrizarXJgC8",
-        "article_url": "https://takeuforward.org/system-design/how-to-avoid-cascading-failures-in-a-distributed-system/"
+        "title": "What is Sharding?",
+        "video_id": "5faMjKuB9bc",
+        "video_url": "https://www.youtube.com/watch?v=5faMjKuB9bc",
+        "article_url": null
       }
     ]
   },
   {
     "unit": 3,
-    "title": "Core Building Blocks",
+    "title": "DataStores",
     "videos": [
       {
-        "title": "What is LOAD BALANCING?",
-        "video_id": "K0Ta65OqQkY",
-        "video_url": "https://www.youtube.com/watch?v=K0Ta65OqQkY",
-        "article_url": "https://takeuforward.org/system-design/what-is-load-balancing/"
+        "title": "What are Bloom Filters?",
+        "video_id": "bgzUdBVr5tE",
+        "video_url": "https://www.youtube.com/watch?v=bgzUdBVr5tE",
+        "article_url": null
       },
       {
-        "title": "System Design: Content Delivery Networks (CDN) Simplified",
-        "video_id": "8zX0rue2Hic",
-        "video_url": "https://www.youtube.com/watch?v=8zX0rue2Hic",
-        "article_url": "https://takeuforward.org/system-design/what-is-content-delivery-network-cdn/"
+        "title": "What is Data Replication?",
+        "video_id": "GeGxgmPTe4c",
+        "video_url": "https://www.youtube.com/watch?v=GeGxgmPTe4c",
+        "article_url": null
       },
       {
-        "title": "Containers and Virtualisation in Cloud Computing",
-        "video_id": "GOuVeZmMee0",
-        "video_url": "https://www.youtube.com/watch?v=GOuVeZmMee0",
-        "article_url": "https://takeuforward.org/system-design/containers-and-virtualisation-in-cloud-computing/"
+        "title": "How are NoSQL databases optimized?",
+        "video_id": "_5vrfuwhvlQ",
+        "video_url": "https://www.youtube.com/watch?v=_5vrfuwhvlQ",
+        "article_url": null
       },
       {
-        "title": "Service Discovery and Heartbeats in Micro-Services",
-        "video_id": "lWE_UIbm8NA",
-        "video_url": "https://www.youtube.com/watch?v=lWE_UIbm8NA",
-        "article_url": "https://takeuforward.org/system-design/service-discovery-and-heartbeats-in-micro-services/"
+        "title": "What are Location-based Databases?",
+        "video_id": "OcUKFIjhKu0",
+        "video_url": "https://www.youtube.com/watch?v=OcUKFIjhKu0",
+        "article_url": null
       },
       {
-        "title": "Authorization across Distributed Systems: The OAuth Protocol",
-        "video_id": "65-6asTjuB8",
-        "video_url": "https://www.youtube.com/watch?v=65-6asTjuB8",
-        "article_url": "https://takeuforward.org/system-design/authorization-across-distributed-systems-the-oauth-protocol/"
+        "title": "Database Migrations",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/database-migrations/database-migrations?_aff=TAKEUFORWARD"
       }
     ]
   },
   {
     "unit": 4,
-    "title": "Databases & Storage",
+    "title": "Consistency vs. Availability",
     "videos": [
       {
-        "title": "Introduction to NoSQL Databases",
-        "video_id": "xQnIN9bW0og",
-        "video_url": "https://www.youtube.com/watch?v=xQnIN9bW0og",
-        "article_url": "https://takeuforward.org/system-design/introduction-to-nosql-databases/"
+        "title": "What is Data Consistency?",
+        "video_id": "m4q7VkgDWrM",
+        "video_url": "https://www.youtube.com/watch?v=m4q7VkgDWrM",
+        "article_url": null
       },
       {
-        "title": "Relational Database Index vs. NoSQL Index",
-        "video_id": "mTNkqMDCasI",
-        "video_url": "https://www.youtube.com/watch?v=mTNkqMDCasI",
-        "article_url": "https://takeuforward.org/system-design/relational-database-index-vs-nosql-index/"
+        "title": "Data Consistency Levels",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/consistency-in-distributed-systems/what-is-data-consistency?_aff=TAKEUFORWARD"
       },
       {
-        "title": "What is DATABASE SHARDING?",
-        "video_id": "5faMjKuB9bc",
-        "video_url": "https://www.youtube.com/watch?v=5faMjKuB9bc",
-        "article_url": "https://takeuforward.org/system-design/what-is-sharding/"
-      },
-      {
-        "title": "What is CONSISTENT HASHING and Where is it Used?",
-        "video_id": "zaRkONvyGr8",
-        "video_url": "https://www.youtube.com/watch?v=zaRkONvyGr8",
-        "article_url": "https://takeuforward.org/system-design/what-is-consistent-hashing/"
-      },
-      {
-        "title": "What are Bloom Filters? — Hashing",
-        "video_id": "bgzUdBVr5tE",
-        "video_url": "https://www.youtube.com/watch?v=bgzUdBVr5tE",
-        "article_url": "https://takeuforward.org/system-design/what-are-bloom-filters/"
-      },
-      {
-        "title": "Why Do Databases Fail? Anti-Patterns to Avoid!",
-        "video_id": "9T-gNZ5bGCw",
-        "video_url": "https://www.youtube.com/watch?v=9T-gNZ5bGCw",
-        "article_url": "https://takeuforward.org/system-design/why-do-databases-fail-anti-patterns-to-avoid/"
-      },
-      {
-        "title": "How Databases Scale Writes: The Power of the Log",
-        "video_id": "_5vrfuwhvlQ",
-        "video_url": "https://www.youtube.com/watch?v=_5vrfuwhvlQ",
-        "article_url": "https://takeuforward.org/system-design/how-databases-scale-writes-the-power-of-the-log/"
-      },
-      {
-        "title": "Designing a Location Database: QuadTrees and Hilbert Curves",
-        "video_id": "OcUKFIjhKu0",
-        "video_url": "https://www.youtube.com/watch?v=OcUKFIjhKu0",
-        "article_url": "https://takeuforward.org/system-design/designing-a-location-database-quadtrees-and-hilbert-curves/"
+        "title": "Transaction Isolation Levels",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/consistency-in-distributed-systems/Transaction-Isolation-Levels-Read-Uncommitted-Data?_aff=TAKEUFORWARD"
       }
     ]
   },
   {
     "unit": 5,
-    "title": "Caching",
+    "title": "Message Queues",
     "videos": [
       {
-        "title": "What are Distributed CACHES and How Do They Manage Data Consistency?",
-        "video_id": "U3RkDLtS7uY",
-        "video_url": "https://www.youtube.com/watch?v=U3RkDLtS7uY",
-        "article_url": "https://takeuforward.org/system-design/what-are-distributed-caches-and-how-do-they-manage-data-consistency/"
+        "title": "What is a Message Queue?",
+        "video_id": "oUJbuFMyBDk",
+        "video_url": "https://www.youtube.com/watch?v=oUJbuFMyBDk",
+        "article_url": null
+      },
+      {
+        "title": "What is the publisher-subscriber model?",
+        "video_id": "FMhbR_kQeHw",
+        "video_url": "https://www.youtube.com/watch?v=FMhbR_kQeHw",
+        "article_url": null
+      },
+      {
+        "title": "What are event-driven systems?",
+        "video_id": "rJHTK2TfZ1I",
+        "video_url": "https://www.youtube.com/watch?v=rJHTK2TfZ1I",
+        "article_url": null
+      },
+      {
+        "title": "Database as a Message Queue",
+        "video_id": "9T-gNZ5bGCw",
+        "video_url": "https://www.youtube.com/watch?v=9T-gNZ5bGCw",
+        "article_url": null
       }
     ]
   },
   {
     "unit": 6,
-    "title": "Messaging & Async Processing",
+    "title": "DevOps Concepts",
     "videos": [
       {
-        "title": "What is a MESSAGE QUEUE and Where is it Used?",
-        "video_id": "oUJbuFMyBDk",
-        "video_url": "https://www.youtube.com/watch?v=oUJbuFMyBDk",
-        "article_url": "https://takeuforward.org/system-design/what-is-a-message-queue-and-where-is-it-used/"
+        "title": "What is a Single Point of Failure?",
+        "video_id": "-BOysyYErLY",
+        "video_url": "https://www.youtube.com/watch?v=-BOysyYErLY",
+        "article_url": null
       },
       {
-        "title": "What is the Publisher Subscriber (Pub/Sub) Model?",
-        "video_id": "FMhbR_kQeHw",
-        "video_url": "https://www.youtube.com/watch?v=FMhbR_kQeHw",
-        "article_url": "https://takeuforward.org/system-design/what-is-publisher-subscriber-pub-sub-model/"
+        "title": "What are Containers?",
+        "video_id": "GOuVeZmMee0",
+        "video_url": "https://www.youtube.com/watch?v=GOuVeZmMee0",
+        "article_url": null
       },
       {
-        "title": "What's an Event Driven System?",
-        "video_id": "rJHTK2TfZ1I",
-        "video_url": "https://www.youtube.com/watch?v=rJHTK2TfZ1I",
-        "article_url": "https://takeuforward.org/system-design/whats-an-event-driven-system/"
+        "title": "What is Service Discovery and Heartbeats?",
+        "video_id": "lWE_UIbm8NA",
+        "video_url": "https://www.youtube.com/watch?v=lWE_UIbm8NA",
+        "article_url": null
+      },
+      {
+        "title": "How to avoid Cascading Failures?",
+        "video_id": "xrizarXJgC8",
+        "video_url": "https://www.youtube.com/watch?v=xrizarXJgC8",
+        "article_url": null
+      },
+      {
+        "title": "Anomaly Detection in Distributed Systems",
+        "video_id": "smiu01pLosI",
+        "video_url": "https://www.youtube.com/watch?v=smiu01pLosI",
+        "article_url": null
+      },
+      {
+        "title": "Distributed Rate Limiting",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/distributed-rate-limiting/the_oracle_and_the_timer_wheel?_aff=TAKEUFORWARD"
       }
     ]
   },
   {
     "unit": 7,
-    "title": "Microservices & Architecture Patterns",
+    "title": "Caching",
     "videos": [
       {
-        "title": "What is a MICROSERVICE ARCHITECTURE and What are its Advantages?",
-        "video_id": "qYhRvH9tJKw",
-        "video_url": "https://www.youtube.com/watch?v=qYhRvH9tJKw",
-        "article_url": "https://takeuforward.org/system-design/what-is-a-microservice-architecture-and-what-are-its-advantages/"
+        "title": "What is Distributed Caching?",
+        "video_id": "U3RkDLtS7uY",
+        "video_url": "https://www.youtube.com/watch?v=U3RkDLtS7uY",
+        "article_url": null
       },
       {
-        "title": "Moving from MONOLITHS to MICROSERVICES",
-        "video_id": "rckfN7xFig0",
-        "video_url": "https://www.youtube.com/watch?v=rckfN7xFig0",
-        "article_url": "https://takeuforward.org/system-design/moving-from-monoliths-to-microservices/"
+        "title": "What are Content Delivery Networks?",
+        "video_id": "8zX0rue2Hic",
+        "video_url": "https://www.youtube.com/watch?v=8zX0rue2Hic",
+        "article_url": null
+      },
+      {
+        "title": "Write Policies",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/caches-deep-dive/write-back-policy?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Replacement Policies",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/caches-deep-dive/replacement-policies-segmented-lru?_aff=TAKEUFORWARD"
       }
     ]
   },
   {
     "unit": 8,
-    "title": "System Design Case Studies",
+    "title": "Microservices",
     "videos": [
       {
-        "title": "Designing INSTAGRAM: System Design of News Feed",
+        "title": "Microservices vs. Monoliths",
+        "video_id": "qYhRvH9tJKw",
+        "video_url": "https://www.youtube.com/watch?v=qYhRvH9tJKw",
+        "article_url": null
+      },
+      {
+        "title": "How monoliths are migrated",
+        "video_id": "rckfN7xFig0",
+        "video_url": "https://www.youtube.com/watch?v=rckfN7xFig0",
+        "article_url": null
+      }
+    ]
+  },
+  {
+    "unit": 9,
+    "title": "API Gateways",
+    "videos": [
+      {
+        "title": "How are APIs designed?",
+        "video_id": "_YlYuNMTCc8",
+        "video_url": "https://www.youtube.com/watch?v=_YlYuNMTCc8",
+        "article_url": null
+      },
+      {
+        "title": "What are asynchronous APIs?",
+        "video_id": "I8FeITQvLAk",
+        "video_url": "https://www.youtube.com/watch?v=I8FeITQvLAk",
+        "article_url": null
+      }
+    ]
+  },
+  {
+    "unit": 10,
+    "title": "Authentication Mechanisms",
+    "videos": [
+      {
+        "title": "OAuth",
+        "video_id": "65-6asTjuB8",
+        "video_url": "https://www.youtube.com/watch?v=65-6asTjuB8",
+        "article_url": null
+      },
+      {
+        "title": "Token Based Auth",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/security-in-distributed-systems/token-based-auth?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Access Control Lists and Rule Engines",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/security-in-distributed-systems/access-control-lists-and-rule-engines?_aff=TAKEUFORWARD"
+      }
+    ]
+  },
+  {
+    "unit": 11,
+    "title": "System Design Tradeoffs",
+    "videos": [
+      {
+        "title": "Pull vs. Push",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/pull-vs-push-architectures?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Memory vs. Latency",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/memory-vs-latency?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Throughput vs. Latency",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/throughput-vs-latency?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Consistency vs. Availability",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/consistency-vs-availability?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "Latency vs. Accuracy",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/latency-vs-accuracy?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "SQL vs. NoSQL databases",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/system-design-tradeoffs/sql-vs-nosql-databases?_aff=TAKEUFORWARD"
+      }
+    ]
+  },
+  {
+    "unit": 12,
+    "title": "Practice Problems",
+    "videos": [
+      {
+        "title": "System Design of a Live-Streaming App",
+        "video_id": "m8Icp_Cid5o",
+        "video_url": "https://www.youtube.com/watch?v=m8Icp_Cid5o",
+        "article_url": null
+      },
+      {
+        "title": "System Design of Instagram",
         "video_id": "QmX2NPkJTKg",
         "video_url": "https://www.youtube.com/watch?v=QmX2NPkJTKg",
-        "article_url": "https://takeuforward.org/system-design/designing-instagram-system-design-of-news-feed/"
+        "article_url": null
       },
       {
-        "title": "System Design: TINDER as a Microservice Architecture",
+        "title": "System Design of Tinder",
         "video_id": "tndzLznxq40",
         "video_url": "https://www.youtube.com/watch?v=tndzLznxq40",
-        "article_url": "https://takeuforward.org/system-design/system-design-tinder-as-a-microservice-architecture/"
+        "article_url": null
       },
       {
-        "title": "WHATSAPP System Design: Chat Messaging Systems for Interviews",
+        "title": "System Design of WhatsApp",
         "video_id": "vvhC64hQZMk",
         "video_url": "https://www.youtube.com/watch?v=vvhC64hQZMk",
-        "article_url": "https://takeuforward.org/system-design/whatsapp-system-design-chat-messaging-systems-for-interviews/"
+        "article_url": null
       },
       {
-        "title": "System Design Interview: TikTok Architecture",
+        "title": "System Design of TikTok",
         "video_id": "07BVxmVFDGY",
         "video_url": "https://www.youtube.com/watch?v=07BVxmVFDGY",
-        "article_url": "https://takeuforward.org/system-design/system-design-interview-tiktok-architecture/"
+        "article_url": null
       },
       {
-        "title": "How NETFLIX Onboards New Content: Video Processing at Scale",
-        "video_id": "x9Hrn0oNmJM",
-        "video_url": "https://www.youtube.com/watch?v=x9Hrn0oNmJM",
-        "article_url": "https://takeuforward.org/system-design/how-netflix-onboards-new-content-video-processing-at-scale/"
-      },
-      {
-        "title": "System Design: Online Judge for Coding Contests",
-        "video_id": "eg0nlYcbLpo",
-        "video_url": "https://www.youtube.com/watch?v=eg0nlYcbLpo",
-        "article_url": "https://takeuforward.org/system-design/system-design-online-judge-for-coding-contests/"
-      },
-      {
-        "title": "System Design of an Online Code Editor",
-        "video_id": "07jkn4jUtso",
-        "video_url": "https://www.youtube.com/watch?v=07jkn4jUtso",
-        "article_url": "https://takeuforward.org/system-design/system-design-of-an-online-code-editor/"
-      },
-      {
-        "title": "UPI System Design Mock Interview",
-        "video_id": "QpLy0_c_RXk",
-        "video_url": "https://www.youtube.com/watch?v=QpLy0_c_RXk",
-        "article_url": "https://takeuforward.org/system-design/upi-system-design-mock-interview/"
-      },
-      {
-        "title": "IRCTC System Design — Expert Mock Interview",
+        "title": "System Design of IRCTC",
         "video_id": "j3etJx7M0Sc",
         "video_url": "https://www.youtube.com/watch?v=j3etJx7M0Sc",
-        "article_url": "https://takeuforward.org/system-design/irctc-system-design-expert-mock-interview/"
+        "article_url": null
       },
       {
-        "title": "Zerodha Stock Broker System Design",
+        "title": "System Design of Netflix Video Onboarding Pipeline",
+        "video_id": "x9Hrn0oNmJM",
+        "video_url": "https://www.youtube.com/watch?v=x9Hrn0oNmJM",
+        "article_url": null
+      },
+      {
+        "title": "System Design of Doordash",
         "video_id": "DH2-vDPFiE4",
         "video_url": "https://www.youtube.com/watch?v=DH2-vDPFiE4",
-        "article_url": "https://takeuforward.org/system-design/zerodha-stock-broker-system-design/"
+        "article_url": null
       },
       {
-        "title": "System Design Interview: Amazon / Flipkart E-Commerce Architecture",
+        "title": "System Design of Amazon Online Shops",
         "video_id": "2BWr0fsDSs0",
         "video_url": "https://www.youtube.com/watch?v=2BWr0fsDSs0",
-        "article_url": "https://takeuforward.org/system-design/system-design-interview-amazon-flipkart-e-commerce-architecture/"
+        "article_url": null
+      },
+      {
+        "title": "System Design of Google Maps",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/design-a-location-based-service-like-google-maps/requirements-of-a-map-application?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "System Design of Gmail",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/design-an-emailing-service-like-gmail/scope_and_requirement_setting?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "System Design of a Chess Website",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/chess-design-building-a-highly-scalable-turn-based-gaming-website/requirements_of_a_chess_website?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "System Design of Uber",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/design-a-cab-aggregator-app-like-uber/requirements-of-a-cab-aggregator?_aff=TAKEUFORWARD"
+      },
+      {
+        "title": "System Design of Google Docs",
+        "video_id": null,
+        "video_url": null,
+        "article_url": "https://interviewready.io/learn/system-design-course/google-docs-collaborative-editor-design/Google-Docs-Requirements?_aff=TAKEUFORWARD"
       }
     ]
   }
