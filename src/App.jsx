@@ -3440,7 +3440,17 @@ const OS_UNITS = [
 
     // ─── MAIN APP ─────────────────────────────────────────────────────────────────
     const NAV = [
-    { id:"dashboard", label:"Dashboard", icon:"⊞" },{ id:"dsa", label:"DSA Tracker", icon:"◈" },{ id:"coa", label:"COA Tracker", icon:"◉" },{ id:"maths", label:"Maths", icon:"∑" },{ id:"os", label:"OS", icon:"⚙" },{ id:"sysdesign", label:"System Design", icon:"⬡" },{ id:"weekly", label:"LeetCode Problems", icon:"▦" },{ id:"revision", label:"Revision Tracker", icon:"↺" },{ id:"analytics", label:"Analytics", icon:"⋯" },{ id:"todo", label:"To-Do", icon:"✓" },{ id:"calendar", label:"Calendar", icon:"📅" },
+    { id:"dashboard", label:"Dashboard",        icon:"⊞", color:"#818cf8" },
+    { id:"dsa",       label:"DSA Tracker",       icon:"◈", color:"#fb923c" },
+    { id:"coa",       label:"COA Tracker",       icon:"◉", color:"#a78bfa" },
+    { id:"maths",     label:"Maths",             icon:"∑", color:"#34d399" },
+    { id:"os",        label:"OS",                icon:"⚙", color:"#38bdf8" },
+    { id:"sysdesign", label:"System Design",     icon:"⬡", color:"#f472b6" },
+    { id:"weekly",    label:"LeetCode Problems", icon:"▦", color:"#facc15" },
+    { id:"revision",  label:"Revision Tracker",  icon:"↺", color:"#f87171" },
+    { id:"analytics", label:"Analytics",         icon:"⋯", color:"#4ade80" },
+    { id:"todo",      label:"To-Do",             icon:"✓", color:"#fb7185" },
+    { id:"calendar",  label:"Calendar",          icon:"📅",color:"#60a5fa" },
     ];
 
     let SyncModal = AccountSyncModal;
@@ -4094,7 +4104,8 @@ const OS_UNITS = [
                     )}
                     <nav style={{padding:"8px",flex:1,overflowY:"auto"}}>
                         {NAV.map(n=><div key={n.id} onClick={()=>{setPage(n.id);setMobileSidebarOpen(false);}} style={S.navItem(page===n.id)}>
-                            <span style={{fontSize:14}}>{n.icon}</span><span>{n.label}</span>
+                            <span style={{fontSize:14,color:n.color,filter:page===n.id?"drop-shadow(0 0 6px "+n.color+"99)":"none",transition:"filter 0.2s"}}>{n.icon}</span>
+                            <span style={{color:page===n.id?n.color:"#94a3b8",fontWeight:page===n.id?600:400,transition:"color 0.15s"}}>{n.label}</span>
                         </div>)}
                     </nav>
                     <div style={{padding:"12px 8px",borderTop:"1px solid #1e2030"}}>
@@ -4134,7 +4145,8 @@ const OS_UNITS = [
                 </div>
                 <nav style={S.nav}>
                     {NAV.map(n=><div key={n.id} onClick={()=>setPage(n.id)} style={S.navItem(page===n.id)}>
-                        <span style={{fontSize:14}}>{n.icon}</span><span>{n.label}</span>
+                        <span style={{fontSize:14,color:n.color,filter:page===n.id?"drop-shadow(0 0 6px "+n.color+"99)":"none",transition:"filter 0.2s"}}>{n.icon}</span>
+                        <span style={{color:page===n.id?n.color:"#94a3b8",fontWeight:page===n.id?600:400,transition:"color 0.15s"}}>{n.label}</span>
                     </div>)}
                 </nav>
                 {/* ── Draggable bottom panel ── */}
