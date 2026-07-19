@@ -3286,8 +3286,9 @@ const OS_UNITS = [
         return { diffCounts: solved, diffTotal: total };
     }, [solvedQuestions]);
 
-    // ── Auto-fetch LeetCode stats on app load whenever a username is saved ──────
-    useEffect(() => {
+    // ── Auto-fetch LeetCode stats every 100 seconds (runs on all pages) ─────────
+    const fetchLcStatsRef = useRef(null);
+    fetchLcStatsRef.current = () => {
         if (!lcUsername || !lcUsername.trim()) return;
         const uname = lcUsername.trim();
         fetch(`/api/leetcode/${encodeURIComponent(uname)}`)
@@ -3300,10 +3301,8 @@ const OS_UNITS = [
                 if (data.allQuestionsCount) {
                     setLcAllQuestions(data.allQuestionsCount);
                 }
-                // Also inject submissionCalendar + non-Striver AC into activityLog
                 if (data.submissionCalendar || data.submissions) {
                     try {
-                        // Build Striver slug set for comparison
                         const striverSlugsAuto = new Set();
                         STRIVER_STEPS.forEach(sg => sg.subtopics.forEach(sub => sub.problems.forEach(p => {
                             if (p.practice && p.practice.includes("leetcode.com/problems/")) {
@@ -3312,7 +3311,6 @@ const OS_UNITS = [
                             }
                         })));
 
-                        // Build non-Striver AC by date from recentAcSubmissionList
                         const nsAcByDate = {};
                         (data.submissions || []).forEach(s => {
                             if (!s.titleSlug || !s.timestamp) return;
@@ -3325,8 +3323,6 @@ const OS_UNITS = [
                         const cal = data.submissionCalendar ? JSON.parse(data.submissionCalendar) : {};
                         setActivityLog(prev => {
                             const updated = { ...prev };
-
-                            // Inject non-Striver AC entries (so they don't count as failures)
                             Object.entries(nsAcByDate).forEach(([dateStr, slugSet]) => {
                                 let dayProbs = [...(updated[dateStr] || [])];
                                 slugSet.forEach(slug => {
@@ -3338,8 +3334,6 @@ const OS_UNITS = [
                                 });
                                 updated[dateStr] = dayProbs;
                             });
-
-                            // Pad with dummies only for submissions not accounted for by any AC entry
                             Object.keys(cal).forEach(ts => {
                                 const dateStr = new Date(parseInt(ts) * 1000).toISOString().slice(0, 10);
                                 const calCount = cal[ts];
@@ -3352,13 +3346,19 @@ const OS_UNITS = [
                                 }
                                 updated[dateStr] = dayProbs;
                             });
-
                             return updated;
                         });
                     } catch (e) { /* ignore */ }
                 }
             })
             .catch(() => { /* silently fail */ });
+    };
+
+    useEffect(() => {
+        if (!lcUsername || !lcUsername.trim()) return;
+        fetchLcStatsRef.current();
+        const id = setInterval(() => fetchLcStatsRef.current(), 100000);
+        return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lcUsername]);
 
