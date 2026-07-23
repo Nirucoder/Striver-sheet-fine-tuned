@@ -1256,13 +1256,38 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         setLcSyncing(true);
         setLcSyncMsg("Fetching your LeetCode submissions…");
         try {
-            // Use our own Vercel proxy → calls LeetCode GraphQL server-side (no CORS / rate-limit issues)
-            const res = await fetch(`/api/leetcode/${encodeURIComponent(lcUsername.trim())}`);
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error || `HTTP ${res.status}`);
-            }
-            const data = await res.json();
+            // Call alfa-leetcode-api directly from the browser (CORS-enabled, no proxy hop needed)
+            const BASE = "https://alfa-leetcode-api.onrender.com";
+            const uname = encodeURIComponent(lcUsername.trim());
+            const [subRes, calRes, solvedRes] = await Promise.all([
+                fetch(`${BASE}/${uname}/acSubmission?limit=500`),
+                fetch(`${BASE}/${uname}/calendar`),
+                fetch(`${BASE}/${uname}/solved`),
+            ]);
+            if (!subRes.ok) throw new Error(`LeetCode submissions failed (${subRes.status})`);
+            const [subJson, calJson, solvedJson] = await Promise.all([
+                subRes.json(),
+                calRes.ok ? calRes.json() : {},
+                solvedRes.ok ? solvedRes.json() : {},
+            ]);
+            // Normalise into the shape the rest of the code already expects
+            const data = {
+                submissions: (subJson.submission || []).map(s => ({
+                    titleSlug: s.titleSlug,
+                    timestamp: s.timestamp,
+                    title: s.title,
+                })),
+                submissionCalendar: calJson.submissionCalendar ?? "{}",
+                submitStatsGlobal: solvedJson.easySolved != null ? {
+                    acSubmissionNum: [
+                        { difficulty: "All",    count: solvedJson.solvedProblem ?? 0 },
+                        { difficulty: "Easy",   count: solvedJson.easySolved   ?? 0 },
+                        { difficulty: "Medium", count: solvedJson.mediumSolved ?? 0 },
+                        { difficulty: "Hard",   count: solvedJson.hardSolved   ?? 0 },
+                    ]
+                } : null,
+                allQuestionsCount: null,
+            };
 
             // Build slug -> earliest accepted date map (real submission date, not sync date)
             const slugToDate = {};
