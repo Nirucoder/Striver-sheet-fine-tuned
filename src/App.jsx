@@ -891,7 +891,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         setEditingTodo(null);
     }
 
-    const todayTasks = (todos||[]).filter(t => t.due === today);
+    const todayTasks = (todos||[]).filter(t => t.due === today).sort((a,b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
 
     const dsaDone = dsaData.filter(d=>d.status==="done").length;
     const coaDone = coaData.filter(d=>d.status==="done").length;
