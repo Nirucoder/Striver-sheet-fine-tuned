@@ -900,7 +900,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     const overallPct = Math.round((dsaDone+coaDone)/(dsaData.length+coaData.length)*100);
     const weeksDone = weekStatus.filter(Boolean).length;
     
-    const dsaPct = Math.round(dsaDone / dsaData.length * 100) || 0;
+    const dsaPct = totalProblems ? Math.round(solvedProblems / totalProblems * 100) : 0;
     const coaPct = Math.round(coaDone / coaData.length * 100) || 0;
     const mathsTotal = useMemo(()=>MATHS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
     const mathsDone = Object.values(mathsProgress||{}).filter(v=>v.watched).length;
@@ -1061,7 +1061,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         </div>
 
         <div style={S.grid4} className="rg4">
-            <StatCard label="DSA Progress" value={`${dsaPct}%`} sub={`${dsaDone}/${dsaData.length} subtopics`}
+            <StatCard label="DSA Progress" value={`${dsaPct}%`} sub={`${solvedProblems}/${totalProblems} problems`}
                 pct={dsaPct} color="#818cf8" icon="◈" />
             <StatCard label="COA Progress" value={`${coaPct}%`} sub={`${coaDone}/${coaData.length} topics`}
                 pct={coaPct} color="#34d399" icon="◉" />
