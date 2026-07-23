@@ -937,7 +937,7 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
 
     return <div>
         <div style={{marginBottom:24}}>
-            <div style={S.pageTitle}>Good morning, Engineer 👋</div>
+            <div style={S.pageTitle}>{(()=>{const h=new Date().getHours();return h<12?"Good morning":h<17?"Good afternoon":h<21?"Good evening":"Good night"})()}, Engineer {(()=>{const h=new Date().getHours();return h<12?"👋":h<17?"☀️":h<21?"🌆":"🌙"})()}</div>
             <div style={{fontSize:13,color:"#64748b",marginTop:4}}>
                 {new Date().toLocaleDateString("en-GB", {weekday:"long", day:"numeric", month:"long", year:"numeric"})} — keep the streak alive
             </div>
