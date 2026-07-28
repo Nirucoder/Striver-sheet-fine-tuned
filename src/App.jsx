@@ -3090,41 +3090,6 @@ const OS_UNITS = [
                 </div>
             </div>
 
-            {/* ── REVISION + CONFIDENCE ─────────────────────────────────────────── */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginTop:14}} className="rg2">
-                <div style={S.card}>
-                    <div style={S.sectionTitle}>Revision Progress</div>
-                    <div style={{display:"flex",flexDirection:"column",gap:16,marginTop:12}}>
-                        {revStats.map((r,i)=>(
-                            <div key={i}>
-                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-                                    <span style={{fontSize:13,color:"#94a3b8"}}>{r.name}</span>
-                                    <span style={{fontSize:13,fontWeight:700,color:r.color}}>{r.done} <span style={{color:"#475569",fontWeight:400}}>/ {r.total}</span></span>
-                                </div>
-                                <PBar pct={r.total?Math.round(r.done/r.total*100):0} color={r.color} height={7} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div style={S.card}>
-                    <div style={S.sectionTitle}>Confidence Distribution (DSA + COA)</div>
-                    <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={Array.from({length:11},(_,i)=>({
-                            conf:i,
-                            dsa:dsaData.filter(d=>d.confidence===i).length,
-                            coa:coaData.filter(d=>d.confidence===i).length
-                        })).filter(d=>d.dsa+d.coa>0)} barSize={14} margin={{top:4,right:8,left:-20,bottom:0}}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#111827" vertical={false} />
-                            <XAxis dataKey="conf" tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} label={{value:"Confidence →",position:"insideBottomRight",offset:-4,fontSize:10,fill:"#334155"}} />
-                            <YAxis tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} />
-                            <Tooltip contentStyle={TTStyle} />
-                            <Bar dataKey="dsa" fill="#818cf8" name="DSA" radius={[4,4,0,0]} stackId="a" />
-                            <Bar dataKey="coa" fill="#34d399" name="COA" radius={[4,4,0,0]} stackId="a" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
         </div>
         );
     }
