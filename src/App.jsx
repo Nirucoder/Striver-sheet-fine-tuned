@@ -2871,126 +2871,262 @@ const OS_UNITS = [
     }
 
     // ─── ANALYTICS ────────────────────────────────────────────────────────────────
-    function Analytics({ dsaData, coaData, revData, weekStatus }) {
-    const dsaDone = dsaData.filter(d=>d.status==="done").length;
-    const coaDone = coaData.filter(d=>d.status==="done").length;
-    const totalP = dsaData.reduce((a,d)=>a+d.problems,0);
-    const solvedP = dsaData.reduce((a,d)=>a+Math.min(d.solved,d.problems),0);
+    function Analytics({ dsaData, coaData, revData, weekStatus, mathsProgress, osProgress, solvedQuestions }) {
+        // ── DSA ──────────────────────────────────────────────────────────────────
+        const dsaDone    = dsaData.filter(d=>d.status==="done").length;
+        const totalProbs = useMemo(()=>STRIVER_STEPS.reduce((a,s)=>a+s.subtopics.reduce((b,sub)=>b+sub.problems.length,0),0),[]);
+        const solvedProbs = Object.values(solvedQuestions||{}).filter(Boolean).length;
+        const dsaPct     = totalProbs ? Math.round(solvedProbs/totalProbs*100) : 0;
 
-    const stepData = STRIVER_STEPS.map(s => ({
-    name:`S${s.step}`, done: dsaData.filter(d=>d.step===s.step&&d.status==="done").length,
-    total: s.subtopics.length, color: STEP_COLORS[s.step]
-    }));
+        // ── COA ──────────────────────────────────────────────────────────────────
+        const coaDone = coaData.filter(d=>d.status==="done").length;
+        const coaPct  = Math.round(coaDone/coaData.length*100)||0;
 
-    const weekData = WEEK_PLAN.map((w,i) => {
-    const ds = dsaData.filter(d=>w.dsaSteps.includes(d.step));
-    const cs = coaData.filter(d=>d.week===w.coaWeek);
-    const done = ds.filter(d=>d.status==="done").length + cs.filter(d=>d.status==="done").length;
-    const tot = ds.length + cs.length;
-    return { name:`W${w.week}`, dsa:ds.length?Math.round(ds.filter(d=>d.status==="done").length/ds.length*100):0,
-    coa:cs.length?Math.round(cs.filter(d=>d.status==="done").length/cs.length*100):0,
-    overall:tot?Math.round(done/tot*100):0 };
-    });
+        // ── Maths ─────────────────────────────────────────────────────────────────
+        const mathsTotal   = useMemo(()=>MATHS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
+        const mathsWatched = Object.values(mathsProgress||{}).filter(v=>v.watched).length;
+        const mathsRevised = Object.values(mathsProgress||{}).filter(v=>v.revised).length;
+        const mathsPracticed = Object.values(mathsProgress||{}).filter(v=>v.practiced).length;
+        const mathsPct     = Math.round(mathsWatched/mathsTotal*100)||0;
 
-    const confDist = Array.from({length:11},(_,i) => ({ conf:i, dsa:dsaData.filter(d=>d.confidence===i).length,
-    coa:coaData.filter(d=>d.confidence===i).length }));
+        // ── OS ────────────────────────────────────────────────────────────────────
+        const osTotal   = useMemo(()=>OS_UNITS.reduce((a,u)=>a+u.videos.length,0),[]);
+        const osWatched = Object.values(osProgress||{}).filter(v=>v.watched).length;
+        const osRevised = Object.values(osProgress||{}).filter(v=>v.revised).length;
+        const osPct     = Math.round(osWatched/osTotal*100)||0;
 
-    const pieData = [
-    { name:"DSA Done", value:dsaDone, fill:"#818cf8" },{ name:"DSA Left", value:dsaData.length-dsaDone, fill:"#1e2030" },{ name:"COA Done", value:coaDone, fill:"#34d399" },{ name:"COA Left", value:coaData.length-coaDone, fill:"#112211" },
-    ];
+        // ── Charts data ───────────────────────────────────────────────────────────
+        const stepData = STRIVER_STEPS.map(s => {
+            const subs  = dsaData.filter(d=>d.step===s.step);
+            const done  = subs.filter(d=>d.status==="done").length;
+            const total = s.subtopics.length;
+            return { name:`S${s.step}`, pct: total?Math.round(done/total*100):0, done, total, label: s.title, color: STEP_COLORS[s.step] };
+        });
 
-    const revStats = [
-    { name:"1-Day", done:revData.filter(d=>d.day).length, total:revData.length },{ name:"1-Week", done:revData.filter(d=>d.week1).length, total:revData.length },{ name:"1-Month", done:revData.filter(d=>d.month).length, total:revData.length },
-    ];
+        const weekData = WEEK_PLAN.map(w => {
+            const ds = dsaData.filter(d=>w.dsaSteps.includes(d.step));
+            const cs = coaData.filter(d=>d.week===w.coaWeek);
+            return {
+                name:`W${w.week}`,
+                dsa : ds.length ? Math.round(ds.filter(d=>d.status==="done").length/ds.length*100):0,
+                coa : cs.length ? Math.round(cs.filter(d=>d.status==="done").length/cs.length*100):0,
+            };
+        });
 
-    // LC stats
-    const totalLC = Object.values(STEP_LEETCODE).reduce((a,v)=>a+v.length,0);
+        const mathsUnitData = MATHS_UNITS.map(u => {
+            const total   = u.videos.length;
+            const watched = u.videos.filter((_,i)=>mathsProgress?.[`${u.unit}-${i}`]?.watched).length;
+            const revised = u.videos.filter((_,i)=>mathsProgress?.[`${u.unit}-${i}`]?.revised).length;
+            return { name: u.title.length>22 ? u.title.slice(0,22)+"…" : u.title, watched, revised, total, pct: Math.round(watched/total*100)||0 };
+        });
 
-    return <div>
-        <div style={S.pageTitle}>Analytics</div>
-        <div style={S.pageSub}>Visual breakdown of your progress across all tracks</div>
+        const osUnitData = OS_UNITS.map(u => {
+            const total   = u.videos.length;
+            const watched = u.videos.filter((_,i)=>osProgress?.[`${u.unit}-${i}`]?.watched).length;
+            const revised = u.videos.filter((_,i)=>osProgress?.[`${u.unit}-${i}`]?.revised).length;
+            return { name: u.title.length>22 ? u.title.slice(0,22)+"…" : u.title, watched, revised, total, pct: Math.round(watched/total*100)||0 };
+        });
 
-        <div style={S.grid4} className="rg4">
-            <StatCard label="DSA Subtopics" value={`${Math.round(dsaDone/dsaData.length*100)}%`}
-                pct={Math.round(dsaDone/dsaData.length*100)} color="#818cf8" />
-            <StatCard label="Problems Solved" value={`${Math.round(solvedP/totalP*100)}%`} sub={`${solvedP}/${totalP}`}
-                pct={Math.round(solvedP/totalP*100)} color="#60a5fa" />
-            <StatCard label="COA Topics" value={`${Math.round(coaDone/coaData.length*100)}%`}
-                pct={Math.round(coaDone/coaData.length*100)} color="#34d399" />
-            <StatCard label="LeetCode Links" value={totalLC} sub="across 17 steps" color="#f97316" icon="🔗" />
-        </div>
+        const subjectBar = [
+            { name:"DSA",   pct: dsaPct,  color:"#818cf8", sub:`${solvedProbs}/${totalProbs} problems` },
+            { name:"COA",   pct: coaPct,  color:"#34d399", sub:`${coaDone}/${coaData.length} topics` },
+            { name:"Maths", pct: mathsPct,color:"#f472b6", sub:`${mathsWatched}/${mathsTotal} watched` },
+            { name:"OS",    pct: osPct,   color:"#fb923c", sub:`${osWatched}/${osTotal} watched` },
+        ];
 
-        <div style={S.grid2} className="rg2">
+        const revStats = [
+            { name:"1-Day Review",   done:revData.filter(d=>d.day).length,   total:revData.length, color:"#818cf8" },
+            { name:"1-Week Review",  done:revData.filter(d=>d.week1).length, total:revData.length, color:"#34d399" },
+            { name:"1-Month Review", done:revData.filter(d=>d.month).length, total:revData.length, color:"#f472b6" },
+        ];
+
+        const TTStyle = { background:"#0d0f18", border:"1px solid #1e2030", borderRadius:8, color:"#e2e8f0", fontSize:12 };
+
+        // ── Radial ring SVG helper ────────────────────────────────────────────────
+        function Ring({ pct, color, size=80, stroke=7 }) {
+            const r = (size-stroke)/2, c = 2*Math.PI*r;
+            return (
+                <svg width={size} height={size} style={{flexShrink:0}}>
+                    <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1e2030" strokeWidth={stroke} />
+                    <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
+                        strokeDasharray={c} strokeDashoffset={c*(1-pct/100)}
+                        strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`}
+                        style={{transition:"stroke-dashoffset 0.6s ease"}} />
+                    <text x="50%" y="52%" textAnchor="middle" dominantBaseline="middle"
+                        style={{fontSize:size*0.2, fontWeight:700, fill:color, fontFamily:"inherit"}}>{pct}%</text>
+                </svg>
+            );
+        }
+
+        return (
+        <div>
+            <div style={S.pageTitle}>Analytics</div>
+            <div style={S.pageSub}>Progress across all subjects — DSA · COA · Maths · OS</div>
+
+            {/* ── SUBJECT OVERVIEW CARDS ───────────────────────────────────────── */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:18}} className="rg4">
+                {subjectBar.map(s=>(
+                    <div key={s.name} style={{background:"#090b10",border:`1px solid ${s.color}22`,borderRadius:14,padding:"18px 16px",display:"flex",flexDirection:"column",alignItems:"center",gap:10,position:"relative",overflow:"hidden"}}>
+                        <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:s.color,borderRadius:"14px 14px 0 0",opacity:0.7}} />
+                        <Ring pct={s.pct} color={s.color} size={88} stroke={8} />
+                        <div style={{textAlign:"center"}}>
+                            <div style={{fontSize:15,fontWeight:700,color:"#e2e8f0",marginBottom:3}}>{s.name}</div>
+                            <div style={{fontSize:11,color:"#475569"}}>{s.sub}</div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* ── DSA STEP PROGRESS ────────────────────────────────────────────── */}
             <div style={S.card}>
-                <div style={S.sectionTitle}>Striver Step-by-Step Progress</div>
-                <ResponsiveContainer width="100%" height={220}>
-                    <BarChart data={stepData} barSize={12}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e2030" />
-                        <XAxis dataKey="name" tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} />
-                        <YAxis tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} />
-                        <Tooltip contentStyle={{background:"#0f1117",border:"1px solid                             #1e2030",borderRadius:8,color:"#e2e8f0"}} formatter={(v,n,p)=>
-                            [`${v}/${p.payload.total}`,"Done"]}/>
-                            {stepData.map((s,i)=>
-                            <Bar key={i} dataKey="done" fill={s.color} radius={[3,3,0,0]} />)}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                    <div style={S.sectionTitle}>DSA — Step-by-Step Progress</div>
+                    <span style={{fontSize:12,color:"#475569"}}>{solvedProbs} / {totalProbs} problems solved</span>
+                </div>
+                <ResponsiveContainer width="100%" height={200}>
+                    <BarChart data={stepData} barSize={18} margin={{top:4,right:8,left:-20,bottom:0}}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#111827" vertical={false} />
+                        <XAxis dataKey="name" tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} />
+                        <YAxis domain={[0,100]} tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} tickFormatter={v=>`${v}%`} />
+                        <Tooltip contentStyle={TTStyle}
+                            formatter={(v,_,p)=>[`${p.payload.done}/${p.payload.total} subtopics (${v}%)`,""]}
+                            labelFormatter={(_,pl)=>pl[0]?.payload?.label||""} />
+                        {stepData.map((s,i)=>(
+                            <Bar key={i} dataKey="pct" fill={s.color} radius={[4,4,0,0]} isAnimationActive={false}>
+                                <Cell fill={s.color} />
+                            </Bar>
+                        ))}
                     </BarChart>
                 </ResponsiveContainer>
             </div>
-            <div style={S.card}>
-                <div style={S.sectionTitle}>Weekly DSA vs COA Progress</div>
-                <ResponsiveContainer width="100%" height={220}>
-                    <LineChart data={weekData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e2030" />
+
+            {/* ── WEEKLY DSA vs COA ────────────────────────────────────────────── */}
+            <div style={{...S.card, marginTop:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                    <div style={S.sectionTitle}>Weekly DSA vs COA</div>
+                    <div style={{display:"flex",gap:14,fontSize:12}}>
+                        <span style={{color:"#818cf8"}}>● DSA</span>
+                        <span style={{color:"#34d399"}}>● COA</span>
+                    </div>
+                </div>
+                <ResponsiveContainer width="100%" height={180}>
+                    <LineChart data={weekData} margin={{top:4,right:8,left:-20,bottom:0}}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#111827" vertical={false} />
                         <XAxis dataKey="name" tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} />
-                        <YAxis tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} domain={[0,100]} />
-                        <Tooltip contentStyle={{background:"#0f1117",border:"1px solid                             #1e2030",borderRadius:8,color:"#e2e8f0"}} />
-                        <Line type="monotone" dataKey="dsa" stroke="#818cf8" strokeWidth={2} dot={{fill:"#818cf8",r:3}}
-                            name="DSA" />
-                        <Line type="monotone" dataKey="coa" stroke="#34d399" strokeWidth={2} dot={{fill:"#34d399",r:3}}
-                            name="COA" />
+                        <YAxis domain={[0,100]} tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} tickFormatter={v=>`${v}%`} />
+                        <Tooltip contentStyle={TTStyle} formatter={v=>[`${v}%`]} />
+                        <Line type="monotone" dataKey="dsa" stroke="#818cf8" strokeWidth={2.5} dot={{fill:"#818cf8",r:4,strokeWidth:0}} name="DSA" />
+                        <Line type="monotone" dataKey="coa" stroke="#34d399" strokeWidth={2.5} dot={{fill:"#34d399",r:4,strokeWidth:0}} name="COA" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-        </div>
 
-        <div style={S.grid2} className="rg2">
-            <div style={S.card}>
-                <div style={S.sectionTitle}>Confidence Distribution</div>
-                <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={confDist.filter(d=>d.dsa+d.coa>0||d.conf===0)} barSize={14}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1e2030" />
-                        <XAxis dataKey="conf" tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} />
-                        <YAxis tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} />
-                        <Tooltip contentStyle={{background:"#0f1117",border:"1px solid                             #1e2030",borderRadius:8,color:"#e2e8f0"}} />
-                        <Bar dataKey="dsa" fill="#818cf8" name="DSA" radius={[3,3,0,0]} />
-                        <Bar dataKey="coa" fill="#34d399" name="COA" radius={[3,3,0,0]} />
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-            <div style={S.card}>
-                <div style={S.sectionTitle}>Revision Progress</div>
-                {revStats.map((r,i) => <div key={i} style={{marginBottom:14}}>
-                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                        <span style={{fontSize:13,color:"#94a3b8"}}>{r.name} Review</span>
-                        <span
-                            style={{fontSize:13,fontWeight:600,color:["#818cf8","#34d399","#f472b6"][i]}}>{r.done}/{r.total}</span>
+            {/* ── MATHS & OS UNIT PROGRESS ─────────────────────────────────────── */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginTop:14}} className="rg2">
+                {/* Maths */}
+                <div style={S.card}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                        <div style={S.sectionTitle}>Maths — by Unit</div>
+                        <div style={{display:"flex",gap:10,fontSize:11}}>
+                            <span style={{color:"#f472b6"}}>● Watched</span>
+                            <span style={{color:"#fb923c"}}>● Revised</span>
+                        </div>
                     </div>
-                    <PBar pct={Math.round(r.done/r.total*100)} color={["#818cf8","#34d399","#f472b6"][i]} height={6} />
-                </div>)}
-                <div style={{marginTop:16}}>
-                    <div style={S.sectionTitle}>Completion Breakdown</div>
-                    <ResponsiveContainer width="100%" height={120}>
-                        <PieChart>
-                            <Pie data={pieData} cx="50%" cy="50%" outerRadius={55} dataKey="value">
-                                {pieData.map((e,i)=>
-                                <Cell key={i} fill={e.fill} />)}
-                            </Pie>
-                            <Tooltip contentStyle={{background:"#0f1117",border:"1px solid                                 #1e2030",borderRadius:8,color:"#e2e8f0"}} />
-                        </PieChart>
+                    <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:260,overflowY:"auto"}}>
+                        {mathsUnitData.map((u,i)=>(
+                            <div key={i}>
+                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                                    <span style={{fontSize:12,color:"#94a3b8",flex:1,marginRight:8,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.name}</span>
+                                    <span style={{fontSize:11,color:"#475569",flexShrink:0}}>{u.watched}/{u.total}</span>
+                                </div>
+                                <div style={{height:5,borderRadius:99,background:"#111827",overflow:"hidden"}}>
+                                    <div style={{height:"100%",borderRadius:99,background:"#f472b6",width:`${u.pct}%`,transition:"width 0.4s"}} />
+                                </div>
+                                {u.revised > 0 && (
+                                    <div style={{height:3,borderRadius:99,background:"#111827",overflow:"hidden",marginTop:2}}>
+                                        <div style={{height:"100%",borderRadius:99,background:"#fb923c",width:`${Math.round(u.revised/u.total*100)}%`,transition:"width 0.4s"}} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",marginTop:14,paddingTop:12,borderTop:"1px solid #111827",fontSize:12,color:"#475569"}}>
+                        <span>{mathsWatched} watched · {mathsRevised} revised · {mathsPracticed} practiced</span>
+                        <span style={{color:"#f472b6",fontWeight:600}}>{mathsPct}%</span>
+                    </div>
+                </div>
+
+                {/* OS */}
+                <div style={S.card}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                        <div style={S.sectionTitle}>OS — by Unit</div>
+                        <div style={{display:"flex",gap:10,fontSize:11}}>
+                            <span style={{color:"#fb923c"}}>● Watched</span>
+                            <span style={{color:"#fbbf24"}}>● Revised</span>
+                        </div>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:260,overflowY:"auto"}}>
+                        {osUnitData.map((u,i)=>(
+                            <div key={i}>
+                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                                    <span style={{fontSize:12,color:"#94a3b8",flex:1,marginRight:8,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.name}</span>
+                                    <span style={{fontSize:11,color:"#475569",flexShrink:0}}>{u.watched}/{u.total}</span>
+                                </div>
+                                <div style={{height:5,borderRadius:99,background:"#111827",overflow:"hidden"}}>
+                                    <div style={{height:"100%",borderRadius:99,background:"#fb923c",width:`${u.pct}%`,transition:"width 0.4s"}} />
+                                </div>
+                                {u.revised > 0 && (
+                                    <div style={{height:3,borderRadius:99,background:"#111827",overflow:"hidden",marginTop:2}}>
+                                        <div style={{height:"100%",borderRadius:99,background:"#fbbf24",width:`${Math.round(u.revised/u.total*100)}%`,transition:"width 0.4s"}} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",marginTop:14,paddingTop:12,borderTop:"1px solid #111827",fontSize:12,color:"#475569"}}>
+                        <span>{osWatched} watched · {osRevised} revised</span>
+                        <span style={{color:"#fb923c",fontWeight:600}}>{osPct}%</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── REVISION + CONFIDENCE ─────────────────────────────────────────── */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginTop:14}} className="rg2">
+                <div style={S.card}>
+                    <div style={S.sectionTitle}>Revision Progress</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:16,marginTop:12}}>
+                        {revStats.map((r,i)=>(
+                            <div key={i}>
+                                <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+                                    <span style={{fontSize:13,color:"#94a3b8"}}>{r.name}</span>
+                                    <span style={{fontSize:13,fontWeight:700,color:r.color}}>{r.done} <span style={{color:"#475569",fontWeight:400}}>/ {r.total}</span></span>
+                                </div>
+                                <PBar pct={r.total?Math.round(r.done/r.total*100):0} color={r.color} height={7} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div style={S.card}>
+                    <div style={S.sectionTitle}>Confidence Distribution (DSA + COA)</div>
+                    <ResponsiveContainer width="100%" height={200}>
+                        <BarChart data={Array.from({length:11},(_,i)=>({
+                            conf:i,
+                            dsa:dsaData.filter(d=>d.confidence===i).length,
+                            coa:coaData.filter(d=>d.confidence===i).length
+                        })).filter(d=>d.dsa+d.coa>0)} barSize={14} margin={{top:4,right:8,left:-20,bottom:0}}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#111827" vertical={false} />
+                            <XAxis dataKey="conf" tick={{fill:"#475569",fontSize:11}} axisLine={false} tickLine={false} label={{value:"Confidence →",position:"insideBottomRight",offset:-4,fontSize:10,fill:"#334155"}} />
+                            <YAxis tick={{fill:"#475569",fontSize:10}} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={TTStyle} />
+                            <Bar dataKey="dsa" fill="#818cf8" name="DSA" radius={[4,4,0,0]} stackId="a" />
+                            <Bar dataKey="coa" fill="#34d399" name="COA" radius={[4,4,0,0]} stackId="a" />
+                        </BarChart>
                     </ResponsiveContainer>
                 </div>
             </div>
         </div>
-    </div>;
+        );
     }
 
     // ─── TODO APP ─────────────────────────────────────────────────────────────────
@@ -4275,7 +4411,7 @@ const OS_UNITS = [
                     setWeekStatus={setWeekStatus} onCelebrate={handleCelebrate} solvedQuestions={solvedQuestions}
                     lcDiffCache={lcDiffCache} setLcDiffCache={setLcDiffCache} />}
                     {page==="analytics" &&
-                    <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} />}
+                    <Analytics dsaData={dsaData} coaData={coaData} revData={revData} weekStatus={weekStatus} mathsProgress={mathsProgress} osProgress={osProgress} solvedQuestions={solvedQuestions} />}
                     {page==="todo" && <TodoApp todos={todos} setTodos={setTodos} setActivityLog={setActivityLog} />}
                     {page==="calendar" && <CalendarTab todos={todos} weekStatus={weekStatus} />}
             </main>
