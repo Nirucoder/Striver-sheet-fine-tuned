@@ -40,3 +40,12 @@ description: Key localStorage keys, state boundaries, and compat rules to never 
 - On init, validate expiry before restoring token (must be > Date.now() + 60000ms).
 
 **Why:** These were hard-won lessons from a multi-feature implementation session where compat breaks were the main risk.
+
+## LeetCode sync rate limits
+- Use the app-owned `/api/leetcode/:username` proxy as the only automatic sync path.
+- Keep a short server-side cache and coalesce simultaneous requests; preserve the last successful response during temporary 429 cooldowns.
+- Keep one app-level poller rather than separate page-level timers.
+
+**Why:** Multiple browser requests to third-party LeetCode endpoints and overlapping page/app timers amplified intermittent 429 responses and exposed them as misleading submission failures.
+
+**How to apply:** Any future LeetCode data source or polling change must retain the shared proxy, cache, in-flight request reuse, and stale-data behavior unless the rate-limit strategy is deliberately redesigned.

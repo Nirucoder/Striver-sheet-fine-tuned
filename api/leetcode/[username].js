@@ -9,6 +9,11 @@
 // Extend Vercel function timeout to 30s (Pro: 300s, Hobby: 30s)
 export const config = { maxDuration: 30 };
 
+const responseCache = new Map();
+const inFlight = new Map();
+const CACHE_TTL_MS = 90_000;
+const RATE_LIMIT_COOLDOWN_MS = 60_000;
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
@@ -17,6 +22,28 @@ export default async function handler(req, res) {
 
   const { username } = req.query;
   if (!username) return res.status(400).json({ error: "username required" });
+  const cacheKey = String(username).trim().toLowerCase();
+  const now = Date.now();
+  const cached = responseCache.get(cacheKey);
+  if (cached?.data && cached.updatedAt + CACHE_TTL_MS > now) {
+    return res.status(200).json(cached.data);
+  }
+  if (cached?.rateLimitedUntil > now && cached.data) {
+    return res.status(200).json({
+      ...cached.data,
+      rateLimited: true,
+      retryAfterSeconds: Math.ceil((cached.rateLimitedUntil - now) / 1000),
+    });
+  }
+  if (inFlight.has(cacheKey)) {
+    try {
+      const shared = await inFlight.get(cacheKey);
+      if (shared.status === 429) res.setHeader("Retry-After", "60");
+      return res.status(shared.status).json(shared.body);
+    } catch (e) {
+      return res.status(502).json({ error: "LeetCode sync is unavailable right now — try again in a moment" });
+    }
+  }
 
   const query = `
     query recentAcSubmissions($username: String!, $limit: Int!) {
@@ -46,7 +73,7 @@ export default async function handler(req, res) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25000);
 
-  try {
+  const upstreamRequest = (async () => {
     const lcRes = await fetch("https://leetcode.com/graphql", {
       method: "POST",
       signal: controller.signal,
@@ -61,20 +88,48 @@ export default async function handler(req, res) {
     clearTimeout(timeout);
 
     if (!lcRes.ok) {
-      return res.status(502).json({ error: `LeetCode returned ${lcRes.status} — try again in a moment` });
+      if (lcRes.status === 429) {
+        responseCache.set(cacheKey, { ...cached, rateLimitedUntil: now + RATE_LIMIT_COOLDOWN_MS });
+        if (cached?.data) {
+          return {
+            status: 200,
+            body: {
+              ...cached.data,
+              rateLimited: true,
+              retryAfterSeconds: Math.ceil(RATE_LIMIT_COOLDOWN_MS / 1000),
+            },
+          };
+        }
+        return {
+          status: 429,
+          body: {
+            error: "LeetCode is temporarily rate limiting requests — try again in a moment",
+            retryAfterSeconds: RATE_LIMIT_COOLDOWN_MS / 1000,
+          },
+        };
+      }
+      return { status: 502, body: { error: `LeetCode returned ${lcRes.status} — try again in a moment` } };
     }
 
     const json = await lcRes.json();
 
     if (json.errors) {
-      return res.status(422).json({ error: json.errors[0]?.message || "LeetCode GraphQL error" });
+      return { status: 422, body: { error: json.errors[0]?.message || "LeetCode GraphQL error" } };
     }
 
     const submissions = json?.data?.recentAcSubmissionList ?? [];
     const submissionCalendar = json?.data?.matchedUser?.submissionCalendar ?? "{}";
     const submitStatsGlobal = json?.data?.matchedUser?.submitStatsGlobal ?? null;
     const allQuestionsCount = json?.data?.allQuestionsCount ?? null;
-    return res.json({ submissions, submissionCalendar, submitStatsGlobal, allQuestionsCount });
+    const data = { submissions, submissionCalendar, submitStatsGlobal, allQuestionsCount };
+    responseCache.set(cacheKey, { data, updatedAt: now, rateLimitedUntil: 0 });
+    return { status: 200, body: data };
+  })();
+  inFlight.set(cacheKey, upstreamRequest);
+  try {
+    const result = await upstreamRequest;
+    if (result.status === 429) res.setHeader("Retry-After", "60");
+    return res.status(result.status).json(result.body);
   } catch (e) {
     clearTimeout(timeout);
     console.error("[leetcode proxy]", e.message);
@@ -82,5 +137,7 @@ export default async function handler(req, res) {
       return res.status(504).json({ error: "LeetCode took too long to respond — try again in a moment" });
     }
     return res.status(500).json({ error: e.message });
+  } finally {
+    inFlight.delete(cacheKey);
   }
 }

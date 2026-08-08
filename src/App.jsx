@@ -1237,15 +1237,9 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
     useEffect(() => {
         if (!lcUsername || !lcUsername.trim()) return;
         
-        // Initial sync when DSATracker opens
+        // Initial sync when DSATracker opens. Ongoing refreshes are handled by
+        // the app-level poller so every page shares one LeetCode request.
         syncRef.current();
-
-        // Sync every 100 seconds
-        const intervalId = setInterval(() => {
-            syncRef.current();
-        }, 100000);
-
-        return () => clearInterval(intervalId);
     }, [lcUsername]);
 
     async function syncFromLeetCode() {
@@ -1256,38 +1250,27 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
         setLcSyncing(true);
         setLcSyncMsg("Fetching your LeetCode submissions…");
         try {
-            // Call alfa-leetcode-api directly from the browser (CORS-enabled, no proxy hop needed)
-            const BASE = "https://alfa-leetcode-api.onrender.com";
             const uname = encodeURIComponent(lcUsername.trim());
-            const [subRes, calRes, solvedRes] = await Promise.all([
-                fetch(`${BASE}/${uname}/acSubmission?limit=500`),
-                fetch(`${BASE}/${uname}/calendar`),
-                fetch(`${BASE}/${uname}/solved`),
-            ]);
-            if (!subRes.ok) throw new Error(`LeetCode submissions failed (${subRes.status})`);
-            const [subJson, calJson, solvedJson] = await Promise.all([
-                subRes.json(),
-                calRes.ok ? calRes.json() : {},
-                solvedRes.ok ? solvedRes.json() : {},
-            ]);
-            // Normalise into the shape the rest of the code already expects
-            const data = {
-                submissions: (subJson.submission || []).map(s => ({
-                    titleSlug: s.titleSlug,
-                    timestamp: s.timestamp,
-                    title: s.title,
-                })),
-                submissionCalendar: calJson.submissionCalendar ?? "{}",
-                submitStatsGlobal: solvedJson.easySolved != null ? {
-                    acSubmissionNum: [
-                        { difficulty: "All",    count: solvedJson.solvedProblem ?? 0 },
-                        { difficulty: "Easy",   count: solvedJson.easySolved   ?? 0 },
-                        { difficulty: "Medium", count: solvedJson.mediumSolved ?? 0 },
-                        { difficulty: "Hard",   count: solvedJson.hardSolved   ?? 0 },
-                    ]
-                } : null,
-                allQuestionsCount: null,
-            };
+            // Use the app's server-side proxy for all LeetCode data.  Calling
+            // three third-party endpoints directly from the browser caused
+            // duplicate requests and made intermittent 429s look like a hard
+            // submissions failure.
+            const response = await fetch(`/api/leetcode/${uname}`);
+            let responseData = {};
+            try { responseData = await response.json(); } catch (e) {}
+            if (!response.ok) {
+                const error = new Error(
+                    response.status === 429
+                        ? "LeetCode is temporarily rate limiting requests. Your previous sync is still safe; try again shortly."
+                        : (responseData.error || `LeetCode sync failed (${response.status})`)
+                );
+                error.status = response.status;
+                throw error;
+            }
+            const data = responseData;
+            const rateLimitNotice = data.rateLimited
+                ? ` LeetCode is rate limiting requests, so this used your last successful sync${data.retryAfterSeconds ? `; retry in about ${data.retryAfterSeconds}s` : ""}.`
+                : "";
 
             // Build slug -> earliest accepted date map (real submission date, not sync date)
             const slugToDate = {};
@@ -1462,10 +1445,10 @@ count++; if(count<150) frame=requestAnimationFrame(animate); else { ctx.clearRec
                 markDateActive(Array.from(allSolvedDates));
             }
 
-            setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!`);
+            setLcSyncMsg(`✓ ${count} new problem${count !== 1 ? "s" : ""} synced!${rateLimitNotice}`);
         } catch (err) {
             console.error("LeetCode Sync Error:", err);
-            setLcSyncMsg(`⚠ ${err.message || "Could not fetch LeetCode data. Try again."}`);
+            setLcSyncMsg(`⚠ ${err.message || "Could not fetch LeetCode data. Try again shortly."}`);
         }
         setLcSyncing(false);
     }

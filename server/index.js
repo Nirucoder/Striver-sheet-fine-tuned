@@ -27,6 +27,14 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
 
+// LeetCode throttles repeated GraphQL requests. Keep the most recent complete
+// response briefly and serve it during the cooldown so a temporary 429 never
+// wipes the user's already-synced dashboard state.
+const leetcodeCache = new Map();
+const leetcodeInFlight = new Map();
+const LEETCODE_CACHE_TTL_MS = 90_000;
+const LEETCODE_RATE_LIMIT_COOLDOWN_MS = 60_000;
+
 function setCookies(res, cookies) {
   res.setHeader("Set-Cookie", cookies);
 }
@@ -148,47 +156,128 @@ app.post("/api/sync/:code", async (req, res) => {
 });
 
 app.get("/api/leetcode/:username", async (req, res) => {
-  const { username } = req.params;
+  const username = String(req.params.username || "").trim();
   if (!username) return res.status(400).json({ error: "username required" });
+  const cacheKey = username.toLowerCase();
+  const now = Date.now();
+  const cached = leetcodeCache.get(cacheKey);
+
+  if (cached?.data && cached.updatedAt + LEETCODE_CACHE_TTL_MS > now) {
+    return res.json(cached.data);
+  }
+  if (cached?.rateLimitedUntil > now) {
+    if (cached.data) {
+      return res.json({
+        ...cached.data,
+        rateLimited: true,
+        retryAfterSeconds: Math.ceil((cached.rateLimitedUntil - now) / 1000),
+      });
+    }
+    return res.status(429).json({
+      error: "LeetCode is temporarily rate limiting requests. Try again shortly.",
+      retryAfterSeconds: Math.ceil((cached.rateLimitedUntil - now) / 1000),
+    });
+  }
+  // The dashboard and DSA page can both refresh on the same mount. Reuse the
+  // same upstream request rather than sending another GraphQL request.
+  if (leetcodeInFlight.has(cacheKey)) {
+    try {
+      const shared = await leetcodeInFlight.get(cacheKey);
+      return res.status(shared.status).json(shared.body);
+    } catch (e) {
+      return res.status(502).json({ error: "LeetCode sync is unavailable right now. Try again shortly." });
+    }
+  }
 
   const query = `
-    query recentAcSubmissions($username: String!, $limit: Int!) {
+    query leetcodeStudyStats($username: String!, $limit: Int!) {
       recentAcSubmissionList(username: $username, limit: $limit) {
         id
         title
         titleSlug
         timestamp
       }
+      allQuestionsCount {
+        difficulty
+        count
+      }
+      matchedUser(username: $username) {
+        submissionCalendar
+        submitStatsGlobal {
+          acSubmissionNum {
+            difficulty
+            count
+          }
+        }
+      }
     }
   `;
 
-  try {
+  const upstreamRequest = (async () => {
     const lcRes = await fetch("https://leetcode.com/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Referer: "https://leetcode.com",
+        Origin: "https://leetcode.com",
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       },
-      body: JSON.stringify({ query, variables: { username, limit: 100 } }),
+      body: JSON.stringify({ query, variables: { username, limit: 500 } }),
     });
 
     if (!lcRes.ok) {
-      return res.status(502).json({ error: `LeetCode responded with ${lcRes.status}` });
+      if (lcRes.status === 429) {
+        const rateLimitedUntil = now + LEETCODE_RATE_LIMIT_COOLDOWN_MS;
+        leetcodeCache.set(cacheKey, { ...cached, rateLimitedUntil });
+        if (cached?.data) {
+          return {
+            status: 200,
+            body: {
+              ...cached.data,
+              rateLimited: true,
+              retryAfterSeconds: Math.ceil(LEETCODE_RATE_LIMIT_COOLDOWN_MS / 1000),
+            },
+          };
+        }
+        return {
+          status: 429,
+          body: {
+            error: "LeetCode is temporarily rate limiting requests. Try again shortly.",
+            retryAfterSeconds: LEETCODE_RATE_LIMIT_COOLDOWN_MS / 1000,
+          },
+        };
+      }
+      return { status: 502, body: { error: `LeetCode responded with ${lcRes.status}` } };
     }
 
     const json = await lcRes.json();
 
     if (json.errors) {
-      return res.status(422).json({ error: json.errors[0]?.message || "LeetCode GraphQL error" });
+      return { status: 422, body: { error: json.errors[0]?.message || "LeetCode GraphQL error" } };
     }
 
-    const submissions = json?.data?.recentAcSubmissionList ?? [];
-    return res.json({ submissions });
+    const data = {
+      submissions: json?.data?.recentAcSubmissionList ?? [],
+      submissionCalendar: json?.data?.matchedUser?.submissionCalendar ?? "{}",
+      submitStatsGlobal: json?.data?.matchedUser?.submitStatsGlobal ?? null,
+      allQuestionsCount: json?.data?.allQuestionsCount ?? null,
+    };
+    leetcodeCache.set(cacheKey, { data, updatedAt: now, rateLimitedUntil: 0 });
+    return { status: 200, body: data };
+  })();
+  leetcodeInFlight.set(cacheKey, upstreamRequest);
+  try {
+    const result = await upstreamRequest;
+    if (result.status === 429) {
+      res.setHeader("Retry-After", String(LEETCODE_RATE_LIMIT_COOLDOWN_MS / 1000));
+    }
+    return res.status(result.status).json(result.body);
   } catch (e) {
     console.error("[leetcode proxy]", e.message);
     return res.status(500).json({ error: e.message });
+  } finally {
+    leetcodeInFlight.delete(cacheKey);
   }
 });
 
