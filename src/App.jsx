@@ -3,12 +3,13 @@ import CalendarTab from "./CalendarTab.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { useCloudSync } from "./hooks/useCloudSync.js";
 import AccountSyncModal from "./AccountSyncModal.jsx";
+import { OFFICIAL_STRIVER_SECTIONS } from "./data/striverA2ZOfficial.js";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 
 
 // ─── STRIVER A2Z SHEET DATA (NEW NESTED STRUCTURE) ─────────────────────────
-const STRIVER_STEPS = [
+const LEGACY_STRIVER_STEPS = [
 { step:1, title:"Learn the Basics", week:1, subtopics:[
   { name:"Things to Know in C++, Java, Python or any language", problems:[
       { title:"User Input / Output", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"Data Types", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"If Else statements", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"Switch Statement", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"arrays, strings", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },{ title:"For loops, while loops", yt:"https://youtu.be/EAR7De6Goz4", practice:"https://takeuforward.org/plus", difficulty:"Easy" },
@@ -152,6 +153,214 @@ const STRIVER_STEPS = [
 ]},
 ];
 
+// ─── STRIVER A2Z NORMALISATION ───────────────────────────────────────────────
+// The legacy data above is intentionally retained as the compatibility source
+// for existing progress, notes, favourites, and user-added questions. The
+// official sheet is rebuilt below in the exact order returned by TakeUForward.
+function resourceValue(value) {
+  if (!value || value === "$undefined") return undefined;
+  return value;
+}
+
+function resourceSlug(value) {
+  if (!value || !value.includes("/problems/")) return "";
+  return value.replace(/\/+$/, "").split("/problems/")[1]?.split("/")[0] || "";
+}
+
+function resourceVideoId(value) {
+  return (value || "").match(/(?:youtu\.be\/|[?&]v=)([\w-]{6,})/)?.[1] || "";
+}
+
+function titleKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/linkedlist/g, "linked list")
+    .replace(/leetcode|problem|using|the|of|in|on|for|to|and|with|from|find|learn|implement|check|given|array|number|numbers|element|elements|sorted|sort|algorithm|solution/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function titleSimilarity(a, b) {
+  const left = new Set(titleKey(a).split(" ").filter(Boolean));
+  const right = new Set(titleKey(b).split(" ").filter(Boolean));
+  if (!left.size || !right.size) return 0;
+  const common = [...left].filter(token => right.has(token)).length;
+  return (2 * common) / (left.size + right.size);
+}
+
+function officialProblemRecord(section, subsection, problem) {
+  const [problemId, title, article, youtube, leetcode, plus, difficulty] = problem;
+  const plusUrl = plus ? `https://takeuforward.org${plus}` : undefined;
+  return {
+    id: `striver:${section.id}:${subsection.id}:${problemId}`,
+    source: "striver",
+    sourceId: `striver:${section.id}:${subsection.id}:${problemId}`,
+    sectionId: section.id,
+    subsectionId: subsection.id,
+    topicId: problemId,
+    title,
+    ...(resourceValue(youtube) ? { yt: youtube } : {}),
+    ...(resourceValue(article) ? { article } : {}),
+    ...(resourceValue(leetcode) ? { practice: leetcode } : resourceValue(plusUrl) ? { practice: plusUrl } : {}),
+    ...(difficulty ? { difficulty } : {}),
+  };
+}
+
+function buildStriverRoadmap() {
+  const legacy = LEGACY_STRIVER_STEPS.flatMap(step =>
+    step.subtopics.flatMap((subtopic, subIndex) =>
+      subtopic.problems.map((problem, problemIndex) => ({
+        ...problem,
+        legacyKey: `s${step.step}_${subIndex}_${problemIndex}`,
+        legacyStep: step.step,
+        legacySubIndex: subIndex,
+        legacySubtopic: subtopic.name,
+      }))
+    )
+  );
+  const official = OFFICIAL_STRIVER_SECTIONS.flatMap((section, sectionIndex) =>
+    section.subs.flatMap((subsection, subsectionIndex) =>
+      subsection.problems.map((problem, problemIndex) => ({
+        section,
+        subsection,
+        problem,
+        sectionIndex,
+        subsectionIndex,
+        problemIndex,
+      }))
+    )
+  );
+  const usedLegacy = new Set();
+  const officialMatches = new Map();
+
+  function chooseLegacy(candidates, officialItem) {
+    let best = null;
+    candidates.forEach(index => {
+      if (usedLegacy.has(index)) return;
+      const candidate = legacy[index];
+      let score = titleSimilarity(officialItem.problem[1], candidate.title);
+      if (resourceSlug(officialItem.problem[4]) && resourceSlug(officialItem.problem[4]) === resourceSlug(candidate.practice)) score += 2;
+      if (resourceValue(officialItem.problem[2]) && officialItem.problem[2] === candidate.article) score += 2;
+      if (resourceVideoId(officialItem.problem[3]) && resourceVideoId(officialItem.problem[3]) === resourceVideoId(candidate.yt)) score += 0.2;
+      if (officialItem.sectionIndex + 1 === candidate.legacyStep) score += 0.1;
+      if (!best || score > best.score) best = { index, score };
+    });
+    return best;
+  }
+
+  // Strong identifiers first: practice slug, article URL, then exact title.
+  for (const item of official) {
+    const slug = resourceSlug(item.problem[4]);
+    const bySlug = slug ? legacy.map((p, i) => i).filter(i => resourceSlug(legacy[i].practice) === slug) : [];
+    const byArticle = resourceValue(item.problem[2])
+      ? legacy.map((p, i) => i).filter(i => legacy[i].article === item.problem[2])
+      : [];
+    const exactTitle = legacy.map((p, i) => i).filter(i => titleKey(legacy[i].title) === titleKey(item.problem[1]));
+    const match = chooseLegacy([...bySlug, ...byArticle, ...exactTitle], item);
+    if (match && match.score >= 0.8) {
+      usedLegacy.add(match.index);
+      officialMatches.set(item, match.index);
+    }
+  }
+
+  // Fuzzy matching is deliberately restricted to the same roadmap step and
+  // requires a strong title match, preventing custom questions from being
+  // silently rewritten as official content.
+  for (const item of official) {
+    if (officialMatches.has(item)) continue;
+    const sameStep = legacy.map((p, i) => i).filter(i => legacy[i].legacyStep === item.sectionIndex + 1);
+    const match = chooseLegacy(sameStep, item);
+    if (match && match.score >= 0.95) {
+      usedLegacy.add(match.index);
+      officialMatches.set(item, match.index);
+    }
+  }
+
+  const steps = OFFICIAL_STRIVER_SECTIONS.map((section, stepIndex) => ({
+    step: stepIndex + 1,
+    title: section.name,
+    week: LEGACY_STRIVER_STEPS[stepIndex]?.week ?? 8,
+    subtopics: section.subs.map(subsection => ({
+      name: subsection.name,
+      problems: subsection.problems.map(problem => {
+        const item = official.find(candidate => candidate.section === section && candidate.subsection === subsection && candidate.problem === problem);
+        const legacyIndex = officialMatches.get(item);
+        const record = officialProblemRecord(section, subsection, problem);
+        return legacyIndex === undefined ? record : { ...record, _legacyKey: legacy[legacyIndex].legacyKey };
+      }),
+    })),
+  }));
+
+  function nearestSubtopic(stepIndex, legacySubtopic) {
+    const subtopics = steps[stepIndex]?.subtopics || [];
+    if (!subtopics.length) return 0;
+    let bestIndex = 0;
+    let bestScore = -1;
+    subtopics.forEach((subtopic, index) => {
+      const score = titleSimilarity(legacySubtopic, subtopic.name);
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndex = index;
+      }
+    });
+    return bestIndex;
+  }
+
+  // Every unmatched legacy record is preserved verbatim as custom content.
+  // It is appended to the closest official subsection in the same step so
+  // official ordering stays exact without deleting or renaming user content.
+  legacy.forEach((problem, legacyIndex) => {
+    if (usedLegacy.has(legacyIndex)) return;
+    const stepIndex = Math.min(Math.max(problem.legacyStep - 1, 0), steps.length - 1);
+    const subIndex = nearestSubtopic(stepIndex, problem.legacySubtopic);
+    const custom = {
+      ...problem,
+      id: `custom:${problem.legacyKey}`,
+      customId: `custom:${problem.legacyKey}`,
+      source: "custom",
+    };
+    delete custom.legacyKey;
+    delete custom.legacyStep;
+    delete custom.legacySubIndex;
+    delete custom.legacySubtopic;
+    steps[stepIndex].subtopics[subIndex].problems.push({ ...custom, _legacyKey: problem.legacyKey });
+  });
+
+  const legacyProblemKeyMap = {};
+  const legacySubtopicKeyMap = {};
+  steps.forEach(step => step.subtopics.forEach((subtopic, subIndex) => {
+    subtopic.problems.forEach((problem, problemIndex) => {
+      if (problem._legacyKey) {
+        legacyProblemKeyMap[problem._legacyKey] = `s${step.step}_${subIndex}_${problemIndex}`;
+      }
+    });
+  }));
+  LEGACY_STRIVER_STEPS.forEach(step => step.subtopics.forEach((subtopic, subIndex) => {
+    const stepIndex = Math.min(Math.max(step.step - 1, 0), steps.length - 1);
+    const targetSubIndex = nearestSubtopic(stepIndex, subtopic.name);
+    legacySubtopicKeyMap[`s${step.step}_${subIndex}`] = `s${stepIndex + 1}_${targetSubIndex}`;
+  }));
+
+  return { steps, legacyProblemKeyMap, legacySubtopicKeyMap };
+}
+
+const {
+  steps: STRIVER_STEPS,
+  legacyProblemKeyMap: LEGACY_PROBLEM_KEY_MAP,
+  legacySubtopicKeyMap: LEGACY_SUBTOPIC_KEY_MAP,
+} = buildStriverRoadmap();
+
+function migrateProblemState(saved) {
+  if (!saved || typeof saved !== "object") return saved || {};
+  return Object.entries(saved).reduce((next, [key, value]) => {
+    const match = key.match(/^(s\d+_\d+_\d+)(.*)$/);
+    const mappedBase = match ? LEGACY_PROBLEM_KEY_MAP[match[1]] : undefined;
+    next[mappedBase ? `${mappedBase}${match[2]}` : key] = value;
+    return next;
+  }, {});
+}
+
 const STEP_LEETCODE = {};
 STRIVER_STEPS.forEach(step => { STEP_LEETCODE[step.step] = step.subtopics.flatMap(sub => sub.problems.map(p => ({ title: p.title, url: p.practice }))); });
 const DSA_TABLE = STRIVER_STEPS.flatMap(step =>
@@ -285,7 +494,10 @@ return [val, setVal];
 // Fresh table = source of truth for structure; saved data = source of truth for progress.
 function mergeDsaData(saved) {
   if (!Array.isArray(saved) || saved.length === 0) return DSA_TABLE;
-  const byId = Object.fromEntries(saved.map(d => [d.id, d]));
+  const byId = Object.fromEntries(saved.map(d => [
+    LEGACY_SUBTOPIC_KEY_MAP[d.id] || d.id,
+    d,
+  ]));
   return DSA_TABLE.map(fresh => {
     const s = byId[fresh.id];
     if (!s) return fresh;
