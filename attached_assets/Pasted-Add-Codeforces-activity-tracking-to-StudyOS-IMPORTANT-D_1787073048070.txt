@@ -1,0 +1,341 @@
+Add Codeforces activity tracking to StudyOS.
+
+IMPORTANT:
+Do not break the existing LeetCode tracking or streak logic.
+
+==================================================
+CODEFORCES API INTEGRATION
+==================================================
+
+Use the official Codeforces API to determine whether the user solved
+at least one Codeforces problem on a particular day.
+
+Use:
+
+https://codeforces.com/api/user.status?handle={HANDLE}
+
+The API returns the user's submissions.
+
+For each submission:
+
+- Check verdict === "OK"
+- Use the submission creation timestamp
+- Convert the timestamp to the user's local date/timezone
+- Consider the day active if the user has at least one accepted submission
+  on that date.
+
+Do NOT count:
+
+- Failed submissions
+- Compilation errors
+- Wrong answers
+- Time limit exceeded
+- Attempts without an accepted verdict
+
+==================================================
+USER CODEFORCES HANDLE
+==================================================
+
+Add a Codeforces username/handle to the user's profile/settings.
+
+Example:
+
+Codeforces Handle
+[ Nirucoder ]
+
+Provide a way for the user to change it.
+
+Do not require the user to authenticate with Codeforces.
+
+The public Codeforces API is sufficient for checking submissions.
+
+==================================================
+STREAK LOGIC
+==================================================
+
+Integrate Codeforces activity into the EXISTING coding streak.
+
+A day is considered a coding-active day if:
+
+LeetCode activity exists
+OR
+Codeforces accepted submission exists.
+
+Therefore:
+
+2026-08-18
+LeetCode solved → active day
+
+2026-08-19
+Codeforces problem accepted → active day
+
+The streak continues.
+
+If both platforms have activity on the same day:
+
+LeetCode + Codeforces
+
+still count as ONE active day.
+
+Do NOT increment the streak twice.
+
+==================================================
+EXAMPLE
+==================================================
+
+Monday:
+
+LeetCode: 2 solved
+Codeforces: 0
+
+→ Active day
+
+Tuesday:
+
+LeetCode: 0
+Codeforces: 1 accepted
+
+→ Active day
+
+Wednesday:
+
+LeetCode: 1 solved
+Codeforces: 1 accepted
+
+→ Active day
+
+Thursday:
+
+LeetCode: 0
+Codeforces: 0
+
+→ Inactive day
+
+The streak should be calculated from these combined activity dates.
+
+==================================================
+DASHBOARD
+==================================================
+
+Keep the existing streak UI.
+
+Do not create a separate Codeforces streak.
+
+Instead, show the activity source where useful.
+
+Example:
+
+🔥 18 Day Streak
+
+Today's Activity
+
+✓ LeetCode
+✓ Codeforces
+
+or
+
+🔥 18 Day Streak
+
+Today's Activity
+
+✓ Codeforces
+
+==================================================
+ACTIVITY CALENDAR
+==================================================
+
+The existing coding activity calendar/heatmap should recognize:
+
+LeetCode activity
+Codeforces activity
+
+Use different indicators if the UI supports it.
+
+For example:
+
+LeetCode only:
+🟦
+
+Codeforces only:
+🟩
+
+Both:
+🟪
+
+No activity:
+⬜
+
+Do not change the existing visual design unnecessarily.
+
+==================================================
+API CACHING
+==================================================
+
+Do NOT call Codeforces API repeatedly on every render.
+
+Fetch submissions:
+
+- On initial authenticated app load when necessary
+- When the Codeforces handle changes
+- When refreshing today's activity
+- At a reasonable interval if background refresh already exists
+
+Cache the fetched activity.
+
+Use the existing cloud/local sync architecture where appropriate.
+
+==================================================
+ERROR HANDLING
+==================================================
+
+If:
+
+- Codeforces handle is invalid
+- API request fails
+- Codeforces is unavailable
+- User has not configured a handle
+
+Do NOT break the DSA Tracker or streak system.
+
+Simply treat Codeforces activity as unavailable and continue using
+existing LeetCode activity.
+
+Show a small non-blocking status message if appropriate.
+
+==================================================
+TIMEZONE
+==================================================
+
+This is important.
+
+Do NOT use the Codeforces server date blindly.
+
+Convert the submission timestamp into the user's configured/local
+timezone before determining the calendar date.
+
+This prevents a submission around midnight from being assigned to
+the wrong day.
+
+==================================================
+DUPLICATE SUBMISSIONS
+==================================================
+
+A user may submit the same problem multiple times.
+
+Do not count multiple accepted submissions as multiple activities.
+
+For streak purposes:
+
+At least one accepted submission = active day.
+
+==================================================
+EXISTING STREAK FEATURES
+==================================================
+
+Preserve all existing behavior:
+
+- Current streak
+- Longest streak
+- Streak freeze
+- Daily activity
+- LeetCode integration
+- Cloud sync
+- Authentication
+- Local cache
+- Dashboard
+- Analytics
+
+Do not rewrite the existing LeetCode integration unless necessary.
+
+Extend the existing activity abstraction instead.
+
+==================================================
+ARCHITECTURE
+==================================================
+
+If the current system has something like:
+
+codingActivity
+activityDates
+streakService
+
+extend it rather than creating a completely separate streak implementation.
+
+Ideally:
+
+codingActivity(date) =
+    leetcodeSolved(date) ||
+    codeforcesAccepted(date)
+
+Then calculate the streak from the resulting unique dates.
+
+Keep the platform source information separately so the UI can display
+where the activity came from.
+
+Example:
+
+{
+  date: "2026-08-18",
+  active: true,
+  sources: ["leetcode", "codeforces"]
+}
+
+==================================================
+SECURITY
+==================================================
+
+Codeforces handles are public information.
+
+Do not store or request Codeforces passwords.
+
+Do not ask users for Codeforces credentials.
+
+Do not expose private environment variables.
+
+==================================================
+VALIDATION
+==================================================
+
+Test:
+
+1. LeetCode only activity
+2. Codeforces only activity
+3. Both on the same day
+4. No activity
+5. Multiple accepted Codeforces submissions
+6. Failed Codeforces submissions only
+7. Activity around midnight
+8. Invalid Codeforces handle
+9. Codeforces API unavailable
+10. Existing LeetCode streak behavior
+
+Make sure:
+
+LeetCode + Codeforces on the same date = ONE streak day.
+
+==================================================
+FINAL REQUIREMENT
+==================================================
+
+Codeforces should become a second source of coding activity for
+StudyOS.
+
+The final model should be:
+
+Coding Activity
+    ├── LeetCode
+    └── Codeforces
+
+Both feed into:
+
+    Daily Activity
+          ↓
+       Streak
+          ↓
+      Analytics
+
+Do NOT create two independent streaks.
+
+Do NOT count problems from Codeforces as LeetCode problems.
+
+Only use Codeforces accepted submissions to maintain the coding streak.
