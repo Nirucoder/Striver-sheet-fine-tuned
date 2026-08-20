@@ -45,6 +45,7 @@ description: Key localStorage keys, state boundaries, and compat rules to never 
 - Use the app-owned `/api/leetcode/:username` proxy as the only automatic sync path.
 - Keep a short server-side cache and coalesce simultaneous requests; preserve the last successful response during temporary 429 cooldowns.
 - Keep one app-level poller rather than separate page-level timers.
+- The app-level poller must update both activity history and streak active dates; screen-specific trackers should not be required for streak refresh.
 
 **Why:** Multiple browser requests to third-party LeetCode endpoints and overlapping page/app timers amplified intermittent 429 responses and exposed them as misleading submission failures.
 

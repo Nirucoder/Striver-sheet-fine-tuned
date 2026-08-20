@@ -3939,6 +3939,29 @@ const OS_UNITS = [
                             });
                             return updated;
                         });
+
+                         // Keep the streak in sync from the app-level startup
+                         // poller too. Previously this only happened inside
+                         // DSATracker's screen-level sync, so opening the app
+                         // on another page left the streak stale until the
+                         // tracker was visited.
+                         const activeDates = new Set();
+                         (data.submissions || []).forEach(submission => {
+                             if (!submission?.timestamp) return;
+                             const date = new Date(parseInt(submission.timestamp, 10) * 1000)
+                                 .toISOString()
+                                 .slice(0, 10);
+                             if (date) activeDates.add(date);
+                         });
+                         Object.keys(cal).forEach(ts => {
+                             const date = new Date(parseInt(ts, 10) * 1000)
+                                 .toISOString()
+                                 .slice(0, 10);
+                             if (date) activeDates.add(date);
+                         });
+                         if (activeDates.size > 0) {
+                             markDateActive(Array.from(activeDates));
+                         }
                     } catch (e) { /* ignore */ }
                 }
             })
